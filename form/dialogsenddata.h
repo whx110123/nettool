@@ -1,0 +1,59 @@
+#ifndef DIALOGSENDDATA_H
+#define DIALOGSENDDATA_H
+
+#include <QDialog>
+#include <QtNetwork>
+namespace Ui {
+class DialogSendData;
+}
+#define CYCLEONCE       0   //循环一次，发完停止
+#define CYCLEONCEREC    1   //循环一次，先有接受，再发送
+#define CYCLE           2   //循环发送
+#define CYCLEREC        3   //周期循环，先有接受，再发送
+class DialogSendData : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit DialogSendData(QWidget *parent = nullptr);
+    ~DialogSendData();
+
+private:
+    QStringList dataList;
+    int lstindex;
+    int cycleflag;
+    QTimer *timercycle;
+    int recflag;
+    void initfrom();
+    void initdataList();
+    void closeEvent(QCloseEvent *event);
+
+public slots:
+    void dealData(const QString &data,const QString &title);
+signals:
+
+    void dlgTotcpclient(const QString &data);
+    void dlgTotcpserver(const QString &data);
+    void dlgToudpclient(const QString &data);
+    void dlgToudpserver(const QString &data);
+    void dlgTocom(const QString &data);
+
+private slots:
+    void sendDatacycle();
+    void emitsignals(const QString &data);
+    void stopTimer();
+    void on_btnSendAll_clicked();
+
+    void on_btnSendcycle_clicked();
+
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_Cb_recv_stateChanged(int arg1);
+
+    void on_timeinterval_textChanged(const QString &arg1);
+
+private:
+    Ui::DialogSendData *ui;
+};
+
+#endif // DIALOGSENDDATA_H
