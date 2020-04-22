@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QtNetwork>
+#include <QLineEdit>
+#include <QCheckBox>
 namespace Ui {
 class DialogSendData;
 }
@@ -20,6 +22,9 @@ public:
 
 private:
     QStringList dataList;
+    QMap<int, QLineEdit *> mapline;
+    QMap<int, QCheckBox *> mapchk;
+    QMap<int, QString > mapstr;
     int lstindex;
     int cycleflag;
     QTimer *timercycle;
@@ -51,6 +56,12 @@ private slots:
     void on_Cb_recv_stateChanged(int arg1);
 
     void on_timeinterval_textChanged(const QString &arg1);
+
+    void on_checkBox_stateChanged(int arg1);
+
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::DialogSendData *ui;

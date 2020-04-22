@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     App::readDeviceData();
 
     frmMain w;
-    w.setWindowTitle(QString("网络串口调试助手V1.02   ") + QString("本机IP: %1 ").arg(QUIHelper::getLocalIP()) + QString("          作者：hxwang"));
+    w.setWindowTitle(QString("网络串口调试助手V1.03   ") + QString("本机IP: %1 ").arg(QUIHelper::getLocalIP()) + QString("          作者：王洪星"));
     w.show();
 
     return a.exec();

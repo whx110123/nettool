@@ -21,6 +21,35 @@ void DialogSendData::initfrom()
     recflag = 0;
     connect(timercycle, SIGNAL(timeout()), this, SLOT(sendDatacycle()));
     ui->comboBox->addItems(App::Transferlst);
+    mapline.insert(1,ui->linedata1);
+    mapline.insert(2,ui->linedata2);
+    mapline.insert(3,ui->linedata3);
+    mapline.insert(4,ui->linedata4);
+    mapline.insert(5,ui->linedata5);
+    mapline.insert(6,ui->linedata6);
+    mapline.insert(7,ui->linedata7);
+    mapline.insert(8,ui->linedata8);
+    mapline.insert(9,ui->linedata9);
+    mapline.insert(10,ui->linedata10);
+    mapline.insert(11,ui->linedata11);
+    mapline.insert(12,ui->linedata12);
+    mapline.insert(13,ui->linedata13);
+    mapline.insert(14,ui->linedata14);
+
+    mapchk.insert(1,ui->checkBox1);
+    mapchk.insert(2,ui->checkBox2);
+    mapchk.insert(3,ui->checkBox3);
+    mapchk.insert(4,ui->checkBox4);
+    mapchk.insert(5,ui->checkBox5);
+    mapchk.insert(6,ui->checkBox6);
+    mapchk.insert(7,ui->checkBox7);
+    mapchk.insert(8,ui->checkBox8);
+    mapchk.insert(9,ui->checkBox9);
+    mapchk.insert(10,ui->checkBox10);
+    mapchk.insert(11,ui->checkBox11);
+    mapchk.insert(12,ui->checkBox12);
+    mapchk.insert(13,ui->checkBox13);
+    mapchk.insert(14,ui->checkBox14);
 }
 
 void DialogSendData::initdataList()
@@ -29,75 +58,15 @@ void DialogSendData::initdataList()
     dataList.clear();
 
     QString data;
-    data = ui->linedata1->text();
-    if(ui->checkBox1->isChecked()&&!data.trimmed().isEmpty())
+    mapstr.clear();
+    for (int i = 0;i<14;i++)
     {
-        dataList.append(data);
-    }
-    data = ui->linedata2->text();
-    if(ui->checkBox2->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata3->text();
-    if(ui->checkBox3->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata4->text();
-    if(ui->checkBox4->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata5->text();
-    if(ui->checkBox5->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata6->text();
-    if(ui->checkBox6->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata7->text();
-    if(ui->checkBox7->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata8->text();
-    if(ui->checkBox8->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata9->text();
-    if(ui->checkBox9->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata10->text();
-    if(ui->checkBox10->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata11->text();
-    if(ui->checkBox11->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata12->text();
-    if(ui->checkBox12->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata13->text();
-    if(ui->checkBox13->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
-    }
-    data = ui->linedata14->text();
-    if(ui->checkBox14->isChecked()&&!data.trimmed().isEmpty())
-    {
-        dataList.append(data);
+        data = mapline[i+1]->text();
+        if(mapchk[i+1]->isChecked()&&!data.trimmed().isEmpty())
+        {
+            dataList.append(data);
+            mapstr.insert(i+1,data);
+        }
     }
 }
 
@@ -184,6 +153,22 @@ void DialogSendData::emitsignals(const QString &data)
     {
         emit dlgTocom(data);
     }
+    QPalette palette1;
+    palette1.setColor(QPalette::Base,Qt::red);
+    QPalette palette2;
+    palette2.setColor(QPalette::Base,Qt::white);
+    for (int i = 0;i<mapstr.size();i++)
+    {
+        if(mapstr[i+1] == data)
+        {
+            mapline[i+1]->setPalette(palette1);
+
+        }
+        else
+        {
+            mapline[i+1]->setPalette(palette2);
+        }
+    }
 }
 
 void DialogSendData::stopTimer()
@@ -268,5 +253,61 @@ void DialogSendData::on_Cb_recv_stateChanged(int arg1)
 
 void DialogSendData::on_timeinterval_textChanged(const QString &arg1)
 {
+    stopTimer();
+}
+
+void DialogSendData::on_checkBox_stateChanged(int arg1)
+{
+    for (int i = 0;i<14;i++)
+    {
+        mapchk[i+1]->setCheckState(Qt::CheckState(arg1));
+    }
+}
+
+void DialogSendData::on_pushButton_clicked()
+{
+     QString fileDir = QFileDialog::getOpenFileName(this,tr("打开对话框"),"",tr("文本文件(*ini *txt)"));
+
+    QFile file(fileDir);
+    if (file.size() > 0 && file.open(QFile::ReadOnly | QIODevice::Text))
+    {
+        stopTimer();
+        dataList.clear();
+        while (!file.atEnd())
+        {
+            QString line = file.readLine();
+            line = line.trimmed();
+            line = line.replace("\r", "");
+            line = line.replace("\n", "");
+            if (!line.isEmpty())
+            {
+                dataList.append(line);
+            }
+        }
+
+        file.close();
+    }
+    for (int i = 0;i<dataList.size()&&i<14;i++)
+    {
+        mapline[i+1]->setText(dataList.at(i));
+    }
+
+}
+
+void DialogSendData::on_pushButton_2_clicked()
+{
+    int ret = QMessageBox::question(this,tr("对话框"),tr("确认清空报文吗？"),QMessageBox::Yes,QMessageBox::No);
+    if(ret == QMessageBox::No)
+    {
+        return;
+    }
+    QPalette palette2;
+    palette2.setColor(QPalette::Base,Qt::white);
+
+    for (int i = 0;i<14;i++)
+    {
+        mapline[i+1]->clear();
+        mapline[i+1]->setPalette(palette2);
+    }
     stopTimer();
 }

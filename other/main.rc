@@ -24,7 +24,7 @@ VS_VERSION_INFO VERSIONINFO
             BEGIN
 	            VALUE "FileDescription", "网络串口调试工具"
                 VALUE "ProductName", "网络串口调试工具"
-                VALUE "ProductVersion", "V1.02"
+                VALUE "ProductVersion", "V1.03"
                 VALUE "LegalCopyright", "Copyright(C) 江苏金智科技股份有限公司"
                 VALUE "OriginalFilename", "nettool.exe"
                 VALUE "CompanyName", "江苏金智科技股份有限公司"
