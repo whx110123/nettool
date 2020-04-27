@@ -335,8 +335,8 @@ void App::readDeviceData()
                 QStringList list = line.split(";");
 
                 if(list.count()>1){
-                    QString key = list.at(0);
-                    QString value = list.at(1);
+                    QString key = list.at(0).trimmed().toUpper();
+                    QString value = list.at(1).trimmed().toUpper();
                     App::Keys.append(key);
                     App::Values.append(value);
                 }
