@@ -40,6 +40,9 @@ private:
     QTcpSocket *socket;         //网络连接对象
     QTimer *timerConnect;       //定时器重连
 
+    QString cachebuffer;        //缓存报文
+    int cachetimer;             //缓存次数，缓存2次后清除报文
+
 private slots:
     void initForm();            //初始化窗体数据
     void initConfig();          //初始化配置文件

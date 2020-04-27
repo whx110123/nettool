@@ -34,10 +34,11 @@ void frmComTool::initForm()
 {
     comOk = false;
     com = 0;
-    sleepTime = 10;
+    sleepTime = 20;
     receiveCount = 0;
     sendCount = 0;
     isShow = true;
+    cachetimer = 0;
 
     ui->cboxSendInterval->addItems(App::Intervals);
     ui->cboxData->addItems(App::Datas);
@@ -330,21 +331,34 @@ void frmComTool::readData()
             buffer = QString::fromLocal8Bit(data);
         }
 
-        //启用调试则模拟调试数据
-        if (ui->ckDebug->isChecked()) {
-            int count = App::Keys.count();
-            for (int i = 0; i < count; i++) {
-                if (buffer.startsWith(App::Keys.at(i))) {
-                    sendData(App::Values.at(i));
-                    break;
-                }
-            }
-        }
-
         append(1, buffer);
         emit dlgTodialogsenddata(buffer,"COM串口");
         receiveCount = receiveCount + data.size();
         ui->btnReceiveCount->setText(QString("接收 : %1 字节").arg(receiveCount));
+
+        //启用调试则模拟调试数据
+        if (ui->ckDebug->isChecked()) {
+            if(cachetimer>1)
+            {
+                cachebuffer.clear();
+                cachetimer = 0;
+            }
+            if(cachetimer == 1)
+            {
+                cachebuffer.append(" ");
+            }
+            cachebuffer.append(buffer);
+            cachetimer++;
+            int count = App::Keys.count();
+            for (int i = 0; i < count; i++) {
+                if (cachebuffer.startsWith(App::Keys.at(i))) {
+                    sendData(App::Values.at(i));
+                    cachebuffer.clear();
+                    cachetimer = 0;
+                    break;
+                }
+            }
+        }
 
         //启用网络转发则调用网络发送数据
         if (tcpOk) {

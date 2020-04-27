@@ -58,7 +58,6 @@ void frmAnalysis::on_AnalysisBtn_clicked()
     }
     QByteArray buffer;
     buffer = QUIHelper::hexStrToByteArray(data);
-    int length;
     int err;
     QString text;
     /************************************************************/
