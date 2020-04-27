@@ -1,4 +1,4 @@
-#include "protocol101apdu.h"
+﻿#include "protocol101apdu.h"
 
 
 protocol101::protocol101apdu::protocol101apdu()
@@ -17,14 +17,10 @@ protocol101::protocol101apdu::protocol101apdu()
 
 protocol101::protocol101apdu::~protocol101apdu()
 {
-    if(m_asdu->groupdata)
-    {
-        delete [] m_asdu->groupdata;
-        m_asdu->groupdata = NULL;
-    }
     if(m_apdu)
     {
         delete m_apdu;
+        m_apdu = NULL;
     }
 }
 

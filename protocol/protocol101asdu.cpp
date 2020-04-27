@@ -1,4 +1,4 @@
-#include "protocol101asdu.h"
+﻿#include "protocol101asdu.h"
 
 protocol101::protocol101asdu::protocol101asdu()
 {
@@ -121,11 +121,17 @@ QString protocol101::protocol101asdu::dealASDU()
         case 31:
             text.append(dealASDU31Data(index));
             break;
+        case 32:
+            text.append(dealASDU32Data(index));
+            break;
         case 45:
             text.append(dealASDU45Data(index));
             break;
         case 46:
             text.append(dealASDU46Data(index));
+            break;
+        case 50:
+            text.append(dealASDU50Data(index));
             break;
         case 70:
             text.append(dealASDU70Data(index));
@@ -259,6 +265,8 @@ QString protocol101::protocol101asdu::dealTYPE()
         break;
     case 32:
         text.append("带CP56Time2a时标的步位置信息");
+        datalen = 2;
+        timelen = 7;
         break;
     case 33:
         text.append("带CP56Time2a时标的32比特串");
@@ -309,6 +317,8 @@ QString protocol101::protocol101asdu::dealTYPE()
         break;
     case 50:
         text.append("设定值命令, 短浮点数");
+        datalen = 4;
+        other = 1;
         break;
     case 51:
         text.append("32比特串");
@@ -955,6 +965,34 @@ QString protocol101::protocol101asdu::dealCY()
     return text;
 }
 
+QString protocol101::protocol101asdu::dealVTI()
+{
+    uchar datauchar = vti<<1;
+    int dataint = charToint(&datauchar,1) / 2;
+    QString text = "步位置(bit1-7):"  + QString::number(dataint) ;
+
+    text.append("   瞬变状态BS1(bit8):");
+    if(vti&0x80)
+    {
+        text.append("1 设备处理瞬变状态");
+    }
+    else
+    {
+        text.append("0 设备未在瞬变状态");
+    }
+    text.append("\r\n");
+    return text;
+}
+
+QString protocol101::protocol101asdu::dealQOS()
+{
+    QString text = "设定命令限定词QOS";
+    ql = qos&0x7f;
+    se = qos&0x80;
+    text.append("  QL(bit1-7):" + QString::number(ql)+"   "+ dealSE() );
+    return text;
+}
+
 QString protocol101::protocol101asdu::dealBL()
 {
     QString text = "BL(bit5):";
@@ -1185,6 +1223,30 @@ QString protocol101::protocol101asdu::dealASDU31Data(int index)
     return text;
 }
 
+QString protocol101::protocol101asdu::dealASDU32Data(int index)
+{
+    QString text;
+    QString tmp;
+
+    uint dataaddr = charTouint(m_asdu->groupdata[index].addr,dataaddrlen);
+    text.append("\t对应点号是:"+QString::number(dataaddr-0x6601)+"\r\n");
+
+    tmp =CharToHexStr(m_asdu->groupdata[index].data[0]);
+    vti = m_asdu->groupdata[index].data[0];
+    text.append(tmp + "\t" + dealVTI() );
+
+    tmp =CharToHexStr(m_asdu->groupdata[index].data[1]);
+    iv = m_asdu->groupdata[index].data[1] & 0x80;
+    nt = m_asdu->groupdata[index].data[1] & 0x40;
+    sb = m_asdu->groupdata[index].data[1] & 0x20;
+    bl = m_asdu->groupdata[index].data[1] & 0x10;
+    ov = m_asdu->groupdata[index].data[1] & 0x01;
+    text.append(tmp + "\t品质位:" + dealIV() + dealNT()+ dealSB()+ dealBL()+dealOV() + "\r\n");
+
+    text.append(dealDateTime(index));
+    return text;
+}
+
 QString protocol101::protocol101asdu::dealASDU45Data(int index)
 {
     QString text;
@@ -1215,6 +1277,24 @@ QString protocol101::protocol101asdu::dealASDU46Data(int index)
     se = m_asdu->groupdata[index].data[0]&0x80;
 
     text.append(tmp +  "\t" + dealDCS()+ dealQU()+ dealSE()+"\r\n" );
+
+    return text;
+}
+
+QString protocol101::protocol101asdu::dealASDU50Data(int index)
+{
+    QString text;
+    QString tmp;
+
+    uint dataaddr = charTouint(m_asdu->groupdata[index].addr,dataaddrlen);
+    text.append("\t对应点号是:"+QString::number(dataaddr-0x6201)+"\r\n");
+
+    tmp =   CharToHexStr(m_asdu->groupdata[index].data[0])+ " " +
+            CharToHexStr(m_asdu->groupdata[index].data[1])+ " " +
+            CharToHexStr(m_asdu->groupdata[index].data[2])+ " " +
+            CharToHexStr(m_asdu->groupdata[index].data[3]);
+    float data = charTofloat(m_asdu->groupdata[index].data);
+    text.append(tmp + "\t浮点数:"+QString::number(data) + "\r\n");
 
     return text;
 }
@@ -1343,13 +1423,17 @@ QString protocol101::protocol101asdu::dealOTHER()
     uint datauint;
     switch (m_asdu->type)
     {
+    case 50:
+        tmp =CharToHexStr(m_asdu->other[0]);
+        qos = m_asdu->other[0];
+        text.append(tmp +  "\t"+ dealQOS()+"\r\n" );
+        break;
     case 137:
         tmp =CharToHexStr(m_asdu->other[0]);
-        ql = m_asdu->other[0]&0x7f;
-        se = m_asdu->other[0]&0x80;
-        text.append(tmp +  "\t设定命令限定词QOS  QL(bit1-7):" + QString::number(ql)+"   "+ dealSE()+"\r\n" );
-        datetime = charToDateTime(&m_asdu->other[1],7,BINARYTIME2A);
+        qos = m_asdu->other[0];
+        text.append(tmp +  "\t"+ dealQOS()+"\r\n" );
 
+        datetime = charToDateTime(&m_asdu->other[1],7,BINARYTIME2A);
         tmp =CharToHexStr(m_asdu->other[1]) +" "+ CharToHexStr(m_asdu->other[2]);
         datauint = charTouint(&m_asdu->other[1],2);
         text.append(tmp + "\t" +QString::number(datauint) +"   秒:" + QString::number(datetime.time().second()) +"   毫秒:" + QString::number(datetime.time().msec()) + " \r\n");

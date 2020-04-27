@@ -1,4 +1,4 @@
-#include "protocol104apdu.h"
+﻿#include "protocol104apdu.h"
 #include "frmanalysis.h"
 #include <QString>
 
@@ -22,6 +22,7 @@ protocol101::protocol104apdu::~protocol104apdu()
     if(m_apdu)
     {
         delete m_apdu;
+        m_apdu = NULL;
     }
 }
 

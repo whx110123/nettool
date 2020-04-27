@@ -1,4 +1,4 @@
-#include "protocol103asdu.h"
+﻿#include "protocol103asdu.h"
 protocol103::protocol103asdu::protocol103asdu()
 {
     gpdata = NULL;
@@ -946,7 +946,6 @@ QString protocol103::protocol103asdu::dealASDU6Data()
     QString text;
     QString tmp;
     int i = 0;
-    uint datauint;
 
     tmp =CharToHexStr(m_asdu->data[i]);
     fun = m_asdu->data[i++];
@@ -975,7 +974,6 @@ QString protocol103::protocol103asdu::dealASDU7Data()
     QString text;
     QString tmp;
     int i = 0;
-    uint datauint;
 
     tmp =CharToHexStr(m_asdu->data[i]);
     fun = m_asdu->data[i++];

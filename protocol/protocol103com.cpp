@@ -1,4 +1,4 @@
-#include "protocol103com.h"
+﻿#include "protocol103com.h"
 
 protocol103::protocol103com::protocol103com()
 {
@@ -8,7 +8,11 @@ protocol103::protocol103com::protocol103com()
 
 protocol103::protocol103com::~protocol103com()
 {
-    delete m_apdu;
+    if(m_apdu)
+    {
+        delete m_apdu;
+        m_apdu = NULL;
+    }
 }
 
 QString protocol103::protocol103com::dealAPDU()

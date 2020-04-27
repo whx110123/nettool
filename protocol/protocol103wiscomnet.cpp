@@ -1,4 +1,4 @@
-#include "protocol103wiscomnet.h"
+﻿#include "protocol103wiscomnet.h"
 
 protocol103::protocol103wiscomnet::protocol103wiscomnet()
 {
@@ -9,7 +9,11 @@ protocol103::protocol103wiscomnet::protocol103wiscomnet()
 
 protocol103::protocol103wiscomnet::~protocol103wiscomnet()
 {
-    delete m_apdu;
+    if(m_apdu)
+    {
+        delete m_apdu;
+        m_apdu = NULL;
+    }
 }
 
 QString protocol103::protocol103wiscomnet::dealAPDU()

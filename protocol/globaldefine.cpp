@@ -1,4 +1,4 @@
-#include "globaldefine.h"
+﻿#include "globaldefine.h"
 
 
 
@@ -60,7 +60,7 @@ short charToshortwithQ(uchar *data,uchar &ov,uchar &er,int model)
 
 float charTofloat(uchar *data,int model)
 {
-    float tmp;
+    float tmp = 0;
     if(model == 0)
     {
         uint aaa = (uint)data[0] + (uint)data[1] * 0x100 +(uint)data[2] * 0x10000 +(uint)data[3] * 0x1000000;

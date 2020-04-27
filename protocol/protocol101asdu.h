@@ -1,4 +1,4 @@
-#ifndef PROTOCOL101ASDU_H
+﻿#ifndef PROTOCOL101ASDU_H
 #define PROTOCOL101ASDU_H
 
 #include "globaldefine.h"
@@ -57,6 +57,8 @@ public:
     QString dealSE();
     QString dealCA();
     QString dealCY();
+    QString dealVTI();
+    QString dealQOS();
 
     QString dealASDU();         //解析ASDU，返回详细说明
     QString dealASDU1Data(int index);        //解析单个ASDU1信息元素数据
@@ -67,8 +69,10 @@ public:
     QString dealASDU21Data(int index);
     QString dealASDU30Data(int index);
     QString dealASDU31Data(int index);
+    QString dealASDU32Data(int index);
     QString dealASDU45Data(int index);
     QString dealASDU46Data(int index);
+    QString dealASDU50Data(int index);
     QString dealASDU70Data(int index);
     QString dealASDU100Data(int index);
     QString dealASDU101Data(int index);
@@ -108,6 +112,8 @@ public:
     uchar ca;
     uchar rqt;
     uchar frz;
+    uchar vti;
+    uchar qos;
 
     int cotlen;                 //传送原因字节数
     int comaddrlen;             //公共地址字节数
