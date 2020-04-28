@@ -1421,6 +1421,7 @@ QString protocol101::protocol101asdu::dealOTHER()
     QString tmp;
     QDateTime datetime;
     uint datauint;
+    uchar datauchar;
     switch (m_asdu->type)
     {
     case 50:
@@ -1447,7 +1448,8 @@ QString protocol101::protocol101asdu::dealOTHER()
         text.append(tmp + "\t时(bit1-5):" + QString::number(datetime.time().hour()) + "   "+dealSU()+"\r\n");
 
         tmp =CharToHexStr(m_asdu->other[5]);
-        text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datetime.date().dayOfWeek())+ " (7表示星期天)\r\n");
+        datauchar = m_asdu->other[5]>>5;
+        text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datauchar)+ " (7表示星期天,0表示未用)\r\n");
 
         tmp =CharToHexStr(m_asdu->other[6]);
         text.append(tmp + "\t月(bit1-4):" + QString::number(datetime.date().month()) + "\r\n");
@@ -1468,6 +1470,7 @@ QString protocol101::protocol101asdu::dealDateTime(int index)
 {
     QString text;
     QString tmp;
+    uchar datauchar;
     QDateTime datetime = charToDateTime(m_asdu->groupdata[index].time,timelen,BINARYTIME2A);
 
     tmp =CharToHexStr(m_asdu->groupdata[index].time[0]) +" "+ CharToHexStr(m_asdu->groupdata[index].time[1]);
@@ -1495,7 +1498,9 @@ QString protocol101::protocol101asdu::dealDateTime(int index)
     }
 
     tmp =CharToHexStr(m_asdu->groupdata[index].time[4]);
-    text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datetime.date().dayOfWeek())+ " (7表示星期天)\r\n");
+    datauchar = m_asdu->groupdata[index].time[4]>>5;
+    text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datauchar)+ " (7表示星期天,0表示未用)\r\n");
+//    text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datetime.date().dayOfWeek())+ " (7表示星期天)\r\n");
     if(timelen ==5)
     {
         return text;

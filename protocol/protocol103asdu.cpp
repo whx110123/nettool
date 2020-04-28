@@ -1226,6 +1226,7 @@ QString protocol103::protocol103asdu::dealDateTime(uchar *time,int timelen)
 {
     QString text;
     QString tmp;
+    uchar datauchar;
     QDateTime datetime = charToDateTime(time,timelen,BINARYTIME2A);
 
     tmp =CharToHexStr(time[0]) +" "+ CharToHexStr(time[1]);
@@ -1253,7 +1254,9 @@ QString protocol103::protocol103asdu::dealDateTime(uchar *time,int timelen)
     }
 
     tmp =CharToHexStr(time[4]);
-    text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datetime.date().dayOfWeek())+ " (7表示星期天)\r\n");
+    datauchar = time[4]>>5;
+    text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datauchar)+ " (7表示星期天,0表示未用)\r\n");
+//    text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datetime.date().dayOfWeek())+ " (7表示星期天)\r\n");
     if(timelen ==5)
     {
         return text;

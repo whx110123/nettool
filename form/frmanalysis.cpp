@@ -10,14 +10,16 @@ frmAnalysis::frmAnalysis(QWidget *parent) :
     ui(new Ui::frmAnalysis)
 {
     ui->setupUi(this);
-    highlighter = new myhighlighter(ui->resulttext->document());
+    highlighter1 = new myhighlighter(ui->resulttext->document());
+    highlighter2 = new myhighlighter(ui->originaltext->document());
     initForm();
     initConfig();
 }
 
 frmAnalysis::~frmAnalysis()
 {
-    delete highlighter;
+    delete highlighter1;
+    delete highlighter2;
     delete ui;
 }
 
@@ -44,6 +46,10 @@ void frmAnalysis::initConfig()
     ui->comboBox_4->setCurrentText("1");
     ui->comboBox_5->setCurrentText("1");
     ui->comboBox_6->setCurrentText("2");
+    highlighter1->hlformat.setForeground(Qt::magenta);
+    highlighter1->hlformat.setFontWeight(QFont::Bold);
+    highlighter2->hlformat.setForeground(Qt::magenta);
+    highlighter2->hlformat.setFontWeight(QFont::Bold);
     //    connect(ui->protocolcbox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 }
 
@@ -164,5 +170,54 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString &arg1)
     else if(arg1 == IEC103COM)
     {
         ui->configWidgets->setCurrentWidget(ui->page_4);
+    }
+}
+
+void frmAnalysis::on_highlightEdit_textChanged(const QString &arg1)
+{
+    highlighter1->hlstr = arg1;
+    highlighter2->hlstr = arg1;
+    ui->resulttext->setText(ui->resulttext->toPlainText());
+    ui->originaltext->setText(ui->originaltext->toPlainText());
+}
+
+
+void frmAnalysis::on_fontcolor_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::magenta,this,tr("颜色对话框"));
+    if(color.isValid())
+    {
+        highlighter1->hlformat.setForeground(color);
+//      highlighter1->hlformat.setFontWeight(QFont::Bold);
+        highlighter2->hlformat.setForeground(color);
+//      highlighter2->hlformat.setFontWeight(QFont::Bold);
+        ui->resulttext->setText(ui->resulttext->toPlainText());
+        ui->originaltext->setText(ui->originaltext->toPlainText());
+    }
+}
+
+void frmAnalysis::on_backgroundcolor_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::white,this,tr("颜色对话框"));
+    if(color.isValid())
+    {
+        highlighter1->hlformat.setBackground(color);
+        highlighter2->hlformat.setBackground(color);
+        ui->resulttext->setText(ui->resulttext->toPlainText());
+        ui->originaltext->setText(ui->originaltext->toPlainText());
+    }
+}
+
+
+void frmAnalysis::on_fontchange_clicked()
+{
+    bool ok;
+    QFont font = QFontDialog::getFont(&ok,this);
+    if(ok)
+    {
+        highlighter1->hlformat.setFont(font);
+        highlighter2->hlformat.setFont(font);
+        ui->resulttext->setText(ui->resulttext->toPlainText());
+        ui->originaltext->setText(ui->originaltext->toPlainText());
     }
 }

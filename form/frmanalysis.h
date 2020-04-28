@@ -32,10 +32,19 @@ private slots:
 
     void on_protocolcbox_currentIndexChanged(const QString &arg1);
 
+    void on_highlightEdit_textChanged(const QString &arg1);
+
+    void on_fontcolor_clicked();
+
+    void on_backgroundcolor_clicked();
+
+    void on_fontchange_clicked();
+
 private:
 
     Ui::frmAnalysis *ui;
-    myhighlighter *highlighter;
+    myhighlighter *highlighter1;
+    myhighlighter *highlighter2;
 private:
     protocol101::protocol101apdu *m_101;
     protocol101::protocol104apdu *m_104;

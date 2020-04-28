@@ -15,6 +15,7 @@ void myhighlighter::highlightBlock(const QString &text)
     myformat2.setFontWeight(QFont::Bold);
     myformat2.setForeground(Qt::blue);
     myformat2.setFontPointSize(14);
+
     QStringList patlis1;
     patlis1  <<"OV(bit1):1 溢出"
            <<"BL(bit5):1 被闭锁"
@@ -36,7 +37,6 @@ void myhighlighter::highlightBlock(const QString &text)
         patlis2  <<QString("####第%1帧####").arg(i);
     }
 
-
     for (int i = 0;i <patlis1.size();i++)
     {
         QString pattern = patlis1.at(i);
@@ -46,7 +46,6 @@ void myhighlighter::highlightBlock(const QString &text)
         {
             setFormat(index,length,myformat1);
             index = text.indexOf(pattern,index+length);
-
         }
     }
     for (int i = 0;i <patlis2.size();i++)
@@ -58,7 +57,17 @@ void myhighlighter::highlightBlock(const QString &text)
         {
             setFormat(index,length,myformat2);
             index = text.indexOf(pattern,index+length);
+        }
+    }
 
+    int length = hlstr.length();
+    if(length>0)
+    {
+        int index = text.indexOf(hlstr);
+        while (index >=0)
+        {
+            setFormat(index,length,hlformat);
+            index = text.indexOf(hlstr,index+length);
         }
     }
 }

@@ -8,6 +8,8 @@ class myhighlighter : public QSyntaxHighlighter
 public:
     explicit myhighlighter(QTextDocument *parent = 0);
 public:
+    QString hlstr;
+    QTextCharFormat hlformat;
     void highlightBlock(const QString &text);
 };
 

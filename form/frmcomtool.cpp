@@ -34,7 +34,7 @@ void frmComTool::initForm()
 {
     comOk = false;
     com = 0;
-    sleepTime = 20;
+    sleepTime = 10;
     receiveCount = 0;
     sendCount = 0;
     isShow = true;
@@ -351,7 +351,7 @@ void frmComTool::readData()
             cachetimer++;
             int count = App::Keys.count();
             for (int i = 0; i < count; i++) {
-                if (cachebuffer.startsWith(App::Keys.at(i))) {
+                if (cachebuffer.contains(App::Keys.at(i))) {
                     sendData(App::Values.at(i));
                     cachebuffer.clear();
                     cachetimer = 0;
