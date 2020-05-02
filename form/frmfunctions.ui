@@ -48,7 +48,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="pbfunc2">
       <property name="minimumSize">
        <size>
         <width>150</width>
@@ -62,7 +62,7 @@
        </size>
       </property>
       <property name="text">
-       <string>预留</string>
+       <string>报文处理</string>
       </property>
      </widget>
     </item>
@@ -88,7 +88,8 @@
        </size>
       </property>
       <property name="text">
-       <string>介绍</string>
+       <string>1.报文校验
+2.浮点数转换</string>
       </property>
      </widget>
     </item>

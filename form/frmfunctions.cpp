@@ -8,6 +8,7 @@ frmFunctions::frmFunctions(QWidget *parent) :
 {
     ui->setupUi(this);
     m_dialogsenddata = new DialogSendData(this);
+    m_dialogdealdata = new DialogDealData(this);
     initfrom();
 }
 
@@ -29,4 +30,9 @@ void frmFunctions::initfrom()
 //    str.append("2.发报文可设置不同延时，可以收到一帧报文后再发送下一帧报文\r\n");
 //    str.append("3.对TCP、UDP、串口等通道均可使用\r\n");
 //    ui->lab_intro1->setText(str);
+}
+
+void frmFunctions::on_pbfunc2_clicked()
+{
+    m_dialogdealdata->show();
 }

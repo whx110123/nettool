@@ -294,6 +294,8 @@ QStringList App::Keys = QStringList();
 QStringList App::Values = QStringList();
 QStringList App::Protocollst = QStringList();
 QStringList App::Transferlst = QStringList();
+QStringList App::CRClst = QStringList();
+QStringList App::Transfermode = QStringList();
 void App::readSendData()
 {
     //读取发送数据列表

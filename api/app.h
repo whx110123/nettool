@@ -94,6 +94,8 @@ public:
     static QStringList Values;
     static QStringList Protocollst;     //规约表
     static QStringList Transferlst;     //通信方式表
+    static QStringList CRClst;          //校验方式
+    static QStringList Transfermode;    //数字与16进制转换方式
     static void readSendData();
     static void readDeviceData();
 };

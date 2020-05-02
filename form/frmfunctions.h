@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "dialogsenddata.h"
+#include "dialogdealdata.h"
 
 namespace Ui {
 class frmFunctions;
@@ -20,10 +21,13 @@ private slots:
     void on_pushButton_clicked();
     void initfrom();
 
+    void on_pbfunc2_clicked();
+
 private:
     Ui::frmFunctions *ui;
 public:
     DialogSendData *m_dialogsenddata;
+    DialogDealData *m_dialogdealdata;
 
 };
 
