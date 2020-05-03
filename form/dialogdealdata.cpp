@@ -1,4 +1,4 @@
-#include "dialogdealdata.h"
+﻿#include "dialogdealdata.h"
 #include "ui_dialogdealdata.h"
 #include "quiwidget.h"
 #include "globaldefine.h"
@@ -101,6 +101,7 @@ void DialogDealData::on_pbtransform_clicked()
 	QString dataout;
 	float datafloat = 0;
 	uint datauint = 0;
+	int dataint = 0;
 	uchar uchararray[4] = {0};
 	if(ui->cbtransform->currentText().contains("浮点数转四字节"))
 	{
@@ -141,15 +142,54 @@ void DialogDealData::on_pbtransform_clicked()
 	}
 	else if(ui->cbtransform->currentText().contains("整数转四字节"))
 	{
+		dataint = data.toInt();
+		if(ui->checkreverse->isChecked())
+		{
+			for (int i = 0;i<4;i++)
+			{
+				uchararray[i] = (dataint >> 8*i) & 0xff;
+			}
+		}
+		else
+		{
+			for (int i = 0;i<4;i++)
+			{
+				uchararray[i] = (dataint >> 8*(3-i)) & 0xff;
+			}
+		}
+		for (int i = 0;i <4;i++)
+		{
+			dataout.append(" " + CharToHexStr(uchararray[i]));
+		}
 
 	}
 	else if(ui->cbtransform->currentText().contains("带符号四字节转整数"))
 	{
-
+		QByteArray ba = QUIHelper::hexStrToByteArray(data);
+		if(ba.length() == 4)
+		{
+			int model = 1;
+			if(ui->checkreverse->isChecked())
+			{
+				model = 0;
+			}
+			dataint = charToint((uchar *)ba.data(),4,model);
+			dataout = QString::number(dataint);
+		}
 	}
 	else if(ui->cbtransform->currentText().contains("无符号四字节转整数"))
 	{
-
+		QByteArray ba = QUIHelper::hexStrToByteArray(data);
+		if(ba.length() == 4)
+		{
+			int model = 1;
+			if(ui->checkreverse->isChecked())
+			{
+				model = 0;
+			}
+			datauint = charTouint((uchar *)ba.data(),4,model);
+			dataout = QString::number(datauint);
+		}
 	}
 	ui->linedestination->setText(dataout.trimmed());
 
