@@ -22,14 +22,14 @@ int main(int argc, char *argv[])
     App::Protocollst << IEC104 << IEC101 << IEC103WISCOMNET << IEC103COM;
     App::Transferlst << "TCP客户端" << "TCP服务器" << "UDP客户端" << "UDP服务器" << "COM串口";
 	App::CRClst << "CRC 16 低位在前" << "CRC 16 高位在前" << "总加和" << "加总异或" ;
-    App::Transfermode << "浮点数转四字节" << "四字节转浮点数" << "整数转四字节" << "带符号四字节转整数" << "无符号四字节转整数";
+	App::Transfermode << "浮点数转四字节" << "四字节转浮点数" << "带符号整数转四字节" << "四字节转带符号整数" << "四字节转无符号整数";
     App::ConfigFile = QString("%1/%2.ini").arg(QUIHelper::appPath()).arg(QUIHelper::appName());
     App::readConfig();
     App::readSendData();
     App::readDeviceData();
 
     frmMain w;
-    w.setWindowTitle(QString("网络串口调试助手V1.05   ") + QString("本机IP: %1 ").arg(QUIHelper::getLocalIP()) + QString("          作者：王洪星"));
+	w.setWindowTitle(QString("网络串口调试助手V1.06   ") + QString("本机IP: %1 ").arg(QUIHelper::getLocalIP()) + QString("          作者：王洪星"));
     w.show();
 
     return a.exec();

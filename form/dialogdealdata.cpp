@@ -140,7 +140,7 @@ void DialogDealData::on_pbtransform_clicked()
 			dataout = QString::number(datafloat);
 		}
 	}
-	else if(ui->cbtransform->currentText().contains("整数转四字节"))
+	else if(ui->cbtransform->currentText().contains("带符号整数转四字节"))
 	{
 		dataint = data.toInt();
 		if(ui->checkreverse->isChecked())
@@ -163,7 +163,7 @@ void DialogDealData::on_pbtransform_clicked()
 		}
 
 	}
-	else if(ui->cbtransform->currentText().contains("带符号四字节转整数"))
+	else if(ui->cbtransform->currentText().contains("四字节转带符号整数"))
 	{
 		QByteArray ba = QUIHelper::hexStrToByteArray(data);
 		if(ba.length() == 4)
@@ -177,7 +177,7 @@ void DialogDealData::on_pbtransform_clicked()
 			dataout = QString::number(dataint);
 		}
 	}
-	else if(ui->cbtransform->currentText().contains("无符号四字节转整数"))
+	else if(ui->cbtransform->currentText().contains("四字节转无符号整数"))
 	{
 		QByteArray ba = QUIHelper::hexStrToByteArray(data);
 		if(ba.length() == 4)
@@ -193,4 +193,100 @@ void DialogDealData::on_pbtransform_clicked()
 	}
 	ui->linedestination->setText(dataout.trimmed());
 
+}
+
+void DialogDealData::on_Bt1_clicked()
+{
+	QString text = ui->Le1->text();
+	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
+	QString tmpgbk;
+	QString tmputf8;
+	QString tmpunicode;
+	QByteArray hex_data;
+	foreach(QChar byte, text)
+	{
+		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
+		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
+		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
+	}
+	ui->Le2->setText(tmpgbk.trimmed().toUpper());
+	ui->Le3->setText(tmputf8.trimmed().toUpper());
+	ui->Le4->setText(tmpunicode.trimmed().toUpper());
+}
+
+void DialogDealData::on_Bt2_clicked()
+{
+	QString tmp;
+	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
+	QString tmpgbk;
+	QString tmputf8;
+	QString tmpunicode;
+	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le2->text());
+	tmp = gbk->toUnicode(ba);
+	foreach(QChar byte, tmp)
+	{
+		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
+		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
+	}
+
+	ui->Le1->setText(tmp);
+	ui->Le3->setText(tmputf8.trimmed().toUpper());
+	ui->Le4->setText(tmpunicode.trimmed().toUpper());
+}
+
+void DialogDealData::on_Bt3_clicked()
+{
+	QString tmp;
+	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
+	QString tmpgbk;
+	QString tmputf8;
+	QString tmpunicode;
+	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le3->text());
+	tmp = utf8->toUnicode(ba);
+	foreach(QChar byte, tmp)
+	{
+		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
+		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
+	}
+
+	ui->Le1->setText(tmp);
+	ui->Le2->setText(tmpgbk.trimmed().toUpper());
+	ui->Le4->setText(tmpunicode.trimmed().toUpper());
+}
+
+void DialogDealData::on_Bt4_clicked()
+{
+	QString tmp;
+	QStringList strlst = ui->Le4->text().split(" ");
+	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
+	QString tmpgbk;
+	QString tmputf8;
+	foreach (QString str, strlst)
+	{
+		QChar byte(str.toUInt(0,16));
+		tmp.append(byte);
+		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
+		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
+	}
+
+	ui->Le1->setText(tmp);
+	ui->Le2->setText(tmpgbk.trimmed().toUpper());
+	ui->Le3->setText(tmputf8.trimmed().toUpper());
+}
+
+
+void DialogDealData::on_Bt_clear_clicked()
+{
+	ui->Le1->clear();
+	ui->Le2->clear();
+	ui->Le3->clear();
+	ui->Le4->clear();
+	ui->textsource->clear();
+	ui->textdestination->clear();
+	ui->linesource->clear();
+	ui->linedestination->clear();
 }
