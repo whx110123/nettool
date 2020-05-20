@@ -197,7 +197,7 @@ void DialogDealData::on_pbtransform_clicked()
 
 void DialogDealData::on_Bt1_clicked()
 {
-	QString text = ui->Le1->text();
+	QString text = ui->Le1->toPlainText();
 	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
 	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
 	QString tmpgbk;
@@ -231,7 +231,7 @@ void DialogDealData::on_Bt2_clicked()
 		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
 	}
 
-	ui->Le1->setText(tmp);
+	ui->Le1->setPlainText(tmp);
 	ui->Le3->setText(tmputf8.trimmed().toUpper());
 	ui->Le4->setText(tmpunicode.trimmed().toUpper());
 }
@@ -252,7 +252,7 @@ void DialogDealData::on_Bt3_clicked()
 		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
 	}
 
-	ui->Le1->setText(tmp);
+	ui->Le1->setPlainText(tmp);
 	ui->Le2->setText(tmpgbk.trimmed().toUpper());
 	ui->Le4->setText(tmpunicode.trimmed().toUpper());
 }
@@ -261,6 +261,7 @@ void DialogDealData::on_Bt4_clicked()
 {
 	QString tmp;
 	QStringList strlst = ui->Le4->text().split(" ");
+	strlst.removeAll("");
 	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
 	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
 	QString tmpgbk;
@@ -273,7 +274,7 @@ void DialogDealData::on_Bt4_clicked()
 		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
 	}
 
-	ui->Le1->setText(tmp);
+	ui->Le1->setPlainText(tmp);
 	ui->Le2->setText(tmpgbk.trimmed().toUpper());
 	ui->Le3->setText(tmputf8.trimmed().toUpper());
 }

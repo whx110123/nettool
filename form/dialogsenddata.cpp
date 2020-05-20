@@ -311,3 +311,41 @@ void DialogSendData::on_pushButton_2_clicked()
     }
     stopTimer();
 }
+
+void DialogSendData::on_btnopenfile_clicked()
+{
+	QString fileDir = QFileDialog::getOpenFileName(this,tr("打开对话框"),"","");
+
+   QFile file(fileDir);
+   if (file.open(QFile::ReadOnly | QIODevice::Text))
+   {
+	   ui->linefiledir->setText(fileDir);
+	   file.close();
+   }
+}
+
+void DialogSendData::on_btnsendfile_clicked()
+{
+	QFile file(ui->linefiledir->text());
+	if (file.open(QFile::ReadOnly | QIODevice::Text))
+	{
+		while (!file.atEnd())
+		{
+			QString str = file.readAll().toHex();
+			emitsignals(str);
+		}
+		file.close();
+	}
+//以下代码为测试读取不同编码方式的文件报文
+	QFile data(ui->linefiledir->text());
+	if (data.open(QFile::ReadOnly | QIODevice::Text))
+	{
+		QTextStream in(&data);
+		in.setCodec("GB18030");
+		while (!in.atEnd())
+		{
+			QString line = in.readLine();
+			qDebug() << line;
+		}
+	}
+}

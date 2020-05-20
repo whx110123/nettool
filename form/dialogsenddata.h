@@ -63,6 +63,10 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+	void on_btnopenfile_clicked();
+
+	void on_btnsendfile_clicked();
+
 private:
     Ui::DialogSendData *ui;
 };

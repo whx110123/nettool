@@ -23,7 +23,7 @@ SOURCES             += main.cpp
 HEADERS             += head.h
 RESOURCES           += other/main.qrc
 CONFIG              += warn_off
-
+CONFIG				+= C++11
 include             ($$PWD/api/api.pri)
 include             ($$PWD/form/form.pri)
 include             ($$PWD/protocol/protocol.pri)

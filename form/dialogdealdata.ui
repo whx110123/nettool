@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>552</width>
-    <height>603</height>
+    <height>677</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -193,9 +193,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="Le1"/>
-         </item>
          <item row="1" column="2">
           <widget class="QPushButton" name="Bt2">
            <property name="minimumSize">
@@ -300,6 +297,16 @@
           <widget class="QLabel" name="label_6">
            <property name="text">
             <string>注意：可多组数据同时转换，Unicode每组数据之间必须有空格，其他编码无强制要求</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPlainTextEdit" name="Le1">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>120</height>
+            </size>
            </property>
           </widget>
          </item>
