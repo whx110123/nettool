@@ -21,7 +21,7 @@ win32:RC_FILE       = other/main.rc
 
 SOURCES             += main.cpp
 HEADERS             += head.h
-RESOURCES           += other/main.qrc
+
 CONFIG              += warn_off
 CONFIG				+= C++11
 include             ($$PWD/api/api.pri)
@@ -34,4 +34,7 @@ INCLUDEPATH         += $$PWD/api
 INCLUDEPATH         += $$PWD/form
 INCLUDEPATH         += $$PWD/protocol
 INCLUDEPATH         += $$PWD/qextserialport
+
+RESOURCES += \
+	other/main.qrc
 

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "dialogsenddata.h"
 #include "dialogdealdata.h"
+#include "dialogintroduction.h"
 
 namespace Ui {
 class frmFunctions;
@@ -18,16 +19,19 @@ public:
     ~frmFunctions();
 
 private slots:
-    void on_pushButton_clicked();
+	void on_pbfunc1_clicked();
     void initfrom();
 
     void on_pbfunc2_clicked();
+
+	void on_pbintro_clicked();
 
 private:
     Ui::frmFunctions *ui;
 public:
     DialogSendData *m_dialogsenddata;
     DialogDealData *m_dialogdealdata;
+	DialogIntroduction *m_dialogintroduction;
 
 };
 

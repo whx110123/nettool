@@ -9,6 +9,7 @@ frmFunctions::frmFunctions(QWidget *parent) :
     ui->setupUi(this);
     m_dialogsenddata = new DialogSendData(this);
     m_dialogdealdata = new DialogDealData(this);
+	m_dialogintroduction = new DialogIntroduction(this);
     initfrom();
 }
 
@@ -17,7 +18,7 @@ frmFunctions::~frmFunctions()
     delete ui;
 }
 
-void frmFunctions::on_pushButton_clicked()
+void frmFunctions::on_pbfunc1_clicked()
 {
 
     m_dialogsenddata->show();
@@ -35,4 +36,9 @@ void frmFunctions::initfrom()
 void frmFunctions::on_pbfunc2_clicked()
 {
     m_dialogdealdata->show();
+}
+
+void frmFunctions::on_pbintro_clicked()
+{
+	m_dialogintroduction->exec();
 }

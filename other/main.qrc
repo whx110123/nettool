@@ -1,7 +1,14 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/res">
         <file>main.ico</file>
+        <file>main.rc</file>
         <file>qt_zh_CN.qm</file>
         <file>widgets.qm</file>
+        <file>exit.png</file>
+        <file>kvirc.png</file>
+        <file>logout.png</file>
+        <file>quick_restart.png</file>
+        <file>restart.png</file>
+        <file>switchuser.png</file>
     </qresource>
 </RCC>
