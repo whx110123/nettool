@@ -92,6 +92,7 @@ public:
     static QStringList Datas;
     static QStringList Keys;
     static QStringList Values;
+	static QMap<QString,QStringList> m_map;
     static QStringList Protocollst;     //规约表
     static QStringList Transferlst;     //通信方式表
     static QStringList CRClst;          //校验方式

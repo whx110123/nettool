@@ -1,8 +1,9 @@
-#ifndef GLOBALDEFINE_H
+﻿#ifndef GLOBALDEFINE_H
 #define GLOBALDEFINE_H
 
 #include <QString>
 #include <QDateTime>
+
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int  uint;

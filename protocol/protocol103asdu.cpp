@@ -1,4 +1,6 @@
 ﻿#include "protocol103asdu.h"
+#include <QByteArray>
+#include <QTextCodec>
 protocol103::protocol103asdu::protocol103asdu()
 {
 	gpdata = NULL;
@@ -445,6 +447,7 @@ QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata,int
 {
 	QString text ;
 	QString tmp;
+	QString tmpstr;
 	float datafloat;
 	short datashort;
 	uint datauint;
@@ -458,7 +461,17 @@ QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata,int
 		text.append("无数据");
 		break;
 	case 1:
-		text.append("OS8(ASCII8位码)");
+	{
+		for(int k = 0;k<gpdata->gdd[1];k++)
+		{
+			tmp.append(CharToHexStr(*(m_gid+k))+ " ");
+		}
+		QByteArray ba((char *)m_gid,gpdata->gdd[1]);
+		QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+		tmpstr = gbk->toUnicode(ba);
+
+		text.append(tmp + "\tOS8(ASCII8位码):" + tmpstr);
+	}
 		break;
 		//    case 2:
 		//        text.append("成组8位串");

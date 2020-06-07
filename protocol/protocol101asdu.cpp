@@ -1,4 +1,5 @@
 ﻿#include "protocol101asdu.h"
+#include "protocol103asdu.h"
 
 protocol101::protocol101asdu::protocol101asdu()
 {
@@ -56,6 +57,11 @@ QString protocol101::protocol101asdu::dealASDU()
     }
     text.append(tmp + "\t公共地址:" + QString::number(charTouint(m_asdu->commonaddr,comaddrlen)) +"\r\n");
 
+	if(m_asdu->type == 167)
+	{
+		text.append(dealASDU167());
+		return text;
+	}
 //    if(datalen ==0 && timelen ==0)
 //    {
 //        text.append("\r\n\t未完成此ASDU剩余报文的解析\r\n");
@@ -453,9 +459,13 @@ QString protocol101::protocol101asdu::dealTYPE()
         break;
     case 137:
         text.append("计划曲线传送(南网扩展功能)");
-        datalen = 2;
-        other = 8;
-        break;
+		datalen = 2;
+		other = 8;
+		break;
+	case 167:
+		text.append("定值处理(扩展功能)");
+		datalen = 1;
+		break;
     default:
         text.append("未知ASDU类型，无法继续解析");
         datalen = 0;
@@ -1360,7 +1370,48 @@ QString protocol101::protocol101asdu::dealASDU137Data(int index)
 
     int data = charToint(m_asdu->groupdata[index].data,2);
     text.append(tmp + "\t规一化值:"+QString::number(data) + "\r\n");
-    return text;
+	return text;
+}
+
+QString protocol101::protocol101asdu::dealASDU167()
+{
+	QString text;
+	text.append("-----------------------------------------------------------------------------------------------\r\n");
+	QString tmp;
+	uint datauint = 0;
+	int i = 0;
+	tmp =CharToHexStr(m_asdu->data[i]);
+	text.append(tmp + "\t当前帧序号:"+QString::number(m_asdu->data[i])+"\r\n");
+	i++;
+	tmp =CharToHexStr(m_asdu->data[i]) + " " + CharToHexStr(m_asdu->data[i+1]);
+	datauint = m_asdu->data[i] + m_asdu->data[i+1]*256;
+	text.append(tmp + "\t装置地址:"+QString::number(datauint)+"\r\n");
+	i += 2;
+	protocol103::protocol103asdu p103 ;
+	p103.m_asdu = new protocol103::ASDU;
+	p103.m_asdu->length = m_asdu->data[i];
+	tmp =CharToHexStr(m_asdu->data[i]);
+	text.append(tmp + "\t103数据包长度:"+QString::number(m_asdu->data[i])+"\r\n");
+	i++;
+	p103.m_asdu->type = m_asdu->data[i++];
+	p103.m_asdu->vsq = m_asdu->data[i++];
+	p103.m_asdu->cot = m_asdu->data[i++];
+	p103.m_asdu->commonaddr = m_asdu->data[i++];
+
+	for(int j = 0;j<p103.m_asdu->length-4;j++)
+	{
+		p103.m_asdu->data[j] = m_asdu->data[i++];
+	}
+	text.append(p103.dealASDU());
+	if(p103.m_asdu)
+	{
+		delete p103.m_asdu;
+		p103.m_asdu = NULL;
+	}
+	text.append("\r\n\t ASDU"+QString::number(m_asdu->type)+"解析结束\r\n");
+	text.append("-----------------------------------------------------------------------------------------------\r\n");
+	return text;
+
 }
 
 void protocol101::protocol101asdu::charToASDUDate()

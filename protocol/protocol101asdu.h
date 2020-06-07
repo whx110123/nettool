@@ -78,6 +78,7 @@ public:
     QString dealASDU101Data(int index);
     QString dealASDU103Data(int index);
     QString dealASDU137Data(int index);
+	QString dealASDU167();
 
     void charToASDUDate();              //将报文写入到GROUPDATA结构体里面
     QString dealOTHER();
