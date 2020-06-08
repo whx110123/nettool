@@ -162,6 +162,19 @@ void frmUdpClient::readData()
         append(1, str);
         emit dlgTodialogsenddata(str,"UDP客户端");
         if (App::DebugUdpClient) {
+			if(!App::m_map.isEmpty())
+			{
+				QStringList list = App::m_map.value(buffer,QStringList());
+				for(int i = 0;i<list.length();i++)
+				{
+					sendData(ip, port,list.at(i));
+					if(i+1 == list.length())
+					{
+						break;
+					}
+					QUIHelper::sleep(App::debugdelay);
+				}
+			}
             int count = App::Keys.count();
             for (int i = 0; i < count; i++) {
                 if (App::Keys.at(i) == buffer) {

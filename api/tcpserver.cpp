@@ -50,14 +50,31 @@ void TcpClient::readData()
     emit receiveData(ip, port, buffer);
 
     //自动回复数据,可以回复的数据是以;隔开,每行可以带多个;所以这里不需要继续判断
-    if (App::DebugTcpServer) {
+	if (App::DebugTcpServer)
+	{
+		if(!App::m_map.isEmpty())
+		{
+			QStringList list = App::m_map.value(buffer,QStringList());
+			for(int i = 0;i<list.length();i++)
+			{
+				sendData(list.at(i));
+				if(i+1 == list.length())
+				{
+					break;
+				}
+				QUIHelper::sleep(App::debugdelay);
+			}
+		}
         int count = App::Keys.count();
-        for (int i = 0; i < count; i++) {
-            if (App::Keys.at(i) == buffer) {
+		for (int i = 0; i < count; i++)
+		{
+			if (App::Keys.at(i) == buffer)
+			{
                 sendData(App::Values.at(i));
                 break;
             }
         }
+
     }
 }
 

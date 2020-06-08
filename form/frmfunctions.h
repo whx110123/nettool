@@ -1,10 +1,11 @@
-#ifndef FRMFUNCTIONS_H
+﻿#ifndef FRMFUNCTIONS_H
 #define FRMFUNCTIONS_H
 
 #include <QWidget>
 #include "dialogsenddata.h"
 #include "dialogdealdata.h"
 #include "dialogintroduction.h"
+#include "dialogdebug.h"
 
 namespace Ui {
 class frmFunctions;
@@ -26,12 +27,16 @@ private slots:
 
 	void on_pbintro_clicked();
 
+
+	void on_pbfunc3_clicked();
+
 private:
     Ui::frmFunctions *ui;
 public:
     DialogSendData *m_dialogsenddata;
     DialogDealData *m_dialogdealdata;
 	DialogIntroduction *m_dialogintroduction;
+	DialogDebug *m_dialogdebug;
 
 };
 

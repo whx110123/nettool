@@ -113,7 +113,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="pbfunc3">
       <property name="minimumSize">
        <size>
         <width>150</width>
@@ -127,7 +127,7 @@
        </size>
       </property>
       <property name="text">
-       <string>预留</string>
+       <string>报文调试</string>
       </property>
      </widget>
     </item>
@@ -153,7 +153,8 @@
        </size>
       </property>
       <property name="text">
-       <string>介绍</string>
+       <string>1.直接模拟watcher抓取的报文
+2.手动输入需要模拟的报文</string>
       </property>
      </widget>
     </item>
@@ -170,7 +171,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_4">
     <item>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="pbfunc4">
       <property name="minimumSize">
        <size>
         <width>150</width>

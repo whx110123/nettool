@@ -1,4 +1,4 @@
-#include "frmfunctions.h"
+﻿#include "frmfunctions.h"
 #include "ui_frmfunctions.h"
 
 
@@ -10,6 +10,7 @@ frmFunctions::frmFunctions(QWidget *parent) :
     m_dialogsenddata = new DialogSendData(this);
     m_dialogdealdata = new DialogDealData(this);
 	m_dialogintroduction = new DialogIntroduction(this);
+	m_dialogdebug = new DialogDebug(this);
     initfrom();
 }
 
@@ -41,4 +42,10 @@ void frmFunctions::on_pbfunc2_clicked()
 void frmFunctions::on_pbintro_clicked()
 {
 	m_dialogintroduction->exec();
+}
+
+
+void frmFunctions::on_pbfunc3_clicked()
+{
+	m_dialogdebug->show();
 }

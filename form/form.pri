@@ -1,5 +1,6 @@
 FORMS += \
     $$PWD/dialogdealdata.ui \
+    $$PWD/dialogdebug.ui \
     $$PWD/dialogintroduction.ui \
     $$PWD/dialogsenddata.ui \
     $$PWD/frmanalysis.ui \
@@ -13,6 +14,7 @@ FORMS += \
 
 HEADERS += \
     $$PWD/dialogdealdata.h \
+    $$PWD/dialogdebug.h \
     $$PWD/dialogintroduction.h \
     $$PWD/dialogsenddata.h \
     $$PWD/frmanalysis.h \
@@ -27,6 +29,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/dialogdealdata.cpp \
+    $$PWD/dialogdebug.cpp \
     $$PWD/dialogintroduction.cpp \
     $$PWD/dialogsenddata.cpp \
     $$PWD/frmanalysis.cpp \

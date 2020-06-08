@@ -7,7 +7,7 @@ IDI_ICON1 ICON DISCARDABLE "main.ico"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
-	FILEVERSION 1,0,9,0
+	FILEVERSION 1,1,0,0
     FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
     FILEFLAGS VS_FF_DEBUG
@@ -24,7 +24,7 @@ VS_VERSION_INFO VERSIONINFO
             BEGIN
 	            VALUE "FileDescription", "网络串口调试工具"
                 VALUE "ProductName", "网络串口调试工具"
-				VALUE "ProductVersion", "V1.09"
+				VALUE "ProductVersion", "V1.10"
                 VALUE "LegalCopyright", "Copyright(C) 江苏金智科技股份有限公司"
                 VALUE "OriginalFilename", "netcomtool.exe"
                 VALUE "CompanyName", "江苏金智科技股份有限公司"

@@ -293,6 +293,7 @@ QStringList App::Datas = QStringList();
 QStringList App::Keys = QStringList();
 QStringList App::Values = QStringList();
 QMap<QString,QStringList> App::m_map = QMap<QString,QStringList>();
+int App::debugdelay = 100;
 QStringList App::Protocollst = QStringList();
 QStringList App::Transferlst = QStringList();
 QStringList App::CRClst = QStringList();

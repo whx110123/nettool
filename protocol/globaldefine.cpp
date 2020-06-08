@@ -1,8 +1,6 @@
 ﻿#include "globaldefine.h"
 
 
-
-
 QString CharToHexStr(uchar data)
 {
     return QString("%1").arg(QString::number(data,16).toUpper(),2,QLatin1Char('0'));
@@ -117,6 +115,5 @@ QDateTime charToDateTime(uchar *data,int len, int model)
     datetime.setTime(QTime(hours,minutes,second,milliseconds));
     return datetime;
 }
-
 
 

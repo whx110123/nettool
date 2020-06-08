@@ -349,6 +349,19 @@ void frmComTool::readData()
             }
             cachebuffer.append(buffer);
             cachetimer++;
+			if(!App::m_map.isEmpty())
+			{
+				QStringList list = App::m_map.value(cachebuffer,QStringList());
+				for(int i = 0;i<list.length();i++)
+				{
+					sendData(list.at(i));
+					if(i+1 == list.length())
+					{
+						break;
+					}
+					QUIHelper::sleep(App::debugdelay);
+				}
+			}
             int count = App::Keys.count();
             for (int i = 0; i < count; i++) {
                 if (cachebuffer.contains(App::Keys.at(i))) {
@@ -358,6 +371,7 @@ void frmComTool::readData()
                     break;
                 }
             }
+
         }
 
         //启用网络转发则调用网络发送数据
