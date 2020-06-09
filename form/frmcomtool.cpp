@@ -357,6 +357,8 @@ void frmComTool::readData()
 					sendData(list.at(i));
 					if(i+1 == list.length())
 					{
+						cachebuffer.clear();
+						cachetimer = 0;
 						break;
 					}
 					QUIHelper::sleep(App::debugdelay);

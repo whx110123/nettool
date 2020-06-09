@@ -3,6 +3,8 @@
 
 #include "QString"
 
+#include <QMap>
+
 class App
 {
 public:

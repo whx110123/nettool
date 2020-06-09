@@ -119,7 +119,7 @@
         <item>
          <widget class="QPushButton" name="Bt_clear">
           <property name="text">
-           <string>清空数据</string>
+           <string>清空数据并停止模拟</string>
           </property>
          </widget>
         </item>
