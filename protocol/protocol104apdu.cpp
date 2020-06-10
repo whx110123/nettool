@@ -195,7 +195,7 @@ QString protocol101::protocol104apdu::dealUControl()
     }
     if(m_apdu->apci.control[0] & 0x04)
     {
-        text.append("\t此U帧报文为主站激活STARTDT，主站激活链路\r\n");
+		text.append("(bit3):1 主站激活STARTDT，主站激活链路\r\n");
         sum++;
     }
 
@@ -254,7 +254,6 @@ QString protocol101::protocol104apdu::dealSControl()
 {
     QString text;
     QString tmp;
-    QString str;
     tmp = CharToHexStr(m_apdu->apci.control[0]);//QString("%1").arg(QString::number(m_apdu->apci.control1,16),2,QLatin1Char('0'));
     if(m_apdu->apci.control[0] == 0x01)
     {
@@ -265,11 +264,7 @@ QString protocol101::protocol104apdu::dealSControl()
         text.append(tmp + "\t出错！当此字节后2位bit是0和1，可以确定是S帧，但S帧其他bit必须为0，条件不满足，因此报文有问题\r\n");
         return text;
     }
-    if(m_apdu->length != 6)
-    {
-        text.append("\t出错！S帧长度只能为6，条件不满足，因此报文有问题\r\n");
-        return text;
-    }
+
     tmp = CharToHexStr(m_apdu->apci.control[1]);//QString("%1").arg(QString::number(m_apdu->apci.control2,16),2,QLatin1Char('0'));
     if(m_apdu->apci.control[1] == 0x00)
     {
@@ -280,19 +275,20 @@ QString protocol101::protocol104apdu::dealSControl()
         text.append(tmp + "\t出错！已确定此帧报文是S帧，但S帧这个位置固定为0，条件不满足，因此报文有问题\r\n");
         return text;
     }
-    tmp = CharToHexStr(m_apdu->apci.control[2]);//QString("%1").arg(QString::number(m_apdu->apci.control3,16),2,QLatin1Char('0'));
-    str = tmp;
-    if(m_apdu->apci.control[2] %2 == 0)
+	tmp = CharToHexStr(m_apdu->apci.control[2]) + " " + CharToHexStr(m_apdu->apci.control[3]);//QString("%1").arg(QString::number(m_apdu->apci.control3,16),2,QLatin1Char('0'));
+
+	if(m_apdu->apci.control[2] %2 == 1)
     {
-        text.append(tmp + "\t(bit2-8):接受序列号低字节 bit1为0\r\n");
-    }
-    else
-    {
-        text.append(tmp + "\t出错！接受序列号低字节，最后一个bit位必须为0，所以此数字必须为偶数，条件不满足，因此报文有问题\r\n");
+		text.append(tmp + "\t出错！接受序列号低字节，最后一个bit位必须为0，所以此数字必须为偶数，条件不满足，因此报文有问题\r\n");
         return text;
     }
-    tmp = CharToHexStr(m_apdu->apci.control[3]);//QString("%1").arg(QString::number(m_apdu->apci.control4,16),2,QLatin1Char('0'));
-    text.append(tmp + "\t接受序列号高字节，接受序号为 " + tmp + " " + str + "\r\n");
+//    tmp = CharToHexStr(m_apdu->apci.control[3]);//QString("%1").arg(QString::number(m_apdu->apci.control4,16),2,QLatin1Char('0'));
+	text.append(tmp + "\t接受序号: " + QString::number((m_apdu->apci.control[3]*256+m_apdu->apci.control[2])/2) + "\r\n");
+	if(m_apdu->length != 6)
+	{
+		text.append("\t出错！S帧长度只能为6，条件不满足，因此报文有问题\r\n");
+		return text;
+	}
     text.append("\r\n\t S帧APCI解析完成\r\n");
     text.append("-----------------------------------------------------------------------------------------------\r\n");
     return text;
@@ -302,32 +298,29 @@ QString protocol101::protocol104apdu::dealIControl()
 {
     QString text;
     QString tmp;
-    QString str;
-    tmp = CharToHexStr(m_apdu->apci.control[0]);//QString("%1").arg(QString::number(m_apdu->apci.control1,16),2,QLatin1Char('0'));
-    str = tmp;
-    text.append(tmp + "\tI帧报文(bit1为0) 带编号，用于信号传输，发送序列号低字节 \r\n\t");
-    text.append("(bit2-8):发送序列号低字节\r\n");
-    if(m_apdu->length <= 6)
-    {
-        text.append("\t出错！I帧报文总长度必须大于6，条件不满足，因此报文有问题\r\n");
-        return text;
-    }
-    tmp = CharToHexStr(m_apdu->apci.control[1]);//QString("%1").arg(QString::number(m_apdu->apci.control2,16),2,QLatin1Char('0'));
-    text.append(tmp + "\t发送序列号高字节，发送序号为" +tmp + " " +str  + "\r\n");
 
-    tmp = CharToHexStr(m_apdu->apci.control[2]);//QString("%1").arg(QString::number(m_apdu->apci.control3,16),2,QLatin1Char('0'));
-    str = tmp;
-    if(m_apdu->apci.control[2] %2 == 0)
+	tmp = CharToHexStr(m_apdu->apci.control[0]) + " " + CharToHexStr(m_apdu->apci.control[1]);//QString("%1").arg(QString::number(m_apdu->apci.control1,16),2,QLatin1Char('0'));
+
+//    text.append(tmp + "\tI帧报文(bit1为0) 带编号，用于信号传输，发送序列号低字节 \r\n\t");
+//    text.append("(bit2-8):发送序列号低字节\r\n");
+
+//    tmp = CharToHexStr(m_apdu->apci.control[1]);//QString("%1").arg(QString::number(m_apdu->apci.control2,16),2,QLatin1Char('0'));
+	text.append(tmp + "\t发送序号: " +QString::number((m_apdu->apci.control[1]*256+m_apdu->apci.control[0])/2)  + "   I帧报文(bit1为0) 带编号，用于信号传输\r\n");
+
+	tmp = CharToHexStr(m_apdu->apci.control[2])+ " " + CharToHexStr(m_apdu->apci.control[3]);//QString("%1").arg(QString::number(m_apdu->apci.control3,16),2,QLatin1Char('0'));
+//    str = tmp;
+	if(m_apdu->apci.control[2] %2 == 1)
     {
-        text.append(tmp + "\t(bit2-8):接受序列号低字节 bit1为0\r\n");
-    }
-    else
-    {
-        text.append(tmp + "\t出错！接受序列号低字节，最后一个bit位必须为0，所以此数字必须为偶数，条件不满足，因此报文有问题\r\n");
+		text.append(tmp + "\t出错！接受序列号低字节，最后一个bit位必须为0，所以此数字必须为偶数，条件不满足，因此报文有问题\r\n");
         return text;
     }
-    tmp = CharToHexStr(m_apdu->apci.control[3]);//QString("%1").arg(QString::number(m_apdu->apci.control4,16),2,QLatin1Char('0'));
-    text.append(tmp + "\t接受序列号高字节，接受序号为" + tmp+ " " +str  + "\r\n");
+//    tmp = CharToHexStr(m_apdu->apci.control[3]);//QString("%1").arg(QString::number(m_apdu->apci.control4,16),2,QLatin1Char('0'));
+	text.append(tmp + "\t接受序号: " + QString::number((m_apdu->apci.control[3]*256+m_apdu->apci.control[2])/2)  + "\r\n");
+	if(m_apdu->length <= 6)
+	{
+		text.append("\t出错！I帧报文总长度必须大于6，条件不满足，因此报文有问题\r\n");
+		return text;
+	}
     text.append("\r\n\t I帧APCI解析完成\r\n");
     text.append("-----------------------------------------------------------------------------------------------\r\n");
     return text;

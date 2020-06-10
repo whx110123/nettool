@@ -595,6 +595,18 @@ QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata,int
 	case 24:
 		text.append("索引");
 		break;
+	case 201:
+		for(int k = 0;k<4;k++)
+		{
+			tmp.append(CharToHexStr(*(m_gid+k))+ " ");
+		}
+		datauint = charTouint(m_gid,4);
+		text.append(tmp + "\tGID:无符号整数:"+QString::number(datauint)+"\r\n");
+		tmp =CharToHexStr(*(m_gid+4));
+		text.append(tmp + "\tGID:预留字节,无定义");
+
+//		text.append("遥脉数据");
+		break;
 	default:
 		text.append("备用");
 		break;
@@ -684,6 +696,9 @@ QString protocol103::protocol103asdu::dealGDDandGID(protocol103::GROUPDATA *gpda
 		break;
 	case 24:
 		text.append("索引");
+		break;
+	case 201:
+		text.append("遥脉数据");
 		break;
 	default:
 		text.append("备用");

@@ -1381,7 +1381,7 @@ QString protocol101::protocol101asdu::dealASDU167()
 	uint datauint = 0;
 	int i = 0;
 	tmp =CharToHexStr(m_asdu->data[i]);
-	text.append(tmp + "\t当前帧序号:"+QString::number(m_asdu->data[i])+"\r\n");
+	text.append(tmp + "\t保护信息传输控制字节:"+QString::number(m_asdu->data[i])+"\r\n");
 	i++;
 	tmp =CharToHexStr(m_asdu->data[i]) + " " + CharToHexStr(m_asdu->data[i+1]);
 	datauint = m_asdu->data[i] + m_asdu->data[i+1]*256;
