@@ -1,5 +1,6 @@
 HEADERS += \
     $$PWD/globaldefine.h \
+    $$PWD/iec104.h \
     $$PWD/protocol101apdu.h \
     $$PWD/protocol101asdu.h \
     $$PWD/protocol103asdu.h \
@@ -9,6 +10,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/globaldefine.cpp \
+    $$PWD/iec104.cpp \
     $$PWD/protocol101apdu.cpp \
     $$PWD/protocol101asdu.cpp \
     $$PWD/protocol103asdu.cpp \

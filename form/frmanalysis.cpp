@@ -71,7 +71,7 @@ void frmAnalysis::on_AnalysisBtn_clicked()
     while (!buffer.isEmpty())
     {
         text.append(QString("####第%1帧####\r\n").arg(i++));
-        if(ui->protocolcbox->currentText() == IEC104)           //分析104报文
+        if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
         {
             m_104 = new protocol101::protocol104apdu;
             m_104->cotlen =ui->comboBox_1->currentText().toInt();
@@ -91,7 +91,7 @@ void frmAnalysis::on_AnalysisBtn_clicked()
             delete m_104;
 
         }
-        else if(ui->protocolcbox->currentText() == IEC101)      //分析101报文
+        else if(ui->protocolcbox->currentText() == IEC_101)      //分析101报文
         {
             m_101 = new protocol101::protocol101apdu;
             m_101->cotlen =ui->comboBox_4->currentText().toInt();
@@ -110,7 +110,7 @@ void frmAnalysis::on_AnalysisBtn_clicked()
             }
             delete m_101;
         }
-        else if(ui->protocolcbox->currentText() == IEC103WISCOMNET)//分析金智网络103报文
+        else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
         {
             m_103wiscomnet = new protocol103::protocol103wiscomnet;
             err =m_103wiscomnet->CharT0APDU(buffer.data(),buffer.length());
@@ -126,7 +126,7 @@ void frmAnalysis::on_AnalysisBtn_clicked()
             }
             delete m_103wiscomnet;
         }
-        else if(ui->protocolcbox->currentText() == IEC103COM)
+        else if(ui->protocolcbox->currentText() == IEC_103COM)
         {
             m_103com = new protocol103::protocol103com;
             err =m_103com->CharT0APDU(buffer.data(),buffer.length());
@@ -155,19 +155,19 @@ void frmAnalysis::on_clearBtn_clicked()
 
 void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString &arg1)
 {
-    if(arg1 == IEC104)
+    if(arg1 == IEC_104)
     {
         ui->configWidgets->setCurrentWidget(ui->page_1);
     }
-    else if(arg1 == IEC101)
+    else if(arg1 == IEC_101)
     {
         ui->configWidgets->setCurrentWidget(ui->page_2);
     }
-    else if(arg1 == IEC103WISCOMNET)
+    else if(arg1 == IEC_103WISCOMNET)
     {
         ui->configWidgets->setCurrentWidget(ui->page_3);
     }
-    else if(arg1 == IEC103COM)
+    else if(arg1 == IEC_103COM)
     {
         ui->configWidgets->setCurrentWidget(ui->page_4);
     }

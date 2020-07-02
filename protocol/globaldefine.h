@@ -23,10 +23,10 @@ QDateTime charToDateTime(uchar *data,int len,int model);//将len个uchar合成�
 
 
 
-#define IEC104 "104"
-#define IEC101 "101"
-#define IEC103WISCOMNET "金智网络103"
-#define IEC103COM "串口103"
+#define IEC_104 "104"
+#define IEC_101 "101"
+#define IEC_103WISCOMNET "金智网络103"
+#define IEC_103COM "串口103"
 
 
 #endif // GLOBALDEFINE_H
