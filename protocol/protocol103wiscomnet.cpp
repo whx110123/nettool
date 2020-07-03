@@ -21,7 +21,7 @@ QString protocol103::protocol103wiscomnet::dealAPDU()
     QString text;
     text.append(dealAPCI());
 
-    if(text.indexOf(QString("出错")) < 0 && APCIType == ITYPE && m_asdu->length>0)
+	if(text.indexOf(QString("出错")) < 0 &&  m_asdu->length>0)
     {
         text.append(dealASDU());
     }
@@ -112,18 +112,18 @@ QString protocol103::protocol103wiscomnet::dealAPCI()
     {
         if(m_apdu->apci.control[0]&0x02)
         {
-            APCIType = UTYPE;
+//            APCIType = UTYPE;
             text.append(dealUControl());
         }
         else
         {
-            APCIType = STYPE;
+//            APCIType = STYPE;
             text.append(dealSControl());
         }
     }
     else
     {
-        APCIType = ITYPE;
+//        APCIType = ITYPE;
         text.append(dealIControl());
     }
 	if(text.contains(QString("出错")))

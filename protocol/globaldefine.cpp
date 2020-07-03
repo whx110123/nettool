@@ -5,7 +5,15 @@ QString CharToHexStr(uchar data)
 {
     return QString("%1").arg(QString::number(data,16).toUpper(),2,QLatin1Char('0'));
 }
-
+QString CharToHexStr(char *data, int len)
+{
+	QString str;
+	for(int i = 0; i <len;i++)
+	{
+		str.append(QString("%1").arg(QString::number(*(data+i),16).toUpper(),2,QLatin1Char('0')) + " ");
+	}
+	return str;
+}
 uint charTouint(uchar *data, int len,int model)
 {
     uint tmp = 0;
@@ -115,5 +123,7 @@ QDateTime charToDateTime(uchar *data,int len, int model)
     datetime.setTime(QTime(hours,minutes,second,milliseconds));
     return datetime;
 }
+
+
 
 

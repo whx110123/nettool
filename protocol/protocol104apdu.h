@@ -1,4 +1,4 @@
-#ifndef PROTOCOL104APDU_H
+﻿#ifndef PROTOCOL104APDU_H
 #define PROTOCOL104APDU_H
 
 #include "globaldefine.h"
@@ -9,9 +9,9 @@ namespace  protocol101{
 
 
 
-#define ITYPE 1             //编号的信息传输   I帧
-#define STYPE 2             //编号的监视功能   S帧
-#define UTYPE 3             //未编号的控制功能  U帧
+//#define ITYPE 1             //编号的信息传输   I帧
+//#define STYPE 2             //编号的监视功能   S帧
+//#define UTYPE 3             //未编号的控制功能  U帧
 
 typedef struct
 {
@@ -42,7 +42,7 @@ public:
     QString dealERR(int err);
 
 public:
-    int APCIType;
+//    int APCIType;
     APDU104 *m_apdu;
 //    ushort sendNum;             //发送序号
 //    ushort receiveNum;          //接收序号

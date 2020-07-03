@@ -1,4 +1,4 @@
-#ifndef FRMANALYSIS_H
+﻿#ifndef FRMANALYSIS_H
 #define FRMANALYSIS_H
 
 #include <QWidget>
@@ -39,6 +39,8 @@ private slots:
     void on_backgroundcolor_clicked();
 
     void on_fontchange_clicked();
+
+	void on_PBtest_clicked();
 
 private:
 

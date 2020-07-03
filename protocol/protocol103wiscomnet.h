@@ -1,13 +1,13 @@
-#ifndef PROTOCOL103WISCOMNET_H
+﻿#ifndef PROTOCOL103WISCOMNET_H
 #define PROTOCOL103WISCOMNET_H
 
 #include "protocol103asdu.h"
 #include "globaldefine.h"
 namespace protocol103 {
 
-#define ITYPE 1             //编号的信息传输   I帧
-#define STYPE 2             //编号的监视功能   S帧
-#define UTYPE 3             //未编号的控制功能  U帧
+//#define ITYPE 1             //编号的信息传输   I帧
+//#define STYPE 2             //编号的监视功能   S帧
+//#define UTYPE 3             //未编号的控制功能  U帧
 
 typedef struct
 {
@@ -40,7 +40,7 @@ public:
     QString dealERR(int err);
 public:
     APDU103WISCOMNET *m_apdu;
-    int APCIType;
+	int APCIType;
 
 private:
     QString dealAPCI();

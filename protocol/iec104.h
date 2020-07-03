@@ -23,6 +23,7 @@ public:
 
 public:
 	QByteArray mBAdata;
+	QString mText;
 	int error;
 	int type;
 };
@@ -79,6 +80,7 @@ public:
 
 public:
 	QByteArray mBAdata;
+	QString mText;
 	int error;
 	uchar first;
 	uchar length;
@@ -96,6 +98,7 @@ public:
 
 public:
 	QByteArray mBAdata;
+	QString mText;
 	int error;
 	IEC104apci *apci;
 

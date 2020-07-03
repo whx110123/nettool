@@ -1,8 +1,9 @@
-#include "frmanalysis.h"
+﻿#include "frmanalysis.h"
 #include "ui_frmanalysis.h"
 #include "quiwidget.h"
 #include <QString>
 #include "myhighlighter.h"
+#include "iec104.h"
 
 
 frmAnalysis::frmAnalysis(QWidget *parent) :
@@ -220,4 +221,19 @@ void frmAnalysis::on_fontchange_clicked()
         ui->resulttext->setText(ui->resulttext->toPlainText());
         ui->originaltext->setText(ui->originaltext->toPlainText());
     }
+}
+
+void frmAnalysis::on_PBtest_clicked()
+{
+	ui->resulttext->clear();
+	App::readConfig();
+	QString data = ui->originaltext->toPlainText();
+	if (data.length() <= 0) {
+		return;
+	}
+	QByteArray buffer;
+	buffer = QUIHelper::hexStrToByteArray(data);
+	IEC104 *myiec104 = new IEC104;
+	myiec104->init(buffer);
+	ui->resulttext->setText(myiec104->showToText());
 }

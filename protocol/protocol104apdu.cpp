@@ -143,19 +143,19 @@ QString protocol101::protocol104apdu::dealAPCI()
     {
         if(m_apdu->apci.control[0]&0x02)
         {
-            APCIType = UTYPE;
+ //           APCIType = UTYPE;
             text.append(dealUControl());
         }
         else
         {
-            APCIType = STYPE;
+//            APCIType = STYPE;
             text.append(dealSControl());
         }
 
     }
     else
     {
-        APCIType = ITYPE;
+//        APCIType = ITYPE;
         text.append(dealIControl());
     }
     return text;
