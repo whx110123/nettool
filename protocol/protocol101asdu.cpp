@@ -706,7 +706,7 @@ QString protocol101::protocol101asdu::dealSCS()
 
 QString protocol101::protocol101asdu::dealDCS()
 {
-    QString text = "双点命令(bit1):" + QString::number(dcs) + " ";
+	QString text = "双点命令(bit1-2):" + QString::number(dcs) + " ";
     switch (dcs)
     {
     case 1:

@@ -94,12 +94,18 @@ public:
     static QStringList Datas;
     static QStringList Keys;
     static QStringList Values;
-	static QMap<QString,QStringList> m_map;
-	static int debugdelay;
+	static QMap<QString,QStringList> m_map;	//模拟装置的数据表
+	static int debugdelay;					//模拟装置的延时时间
     static QStringList Protocollst;     //规约表
     static QStringList Transferlst;     //通信方式表
     static QStringList CRClst;          //校验方式
     static QStringList Transfermode;    //数字与16进制转换方式
+
+	static int IEC_COTLEN;				//104cot长度
+	static int IEC_COMADDRLEN;			//104公共地址长度
+	static int IEC_INFADDRLEN;			//104信息体地址长度
+	static uint IEC_COMADDR;				//公共地址
+
     static void readSendData();
     static void readDeviceData();
 };

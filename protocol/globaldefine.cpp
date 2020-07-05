@@ -8,11 +8,17 @@ QString CharToHexStr(uchar data)
 QString CharToHexStr(char *data, int len)
 {
 	QString str;
+	uchar *mdata = (uchar *)data;
 	for(int i = 0; i <len;i++)
 	{
-		str.append(QString("%1").arg(QString::number(*(data+i),16).toUpper(),2,QLatin1Char('0')) + " ");
+		str.append(QString("%1").arg(QString::number(*(mdata+i),16).toUpper(),2,QLatin1Char('0')) + " ");
 	}
 	return str;
+}
+uint charTouint(char *data, int len, int model)
+{
+	uchar *mdata = (uchar *)data;
+	return charTouint(mdata, len, model);
 }
 uint charTouint(uchar *data, int len,int model)
 {
@@ -63,6 +69,11 @@ short charToshortwithQ(uchar *data,uchar &ov,uchar &er,int model)
     return tmp;
 }
 
+float charTofloat(char *data, int model)
+{
+	uchar *mdata = (uchar *)data;
+	return charTofloat(mdata,model);
+}
 
 float charTofloat(uchar *data,int model)
 {
@@ -124,6 +135,12 @@ QDateTime charToDateTime(uchar *data,int len, int model)
     return datetime;
 }
 
-
-
-
+QByteArray uintToBa(uint data, int len)
+{
+	QByteArray tmp;
+	for(int i = 0; i<len;i++)
+	{
+		tmp.append((data>>(i*8))&0xff);
+	}
+	return tmp;
+}

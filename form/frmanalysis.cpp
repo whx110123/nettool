@@ -234,6 +234,18 @@ void frmAnalysis::on_PBtest_clicked()
 	QByteArray buffer;
 	buffer = QUIHelper::hexStrToByteArray(data);
 	IEC104 *myiec104 = new IEC104;
-	myiec104->init(buffer);
+	App::IEC_COTLEN =ui->comboBox_1->currentText().toInt();
+	App::IEC_COMADDRLEN = ui->comboBox_2->currentText().toInt();
+	App::IEC_INFADDRLEN = ui->comboBox_3->currentText().toInt();
+	if(!myiec104->init(buffer))
+	{
+		delete myiec104;
+		return;
+	}
 	ui->resulttext->setText(myiec104->showToText());
+	if(myiec104)
+	{
+		delete myiec104;
+		myiec104 =NULL;
+	}
 }

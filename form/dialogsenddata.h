@@ -1,10 +1,12 @@
-#ifndef DIALOGSENDDATA_H
+﻿#ifndef DIALOGSENDDATA_H
 #define DIALOGSENDDATA_H
 
 #include <QDialog>
 #include <QtNetwork>
 #include <QLineEdit>
 #include <QCheckBox>
+#include "iec104.h"
+
 namespace Ui {
 class DialogSendData;
 }
@@ -29,6 +31,8 @@ private:
     int cycleflag;
     QTimer *timercycle;
     int recflag;
+	IEC104 *piec104;
+	QTimer *iec104timer;
     void initfrom();
     void initdataList();
     void closeEvent(QCloseEvent *event);
@@ -45,6 +49,8 @@ signals:
 
 private slots:
     void sendDatacycle();
+	void iec104CreateData();
+	void stopdebug();
     void emitsignals(const QString &data);
     void stopTimer();
     void on_btnSendAll_clicked();
@@ -66,6 +72,10 @@ private slots:
 	void on_btnopenfile_clicked();
 
 	void on_btnsendfile_clicked();
+
+	void on_pushButton_start_clicked();
+
+	void on_pushButton_sendasdu_clicked();
 
 private:
     Ui::DialogSendData *ui;
