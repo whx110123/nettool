@@ -17,8 +17,6 @@ public:
 public:
 	float floatdata;
 	uchar qds;
-
 };
-
 
 #endif // IEC101ASDU13DATA_H

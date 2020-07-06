@@ -3,7 +3,6 @@
 
 #include "iec101asdu.h"
 #include <QList>
-#include <dataconfig.h>
 
 class IEC101asdu1data : public IEC101asdudata
 {
