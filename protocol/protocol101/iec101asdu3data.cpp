@@ -1,20 +1,19 @@
-﻿#include "iec101asdu100data.h"
+﻿#include "iec101asdu3data.h"
 #include "globaldefine.h"
 #include "app.h"
 #include "functotext.h"
 
-IEC101asdu100data::IEC101asdu100data()
+IEC101asdu3data::IEC101asdu3data()
 {
-	qoi = 0;
-	infaddr = 0;
+	diq = 0;
 }
 
-IEC101asdu100data::~IEC101asdu100data()
+IEC101asdu3data::~IEC101asdu3data()
 {
 
 }
 
-bool IEC101asdu100data::init(QByteArray buff)
+bool IEC101asdu3data::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -22,45 +21,29 @@ bool IEC101asdu100data::init(QByteArray buff)
 	infaddr = charTouint(buff.data(),infaddrlen);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	mText.append(CharToHexStr(buff.data(),infaddrlen) + "\t信息元素地址:" + QString::number(infaddr)+"\r\n");
-	qoi = *(buff.data()+infaddrlen);
-	mText.append(CharToHexStr(buff.data()+infaddrlen) + "\t" + qoiToText(qoi) +"\r\n");
+	diq = *(buff.data()+infaddrlen);
+	mText.append(CharToHexStr(buff.data()+infaddrlen) + "\t" + dpiToText(diq) +"   "+ ivToText(diq) +"   "+ ntToText(diq)+"   "+ sbToText(diq)+"   "+ blToText(diq)+"\r\n");
 	return true;
 }
 
-bool IEC101asdu100data::init(QByteArray buff, uint addr)
+bool IEC101asdu3data::init(QByteArray buff, uint addr)
 {
 	mRecvData = buff;
 	mText.clear();
 	infaddr = addr;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	mText.append("\t信息元素地址:" + QString::number(infaddr) +"\r\n");
-	qoi = *buff.data();
-	mText.append(CharToHexStr(buff.data()) + "\t" + qoiToText(qoi) +"\r\n");
+	diq = *buff.data();
+	mText.append(CharToHexStr(buff.data()) + "\t" + dpiToText(diq) +"   "+ ivToText(diq) +"   "+ ntToText(diq)+"   "+ sbToText(diq)+"   "+ blToText(diq)+"\r\n");
 	return true;
 }
 
-QString IEC101asdu100data::showToText()
+QString IEC101asdu3data::showToText()
 {
 	return mText;
 }
 
-bool IEC101asdu100data::createData(IECDataConfig &config)
+bool IEC101asdu3data::createData(IECDataConfig &config)
 {
-
-	if(config.isfirst || (config.vsq & 0x80) == 0)
-	{
-		infaddr = 0;
-		config.data += uintToBa(infaddr,3);
-	}
-
-	if(config.isMaster)
-	{
-		config.data += 0x14;
-	}
-	else
-	{
-
-	}
-	config.isfirst = false;
 	return true;
 }

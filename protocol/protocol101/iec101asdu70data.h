@@ -2,7 +2,6 @@
 #define IEC101ASDU70DATA_H
 
 #include "iec101asdu.h"
-#include <QList>
 
 class IEC101asdu70data : public IEC101asdudata
 {
