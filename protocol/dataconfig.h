@@ -22,7 +22,8 @@ public:
 	bool isMaster;			//是否为主站
 	uchar controltype;		//帧类型
 	uchar asdutype;			//asdu类型
-	bool sqflag;			//是否需要信息体地址
+	uchar cot;              //传送原因
+	uchar vsq;              //信息元素个数
 	bool isfirst;			//是否是第一个
 };
 

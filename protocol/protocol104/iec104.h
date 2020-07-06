@@ -14,7 +14,7 @@ public:
 	~IEC104();
 	bool init(QByteArray buff);
 	QString showToText();
-	bool createDate(IECDataConfig &config);
+	bool createData(IECDataConfig &config);
 public:
 	QByteArray mRecvData;
 	QByteArray mSendData;
@@ -24,10 +24,9 @@ public:
 
 public:
 	IEC104apci apci;
-	IEC101asdu *asdu;
+	IEC101asdu asdu;
 
-private:
-	IEC101asdu *CreateAsdu(uchar type);
+
 };
 
 #endif // IEC104_H

@@ -18,7 +18,7 @@ bool IEC101asdu100data::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
-	int infaddrlen = App::IEC_INFADDRLEN;			//104信息体地址长度
+	int infaddrlen = App::IEC_INFADDRLEN;			//信息体地址长度
 	infaddr = charTouint(buff.data(),infaddrlen);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	mText.append(CharToHexStr(buff.data(),infaddrlen) + "\t信息元素地址:" + QString::number(infaddr)+"\r\n");
@@ -46,8 +46,19 @@ QString IEC101asdu100data::showToText()
 
 bool IEC101asdu100data::createDate(IECDataConfig &config)
 {
-	infaddr = 0;
-	config.data += uintToBa(infaddr,3);
+	if(config.isfirst)
+	{
+		config.data += config.num;
+		config.data += config.cot;
+		config.data += '\0';
+		config.data += uintToBa(App::IEC_COMADDR,2);
+	}
+	if(config.isfirst || config.sqflag)
+	{
+		infaddr = 0;
+		config.data += uintToBa(infaddr,3);
+	}
+
 	if(config.isMaster)
 	{
 		config.data += 0x14;
@@ -56,6 +67,7 @@ bool IEC101asdu100data::createDate(IECDataConfig &config)
 	{
 
 	}
+	config.isfirst = true;
 	return true;
 }
 
@@ -129,7 +141,7 @@ QString IEC101asdu100::showToText()
 	return text;
 }
 
-bool IEC101asdu100::createDate(IECDataConfig &config)
+bool IEC101asdu100::createData(IECDataConfig &config)
 {
 	qDeleteAll(datalist);
 	datalist.clear();

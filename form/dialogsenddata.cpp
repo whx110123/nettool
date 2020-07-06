@@ -25,11 +25,12 @@ DialogSendData::~DialogSendData()
 void DialogSendData::initfrom()
 {
 	timercycle = new QTimer(this);
-	iec104timer = new QTimer(this);
+	handleDataTimer = new QTimer(this);
 	recflag = 0;
+	haveData = false;
 
 	connect(timercycle, SIGNAL(timeout()), this, SLOT(sendDatacycle()));
-	connect(iec104timer, SIGNAL(timeout()), this, SLOT(iec104CreateData()));
+	connect(handleDataTimer, SIGNAL(timeout()), this, SLOT(handleData()));
 	ui->comboBox->addItems(App::Transferlst);
 	mapline.insert(1,ui->linedata1);
 	mapline.insert(2,ui->linedata2);
@@ -93,28 +94,7 @@ void DialogSendData::dealData(const QString &data, const QString &title)
 		recflag = 1;
 		if(ui->pushButton_start->text() == QString("停止"))
 		{
-			QByteArray recbuff = QUIHelper::hexStrToByteArray(data);
-			if(piec104)
-			{
-				if(!piec104->init(recbuff))
-				{
-					QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟");
-					stopdebug();
-					return;
-				}
-				else
-				{
-					IECDataConfig config;
-					config.state = piec104->mstate;
-					config.isMaster = true;
-					if(piec104->createDate(config))
-					{
-						QString str = config.data.toHex(' ');
-						emitsignals(str);
-
-					}
-				}
-			}
+			recvData.append(QUIHelper::hexStrToByteArray(data));
 		}
 	}
 
@@ -166,19 +146,32 @@ void DialogSendData::sendDatacycle()
 
 }
 
-void DialogSendData::iec104CreateData()
+void DialogSendData::handleData()
 {
 	if(!piec104)
 	{
 		return;
 	}
-
-	IECDataConfig config;
-	config.state = piec104->mstate;
-	config.isMaster = true;
-	if(piec104->mstate == STATE_INIT)
+	while(!recvData.isEmpty())
 	{
-		if(piec104->createDate(config))
+		if(!piec104->init(recvData))
+		{
+			stopdebug();
+			QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟\r\n"+piec104->mRecvData.toHex(' '));
+			return;
+		}
+		else
+		{
+			haveData = true;
+			recvData.remove(0,piec104->apci.length+2);
+		}
+	}
+	if(haveData || piec104->mstate == STATE_INIT)
+	{
+		haveData = false;
+		config.state = piec104->mstate;
+		config.isMaster = true;
+		if(piec104->createData(config))
 		{
 			QString str = config.data.toHex(' ');
 			emitsignals(str);
@@ -186,22 +179,34 @@ void DialogSendData::iec104CreateData()
 	}
 }
 
+void DialogSendData::startdebug()
+{
+	recvData.clear();
+	ui->pushButton_start->setText("停止");
+	if(!piec104)
+	{
+		piec104 = new IEC104;
+	}
+	piec104->mstate = STATE_INIT;
+	App::IEC_COMADDR = ui->lineEdit_asduaddr->text().toUInt();
+	handleDataTimer->start(1000);
+}
+
 void DialogSendData::stopdebug()
 {
-	if(ui->pushButton_start->text() == QString("停止"))
+	recvData.clear();
+	ui->pushButton_start->setText("开始");
+	if(handleDataTimer->isActive())
 	{
-		ui->pushButton_start->setText("开始");
-		if(iec104timer->isActive())
-		{
-			iec104timer->stop();
-		}
-		if(piec104)
-		{
-			piec104->mstate = STATE_INIT;
-			piec104->apci.control.localRecvNo = 0;
-			piec104->apci.control.localSendNo = 0;
-		}
+		handleDataTimer->stop();
 	}
+	if(piec104)
+	{
+		piec104->mstate = STATE_INIT;
+		piec104->apci.control.localRecvNo = 0;
+		piec104->apci.control.localSendNo = 0;
+	}
+
 }
 
 void DialogSendData::emitsignals(const QString &data)
@@ -427,14 +432,7 @@ void DialogSendData::on_pushButton_start_clicked()
 {
 	if(ui->pushButton_start->text() == QString("开始"))
 	{
-		ui->pushButton_start->setText("停止");
-		if(!piec104)
-		{
-			piec104 = new IEC104;
-		}
-		piec104->mstate = STATE_INIT;
-		App::IEC_COMADDR = ui->lineEdit_asduaddr->text().toUInt();
-		iec104timer->start(1000);
+		startdebug();
 	}
 	else
 	{
@@ -449,10 +447,9 @@ void DialogSendData::on_pushButton_sendasdu_clicked()
 		QByteArray tmp = QUIHelper::hexStrToByteArray(ui->textEdit_asdu->toPlainText());
 		if(piec104)
 		{
-			IECDataConfig config;
 			config.state = STATE_USER;
 			config.isMaster = true;
-			if(piec104->createDate(config))
+			if(piec104->createData(config))
 			{
 				config.data.append(tmp);
 				char len = config.data.size()-2;

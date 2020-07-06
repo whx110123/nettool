@@ -32,7 +32,10 @@ private:
     QTimer *timercycle;
     int recflag;
 	IEC104 *piec104;
-	QTimer *iec104timer;
+	IECDataConfig config;
+	QTimer *handleDataTimer;
+	QByteArray recvData;
+	bool haveData;
     void initfrom();
     void initdataList();
     void closeEvent(QCloseEvent *event);
@@ -49,7 +52,8 @@ signals:
 
 private slots:
     void sendDatacycle();
-	void iec104CreateData();
+	void handleData();
+	void startdebug();
 	void stopdebug();
     void emitsignals(const QString &data);
     void stopTimer();

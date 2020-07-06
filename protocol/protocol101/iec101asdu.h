@@ -13,7 +13,7 @@ public:
 	virtual bool init(QByteArray buff)= 0;
 	virtual bool init(QByteArray buff,uint addr)=0;
 	virtual QString showToText()=0;
-	virtual bool createDate(IECDataConfig &config)=0;
+	virtual bool createData(IECDataConfig &config)=0;
 
 public:
 	QByteArray mRecvData;
@@ -29,10 +29,10 @@ class IEC101asdu
 {
 public:
 	IEC101asdu();
-	virtual ~IEC101asdu();
-	virtual bool init(QByteArray buff)=0;				//初始化
-	virtual QString showToText()=0;					//显示到文本
-	virtual bool createDate(IECDataConfig &config)=0;
+	~IEC101asdu();
+	bool init(QByteArray buff);				//初始化
+	QString showToText();					//显示到文本
+	bool createData(IECDataConfig &config);
 
 public:
 	QByteArray mRecvData;
@@ -42,7 +42,6 @@ public:
 	int mstate;
 
 public:
-	bool initCommon(QByteArray buff,int &i);				//初始化公共部分
 	QString typeToText();
 	QString vsqToText();
 	QString cotToText();
@@ -56,6 +55,10 @@ public:
 	int datalen;                //每个信息元素数据的字节数
 	int timelen;                //每个信息元素时间的字节数
 	int other;                  //信息元素之外的字节数
+
+	QList<IEC101asdudata *> datalist;
+private:
+	IEC101asdudata *CreateAsduData(uchar type);
 };
 
 #endif // IEC101ASDU_H

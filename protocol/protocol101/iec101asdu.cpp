@@ -1,12 +1,16 @@
 ﻿#include "iec101asdu.h"
 #include "globaldefine.h"
 #include "app.h"
+#include "iec101asdu1data.h"
+#include "iec101asdu13data.h"
+#include "iec101asdu70data.h"
+#include "iec101asdu100data.h"
 
 IEC101asdudata::IEC101asdudata()
 {
 	error = 0;
-	mstate = 0;
 	infaddr = 0;
+	mstate = STATE_NORMAL;
 }
 
 IEC101asdudata::~IEC101asdudata()
@@ -26,27 +30,31 @@ IEC101asdu::IEC101asdu()
 	datalen = 0;
 	timelen = 0;
 	other = 0;
+	mstate = STATE_NORMAL;
 }
 
 IEC101asdu::~IEC101asdu()
 {
-
+	qDeleteAll(datalist);
+	datalist.clear();
 }
 
-bool IEC101asdu::initCommon(QByteArray buff,int &i)
+bool IEC101asdu::init(QByteArray buff)
 {
-
+	mRecvData = buff;
+	mText.clear();
+	qDeleteAll(datalist);
+	datalist.clear();
 	int cotlen = App::IEC_COTLEN;					//104cot长度
 	int comaddrlen = App::IEC_COMADDRLEN;			//104公共地址长度
-
-
+	int infaddrlen = App::IEC_INFADDRLEN;			//104信息体地址长度
+	int i = 0;
 	if(buff.count() < 2 +cotlen +comaddrlen)
 	{
 		error = 1;
 		return false;
 	}
 
-	i = 0;
 	type = *(buff.data()+i);
 	mText.append(CharToHexStr(buff.data()+i) + "\t类型标识 ");
 	i++;
@@ -75,6 +83,68 @@ bool IEC101asdu::initCommon(QByteArray buff,int &i)
 	commonaddr = charTouint(buff.data()+i,comaddrlen);
 	mText.append(CharToHexStr(buff.data()+i,comaddrlen) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
 	i += comaddrlen;
+
+	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*(datalen+timelen)+other;
+	if( lengthtmp!= buff.count())
+	{
+		mText.append( "\r\n\t出错！通过VSQ与ASDU类型计算出ASDU长度为"+QString::number(lengthtmp)+"，而实际ASDU长度为"+QString::number(buff.count())+"。报文长度不符，因此报文有问题，下面的解析可能会出现异常\r\n");
+	}
+
+	uint dataaddr = charTouint((uchar *)(buff.data()+i),infaddrlen);
+	for(int index = 0;index<datanum;index++)
+	{
+		IEC101asdudata *mdata = CreateAsduData(type);
+		bool isOk;
+		if(index ==0 || sqflag == 0)
+		{
+			isOk = mdata->init(buff.mid(i,infaddrlen+datalen+timelen));
+			i += infaddrlen+datalen+timelen;
+		}
+		else
+		{
+			isOk = mdata->init(buff.mid(i,datalen+timelen),dataaddr+index);
+			i += datalen+timelen;
+		}
+		if(!isOk)
+		{
+			error = 1;
+			delete mdata;
+			mdata =NULL;
+			return false;
+		}
+		datalist.append(mdata);
+	}
+	return true;
+}
+
+QString IEC101asdu::showToText()
+{
+	QString text = mText;
+	foreach(IEC101asdudata *mdata,datalist)
+	{
+		text.append(mdata->showToText());
+	}
+	return text;
+}
+
+bool IEC101asdu::createData(IECDataConfig &config)
+{
+	qDeleteAll(datalist);
+	datalist.clear();
+
+	config.data += config.asdutype;
+	config.data += config.vsq;
+	config.data += config.cot;
+	config.data += '\0';
+	config.data += uintToBa(App::IEC_COMADDR,2);
+	config.isfirst = true;
+	for(int i = 0;i<(config.vsq&0x7f);i++)
+	{
+		IEC101asdudata *newdata = CreateAsduData(config.asdutype);
+		newdata->createData(config);
+		datalist.append(newdata);
+	}
+
 	return true;
 }
 
@@ -556,6 +626,30 @@ QString IEC101asdu::cotToText()
 	}
 	text.append("\r\n");
 	return text;
+}
+
+IEC101asdudata *IEC101asdu::CreateAsduData(uchar type)
+{
+	IEC101asdudata *asdudata = NULL;
+	switch (type)
+	{
+	case 1:
+		asdudata = new IEC101asdu1data;
+		break;
+	case 13:
+		asdudata = new IEC101asdu13data;
+		break;
+	case 70:
+		asdudata = new IEC101asdu70data;
+		mstate = STATE_CALLALL;
+		break;
+	case 100:
+		asdudata = new IEC101asdu100data;
+		break;
+	default:
+		break;
+	}
+	return asdudata;
 }
 
 

@@ -163,7 +163,7 @@ QString IEC104Control::showToText()
 	return mText;
 }
 
-bool IEC104Control::createDate(IECDataConfig &config)
+bool IEC104Control::createData(IECDataConfig &config)
 {
 	if(config.isMaster)
 	{
@@ -194,13 +194,14 @@ bool IEC104Control::createDate(IECDataConfig &config)
 				return false;
 				break;
 			}
+			config.asdutype = 0;
 			break;
 		case STYPE:
 
 			config.data += 0x01;
 			config.data += '\0';
 			config.data += uintToBa(localRecvNo<<1,2);
-
+			config.asdutype = 0;
 			break;
 		case ITYPE:
 			config.data += uintToBa( localSendNo<<1,2);
@@ -286,10 +287,11 @@ QString IEC104apci::showToText()
 	return text;
 }
 
-bool IEC104apci::createDate(IECDataConfig &config)
+bool IEC104apci::createData(IECDataConfig &config)
 {
 	config.data += 0x68;
-	if(!control.createDate(config))
+	config.data += '\0';
+	if(!control.createData(config))
 	{
 		return false;
 	}

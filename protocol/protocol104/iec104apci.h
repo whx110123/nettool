@@ -14,7 +14,7 @@ public:
 	~IEC104Control();
 	bool init(QByteArray buff);				//初始化
 	QString showToText();					//显示到文本
-	bool createDate(IECDataConfig &config);
+	bool createData(IECDataConfig &config);
 
 public:
 	QByteArray mRecvData;
@@ -40,7 +40,7 @@ public:
 	~IEC104apci();
 	bool init(QByteArray buff);				//初始化
 	QString showToText();					//显示到文本
-	bool createDate(IECDataConfig &config);
+	bool createData(IECDataConfig &config);
 
 public:
 	QByteArray mRecvData;

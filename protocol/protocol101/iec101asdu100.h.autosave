@@ -27,7 +27,7 @@ public:
 	~IEC101asdu100();
 	virtual bool init(QByteArray buff);				//初始化
 	virtual QString showToText();					//显示到文本
-	virtual bool createDate(IECDataConfig &config);
+	virtual bool createData(IECDataConfig &config);
 
 public:
 	QList<IEC101asdu100data *> datalist;
