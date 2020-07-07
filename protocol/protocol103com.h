@@ -1,4 +1,4 @@
-#ifndef PROTOCOL103COM_H
+﻿#ifndef PROTOCOL103COM_H
 #define PROTOCOL103COM_H
 
 #include "protocol103asdu.h"

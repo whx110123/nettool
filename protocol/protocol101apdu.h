@@ -1,4 +1,4 @@
-#ifndef PROTOCOL101APDU_H
+﻿#ifndef PROTOCOL101APDU_H
 #define PROTOCOL101APDU_H
 #include "protocol101asdu.h"
 

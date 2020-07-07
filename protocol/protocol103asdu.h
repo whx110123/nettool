@@ -1,4 +1,4 @@
-#ifndef PROTOCOL103ASDU_H
+﻿#ifndef PROTOCOL103ASDU_H
 #define PROTOCOL103ASDU_H
 
 #include "globaldefine.h"
