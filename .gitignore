@@ -1,0 +1,9 @@
+/.vs
+/bin
+/temp
+/x64
+*.user
+*.qmake.stash
+*.vcxproj
+*.filters
+*.aps
