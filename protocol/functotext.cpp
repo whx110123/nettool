@@ -388,3 +388,50 @@ QString qosToText(uchar ch)
 	text.append("  QL(bit1-7):" + QString::number(ch&0x7f)+"   "+ seToText(ch) );
 	return text;
 }
+
+QString timeToText(char * time, int timelen)
+{
+	uchar *mtime = (uchar *)time;
+	return timeToText(mtime, timelen);
+}
+
+QString timeToText(uchar *time, int timelen)
+{
+	QString text;
+
+	QDateTime datetime = charToDateTime(time, timelen, BINARYTIME2A);
+
+	uint datauint = charTouint(time, 2);
+	text.append(CharToHexStr(time,2) + "\t" + QString::number(datauint) + "   秒:" + QString::number(datetime.time().second()) + "   毫秒:" + QString::number(datetime.time().msec()) + " \r\n");
+	if (timelen == 2)
+	{
+		return text;
+	}
+
+	text.append(CharToHexStr(time[2]) + "\t分(bit1-6):" + QString::number(datetime.time().minute()) + "   " + ivToText(time[2]) + "\r\n");
+	if (timelen == 3)
+	{
+		return text;
+	}
+
+	text.append(CharToHexStr(time[3]) + "\t时(bit1-5):" + QString::number(datetime.time().hour()) + "   " + suToText(time[3]) + "\r\n");
+	if (timelen == 4)
+	{
+		return text;
+	}
+
+	text.append(CharToHexStr(time[4]) + "\t日(bit1-5):" + QString::number(datetime.date().day()) + "   周(bit6-8):" + QString::number(time[4] >> 5) + " (7表示星期天,0表示未用)\r\n");
+	if (timelen == 5)
+	{
+		return text;
+	}
+
+	text.append(CharToHexStr(time[5]) + "\t月(bit1-4):" + QString::number(datetime.date().month()) + "\r\n");
+	if (timelen == 6)
+	{
+		return text;
+	}
+
+	text.append(CharToHexStr(time[6]) + "\t年(bit1-7):" + QString::number(datetime.date().year()) + "\r\n");
+	return text;
+}

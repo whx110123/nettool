@@ -24,22 +24,28 @@ enum
 	STATE_TESTCONFIRM,			//确认测试
 	STATE_USER					//自定义ASDU
 };
-
-#define BCDTIME1 0          //BCD时间1
-#define BINARYTIME1 1       //二进制时间1
-#define BINARYTIME2A 2      //二进制时间2a
-#define BINARYTIME2B 3      //二进制时间2b
-#define BINARYTIME2C 4      //二进制时间2c
+enum
+{
+	BCDTIME1 = 0,		//BCD时间1
+	BINARYTIME1,		//二进制时间1
+	BINARYTIME2A,		//二进制时间2a
+	BINARYTIME2B,		//二进制时间2b
+	BINARYTIME2C		//二进制时间2c
+};
+    
 
 QString CharToHexStr(uchar data);           //将一个uchar字符转换成2个字符的16进制QString
 QString CharToHexStr(char *data,int len=1);
+QString CharToHexStr(uchar *data, int len = 1);
 uint charTouint(char *data,int len,int model = 0);
 uint charTouint(uchar *data,int len,int model = 0);      //将len个uchar合成一个uint,model 0:低字节在前
 int charToint(uchar *data,int len,int model = 0);      //将4个uchar合成一个int,model 0:低字节在前 1:高字节在前
+int charToint(char *data, int len, int model = 0);      //将4个char合成一个int,model 0:低字节在前 1:高字节在前
 short charToshortwithQ(uchar *data,uchar &ov,uchar &er,int model = 0);
 float charTofloat(char *data,int model = 0);
 float charTofloat(uchar *data,int model = 0);
 QDateTime charToDateTime(uchar *data,int len,int model);//将len个uchar合成一个日期,model时间类型
+QDateTime charToDateTime(char *data, int len, int model);//将len个char合成一个日期,model时间类型
 QByteArray uintToBa(uint data,int len);
 
 

@@ -7,14 +7,20 @@ QString CharToHexStr(uchar data)
 }
 QString CharToHexStr(char *data, int len)
 {
-	QString str;
 	uchar *mdata = (uchar *)data;
-	for(int i = 0; i <len;i++)
+	return CharToHexStr(mdata, len);
+}
+
+QString CharToHexStr(uchar *data, int len)
+{
+	QString str;
+	for (int i = 0; i < len; i++)
 	{
-		str.append(QString("%1").arg(QString::number(*(mdata+i),16).toUpper(),2,QLatin1Char('0')) + " ");
+		str.append(QString("%1").arg(QString::number(*(data + i), 16).toUpper(), 2, QLatin1Char('0')) + " ");
 	}
 	return str;
 }
+
 uint charTouint(char *data, int len, int model)
 {
 	uchar *mdata = (uchar *)data;
@@ -49,6 +55,11 @@ int charToint(uchar *data, int len,int model)
     tmp1 = tmp1<<((4-len)*8);
     int tmp = *(int *)(&tmp1)>>((4-len)*8);
     return tmp;
+}
+int charToint(char * data, int len, int model)
+{
+	uchar *mdata = (uchar *)data;
+	return charToint(mdata, len, model);
 }
 short charToshortwithQ(uchar *data,uchar &ov,uchar &er,int model)
 {
@@ -128,11 +139,18 @@ QDateTime charToDateTime(uchar *data,int len, int model)
         break;
     case BINARYTIME2B:
         break;
-
+	default:
+		break;
     }
     datetime.setDate(QDate(years,months,dayofmonths));
     datetime.setTime(QTime(hours,minutes,second,milliseconds));
     return datetime;
+}
+
+QDateTime charToDateTime(char * data, int len, int model)
+{
+	uchar *mdata = (uchar *)data;
+	return charToDateTime(mdata, len, model);
 }
 
 QByteArray uintToBa(uint data, int len)

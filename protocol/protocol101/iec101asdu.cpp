@@ -5,6 +5,11 @@
 #include "iec101asdu13data.h"
 #include "iec101asdu70data.h"
 #include "iec101asdu100data.h"
+#include "iec101asdu3data.h"
+#include "iec101asdu9data.h"
+#include "iec101asdu15data.h"
+#include "iec101asdu21data.h"
+#include "iec101asdu30data.h"
 
 IEC101asdudata::IEC101asdudata()
 {
@@ -636,8 +641,23 @@ IEC101asdudata *IEC101asdu::CreateAsduData(uchar type)
 	case 1:
 		asdudata = new IEC101asdu1data;
 		break;
+	case 3:
+		asdudata = new IEC101asdu3data;
+		break;
+	case 9:
+		asdudata = new IEC101asdu9data;
+		break;
 	case 13:
 		asdudata = new IEC101asdu13data;
+		break;
+	case 15:
+		asdudata = new IEC101asdu15data;
+		break;
+	case 21:
+		asdudata = new IEC101asdu21data;
+		break;
+	case 30:
+		asdudata = new IEC101asdu30data;
 		break;
 	case 70:
 		asdudata = new IEC101asdu70data;

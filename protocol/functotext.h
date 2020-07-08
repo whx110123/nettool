@@ -23,5 +23,7 @@ QString caToText(uchar ch);
 QString cyToText(uchar ch);
 QString vtiToText(uchar ch);
 QString qosToText(uchar ch);
+QString timeToText(char *time, int timelen);
+QString timeToText(uchar *time ,int timelen);
 
 #endif // FUNCTOTEXT_H

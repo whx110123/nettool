@@ -14,7 +14,7 @@ public:
 	virtual bool createData(IECDataConfig &config);
 
 public:
-	float floatdata;
+	short shortdata;
 	uchar qds;
 };
 
