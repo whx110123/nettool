@@ -8,7 +8,7 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QMAKE_CXXFLAGS += /utf-8
+msvc:QMAKE_CXXFLAGS += /utf-8
 
 TARGET              = netcomtool
 TEMPLATE            = app
