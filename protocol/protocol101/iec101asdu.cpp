@@ -2,14 +2,22 @@
 #include "globaldefine.h"
 #include "app.h"
 #include "iec101asdu1data.h"
-#include "iec101asdu13data.h"
-#include "iec101asdu70data.h"
-#include "iec101asdu100data.h"
 #include "iec101asdu3data.h"
 #include "iec101asdu9data.h"
+#include "iec101asdu13data.h"
 #include "iec101asdu15data.h"
 #include "iec101asdu21data.h"
 #include "iec101asdu30data.h"
+#include "iec101asdu31data.h"
+#include "iec101asdu32data.h"
+#include "iec101asdu45data.h"
+#include "iec101asdu46data.h"
+#include "iec101asdu50data.h"
+#include "iec101asdu70data.h"
+#include "iec101asdu100data.h"
+#include "iec101asdu101data.h"
+#include "iec101asdu103data.h"
+#include "iec101asdu137data.h"
 
 IEC101asdudata::IEC101asdudata()
 {
@@ -659,12 +667,36 @@ IEC101asdudata *IEC101asdu::CreateAsduData(uchar type)
 	case 30:
 		asdudata = new IEC101asdu30data;
 		break;
+	case 31:
+		asdudata = new IEC101asdu31data;
+		break;
+	case 32:
+		asdudata = new IEC101asdu32data;
+		break;
+	case 45:
+		asdudata = new IEC101asdu45data;
+		break;
+	case 46:
+		asdudata = new IEC101asdu46data;
+		break;
+	case 50:
+		asdudata = new IEC101asdu50data;
+		break;
 	case 70:
 		asdudata = new IEC101asdu70data;
 		mstate = STATE_CALLALL;
 		break;
 	case 100:
 		asdudata = new IEC101asdu100data;
+		break;
+	case 101:
+		asdudata = new IEC101asdu101data;
+		break;
+	case 103:
+		asdudata = new IEC101asdu103data;
+		break;
+	case 137:
+		asdudata = new IEC101asdu137data;
 		break;
 	default:
 		break;

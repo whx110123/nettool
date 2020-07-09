@@ -42,8 +42,8 @@ bool IEC101asdu32data::init(QByteArray buff, uint addr)
 	mText.append(CharToHexStr(buff.data()) + "\t" + vtiToText(vti) + "\r\n");
 	qds = *(buff.data() + 1);
 	mText.append(CharToHexStr(buff.data() + 1) + "\t品质位:" + ivToText(qds) + "   " + ntToText(qds) + "   " + sbToText(qds) + "   " + blToText(qds) + "   " + ovToText(qds) + "\r\n");
-	datetime = charToDateTime(buff.data() + 1, 7, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + 1, 7));
+	datetime = charToDateTime(buff.data() + 2, 7, BINARYTIME2A);
+	mText.append(timeToText(buff.data() + 2, 7));
 	return true;
 }
 
