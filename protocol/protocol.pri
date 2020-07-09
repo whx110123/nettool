@@ -22,6 +22,10 @@ SOURCES += \
 
 
 include             ($$PWD/protocol104/protocol104.pri)
+include				($$PWD/protocol103/protocol103.pri)
 include             ($$PWD/protocol101/protocol101.pri)
 INCLUDEPATH         += $$PWD/protocol104
+INCLUDEPATH         += $$PWD/protocol103
 INCLUDEPATH         += $$PWD/protocol101
+
+

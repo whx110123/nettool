@@ -204,7 +204,7 @@ void DialogDealData::on_Bt1_clicked()
 	QString tmputf8;
 	QString tmpunicode;
 	QByteArray hex_data;
-	foreach(QChar byte, text)
+	for(QChar byte:text)
 	{
 		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
 		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
@@ -225,7 +225,7 @@ void DialogDealData::on_Bt2_clicked()
 	QString tmpunicode;
 	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le2->text());
 	tmp = gbk->toUnicode(ba);
-	foreach(QChar byte, tmp)
+	for(QChar byte:tmp)
 	{
 		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
 		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
@@ -246,7 +246,7 @@ void DialogDealData::on_Bt3_clicked()
 	QString tmpunicode;
 	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le3->text());
 	tmp = utf8->toUnicode(ba);
-	foreach(QChar byte, tmp)
+	for(QChar byte:tmp)
 	{
 		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
 		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
@@ -266,7 +266,7 @@ void DialogDealData::on_Bt4_clicked()
 	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
 	QString tmpgbk;
 	QString tmputf8;
-	foreach (QString str, strlst)
+	for (QString str:strlst)
 	{
 		QChar byte(str.toUInt(0,16));
 		tmp.append(byte);
