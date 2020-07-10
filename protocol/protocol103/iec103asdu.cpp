@@ -22,7 +22,7 @@
 IEC103asdudata::IEC103asdudata()
 {
 	error = 0;
-	infaddr = 0;
+	inf = 0;
 	mstate = STATE_NORMAL;
 }
 
