@@ -70,16 +70,15 @@ bool IEC101asdu::init(QByteArray buff)
 	}
 
 	type = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t类型标识 ");
+	mText.append(CharToHexStr(buff.data()+i) + "\t类型标识 " +typeToText()+"\r\n");
 	i++;
-	mText.append(typeToText());
 
 	vsq = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t" + vsqToText());
+	mText.append(CharToHexStr(buff.data()+i) + "\t" + vsqToText()+"\r\n");
 	i++;
 
 	cot[0] = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t" +cotToText());
+	mText.append(CharToHexStr(buff.data()+i) + "\t" +cotToText()+"\r\n");
 	i++;
 
 	if(cotlen == 2)
@@ -473,7 +472,6 @@ QString IEC101asdu::typeToText()
 		datalen = 0;
 		break;
 	}
-	text.append("\r\n");
 	return text;
 }
 
@@ -484,15 +482,15 @@ QString IEC101asdu::vsqToText()
 	datanum = vsq & 0x7f;
 
 	text.append("信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n\t");
+	text.append("\tSQ(bit8):" + QString::number(vsq & 0x80,16).toUpper() + " ");
 	if(sqflag)
 	{
-		text.append("SQ(bit8):1 信息元素顺序排列，只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1");
+		text.append("只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1");
 	}
 	else
 	{
-		text.append("SQ(bit8):0 信息元素单个排列，每个信息元素都有独自的地址");
+		text.append("每个信息元素都有独自的地址");
 	}
-	text.append("\r\n");
 
 	return text;
 }
@@ -653,7 +651,7 @@ QString IEC101asdu::cotToText()
 	{
 		text.append("0 未试验");
 	}
-	text.append("\r\n");
+
 	return text;
 }
 

@@ -36,13 +36,13 @@ IEC103asdu::IEC103asdu()
 	error = 0;
 	type = 0;
 	vsq = 0;
-	memset(cot,0,sizeof (cot));
+	cot = 0;
 	commonaddr = 0;
 	sqflag = 0;
 	datanum = 0;
-	datalen = 0;
-	timelen = 0;
-	other = 0;
+	asdulen = 0;
+//	timelen = 0;
+//	other = 0;
 	mstate = STATE_NORMAL;
 }
 
@@ -58,65 +58,50 @@ bool IEC103asdu::init(QByteArray buff)
 	mText.clear();
 	qDeleteAll(datalist);
 	datalist.clear();
-	int cotlen = App::IEC_COTLEN;					//104cot长度
-	int comaddrlen = App::IEC_COMADDRLEN;			//104公共地址长度
-	int infaddrlen = App::IEC_INFADDRLEN;			//104信息体地址长度
-	int i = 0;
-	if(buff.count() < 2 +cotlen +comaddrlen)
+	asdulen = 0;
+	if(buff.count() < 4)
 	{
 		error = 1;
 		return false;
 	}
 
-	type = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t类型标识 ");
-	i++;
-	mText.append(typeToText());
+	type = *(buff.data()+asdulen);
+	mText.append(CharToHexStr(buff.data()+asdulen) + "\t类型标识 " + typeToText()+"\r\n");
+	asdulen++;
 
-	vsq = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t" + vsqToText());
-	i++;
+	vsq = *(buff.data()+asdulen);
+	mText.append(CharToHexStr(buff.data()+asdulen) + "\t" + vsqToText()+"\r\n");
+	asdulen++;
 
-	cot[0] = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t" +cotToText());
-	i++;
+	cot = *(buff.data()+asdulen);
+	mText.append(CharToHexStr(buff.data()+asdulen) + "\t" +cotToText()+"\r\n");
+	asdulen++;
 
-	if(cotlen == 2)
-	{
-		cot[1] = *(buff.data()+i);
-		mText.append(CharToHexStr(buff.data()+i) + "\t源发站地址号:"+QString::number(cot[1])+"\r\n");
-		i++;
-	}
+	commonaddr = *(buff.data()+asdulen);
+	mText.append(CharToHexStr(buff.data()+asdulen) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
+	asdulen ++;
 
-	if(comaddrlen != 2 && comaddrlen != 1)
-	{
-		error = 1;
-		return false;
-	}
-	commonaddr = charTouint(buff.data()+i,comaddrlen);
-	mText.append(CharToHexStr(buff.data()+i,comaddrlen) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
-	i += comaddrlen;
+	fun = *(buff.data()+asdulen);
+	mText.append(CharToHexStr(buff.data()+asdulen) + "\t" + funToText() +"\r\n");
+	asdulen ++;
+//	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*(datalen+timelen)+other;
+//	if( lengthtmp!= buff.count())
+//	{
+//		mText.append( "\r\n\t出错！通过VSQ与ASDU类型计算出ASDU长度为"+QString::number(lengthtmp)+"，而实际ASDU长度为"+QString::number(buff.count())+"。报文长度不符，因此报文有问题，下面的解析可能会出现异常\r\n");
+//	}
 
-	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*(datalen+timelen)+other;
-	if( lengthtmp!= buff.count())
-	{
-		mText.append( "\r\n\t出错！通过VSQ与ASDU类型计算出ASDU长度为"+QString::number(lengthtmp)+"，而实际ASDU长度为"+QString::number(buff.count())+"。报文长度不符，因此报文有问题，下面的解析可能会出现异常\r\n");
-	}
-
-	uint dataaddr = charTouint((uchar *)(buff.data()+i),infaddrlen);
+	uchar inf = *(buff.data()+asdulen);;
 	for(int index = 0;index<datanum;index++)
 	{
 		IEC103asdudata *mdata = CreateAsduData(type);
 		bool isOk;
-		if(index ==0 || sqflag == 0)
+		if(index ==0 || sqflag == 1)
 		{
-			isOk = mdata->init(buff.mid(i,infaddrlen+datalen+timelen));
-			i += infaddrlen+datalen+timelen;
+			isOk = mdata->init(buff.mid(asdulen));
 		}
 		else
 		{
-			isOk = mdata->init(buff.mid(i,datalen+timelen),dataaddr+index);
-			i += datalen+timelen;
+			isOk = mdata->init(buff.mid(asdulen),inf+index);
 		}
 		if(!isOk)
 		{
@@ -145,319 +130,133 @@ bool IEC103asdu::createData(IECDataConfig &config)
 	qDeleteAll(datalist);
 	datalist.clear();
 
-	config.data += config.asdutype;
-	config.data += config.vsq;
-	config.data += config.cot;
-	config.data += '\0';
-	config.data += uintToBa(App::IEC_COMADDR,2);
-	config.isfirst = true;
-	for(int i = 0;i<(config.vsq&0x7f);i++)
-	{
-		IEC103asdudata *newdata = CreateAsduData(config.asdutype);
-		newdata->createData(config);
-		datalist.append(newdata);
-	}
+//	config.data += config.asdutype;
+//	config.data += config.vsq;
+//	config.data += config.cot;
+//	config.data += '\0';
+//	config.data += uintToBa(App::IEC_COMADDR,2);
+//	config.isfirst = true;
+//	for(int i = 0;i<(config.vsq&0x7f);i++)
+//	{
+//		IEC103asdudata *newdata = CreateAsduData(config.asdutype);
+//		newdata->createData(config);
+//		datalist.append(newdata);
+//	}
 
 	return true;
 }
 
 QString IEC103asdu::typeToText()
 {
-	QString text = "ASDU"+ QString::number(type) + ":";
+	QString text = "类型标识TYPE ASDU"+ QString::number(type) + ":";
 	switch (type)
 	{
 	case 1:
-		text.append("单点信息");
-		datalen = 1;
+		text.append("带时标的报文");
 		break;
 	case 2:
-		text.append("带时标的单点信息");
+		text.append("具有相对时间的带时标的报文");
 		break;
 	case 3:
-		text.append("双点信息");
-		datalen = 1;
+		text.append("被测值I");
 		break;
 	case 4:
-		text.append("带时标的双点遥信");
+		text.append("具有相对时间的带时标的被测值");
 		break;
 	case 5:
-		text.append("步位置(档位)信息");
+		text.append("标识");
 		break;
 	case 6:
-		text.append("带时标的步位置信息");
+		text.append("时间同步");
 		break;
 	case 7:
-		text.append("32比特串");
+		text.append("总查询(总召唤)");
 		break;
 	case 8:
-		text.append("带时标的32比特串");
+		text.append("总查询(总召唤)终止");
 		break;
 	case 9:
-		text.append("测量值, 规一化值");
-		datalen = 3;
+		text.append("被测值II");
 		break;
 	case 10:
-		text.append("测量值，带时标的规一化值");
+		text.append("通用分类数据");
 		break;
 	case 11:
-		text.append("测量值, 标度化值");
-		break;
-	case 12:
-		text.append("测量值, 带时标的标度化值");
-		break;
-	case 13:
-		text.append("测量值, 短浮点数");
-		datalen = 5;
-		break;
-	case 14:
-		text.append("测量值, 带时标的短浮点数");
-		break;
-	case 15:
-		text.append("累计量");
-		datalen = 5;
-		break;
-	case 16:
-		text.append("带时标的累计量");
-		break;
-	case 17:
-		text.append("带时标的继电保护设备事件");
-		break;
-	case 18:
-		text.append("带时标的继电保护设备成组启动事件");
-		break;
-	case 19:
-		text.append("带时标的继电保护设备成组输出电路信息");
+		text.append("通用分类标识");
 		break;
 	case 20:
-		text.append("带变位检出的成组单点信息");
+		text.append("一般命令");
 		break;
 	case 21:
-		text.append("测量值, 不带品质描述词的规一化值");
-		datalen = 2;
+		text.append("通用分类命令");
 		break;
-	case 22:
 	case 23:
+		text.append("被记录的扰动表");
+		break;
 	case 24:
+		text.append("扰动数据传输的命令");
+		break;
 	case 25:
+		text.append("扰动数据传输的认可");
+		break;
 	case 26:
+		text.append("扰动数据传输准备就绪");
+		break;
 	case 27:
+		text.append("被记录的通道传输准备就绪");
+		break;
 	case 28:
+		text.append("带标志的状态变位传输准备就绪");
+		break;
 	case 29:
-		text.append("未定义，保留");
+		text.append("传送带标志的状态变位");
 		break;
 	case 30:
-		text.append("带CP56Time2a时标的单点信息");
-		datalen = 1;
-		timelen = 7;
+		text.append("传送扰动值");
 		break;
 	case 31:
-		text.append("带CP56Time2a时标的双点信息");
-		datalen = 1;
-		timelen = 7;
-		break;
-	case 32:
-		text.append("带CP56Time2a时标的步位置信息");
-		datalen = 2;
-		timelen = 7;
-		break;
-	case 33:
-		text.append("带CP56Time2a时标的32比特串");
-		break;
-	case 34:
-		text.append("带CP56Time2a时标的测量值, 规一化值");
-		break;
-	case 35:
-		text.append("带CP56Time2a时标的测量值, 标度化值");
+		text.append("传送结束");
 		break;
 	case 36:
-		text.append("带CP56Time2a时标的测量值, 短浮点数");
-		break;
-	case 37:
-		text.append("带CP56Time2a时标的累计量");
+		text.append("电能脉冲量上送");
 		break;
 	case 38:
-		text.append("带CP56Time2a时标的继电保护设备事件");
+		text.append("总查询及变位上送步位置");
 		break;
 	case 39:
-		text.append("带CP56Time2a时标的继电保护设备成组启动事件");
+		text.append("步位置的SOE");
 		break;
 	case 40:
-		text.append("带CP56Time2a时标的继电保护设备成组输出电路信息");
+		text.append("上送变位遥信");
 		break;
 	case 41:
+		text.append("上送SOE");
+		break;
 	case 42:
+		text.append("总控上送变位遥信");
+		break;
 	case 43:
+		text.append("总控上送SOE");
+		break;
 	case 44:
-		text.append("未定义，保留");
-		break;
-	case 45:
-		text.append("单点命令");
-		datalen = 1;
-		break;
-	case 46:
-		text.append("双点命令");
-		datalen = 1;
-		break;
-	case 47:
-		text.append("步调节命令");
-		break;
-	case 48:
-		text.append("设定值命令, 规一化值");
-		break;
-	case 49:
-		text.append("设定值命令, 标度化值");
+		text.append("上送全遥信");
 		break;
 	case 50:
-		text.append("设定值命令, 短浮点数");
-		datalen = 4;
-		other = 1;
+		text.append("遥测上送");
 		break;
 	case 51:
-		text.append("32比特串");
+		text.append("总控超过门限值的遥测上送");
 		break;
-	case 52:
-	case 53:
-	case 54:
-	case 55:
-	case 56:
-	case 57:
-	case 58:
-	case 59:
-	case 60:
-	case 61:
-	case 62:
-	case 63:
 	case 64:
-	case 65:
-	case 66:
-	case 67:
-	case 68:
-	case 69:
-		text.append("未定义，保留");
+		text.append("遥控选择/执行/撤消");
 		break;
-	case 70:
-		text.append("初始化结束");
-		datalen = 1;
-		break;
-	case 71:
-	case 72:
-	case 73:
-	case 74:
-	case 75:
-	case 76:
-	case 77:
-	case 78:
-	case 79:
-	case 80:
-	case 81:
-	case 82:
-	case 83:
-	case 84:
-	case 85:
-	case 86:
-	case 87:
 	case 88:
-	case 89:
-	case 90:
-	case 91:
-	case 92:
-	case 93:
-	case 94:
-	case 95:
-	case 96:
-	case 97:
-	case 98:
-	case 99:
-		text.append("未定义，保留");
-		break;
-	case 100:
-		text.append("总召唤命令");
-		datalen = 1;
-		break;
-	case 101:
-		text.append("计数量召唤命令");
-		datalen = 1;
-		break;
-	case 102:
-		text.append("读命令");
-		break;
-	case 103:
-		text.append("时钟同步命令");
-		timelen = 7;
-		break;
-	case 104:
-		text.append("测试命今");
-		break;
-	case 105:
-		text.append("复位进程命令");
-		break;
-	case 106:
-		text.append("延时获得命今");
-		break;
-	case 107:
-	case 108:
-	case 109:
-		text.append("未定义，保留");
-		break;
-	case 110:
-		text.append("测量值参数, 规一化值");
-		break;
-	case 111:
-		text.append("测量值参数, 标度化值");
-		break;
-	case 112:
-		text.append("测量值参数, 短浮点数");
-		break;
-	case 113:
-		text.append("参数激活");
-		break;
-	case 114:
-	case 115:
-	case 116:
-	case 117:
-	case 118:
-	case 119:
-		text.append("未定义，保留");
-		break;
-	case 120:
-		text.append("文件淮备就绪");
-		break;
-	case 121:
-		text.append("节淮备就绪");
-		break;
-	case 122:
-		text.append("召唤目录, 选择文件, 召唤文件，召唤节");
-		break;
-	case 123:
-		text.append("最后的节,最后的段");
-		break;
-	case 124:
-		text.append("认可文件,认可节");
-		break;
-	case 125:
-		text.append("段");
-		break;
-	case 126:
-		text.append("目录");
-		break;
-	case 127:
-		text.append("未定义，保留");
-		break;
-	case 137:
-		text.append("计划曲线传送(南网扩展功能)");
-		datalen = 2;
-		other = 8;
-		break;
-	case 167:
-		text.append("定值处理(扩展功能)");
-		datalen = 1;
+		text.append("电能脉冲量召唤（冻结）");
 		break;
 	default:
 		text.append("未知ASDU类型，无法继续解析");
-		datalen = 0;
 		break;
 	}
-	text.append("\r\n");
 	return text;
 }
 
@@ -468,176 +267,105 @@ QString IEC103asdu::vsqToText()
 	datanum = vsq & 0x7f;
 
 	text.append("信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n\t");
+	text.append("\tSQ(bit8):" + QString::number(vsq & 0x80,16).toUpper() + " ");
 	if(sqflag)
 	{
-		text.append("SQ(bit8):1 信息元素顺序排列，只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1");
+		text.append("每个信息元素都有独自的地址");
 	}
 	else
 	{
-		text.append("SQ(bit8):0 信息元素单个排列，每个信息元素都有独自的地址");
+		text.append("只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1");
 	}
 	text.append("\r\n");
-
 	return text;
 }
 
 QString IEC103asdu::cotToText()
 {
-	QString text = "传送原因(bit1-6):"+ QString::number(cot[0] & 0x3f) + " ";
-	switch (cot[0] & 0x3f)
+	QString text = "传送原因COT:"+ QString::number(cot) + " ";
+	switch (cot)
 	{
 	case 1:
-		text.append("周期、循环上送");
+		text.append("自发(突发)");
 		break;
 	case 2:
-		text.append("背景扫描，基于连续传送方式，用于监视方向，将被控站的过程信息去同步控制站的数据库，优先级较低");
+		text.append("循环");
 		break;
 	case 3:
-		text.append("突发、自发");
+		text.append("复位帧计数位(FCB)");
 		break;
 	case 4:
-		text.append("初始化");
+		text.append("复位通信单元(CU)");
 		break;
 	case 5:
-		text.append("请求或被请求");
+		text.append("启动/重新启动");
 		break;
 	case 6:
-		text.append("激活");
+		text.append("电源合上");
 		break;
 	case 7:
-		text.append("激活确认");
+		text.append("测试模式");
 		break;
 	case 8:
-		text.append("停止激活");
+		text.append("时间同步 主站启动或子站响应");
 		break;
 	case 9:
-		text.append("停止激活确认");
+		text.append("总查询(总召唤) 主站启动或子站响应");
 		break;
 	case 10:
-		text.append("激活终止");
+		text.append("总查询(总召唤)终止");
 		break;
 	case 11:
-		text.append("远方命令引起的返送信息");
+		text.append("当地操作");
 		break;
 	case 12:
-		text.append("当地命令引起的返送信息");
-		break;
-	case 13:
-		text.append("文件传输");
-		break;
-	case 14:
-	case 15:
-	case 16:
-	case 17:
-	case 18:
-	case 19:
-		text.append("保留");
+		text.append("远方操作");
 		break;
 	case 20:
-		text.append("响应站召唤");
+		text.append("一般命命令 主站发出或子站肯定认可");
 		break;
 	case 21:
-		text.append("响应第1组召唤");
-		break;
-	case 22:
-		text.append("响应第2组召唤");
-		break;
-	case 23:
-		text.append("响应第3组召唤");
-		break;
-	case 24:
-		text.append("响应第4组召唤");
-		break;
-	case 25:
-		text.append("响应第5组召唤");
-		break;
-	case 26:
-		text.append("响应第6组召唤");
-		break;
-	case 27:
-		text.append("响应第7组召唤");
-		break;
-	case 28:
-		text.append("响应第8组召唤");
-		break;
-	case 29:
-		text.append("响应第9组召唤");
-		break;
-	case 30:
-		text.append("响应第10组召唤");
+		text.append("一般命令的否定认可");
 		break;
 	case 31:
-		text.append("响应第11组召唤");
-		break;
-	case 32:
-		text.append("响应第12组召唤");
-		break;
-	case 33:
-		text.append("响应第13组召唤");
-		break;
-	case 34:
-		text.append("响应第14组召唤");
-		break;
-	case 35:
-		text.append("响应第15组召唤");
-		break;
-	case 36:
-		text.append("响应第16组召唤");
-		break;
-	case 37:
-		text.append("响应计数量(累积量)站(总)召唤");
-		break;
-	case 38:
-		text.append("响应第1组计数量(累积量)召唤");
-		break;
-	case 39:
-		text.append("响应第2组计数量(累积量)召唤");
+		text.append("扰动数据的传送");
 		break;
 	case 40:
-		text.append("响应第3组计数量(累积量)召唤");
+		text.append("通用分类写命令 主站发出或子站肯定认可");
 		break;
 	case 41:
-		text.append("响应第4组计数量(累积量)召唤");
+		text.append("通用分类写命令的否定认可");
 		break;
 	case 42:
+		text.append("对通用分类读命令 主站发出或子站有效数据响应");
+		break;
 	case 43:
-		text.append("保留");
+		text.append("对通用分类读命令无效数据响应");
 		break;
 	case 44:
-		text.append("未知的类型标识，收到报文的类型标识不正确");
-		break;
-	case 45:
-		text.append("未知的传送原因，收到报文的传送原因不正确");
-		break;
-	case 46:
-		text.append("未知的应用服务数据单元公共地址，收到报文的公共地址不正确");
-		break;
-	case 47:
-		text.append("未知的信息对象地址，收到报文的信息对象地址不正确");
+		text.append("通用分类写确认");
 		break;
 	default:
 		text.append("未知，无法识别当前的传送原因");
 		break;
 	}
-	text.append("   P/N(bit7):");
-	if(cot[0] & 0x40)
+	return text;
+}
+
+QString IEC103asdu::funToText()
+{
+	QString text = "功能码fun:"+ QString::number(fun) + " ";
+	switch (fun)
 	{
-		text.append("1 否定确认");
+	case 254:
+		text.append("通用分类功能类型GEN");
+		break;
+	case 255:
+		text.append("全局功能类型GLB");
+		break;
+	default:
+		break;
 	}
-	else
-	{
-		text.append("0 肯定确认");
-	}
-	text.append("   T(bit8):");
-	if(cot[0] & 0x80)
-	{
-		text.append("1 试验状态");
-	}
-	else
-	{
-		text.append("0 未试验");
-	}
-	text.append("\r\n");
 	return text;
 }
 
@@ -646,12 +374,12 @@ IEC103asdudata *IEC103asdu::CreateAsduData(uchar type)
 	IEC103asdudata *asdudata = NULL;
 	switch (type)
 	{
-//	case 1:
-//		asdudata = new IEC103asdu1data;
-//		break;
-//	case 3:
-//		asdudata = new IEC103asdu3data;
-//		break;
+	case 10:
+		asdudata = new IEC103asdu10data;
+		break;
+	case 21:
+		asdudata = new IEC103asdu21data;
+		break;
 //	case 9:
 //		asdudata = new IEC103asdu9data;
 //		break;
