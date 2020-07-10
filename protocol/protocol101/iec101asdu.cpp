@@ -18,6 +18,7 @@
 #include "iec101asdu101data.h"
 #include "iec101asdu103data.h"
 #include "iec101asdu137data.h"
+#include "iec101asdu167data.h"
 
 IEC101asdudata::IEC101asdudata()
 {
@@ -97,6 +98,21 @@ bool IEC101asdu::init(QByteArray buff)
 	mText.append(CharToHexStr(buff.data()+i,comaddrlen) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
 	i += comaddrlen;
 
+	if (type == 167)			//由于167号报文数据长度不固定,单独处理
+	{
+		IEC101asdudata *mdata = CreateAsduData(type);
+		bool isOk;
+		isOk = mdata->init(buff.mid(i));
+		if (!isOk)
+		{
+			error = 1;
+			delete mdata;
+			mdata = NULL;
+			return false;
+		}
+		datalist.append(mdata);
+		return true;
+	}
 	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*(datalen+timelen)+other;
 	if( lengthtmp!= buff.count())
 	{
@@ -697,6 +713,9 @@ IEC101asdudata *IEC101asdu::CreateAsduData(uchar type)
 		break;
 	case 137:
 		asdudata = new IEC101asdu137data;
+		break;
+	case 167:
+		asdudata = new IEC101asdu167data;
 		break;
 	default:
 		break;
