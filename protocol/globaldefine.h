@@ -42,6 +42,8 @@ uint charTouint(uchar *data,int len,int model = 0);      //将len个uchar合成�
 int charToint(uchar *data,int len,int model = 0);      //将4个uchar合成一个int,model 0:低字节在前 1:高字节在前
 int charToint(char *data, int len, int model = 0);      //将4个char合成一个int,model 0:低字节在前 1:高字节在前
 short charToshortwithQ(uchar *data,uchar &ov,uchar &er,int model = 0);
+short charToshortwithQ(uchar *data, int model = 0);
+short charToshortwithQ(char *data, int model = 0);
 float charTofloat(char *data,int model = 0);
 float charTofloat(uchar *data,int model = 0);
 QDateTime charToDateTime(uchar *data,int len,int model);//将len个uchar合成一个日期,model时间类型

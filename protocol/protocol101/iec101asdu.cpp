@@ -42,7 +42,6 @@ IEC101asdu::IEC101asdu()
 	sqflag = 0;
 	datanum = 0;
 	datalen = 0;
-	timelen = 0;
 	other = 0;
 	mstate = STATE_NORMAL;
 }
@@ -59,9 +58,9 @@ bool IEC101asdu::init(QByteArray buff)
 	mText.clear();
 	qDeleteAll(datalist);
 	datalist.clear();
-	int cotlen = App::IEC_COTLEN;					//104cot长度
-	int comaddrlen = App::IEC_COMADDRLEN;			//104公共地址长度
-	int infaddrlen = App::IEC_INFADDRLEN;			//104信息体地址长度
+	int cotlen = App::IEC_COTLEN;					//cot长度
+	int comaddrlen = App::IEC_COMADDRLEN;			//公共地址长度
+	int infaddrlen = App::IEC_INFADDRLEN;			//信息体地址长度
 	int i = 0;
 	if(buff.count() < 2 +cotlen +comaddrlen)
 	{
@@ -70,7 +69,7 @@ bool IEC101asdu::init(QByteArray buff)
 	}
 
 	type = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t类型标识 " +typeToText()+"\r\n");
+	mText.append(CharToHexStr(buff.data()+i) + "\t" +typeToText()+"\r\n");
 	i++;
 
 	vsq = *(buff.data()+i);
@@ -100,6 +99,10 @@ bool IEC101asdu::init(QByteArray buff)
 	if (type == 167)			//由于167号报文数据长度不固定,单独处理
 	{
 		IEC101asdudata *mdata = CreateAsduData(type);
+		if (!mdata)
+		{
+			return false;
+		}
 		bool isOk;
 		isOk = mdata->init(buff.mid(i));
 		if (!isOk)
@@ -112,7 +115,7 @@ bool IEC101asdu::init(QByteArray buff)
 		datalist.append(mdata);
 		return true;
 	}
-	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*(datalen+timelen)+other;
+	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*datalen+other;
 	if( lengthtmp!= buff.count())
 	{
 		mText.append( "\r\n\t出错！通过VSQ与ASDU类型计算出ASDU长度为"+QString::number(lengthtmp)+"，而实际ASDU长度为"+QString::number(buff.count())+"。报文长度不符，因此报文有问题，下面的解析可能会出现异常\r\n");
@@ -122,16 +125,20 @@ bool IEC101asdu::init(QByteArray buff)
 	for(int index = 0;index<datanum;index++)
 	{
 		IEC101asdudata *mdata = CreateAsduData(type);
+		if (!mdata)
+		{
+			return false;
+		}
 		bool isOk;
 		if(index ==0 || sqflag == 0)
 		{
-			isOk = mdata->init(buff.mid(i,infaddrlen+datalen+timelen));
-			i += infaddrlen+datalen+timelen;
+			isOk = mdata->init(buff.mid(i,infaddrlen+datalen));
+			i += infaddrlen+datalen;
 		}
 		else
 		{
-			isOk = mdata->init(buff.mid(i,datalen+timelen),dataaddr+index);
-			i += datalen+timelen;
+			isOk = mdata->init(buff.mid(i,datalen),dataaddr+index);
+			i += datalen;
 		}
 		if(!isOk)
 		{
@@ -169,6 +176,10 @@ bool IEC101asdu::createData(IECDataConfig &config)
 	for(int i = 0;i<(config.vsq&0x7f);i++)
 	{
 		IEC101asdudata *newdata = CreateAsduData(config.asdutype);
+		if (!newdata)
+		{
+			return false;
+		}
 		newdata->createData(config);
 		datalist.append(newdata);
 	}
@@ -178,7 +189,9 @@ bool IEC101asdu::createData(IECDataConfig &config)
 
 QString IEC101asdu::typeToText()
 {
-	QString text = "ASDU"+ QString::number(type) + ":";
+	other = 0;
+	datalen = 0;
+	QString text = "ASDU"+ QString::number(type) + ":类型标识 ";
 	switch (type)
 	{
 	case 1:
@@ -262,18 +275,15 @@ QString IEC101asdu::typeToText()
 		break;
 	case 30:
 		text.append("带CP56Time2a时标的单点信息");
-		datalen = 1;
-		timelen = 7;
+		datalen = 8;
 		break;
 	case 31:
 		text.append("带CP56Time2a时标的双点信息");
-		datalen = 1;
-		timelen = 7;
+		datalen = 8;
 		break;
 	case 32:
 		text.append("带CP56Time2a时标的步位置信息");
-		datalen = 2;
-		timelen = 7;
+		datalen = 9;
 		break;
 	case 33:
 		text.append("带CP56Time2a时标的32比特串");
@@ -324,8 +334,7 @@ QString IEC101asdu::typeToText()
 		break;
 	case 50:
 		text.append("设定值命令, 短浮点数");
-		datalen = 4;
-		other = 1;
+		datalen = 5;
 		break;
 	case 51:
 		text.append("32比特串");
@@ -398,7 +407,7 @@ QString IEC101asdu::typeToText()
 		break;
 	case 103:
 		text.append("时钟同步命令");
-		timelen = 7;
+		datalen = 7;
 		break;
 	case 104:
 		text.append("测试命今");
@@ -477,11 +486,11 @@ QString IEC101asdu::typeToText()
 
 QString IEC101asdu::vsqToText()
 {
-	QString text = "可变结构限定词VSQ，";
+	QString text = "VSQ 可变结构限定词，";
 	sqflag = (vsq>>7) & 0x01;
 	datanum = vsq & 0x7f;
 
-	text.append("信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n\t");
+	text.append("信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n");
 	text.append("\tSQ(bit8):" + QString::number(vsq & 0x80,16).toUpper() + " ");
 	if(sqflag)
 	{
@@ -497,7 +506,7 @@ QString IEC101asdu::vsqToText()
 
 QString IEC101asdu::cotToText()
 {
-	QString text = "传送原因(bit1-6):"+ QString::number(cot[0] & 0x3f) + " ";
+	QString text = "COT(bit1-6):"+ QString::number(cot[0] & 0x3f) + " 传送原因:";
 	switch (cot[0] & 0x3f)
 	{
 	case 1:

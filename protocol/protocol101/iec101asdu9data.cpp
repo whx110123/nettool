@@ -21,7 +21,7 @@ bool IEC101asdu9data::init(QByteArray buff)
 	int infaddrlen = App::IEC_INFADDRLEN;			//信息体地址长度
 	infaddr = charTouint(buff.data(), infaddrlen);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	mText.append(CharToHexStr(buff.data(), infaddrlen) + "\t信息元素地址:" + QString::number(infaddr) + "\r\n");
+	mText.append(CharToHexStr(buff.data(), infaddrlen) + "\t信息元素地址:" + QString::number(infaddr) + "\t对应点号是:" + QString::number(infaddr - 0x4001) + "\r\n");
 
 	shortdata = charToint(buff.data() + infaddrlen,2);
 	mText.append(CharToHexStr(buff.data() + infaddrlen, 2) + "\t规一化值:" + QString::number(shortdata) + "\r\n");
@@ -40,7 +40,7 @@ bool IEC101asdu9data::init(QByteArray buff, uint addr)
 	mText.append("\t信息元素地址:" + QString::number(infaddr) + "\r\n");
 
 	shortdata = charToint(buff.data(),2);
-	mText.append(CharToHexStr(buff.data(), 2) + "\t规一化值:" + QString::number(shortdata) + "\r\n");
+	mText.append(CharToHexStr(buff.data(), 2) + "\t规一化值:" + QString::number(shortdata) + "\t对应点号是:" + QString::number(infaddr - 0x4001) + "\r\n");
 
 	qds = *(buff.data() + 2);
 	mText.append(CharToHexStr(buff.data() + 2) + "\t品质位:" + ivToText(qds) + "   " + ntToText(qds) + "   " + sbToText(qds) + "   " + blToText(qds) + "   " + ovToText(qds) + "\r\n");

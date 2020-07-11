@@ -6,7 +6,7 @@
 IEC101asdu167data::IEC101asdu167data()
 {
 	ctrl = 0;
-	devaddr = 0;
+	memset(devaddr, 0, sizeof(devaddr));
 	iec103len = 0;
 }
 
@@ -24,12 +24,22 @@ bool IEC101asdu167data::init(QByteArray buff)
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	mText.append(CharToHexStr(buff.data()) + "\t" + ctrlToText() + "\r\n");
 
-	devaddr = charTouint(buff.data() + 1, 2);
-	mText.append(CharToHexStr(buff.data() + 1, 2) + "\t保护装置地址:" + QString::number(devaddr) + "\r\n");
+//	devaddr = charTouint(buff.data() + 1, 2);
+	memcpy(devaddr, buff.data() + 1, 2);
+	mText.append(CharToHexStr(buff.data() + 1) + "\t保护装置地址L:" + QString::number(devaddr[0]) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + 2) + "\t保护装置地址H:" + QString::number(devaddr[1]) + "\r\n");
 
-	iec103len = *(buff.data()+2);
-	mText.append(CharToHexStr(buff.data() + 2) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
+	iec103len = *(buff.data()+3);
+	mText.append(CharToHexStr(buff.data() + 3) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
 
+	if (!asdu.init(buff.mid(4, iec103len)))
+	{
+		return false;
+	}
+	if (asdu.len != iec103len)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -49,7 +59,9 @@ bool IEC101asdu167data::init(QByteArray buff, uint addr)
 
 QString IEC101asdu167data::showToText()
 {
-	return mText;
+	QString text = mText;
+	text.append(asdu.showToText());
+	return text;
 }
 
 bool IEC101asdu167data::createData(IECDataConfig &config)

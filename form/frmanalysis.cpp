@@ -237,15 +237,20 @@ void frmAnalysis::on_PBtest_clicked()
 	App::IEC_COTLEN =ui->comboBox_1->currentText().toInt();
 	App::IEC_COMADDRLEN = ui->comboBox_2->currentText().toInt();
 	App::IEC_INFADDRLEN = ui->comboBox_3->currentText().toInt();
-	if(!myiec104->init(buffer))
+	int i = 1;
+	while (!buffer.isEmpty())
 	{
-		delete myiec104;
-		return;
+		if (!myiec104->init(buffer))
+		{
+			break;
+		}
+		ui->resulttext->append(QString("####第%1帧####").arg(i++));
+		ui->resulttext->append(myiec104->showToText());
+		buffer.remove(0, myiec104->apci.length + 2);
 	}
-	ui->resulttext->setText(myiec104->showToText());
-	if(myiec104)
+	if (myiec104)
 	{
 		delete myiec104;
-		myiec104 =NULL;
+		myiec104 = NULL;
 	}
 }

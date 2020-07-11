@@ -5,6 +5,7 @@
 
 QString spiToText(uchar ch);
 QString dpiToText(uchar ch);
+QString dpiteToText(uchar ch);
 QString scsToText(uchar ch);
 QString dcsToText(uchar ch);
 QString blToText(uchar ch);
@@ -12,6 +13,7 @@ QString sbToText(uchar ch);
 QString ntToText(uchar ch);
 QString ivToText(uchar ch);
 QString ovToText(uchar ch);
+QString erToText(uchar ch);
 QString qoiToText(uchar ch);
 QString coiToText(uchar ch);
 QString rqtToText(uchar ch);
@@ -26,4 +28,8 @@ QString qosToText(uchar ch);
 QString timeToText(char *time, int timelen);
 QString timeToText(uchar *time ,int timelen);
 
+QString ngdToText(uchar ch);
+QString kodToText(uchar ch);
+QString gdd1ToText(uchar ch);
+QString gdd3ToText(uchar ch);
 #endif // FUNCTOTEXT_H

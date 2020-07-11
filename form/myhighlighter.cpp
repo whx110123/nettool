@@ -17,19 +17,19 @@ void myhighlighter::highlightBlock(const QString &text)
 	myformat2.setFontPointSize(14);
 
 	QStringList patlis1;
-	patlis1  <<"OV(bit1):1 溢出"
-			<<"BL(bit5):1 被闭锁"
-		   <<"SB(bit6):1 被取代"
-		  <<"NT(bit7):1 非当前值"
-		 <<"IV(bit8):1 无效"
+	patlis1  <<" 溢出"
+			<<" 被闭锁"
+		   <<" 被取代"
+		  <<" 非当前值"
+		 <<" 无效"
 		<<"否定确认"
 	   <<"试验状态"
 	  <<"未知，无法识别当前的传送原因"
 	 <<"未完成此ASDU剩余报文的解析"
 	<<"出错！"
-	<<"CA(bit7):1 上次读数后计数器被调整"
-	<<"CY(bit6):1 在相应的累加周期内计数器溢出"
-	<<"ER(bit2):1 被测值无效";
+	<<" 上次读数后计数器被调整"
+	<<" 在相应的累加周期内计数器溢出"
+	<<" 被测值无效";
 
 	QStringList patlis2;
 	for (int i = 1;i<20;i++)

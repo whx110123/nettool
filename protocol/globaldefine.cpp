@@ -18,7 +18,7 @@ QString CharToHexStr(uchar *data, int len)
 	{
 		str.append(QString("%1").arg(QString::number(*(data + i), 16).toUpper(), 2, QLatin1Char('0')) + " ");
 	}
-	return str;
+	return str.trimmed();
 }
 
 uint charTouint(char *data, int len, int model)
@@ -78,6 +78,27 @@ short charToshortwithQ(uchar *data,uchar &ov,uchar &er,int model)
     }
     short tmp = *(short *)(&tmp1) /8;
     return tmp;
+}
+
+short charToshortwithQ(uchar * data, int model)
+{
+	ushort tmp1;
+	if (model == 0)
+	{
+		tmp1 = (ushort)data[0] + (ushort)data[1] * 0x100;
+	}
+	else if (model == 1)
+	{
+		tmp1 = (ushort)data[0] * 0x100 + (ushort)data[1];
+	}
+	short tmp = *(short *)(&tmp1) / 8;
+	return tmp;
+}
+
+short charToshortwithQ(char * data, int model)
+{
+	uchar *mdata = (uchar *)data;
+	return charToshortwithQ(mdata, model);
 }
 
 float charTofloat(char *data, int model)

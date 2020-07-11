@@ -6,6 +6,7 @@
 #include <QString>
 #include <dataconfig.h>
 
+
 class IEC103asdudata
 {
 public:
@@ -22,8 +23,11 @@ public:
 	QString mText;
 	int error;
 	int mstate;
+	int len;
 public:
 	uchar inf;
+public:
+	QString infToText();
 };
 
 class IEC103asdu
@@ -41,6 +45,7 @@ public:
 	QString mText;
 	int error;
 	int mstate;
+	int len;
 
 public:
 	QString typeToText();
@@ -55,7 +60,6 @@ public:
 	uchar sqflag;				//SQ 1：每个信息元素都带地址
 								//   0：只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1
 	int datanum;                //信息元素的数量
-	int asdulen;                //asdu长度
 //	int timelen;                //每个信息元素时间的字节数
 //	int other;                  //信息元素之外的字节数
 

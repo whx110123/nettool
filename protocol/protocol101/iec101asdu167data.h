@@ -1,7 +1,7 @@
 ﻿#ifndef IEC101ASDU167DATA_H
 #define IEC101ASDU167DATA_H
 #include "iec101asdu.h"
-
+#include "iec103asdu.h"
 
 class IEC101asdu167data : public IEC101asdudata
 {
@@ -15,8 +15,9 @@ public:
 
 public:
 	uchar ctrl;
-	ushort devaddr;
+	uchar devaddr[2];
 	uchar iec103len;
+	IEC103asdu asdu;
 private:
 	QString ctrlToText();
 };

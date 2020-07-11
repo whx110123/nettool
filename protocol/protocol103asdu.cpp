@@ -428,7 +428,7 @@ QString protocol103::protocol103asdu::dealGDD3(GROUPDATA *gpdata)
 	QString text ;
 	gpdata->number = gpdata->gdd[2] & 0x7f;
 	text.append("GDD3:NUMBER(bit1-7):" + QString::number(gpdata->number) + " 信息数目   ");
-	cont = (ngd>>7) & 0x01;
+	cont = (gpdata->gdd[2] >>7) & 0x01;
 	text.append("CONT(bit8):"+ QString::number(cont));
 	if(cont)
 	{

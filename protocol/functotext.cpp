@@ -4,7 +4,7 @@
 
 QString spiToText(uchar ch)
 {
-	QString text = "单点遥信(bit1):" + QString::number(ch & 0x01) + " ";
+	QString text = "单点遥信SPI(bit1):" + QString::number(ch & 0x01) + " ";
 	if(ch & 0x01)
 	{
 		text.append("合位");
@@ -26,6 +26,30 @@ QString dpiToText(uchar ch)
 		break;
 	case 2:
 		text.append("合位");
+		break;
+	default:
+		text.append("未知状态");
+		break;
+	}
+	return text;
+}
+
+QString dpiteToText(uchar ch)
+{
+	QString text = "带瞬变与差错的双点遥信DPI(bit1-2):" + QString::number(ch & 0x03) + " ";
+	switch (ch & 0x03)
+	{
+	case 0:
+		text.append("瞬变状态");
+		break;
+	case 1:
+		text.append("分位");
+		break;
+	case 2:
+		text.append("合位");
+		break;
+	case 3:
+		text.append("差错状态");
 		break;
 	default:
 		text.append("未知状态");
@@ -132,6 +156,20 @@ QString ovToText(uchar ch)
 	else
 	{
 		text.append("未溢出");
+	}
+	return text;
+}
+
+QString erToText(uchar ch)
+{
+	QString text = "ER(bit2):" + QString::number(ch & 0x02, 16).toUpper() + " ";
+	if (ch)
+	{
+		text.append("被测值无效");
+	}
+	else
+	{
+		text.append("被测值有效");
 	}
 	return text;
 }
@@ -294,7 +332,6 @@ QString suToText(uchar ch)
 	{
 		text.append("标准时间");
 	}
-	text.append("   ");
 	return text;
 }
 
@@ -319,7 +356,6 @@ QString quToText(uchar ch)
 		text.append("保留");
 		break;
 	}
-	text.append("   ");
 	return text;
 }
 
@@ -378,7 +414,6 @@ QString vtiToText(uchar ch)
 	{
 		text.append("设备未在瞬变状态");
 	}
-	text.append("\r\n");
 	return text;
 }
 
@@ -433,5 +468,191 @@ QString timeToText(uchar *time, int timelen)
 	}
 
 	text.append(CharToHexStr(time[6]) + "\t年(bit1-7):" + QString::number(datetime.date().year()) + "\r\n");
+	return text;
+}
+
+QString ngdToText(uchar ch)
+{
+	QString text;
+	text.append("NO(bit1-6):" + QString::number(ch & 0x3f) + " 通用分类数据集数目\r\n\t");
+	text.append("COUNT(bit7):" + QString::number(ch & 0x40,16).toUpper() + " 具有相同返回信息标识符(RII)的应用服务数据单元的一位计数器位\r\n\t");
+	text.append("CONT(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
+	if (ch & 0x80)
+	{
+		text.append("后面跟着具有相同返回信息标识符(RII)的应用服务数据单元");
+	}
+	else
+	{
+		text.append("后面未跟着具有相同返回信息标识符(RII)的应用服务数据单元");
+	}
+	return text;
+}
+
+QString kodToText(uchar ch)
+{
+	QString text = "KOD:" + QString::number(ch) + " ";
+	switch (ch)
+	{
+	case 0:
+		text.append("无所指定的描述类别");
+		break;
+	case 1:
+		text.append("实际值");
+		break;
+	case 2:
+		text.append("缺省值");
+		break;
+	case 3:
+		text.append("量程(最小值最大值步长)");
+		break;
+	case 5:
+		text.append("精度(n m)");
+		break;
+	case 6:
+		text.append("因子");
+		break;
+	case 7:
+		text.append("%参比");
+		break;
+	case 8:
+		text.append("列表");
+		break;
+	case 9:
+		text.append("量纲");
+		break;
+	case 10:
+		text.append("描述");
+		break;
+	case 12:
+		text.append("口令条目");
+		break;
+	case 13:
+		text.append("只读");
+		break;
+	case 14:
+		text.append("只写");
+		break;
+	case 19:
+		text.append("相应的功能类型和信息序号");
+		break;
+	case 20:
+		text.append("相应的事件");
+		break;
+	case 21:
+		text.append("列表的文本阵列");
+		break;
+	case 22:
+		text.append("列表的值阵列");
+		break;
+	case 23:
+		text.append("相关联的条目");
+		break;
+	default:
+		text.append("备用");
+		break;
+	}
+	return text;
+}
+
+QString gdd1ToText(uchar ch)
+{
+	QString text = "GDD1:" + QString::number(ch) + " ";
+	switch (ch)
+	{
+	case 0:
+		text.append("无数据");
+		break;
+	case 1:
+		text.append("OS8(ASCII8位码)");
+		break;
+	case 2:
+		text.append("成组8位串");
+		break;
+	case 3:
+		text.append("无符号整数");
+		break;
+	case 4:
+		text.append("整数");
+		break;
+	case 5:
+		text.append("无符号浮点数");
+		break;
+	case 6:
+		text.append("浮点数");
+		break;
+	case 7:
+		text.append("IEEE标准754短实数");
+		break;
+	case 8:
+		text.append("IEEE标准754实数");
+		break;
+	case 9:
+		text.append("双点信息");
+		break;
+	case 10:
+		text.append("单点信息");
+		break;
+	case 11:
+		text.append("带瞬变和差错的双点信息");
+		break;
+	case 12:
+		text.append("带品质描述词的被测值");
+		break;
+	case 14:
+		text.append("二进制时间");
+		break;
+	case 15:
+		text.append("通用分类标识序号");
+		break;
+	case 16:
+		text.append("相对时间");
+		break;
+	case 17:
+		text.append("功能类型和信息序号");
+		break;
+	case 18:
+		text.append("带时标的报文");
+		break;
+	case 19:
+		text.append("带相对时间的时标报文");
+		break;
+	case 20:
+		text.append("带相对时间的时标的被测值");
+		break;
+	case 21:
+		text.append("外部文本序号");
+		break;
+	case 22:
+		text.append("通用分类回答码");
+		break;
+	case 23:
+		text.append("数据结构");
+		break;
+	case 24:
+		text.append("索引");
+		break;
+	case 201:
+		text.append("遥脉数据");
+		break;
+	default:
+		text.append("备用");
+		break;
+	}
+	return text;
+}
+
+QString gdd3ToText(uchar ch)
+{
+	QString text;
+	text.append("GDD3:NUMBER(bit1-7):" + QString::number(ch & 0x7f) + " 信息数目   ");
+	text.append("CONT(bit8):" + QString::number(ch & 0x80 , 16).toUpper() + " ");
+	if (ch & 0x80)
+	{
+		text.append("后面跟随的数据元素具有相同的返回信息标识符(RII)");
+	}
+	else
+	{
+		text.append("后面未跟随数据元素");
+	}
 	return text;
 }
