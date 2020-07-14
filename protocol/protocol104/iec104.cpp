@@ -1,15 +1,8 @@
 ﻿#include "iec104.h"
 #include "globaldefine.h"
 
-#include <iec101asdu1data.h>
-#include <iec101asdu100data.h>
-#include <iec101asdu13data.h>
-#include <iec101asdu70data.h>
-
 IEC104::IEC104()
 {
-
-
 	error = 0;
 	mstate = STATE_INIT;
 }
@@ -72,12 +65,8 @@ bool IEC104::init(QByteArray buff)
 QString IEC104::showToText()
 {
 	QString text;
-
 	text.append(apci.showToText());
-
 	text.append(asdu.showToText());
-
-
 	return text;
 }
 

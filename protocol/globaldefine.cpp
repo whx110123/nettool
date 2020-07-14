@@ -183,3 +183,13 @@ QByteArray uintToBa(uint data, int len)
 	}
 	return tmp;
 }
+
+uchar crcsum(char *data, int start, int end)
+{
+	uchar tmp = 0;
+	for (int i = start;i < end+1 ;i++)
+	{
+		tmp += *(uchar *)(data +i);
+	}
+	return tmp;
+}

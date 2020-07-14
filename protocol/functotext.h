@@ -3,6 +3,14 @@
 
 #include "globaldefine.h"
 
+QString prmToText(uchar ch);
+QString fcbToText(uchar ch);
+QString fcvToText(uchar ch);
+QString acdToText(uchar ch);
+QString dfcToText(uchar ch);
+QString cw1ToText(uchar ch);
+QString cw2ToText(uchar ch);
+
 QString spiToText(uchar ch);
 QString dpiToText(uchar ch);
 QString dpiteToText(uchar ch);

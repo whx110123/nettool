@@ -50,6 +50,8 @@ QDateTime charToDateTime(uchar *data,int len,int model);//将len个uchar合成�
 QDateTime charToDateTime(char *data, int len, int model);//将len个char合成一个日期,model时间类型
 QByteArray uintToBa(uint data,int len);
 
+uchar crcsum(char *data,int start,int end);
+
 
 
 #define IEC_104 "104"

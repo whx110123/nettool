@@ -1,4 +1,6 @@
 HEADERS += \
+	$$PWD/iec101.h \
+	$$PWD/iec101apci.h \
 	$$PWD/iec101asdu.h \
 	$$PWD/iec101asdu100data.h \
 	$$PWD/iec101asdu101data.h \
@@ -20,6 +22,8 @@ HEADERS += \
 	$$PWD/iec101asdu9data.h
 
 SOURCES += \
+	$$PWD/iec101.cpp \
+	$$PWD/iec101apci.cpp \
 	$$PWD/iec101asdu.cpp \
 	$$PWD/iec101asdu100data.cpp \
 	$$PWD/iec101asdu101data.cpp \

@@ -249,7 +249,7 @@ bool IEC104apci::init(QByteArray buff)
 		return false;
 	}
 
-	mText.append(CharToHexStr(buff.data())+"\t启动字符:0x68\n");
+	mText.append(CharToHexStr(buff.data())+"\t启动字符:0x68\r\n");
 	length = mRecvData.at(1);
 	mText.append(CharToHexStr(buff.data()+1)+"\t长度域:"+QString::number(length) +"\r\n");
 	uchar tmp = mRecvData.at(2);

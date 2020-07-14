@@ -1,6 +1,132 @@
 ﻿#include "functotext.h"
 
+QString prmToText(uchar ch)
+{
+	QString text = "PRM(bit7):" + QString::number(ch & 0x40,16).toUpper() + " ";
+	if(ch & 0x40)
+	{
+		text.append("启动站向从动站传输的报文");
+	}
+	else
+	{
+		text.append("从动(响应)站向启动站传输的报文");
+	}
+	return text;
+}
 
+QString fcbToText(uchar ch)
+{
+	QString text = "FCB(bit6):" + QString::number(ch & 0x20,16).toUpper() + " 帧计数位";
+	return text;
+}
+
+QString fcvToText(uchar ch)
+{
+	QString text = "FCV(bit5):" + QString::number(ch & 0x10,16).toUpper() + " ";
+	if(ch & 0x10)
+	{
+		text.append("表示帧计数位FCB的变化有效");
+	}
+	else
+	{
+		text.append("表示帧计数位FCB的变化无效");
+	}
+	return text;
+}
+
+QString acdToText(uchar ch)
+{
+	QString text = "ACD(bit6):" + QString::number(ch & 0x20,16).toUpper() + " ";
+	if(ch & 0x20)
+	{
+		text.append("从动站有1级用户数据要求访问");
+	}
+	else
+	{
+		text.append("从动站无1级用户数据要求访问");
+	}
+	return text;
+}
+
+QString dfcToText(uchar ch)
+{
+	QString text = "DFC(bit5):" + QString::number(ch & 0x10,16).toUpper() + " ";
+	if(ch & 0x10)
+	{
+		text.append("表示从动站接收后续报文将引起数据溢出");
+	}
+	else
+	{
+		text.append("表示从动站可以接收后续报文");
+	}
+	return text;
+}
+
+QString cw1ToText(uchar ch)
+{
+	QString text = "功能码(bit1-4):" + QString::number(ch & 0x0f) + " ";
+	switch (ch & 0x0f)
+	{
+	case 0:
+		text.append("帧类型:发送/确认帧  功能描述:复位通信单元  帧计数有效位FCV:0");
+		break;
+	case 1:
+		text.append("帧类型:发送/确认帧  功能描述:用户进程复位  帧计数有效位FCV:0");
+		break;
+	case 3:
+		text.append("帧类型:发送/确认帧  功能描述:传送数据  帧计数有效位FCV:1");
+		break;
+	case 4:
+		text.append("帧类型:发送/无回答帧  功能描述:传送数据  帧计数有效位FCV:0");
+		break;
+	case 7:
+		text.append("帧类型:复位帧计数位  功能描述:传送数据  帧计数有效位FCV:0");
+		break;
+	case 8:
+		text.append("帧类型:要求访问的请求  功能描述:以要求访问位响应  帧计数有效位FCV:0");
+		break;
+	case 9:
+		text.append("帧类型:请求/响应帧  功能描述:召唤链路状态  帧计数有效位FCV:0");
+		break;
+	case 10:
+		text.append("帧类型:请求/响应帧  功能描述:召唤1级数据  帧计数有效位FCV:1");
+		break;
+	case 11:
+		text.append("帧类型:请求/响应帧  功能描述:召唤2级数据  帧计数有效位FCV:1");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}
+
+QString cw2ToText(uchar ch)
+{
+	QString text = "功能码(bit1-4):" + QString::number(ch & 0x0f) + " ";
+	switch (ch & 0x0f)
+	{
+	case 0:
+		text.append("帧类型:确认帧  功能描述:认可，肯定认可");
+		break;
+	case 1:
+		text.append("帧类型:确认帧  功能描述:否定认可，未收到报文，链路忙");
+		break;
+	case 8:
+		text.append("帧类型:响应帧  功能描述:以数据包响应请求帧");
+		break;
+	case 9:
+		text.append("帧类型:响应帧  功能描述:从站没有所召唤的数据");
+		break;
+	case 11:
+		text.append("帧类型:响应帧  功能描述:响应链路状态或要求访问");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}
 
 QString spiToText(uchar ch)
 {
@@ -656,3 +782,6 @@ QString gdd3ToText(uchar ch)
 	}
 	return text;
 }
+
+
+
