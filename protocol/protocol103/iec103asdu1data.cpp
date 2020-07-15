@@ -5,7 +5,7 @@
 
 IEC103asdu1data::IEC103asdu1data()
 {
-	dip = 0;
+	dpi = 0;
 	sin = 0;
 }
 
@@ -23,6 +23,9 @@ bool IEC103asdu1data::init(QByteArray buff)
 	inf = *(buff.data() + len);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
+	len++;
+	dpi = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + dpiToText(dpi) + "\r\n");
 	len++;
 	datetime = charToDateTime(buff.data() + len, 4, BINARYTIME2A);
 	mText.append(timeToText(buff.data() + len, 4));

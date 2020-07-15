@@ -15,7 +15,7 @@ public:
 	virtual bool createData(IECDataConfig &config);
 
 public:
-	uchar dip;
+	uchar dpi;
 	QDateTime datetime;
 	uchar sin;
 };

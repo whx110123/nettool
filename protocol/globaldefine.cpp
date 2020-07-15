@@ -184,6 +184,59 @@ QByteArray uintToBa(uint data, int len)
 	return tmp;
 }
 
+QByteArray dataTimeToBa(QDateTime datatime, int len, int model)
+{
+
+	QByteArray ba;
+	switch (model)
+	{
+	case BINARYTIME2A:
+	{
+		ushort tmp = datatime.time().msec() + datatime.time().second() * 1000;
+		char ch[2];
+		memcpy(ch, &tmp, 2);
+		ba.append(ch, 2);
+		if (len == 2)
+		{
+			break;
+		}
+		uchar uch = datatime.time().minute();
+		ba.append(uch);
+		if (len == 3)
+		{
+			break;
+		}
+		uch = datatime.time().hour();
+		ba.append(uch);
+		if (len == 4)
+		{
+			break;
+		}
+		uch = datatime.date().dayOfWeek();
+		uch = uch << 5 + datatime.date().day();
+		ba.append(uch);
+		if (len == 5)
+		{
+			break;
+		}
+		uch = datatime.date().month();
+		ba.append(uch);
+		if (len == 6)
+		{
+			break;
+		}
+		uch = datatime.date().year() % 100;
+		ba.append(uch);
+		break;
+	}
+	case BINARYTIME2B:
+		break;
+	default:
+		break;
+	}
+	return ba;
+}
+
 uchar crcsum(char *data, int start, int end)
 {
 	uchar tmp = 0;

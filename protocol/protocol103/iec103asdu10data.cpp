@@ -173,6 +173,11 @@ bool IEC103asdudataset::init(QByteArray buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + kodToText(kod) + "\r\n");
 	len++;
 
+	if (buff.size() == len)
+	{
+		return true;
+	}
+
 	memcpy(gdd, buff.data()+len, 3);
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + gdd1ToText(gdd[0]) + "\r\n");
 	mText.append(CharToHexStr(buff.data() + len+1) + "\tGDD2:" + QString::number(gdd[1]) + " 数据宽度\r\n");
