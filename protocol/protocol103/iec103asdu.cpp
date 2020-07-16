@@ -425,9 +425,9 @@ IEC103asdudata *IEC103asdu::CreateAsduData(uchar type)
 	case 10:
 		asdudata = new IEC103asdu10data;
 		break;
-// 	case 21:
-// 		asdudata = new IEC103asdu21data;
-// 		break;
+	case 21:
+		asdudata = new IEC103asdu21data;
+		break;
 // 	case 44:
 // 		asdudata = new IEC103asdu44data;
 // 		break;

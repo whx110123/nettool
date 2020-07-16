@@ -41,6 +41,11 @@ bool IEC103asdu21data::init(QByteArray buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + ngdToText(ngd) + "\r\n");
 	len++;
 
+	if (len == buff.size())
+	{
+		return true;
+	}
+
 	uchar *gin = (uchar *)(buff.data() + len);
 	for (int index = 0; index < setnum; index++)
 	{
