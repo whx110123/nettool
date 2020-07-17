@@ -11,6 +11,7 @@ frmFunctions::frmFunctions(QWidget *parent) :
     m_dialogdealdata = new DialogDealData(this);
 	m_dialogintroduction = new DialogIntroduction(this);
 	m_dialogdebug = new DialogDebug(this);
+	m_dialogpma = new DialogPMA(this);
     initfrom();
 }
 
@@ -48,4 +49,9 @@ void frmFunctions::on_pbintro_clicked()
 void frmFunctions::on_pbfunc3_clicked()
 {
 	m_dialogdebug->show();
+}
+
+void frmFunctions::on_pbfunc4_clicked()
+{
+	m_dialogpma->show();
 }

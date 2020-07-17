@@ -185,7 +185,7 @@
        </size>
       </property>
       <property name="text">
-       <string>预留</string>
+       <string>报文模拟</string>
       </property>
      </widget>
     </item>
@@ -211,7 +211,7 @@
        </size>
       </property>
       <property name="text">
-       <string>介绍</string>
+       <string>1.模拟104主站</string>
       </property>
      </widget>
     </item>

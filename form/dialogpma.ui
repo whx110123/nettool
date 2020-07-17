@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1058</width>
-    <height>764</height>
+    <height>769</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,35 @@
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="1" column="0" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QComboBox" name="comboBox_connect">
+          <item>
+           <property name="text">
+            <string>TCP客户端</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>TCP服务端</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>UDP客户端</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>UDP服务端</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM串口</string>
+           </property>
+          </item>
+         </widget>
+        </item>
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
@@ -100,14 +129,14 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_11">
+         <widget class="QPushButton" name="pushButton_reflash">
           <property name="text">
            <string>暂停刷新</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="pushButton_clear">
           <property name="text">
            <string>清空</string>
           </property>
@@ -197,7 +226,7 @@
             <string>定值组号</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_asduaddr_2">
+          <widget class="QLineEdit" name="lineEdit_setGroup">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -223,7 +252,7 @@
             <string>定值区号</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_asduaddr_3">
+          <widget class="QLineEdit" name="lineEdit_setNo">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -249,7 +278,7 @@
             <string>装置地址</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_asduaddr_4">
+          <widget class="QLineEdit" name="lineEdit_devaddr">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -262,7 +291,7 @@
             <string>1</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="pushButton_calltitle">
            <property name="geometry">
             <rect>
              <x>150</x>
@@ -275,7 +304,7 @@
             <string>召唤组标题</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="pushButton_callRange">
            <property name="geometry">
             <rect>
              <x>360</x>
@@ -301,7 +330,7 @@
             <string>选择定值区号</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="pushButton_callsetting">
            <property name="geometry">
             <rect>
              <x>150</x>
@@ -314,7 +343,7 @@
             <string>召唤定值</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_5">
+          <widget class="QPushButton" name="pushButton_calldimension">
            <property name="geometry">
             <rect>
              <x>360</x>
@@ -327,7 +356,7 @@
             <string>召唤定值量纲</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_6">
+          <widget class="QPushButton" name="pushButton_calldescription">
            <property name="geometry">
             <rect>
              <x>250</x>
@@ -340,7 +369,7 @@
             <string>召唤定值描述</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_7">
+          <widget class="QPushButton" name="pushButton_changesetNo">
            <property name="geometry">
             <rect>
              <x>150</x>
@@ -353,7 +382,7 @@
             <string>修改定值区号</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_8">
+          <widget class="QPushButton" name="pushButton_callAccuracy">
            <property name="geometry">
             <rect>
              <x>360</x>
@@ -392,7 +421,7 @@
             <string>定值条目</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_asduaddr_5">
+          <widget class="QLineEdit" name="lineEdit_setInf">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -418,7 +447,7 @@
             <string>定值</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_asduaddr_6">
+          <widget class="QLineEdit" name="lineEdit_setting">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -457,23 +486,23 @@
             <string>总召</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_sendUstop">
+          <widget class="QPushButton" name="pushButton_sendUstart">
            <property name="geometry">
             <rect>
-             <x>150</x>
+             <x>40</x>
              <y>20</y>
              <width>81</width>
              <height>23</height>
             </rect>
            </property>
            <property name="text">
-            <string>发停止-U帧</string>
+            <string>发启动-U帧</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_sendS">
            <property name="geometry">
             <rect>
-             <x>40</x>
+             <x>200</x>
              <y>20</y>
              <width>81</width>
              <height>23</height>
@@ -486,8 +515,8 @@
           <widget class="QPushButton" name="pushButton_sendUtest">
            <property name="geometry">
             <rect>
-             <x>250</x>
-             <y>20</y>
+             <x>200</x>
+             <y>50</y>
              <width>81</width>
              <height>23</height>
             </rect>
@@ -501,9 +530,9 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>550</y>
-            <width>531</width>
-            <height>71</height>
+            <y>490</y>
+            <width>541</width>
+            <height>131</height>
            </rect>
           </property>
           <property name="title">
@@ -579,7 +608,7 @@
             <string>信息体地址</string>
            </property>
           </widget>
-          <widget class="QComboBox" name="comboBox">
+          <widget class="QComboBox" name="comboBox_remotetype">
            <property name="geometry">
             <rect>
              <x>120</x>
@@ -589,7 +618,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit">
+          <widget class="QLineEdit" name="lineEdit_setvalue">
            <property name="geometry">
             <rect>
              <x>120</x>
@@ -599,7 +628,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QComboBox" name="comboBox_2">
+          <widget class="QComboBox" name="comboBox_value">
            <property name="geometry">
             <rect>
              <x>200</x>
@@ -609,7 +638,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_2">
+          <widget class="QLineEdit" name="lineEdit_infaddr">
            <property name="geometry">
             <rect>
              <x>120</x>
@@ -619,7 +648,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QCheckBox" name="checkBox">
+          <widget class="QCheckBox" name="checkBox_isHex">
            <property name="geometry">
             <rect>
              <x>200</x>
@@ -632,7 +661,7 @@
             <string>16进制</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_12">
+          <widget class="QPushButton" name="pushButton_cancel">
            <property name="geometry">
             <rect>
              <x>290</x>
@@ -645,7 +674,7 @@
             <string>取消</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_13">
+          <widget class="QPushButton" name="pushButton_select">
            <property name="geometry">
             <rect>
              <x>290</x>
@@ -658,7 +687,7 @@
             <string>选择</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_14">
+          <widget class="QPushButton" name="pushButton_execute">
            <property name="geometry">
             <rect>
              <x>290</x>
@@ -677,7 +706,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QTextEdit" name="textEdit"/>
+       <widget class="QTextEdit" name="textEdit_data"/>
       </item>
       <item row="0" column="0" colspan="2">
        <widget class="QLabel" name="label_10">

@@ -6,6 +6,7 @@
 #include "dialogdealdata.h"
 #include "dialogintroduction.h"
 #include "dialogdebug.h"
+#include "dialogpma.h"
 
 namespace Ui {
 class frmFunctions;
@@ -27,8 +28,9 @@ private slots:
 
 	void on_pbintro_clicked();
 
-
 	void on_pbfunc3_clicked();
+
+	void on_pbfunc4_clicked();
 
 private:
     Ui::frmFunctions *ui;
@@ -37,7 +39,7 @@ public:
     DialogDealData *m_dialogdealdata;
 	DialogIntroduction *m_dialogintroduction;
 	DialogDebug *m_dialogdebug;
-
+	DialogPMA *m_dialogpma;
 };
 
 #endif // FRMFUNCTIONS_H

@@ -9,28 +9,28 @@ DialogSendData::DialogSendData(QWidget *parent) :
 {
 	ui->setupUi(this);
 	initfrom();
-	piec104 = NULL;
+//	piec104 = NULL;
 }
 
 DialogSendData::~DialogSendData()
 {
 	delete ui;
-	if(piec104)
-	{
-		delete piec104;
-		piec104 = NULL;
-	}
+//	if(piec104)
+//	{
+//		delete piec104;
+//		piec104 = NULL;
+//	}
 }
 
 void DialogSendData::initfrom()
 {
 	timercycle = new QTimer(this);
-	handleDataTimer = new QTimer(this);
+//	handleDataTimer = new QTimer(this);
 	recflag = 0;
-	haveData = false;
+//	haveData = false;
 
 	connect(timercycle, SIGNAL(timeout()), this, SLOT(sendDatacycle()));
-	connect(handleDataTimer, SIGNAL(timeout()), this, SLOT(handleData()));
+//	connect(handleDataTimer, SIGNAL(timeout()), this, SLOT(handleData()));
 	ui->comboBox->addItems(App::Transferlst);
 	mapline.insert(1,ui->linedata1);
 	mapline.insert(2,ui->linedata2);
@@ -92,13 +92,7 @@ void DialogSendData::dealData(const QString &data, const QString &title)
 	if(ui->comboBox->currentText().contains(title))
 	{
 		recflag = 1;
-		if(ui->pushButton_start->text() == QString("停止"))
-		{
-			recvData.append(QUIHelper::hexStrToByteArray(data));
-		}
 	}
-
-
 }
 
 void DialogSendData::sendDatacycle()
@@ -146,68 +140,68 @@ void DialogSendData::sendDatacycle()
 
 }
 
-void DialogSendData::handleData()
-{
-	if(!piec104)
-	{
-		return;
-	}
-	while(!recvData.isEmpty())
-	{
-		if(!piec104->init(recvData))
-		{
-			stopdebug();
-			QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟\r\n"+piec104->mRecvData.toHex(' '));
-			return;
-		}
-		else
-		{
-			haveData = true;
-			recvData.remove(0,piec104->apci.length+2);
-		}
-	}
-	if(haveData || piec104->mstate == STATE_INIT)
-	{
-		haveData = false;
-		config.state = piec104->mstate;
-		config.isMaster = true;
-		if(piec104->createData(config))
-		{
-			QString str = config.data.toHex(' ');
-			emitsignals(str);
-		}
-	}
-}
+//void DialogSendData::handleData()
+//{
+//	if(!piec104)
+//	{
+//		return;
+//	}
+//	while(!recvData.isEmpty())
+//	{
+//		if(!piec104->init(recvData))
+//		{
+//			stopdebug();
+//			QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟\r\n"+piec104->mRecvData.toHex(' '));
+//			return;
+//		}
+//		else
+//		{
+//			haveData = true;
+//			recvData.remove(0,piec104->apci.length+2);
+//		}
+//	}
+//	if(haveData || piec104->mstate == STATE_INIT)
+//	{
+//		haveData = false;
+//		config.state = piec104->mstate;
+//		config.isMaster = true;
+//		if(piec104->createData(config))
+//		{
+//			QString str = config.data.toHex(' ');
+//			emitsignals(str);
+//		}
+//	}
+//}
 
-void DialogSendData::startdebug()
-{
-	recvData.clear();
-	ui->pushButton_start->setText("停止");
-	if(!piec104)
-	{
-		piec104 = new IEC104;
-	}
-	piec104->mstate = STATE_INIT;
-	App::IEC_COMADDR = ui->lineEdit_asduaddr->text().toUInt();
-	handleDataTimer->start(1000);
-}
+//void DialogSendData::startdebug()
+//{
+//	recvData.clear();
+//	ui->pushButton_start->setText("停止");
+//	if(!piec104)
+//	{
+//		piec104 = new IEC104;
+//	}
+//	piec104->mstate = STATE_INIT;
+//	App::IEC_COMADDR = ui->lineEdit_asduaddr->text().toUInt();
+//	handleDataTimer->start(1000);
+//}
 
-void DialogSendData::stopdebug()
-{
-	recvData.clear();
-	ui->pushButton_start->setText("开始");
-	if(handleDataTimer->isActive())
-	{
-		handleDataTimer->stop();
-	}
-	if(piec104)
-	{
-		piec104->mstate = STATE_INIT;
-		piec104->apci.control.localRecvNo = 0;
-		piec104->apci.control.localSendNo = 0;
-	}
+//void DialogSendData::stopdebug()
+//{
+//	recvData.clear();
+//	ui->pushButton_start->setText("开始");
+//	if(handleDataTimer->isActive())
+//	{
+//		handleDataTimer->stop();
+//	}
+//	if(piec104)
+//	{
+//		piec104->mstate = STATE_INIT;
+//		piec104->apci.control.localRecvNo = 0;
+//		piec104->apci.control.localSendNo = 0;
+//	}
 
-}
+//}
 
 void DialogSendData::emitsignals(const QString &data)
 {
@@ -428,35 +422,35 @@ void DialogSendData::on_btnsendfile_clicked()
 	}
 }
 
-void DialogSendData::on_pushButton_start_clicked()
-{
-	if(ui->pushButton_start->text() == QString("开始"))
-	{
-		startdebug();
-	}
-	else
-	{
-		stopdebug();
-	}
-}
+//void DialogSendData::on_pushButton_start_clicked()
+//{
+//	if(ui->pushButton_start->text() == QString("开始"))
+//	{
+//		startdebug();
+//	}
+//	else
+//	{
+//		stopdebug();
+//	}
+//}
 
-void DialogSendData::on_pushButton_sendasdu_clicked()
-{
-	if(ui->pushButton_start->text() == QString("停止"))
-	{
-		QByteArray tmp = QUIHelper::hexStrToByteArray(ui->textEdit_asdu->toPlainText());
-		if(piec104)
-		{
-			config.state = STATE_USER;
-			config.isMaster = true;
-			if(piec104->createData(config))
-			{
-				config.data.append(tmp);
-				char len = config.data.size()-2;
-				config.data.replace(1,1,&len,1);
-				QString str = config.data.toHex(' ');
-				emitsignals(str);
-			}
-		}
-	}
-}
+//void DialogSendData::on_pushButton_sendasdu_clicked()
+//{
+//	if(ui->pushButton_start->text() == QString("停止"))
+//	{
+//		QByteArray tmp = QUIHelper::hexStrToByteArray(ui->textEdit_asdu->toPlainText());
+//		if(piec104)
+//		{
+//			config.state = STATE_USER;
+//			config.isMaster = true;
+//			if(piec104->createData(config))
+//			{
+//				config.data.append(tmp);
+//				char len = config.data.size()-2;
+//				config.data.replace(1,1,&len,1);
+//				QString str = config.data.toHex(' ');
+//				emitsignals(str);
+//			}
+//		}
+//	}
+//}
