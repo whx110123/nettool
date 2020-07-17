@@ -242,6 +242,8 @@ void frmAnalysis::on_PBtest_clicked()
 	{
 		if (!myiec104->init(buffer))
 		{
+			ui->resulttext->append(QString("####第%1帧####").arg(i++));
+			ui->resulttext->append(myiec104->showToText());
 			break;
 		}
 		ui->resulttext->append(QString("####第%1帧####").arg(i++));

@@ -64,6 +64,7 @@ void DialogPMA::handleData()
 	{
 		haveData = false;
 		config.state = piec104->mstate;
+		qDebug() << "state = " << piec104->mstate;
 		config.isMaster = true;
 		if(piec104->createData(config))
 		{

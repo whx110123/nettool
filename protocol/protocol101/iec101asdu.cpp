@@ -107,6 +107,7 @@ bool IEC101asdu::init(QByteArray buff)
 		isOk = mdata->init(buff.mid(i));
 		if (!isOk)
 		{
+			mText.append(mdata->showToText());
 			error = 1;
 			delete mdata;
 			mdata = NULL;
@@ -667,6 +668,7 @@ QString IEC101asdu::cotToText()
 IEC101asdudata *IEC101asdu::CreateAsduData(uchar type)
 {
 	IEC101asdudata *asdudata = NULL;
+	mstate = STATE_NORMAL;
 	switch (type)
 	{
 	case 1:

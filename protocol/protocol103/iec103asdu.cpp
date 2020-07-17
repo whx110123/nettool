@@ -141,6 +141,7 @@ bool IEC103asdu::init(QByteArray buff)
 		}
 		if(!isOk)
 		{
+			mText.append(mdata->showToText());
 			error = 1;
 			delete mdata;
 			mdata =NULL;
