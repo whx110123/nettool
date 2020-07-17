@@ -92,16 +92,18 @@ bool IEC104::createData(IECDataConfig &config)
 			config.cot = 0x06;
 			break;
 		case STATE_USER:
-			config.controltype = ITYPE;
-			config.asdutype = 0;
+			config.controltype = ITYPE;	
+			break;
+		case STATE_HOTKEY:
 			break;
 		default:
+			return false;
 			break;
 		}
 	}
 	else
 	{
-
+		return false;
 	}
 
 	if(!apci.createData(config))
@@ -118,6 +120,10 @@ bool IEC104::createData(IECDataConfig &config)
 	if(config.data.size()<5)
 	{
 		return false;
+	}
+	if(config.state == STATE_USER)
+	{
+		config.data.append(config.userdata);
 	}
 	char len = config.data.size()-2;
 	config.data.replace(1,1,&len,1);

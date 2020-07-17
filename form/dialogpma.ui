@@ -174,7 +174,7 @@
           <property name="title">
            <string>配置</string>
           </property>
-          <widget class="QLineEdit" name="lineEdit_asduaddr">
+          <widget class="QLineEdit" name="lineEdit_104asduaddr">
            <property name="geometry">
             <rect>
              <x>80</x>
@@ -226,7 +226,7 @@
             <string>定值组号</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_setGroup">
+          <widget class="QLineEdit" name="lineEdit_104setGroup">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -252,7 +252,7 @@
             <string>定值区号</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_setNo">
+          <widget class="QLineEdit" name="lineEdit_104setNo">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -278,7 +278,7 @@
             <string>装置地址</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_devaddr">
+          <widget class="QLineEdit" name="lineEdit_104devaddr">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -291,7 +291,7 @@
             <string>1</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_calltitle">
+          <widget class="QPushButton" name="pushButton_104calltitle">
            <property name="geometry">
             <rect>
              <x>150</x>
@@ -304,7 +304,7 @@
             <string>召唤组标题</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_callRange">
+          <widget class="QPushButton" name="pushButton_104callRange">
            <property name="geometry">
             <rect>
              <x>360</x>
@@ -330,7 +330,7 @@
             <string>选择定值区号</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_callsetting">
+          <widget class="QPushButton" name="pushButton_104callsetting">
            <property name="geometry">
             <rect>
              <x>150</x>
@@ -343,7 +343,7 @@
             <string>召唤定值</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_calldimension">
+          <widget class="QPushButton" name="pushButton_104calldimension">
            <property name="geometry">
             <rect>
              <x>360</x>
@@ -356,7 +356,7 @@
             <string>召唤定值量纲</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_calldescription">
+          <widget class="QPushButton" name="pushButton_104calldescription">
            <property name="geometry">
             <rect>
              <x>250</x>
@@ -369,7 +369,7 @@
             <string>召唤定值描述</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_changesetNo">
+          <widget class="QPushButton" name="pushButton_104changesetNo">
            <property name="geometry">
             <rect>
              <x>150</x>
@@ -382,7 +382,7 @@
             <string>修改定值区号</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_callAccuracy">
+          <widget class="QPushButton" name="pushButton_104callAccuracy">
            <property name="geometry">
             <rect>
              <x>360</x>
@@ -421,7 +421,7 @@
             <string>定值条目</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_setInf">
+          <widget class="QLineEdit" name="lineEdit_104setInf">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -447,7 +447,7 @@
             <string>定值</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_setting">
+          <widget class="QLineEdit" name="lineEdit_104setting">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -473,7 +473,7 @@
           <property name="title">
            <string>快捷操作</string>
           </property>
-          <widget class="QPushButton" name="pushButton_callall">
+          <widget class="QPushButton" name="pushButton_104callall">
            <property name="geometry">
             <rect>
              <x>40</x>
@@ -486,7 +486,7 @@
             <string>总召</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_sendUstart">
+          <widget class="QPushButton" name="pushButton_104sendUstart">
            <property name="geometry">
             <rect>
              <x>40</x>
@@ -499,7 +499,7 @@
             <string>发启动-U帧</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_sendS">
+          <widget class="QPushButton" name="pushButton_104sendS">
            <property name="geometry">
             <rect>
              <x>200</x>
@@ -512,7 +512,7 @@
             <string>确认-S帧</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_sendUtest">
+          <widget class="QPushButton" name="pushButton_104sendUtest">
            <property name="geometry">
             <rect>
              <x>200</x>
@@ -540,10 +540,10 @@
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_18">
            <item>
-            <widget class="QTextEdit" name="textEdit_asdu"/>
+            <widget class="QTextEdit" name="textEdit_104asdu"/>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_sendasdu">
+            <widget class="QPushButton" name="pushButton_104sendasdu">
              <property name="maximumSize">
               <size>
                <width>50</width>
@@ -608,7 +608,7 @@
             <string>信息体地址</string>
            </property>
           </widget>
-          <widget class="QComboBox" name="comboBox_remotetype">
+          <widget class="QComboBox" name="comboBox_104remotetype">
            <property name="geometry">
             <rect>
              <x>120</x>
@@ -618,7 +618,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_setvalue">
+          <widget class="QLineEdit" name="lineEdit_104setvalue">
            <property name="geometry">
             <rect>
              <x>120</x>
@@ -628,7 +628,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QComboBox" name="comboBox_value">
+          <widget class="QComboBox" name="comboBox_104value">
            <property name="geometry">
             <rect>
              <x>200</x>
@@ -638,7 +638,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_infaddr">
+          <widget class="QLineEdit" name="lineEdit_104infaddr">
            <property name="geometry">
             <rect>
              <x>120</x>
@@ -648,7 +648,7 @@
             </rect>
            </property>
           </widget>
-          <widget class="QCheckBox" name="checkBox_isHex">
+          <widget class="QCheckBox" name="checkBox_104isHex">
            <property name="geometry">
             <rect>
              <x>200</x>
@@ -661,7 +661,7 @@
             <string>16进制</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_cancel">
+          <widget class="QPushButton" name="pushButton_104cancel">
            <property name="geometry">
             <rect>
              <x>290</x>
@@ -674,7 +674,7 @@
             <string>取消</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_select">
+          <widget class="QPushButton" name="pushButton_104select">
            <property name="geometry">
             <rect>
              <x>290</x>
@@ -687,7 +687,7 @@
             <string>选择</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_execute">
+          <widget class="QPushButton" name="pushButton_104execute">
            <property name="geometry">
             <rect>
              <x>290</x>

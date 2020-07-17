@@ -66,7 +66,22 @@ QString IEC101asdu167data::showToText()
 
 bool IEC101asdu167data::createData(IECDataConfig &config)
 {
+	config.data += '\0';
+	config.data.append(uintToBa(config.iec103config->devaddr,2));
+	if(config.isMaster)
+	{
+		config.data += 0x08;
+		config.iec103config->data.clear();
+		if(!asdu.createData(*config.iec103config))
+		{
+			return false;
+		}
+		config.data.append(config.iec103config->data);
+	}
+
 	return true;
+
+
 }
 
 QString IEC101asdu167data::ctrlToText()

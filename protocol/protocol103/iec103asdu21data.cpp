@@ -82,5 +82,14 @@ QString IEC103asdu21data::showToText()
 
 bool IEC103asdu21data::createData(IECDataConfig &config)
 {
-	return true;
+	config.data += config.inf;
+	config.data += config.rii;
+	config.data += config.ngd;
+	if(config.isMaster)
+	{
+		return true;
+	}
+
+	return false;
+
 }

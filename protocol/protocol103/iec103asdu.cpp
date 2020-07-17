@@ -73,8 +73,8 @@ IEC103asdu::IEC103asdu()
 	sqflag = 0;
 	datanum = 0;
 	len = 0;
-//	timelen = 0;
-//	other = 0;
+	//	timelen = 0;
+	//	other = 0;
 	mstate = STATE_NORMAL;
 }
 
@@ -116,11 +116,11 @@ bool IEC103asdu::init(QByteArray buff)
 	fun = *(buff.data()+len);
 	mText.append(CharToHexStr(buff.data()+len) + "\t" + funToText() +"\r\n");
 	len ++;
-//	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*(datalen+timelen)+other;
-//	if( lengthtmp!= buff.count())
-//	{
-//		mText.append( "\r\n\t出错！通过VSQ与ASDU类型计算出ASDU长度为"+QString::number(lengthtmp)+"，而实际ASDU长度为"+QString::number(buff.count())+"。报文长度不符，因此报文有问题，下面的解析可能会出现异常\r\n");
-//	}
+	//	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*(datalen+timelen)+other;
+	//	if( lengthtmp!= buff.count())
+	//	{
+	//		mText.append( "\r\n\t出错！通过VSQ与ASDU类型计算出ASDU长度为"+QString::number(lengthtmp)+"，而实际ASDU长度为"+QString::number(buff.count())+"。报文长度不符，因此报文有问题，下面的解析可能会出现异常\r\n");
+	//	}
 
 	uchar inf = *(buff.data()+len);;
 	for(int index = 0;index<datanum;index++)
@@ -168,18 +168,41 @@ bool IEC103asdu::createData(IECDataConfig &config)
 	qDeleteAll(datalist);
 	datalist.clear();
 
-//	config.data += config.asdutype;
-//	config.data += config.vsq;
-//	config.data += config.cot;
-//	config.data += '\0';
-//	config.data += uintToBa(App::IEC_COMADDR,2);
-//	config.isfirst = true;
-//	for(int i = 0;i<(config.vsq&0x7f);i++)
-//	{
-//		IEC103asdudata *newdata = CreateAsduData(config.asdutype);
-//		newdata->createData(config);
-//		datalist.append(newdata);
-//	}
+	if(config.isMaster)
+	{
+		config.data += config.asdutype;
+		config.data += config.vsq;
+		config.data += config.cot;
+		config.data += (char)(config.devaddr &0xff);
+		config.data += config.fun;
+		for(int i = 0;i < (config.vsq & 0x7f);i++)
+		{
+			IEC103asdudata *data = CreateAsduData(config.asdutype);
+			if(!data)
+			{
+				return false;
+			}
+			data->createData(config);
+			datalist.append(data);
+		}
+
+	}
+	else
+	{
+		return false;
+	}
+	//	config.data += config.asdutype;
+	//	config.data += config.vsq;
+	//	config.data += config.cot;
+	//	config.data += '\0';
+	//	config.data += uintToBa(App::IEC_COMADDR,2);
+	//	config.isfirst = true;
+	//	for(int i = 0;i<(config.vsq&0x7f);i++)
+	//	{
+	//		IEC103asdudata *newdata = CreateAsduData(config.asdutype);
+	//		newdata->createData(config);
+	//		datalist.append(newdata);
+	//	}
 
 	return true;
 }
@@ -411,33 +434,33 @@ IEC103asdudata *IEC103asdu::CreateAsduData(uchar type)
 	IEC103asdudata *asdudata = NULL;
 	switch (type)
 	{
-// 	case 1:
-// 		asdudata = new IEC103asdu1data;
-// 		break;
-// 	case 2:
-// 		asdudata = new IEC103asdu2data;
-// 		break;
-// 	case 6:
-// 		asdudata = new IEC103asdu6data;
-// 		break;
-// 	case 7:
-// 		asdudata = new IEC103asdu7data;
-// 		break;
+	// 	case 1:
+	// 		asdudata = new IEC103asdu1data;
+	// 		break;
+	// 	case 2:
+	// 		asdudata = new IEC103asdu2data;
+	// 		break;
+	// 	case 6:
+	// 		asdudata = new IEC103asdu6data;
+	// 		break;
+	// 	case 7:
+	// 		asdudata = new IEC103asdu7data;
+	// 		break;
 	case 10:
 		asdudata = new IEC103asdu10data;
 		break;
 	case 21:
 		asdudata = new IEC103asdu21data;
 		break;
-// 	case 44:
-// 		asdudata = new IEC103asdu44data;
-// 		break;
-// 	case 50:
-// 		asdudata = new IEC103asdu50data;
-// 		break;
-// 	case 51:
-// 		asdudata = new IEC103asdu51data;
-// 		break;
+		// 	case 44:
+		// 		asdudata = new IEC103asdu44data;
+		// 		break;
+		// 	case 50:
+		// 		asdudata = new IEC103asdu50data;
+		// 		break;
+		// 	case 51:
+		// 		asdudata = new IEC103asdu51data;
+		// 		break;
 	default:
 		break;
 	}

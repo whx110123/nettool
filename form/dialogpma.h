@@ -17,6 +17,7 @@ public:
 	~DialogPMA();
 public slots:
 	void dealData(const QString &data,const QString &title);
+	bool createAndSendData(IECDataConfig &config);
 signals:
 
 	void dlgTotcpclient(const QString &data);
@@ -34,6 +35,8 @@ private slots:
 	void on_pushButton_start_clicked();
 
 	void on_pushButton_sendasdu_clicked();
+
+	void on_pushButton_104calltitle_clicked();
 
 private:
 	Ui::DialogPMA *ui;

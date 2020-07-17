@@ -33,6 +33,19 @@ void DialogPMA::dealData(const QString &data, const QString &title)
 	}
 }
 
+bool DialogPMA::createAndSendData(IECDataConfig &config)
+{
+	if(ui->pushButton_start->text() == QString("停止") && piec104)
+	{
+		if(piec104->createData(config))
+		{
+			emitsignals(config.data.toHex(' '));
+			return true;
+		}
+	}
+	return false;
+}
+
 void DialogPMA::init()
 {
 	handleDataTimer = new QTimer(this);
@@ -83,7 +96,7 @@ void DialogPMA::startdebug()
 		piec104 = new IEC104;
 	}
 	piec104->mstate = STATE_INIT;
-	App::IEC_COMADDR = ui->lineEdit_asduaddr->text().toUInt();
+	App::IEC_COMADDR = ui->lineEdit_104asduaddr->text().toUInt();
 	handleDataTimer->start(1000);
 }
 
@@ -141,21 +154,33 @@ void DialogPMA::on_pushButton_start_clicked()
 
 void DialogPMA::on_pushButton_sendasdu_clicked()
 {
-	if(ui->pushButton_start->text() == QString("停止"))
+	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu->toPlainText());
+	config.state = STATE_USER;
+	config.isMaster = true;
+	config.asdutype = 0;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104calltitle_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = 167;
+	config.controltype = ITYPE;
+	config.vsq = 0;
+	config.cot = 5;
+	config.iec103config = new IECDataConfig;
+	config.iec103config->isMaster = config.isMaster;
+	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+	config.iec103config->asdutype = 0x15;
+	config.iec103config->fun = 0xfe;
+	config.iec103config->inf = 0xf0;
+	config.iec103config->rii = 0;
+	config.iec103config->ngd = 0;
+	createAndSendData(config);
+	if(config.iec103config)
 	{
-		QByteArray tmp = QUIHelper::hexStrToByteArray(ui->textEdit_asdu->toPlainText());
-		if(piec104)
-		{
-			config.state = STATE_USER;
-			config.isMaster = true;
-			if(piec104->createData(config))
-			{
-				config.data.append(tmp);
-				char len = config.data.size()-2;
-				config.data.replace(1,1,&len,1);
-				QString str = config.data.toHex(' ');
-				emitsignals(str);
-			}
-		}
+		delete config.iec103config;
+		config.iec103config = NULL;
 	}
 }

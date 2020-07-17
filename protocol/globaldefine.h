@@ -22,7 +22,9 @@ enum
 	STATE_NORMAL,				//正常,状态,回复S帧
 	STATE_TESTACT,				//激活测试
 	STATE_TESTCONFIRM,			//确认测试
-	STATE_USER					//自定义ASDU
+	STATE_USER,					//自定义ASDU
+	STATE_HOTKEY,				//通过点击快捷键
+	STATE_NUM					//所有状态的数目
 };
 enum
 {

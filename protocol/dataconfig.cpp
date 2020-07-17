@@ -13,5 +13,14 @@ IECDataConfig::IECDataConfig()
 	cot = 0;
 	vsq = 1;
 	isfirst = true;
+	iec103config = NULL;
+}
 
+IECDataConfig::~IECDataConfig()
+{
+	if(iec103config)
+	{
+		delete iec103config;
+		iec103config = NULL;
+	}
 }

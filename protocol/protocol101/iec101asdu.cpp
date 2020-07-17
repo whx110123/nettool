@@ -174,14 +174,23 @@ bool IEC101asdu::createData(IECDataConfig &config)
 	config.data += '\0';
 	config.data += uintToBa(App::IEC_COMADDR,2);
 	config.isfirst = true;
-	for(int i = 0;i<(config.vsq&0x7f);i++)
+
+	int num = config.vsq&0x7f;
+	if(config.asdutype == 167)
+	{
+		num = 1;
+	}
+	for(int i = 0;i < num ;i++)
 	{
 		IEC101asdudata *newdata = CreateAsduData(config.asdutype);
 		if (!newdata)
 		{
 			return false;
 		}
-		newdata->createData(config);
+		if(!newdata->createData(config))
+		{
+			return false;
+		}
 		datalist.append(newdata);
 	}
 
