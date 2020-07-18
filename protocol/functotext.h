@@ -37,6 +37,7 @@ QString timeToText(char *time, int timelen);
 QString timeToText(uchar *time ,int timelen);
 
 QString ngdToText(uchar ch);
+QString nogToText(uchar ch);
 QString kodToText(uchar ch);
 QString gdd1ToText(uchar ch);
 QString gdd3ToText(uchar ch);

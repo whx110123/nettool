@@ -36,7 +36,17 @@ private slots:
 
 	void on_pushButton_sendasdu_clicked();
 
-	void on_pushButton_104calltitle_clicked();
+	void on_pushButton_104calltitle_clicked();			//召唤组标题
+
+	void on_pushButton_104callRange_clicked();			//召唤量程
+
+	void on_pushButton_104calldescription_clicked();	//召唤定值描述
+
+	void on_pushButton_104callAccuracy_clicked();		//召唤定值精度
+
+	void on_pushButton_104calldimension_clicked();		//召唤定值量纲
+
+	void on_pushButton_104callsetting_clicked();
 
 private:
 	Ui::DialogPMA *ui;

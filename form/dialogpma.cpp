@@ -77,7 +77,7 @@ void DialogPMA::handleData()
 	{
 		haveData = false;
 		config.state = piec104->mstate;
-		qDebug() << "state = " << piec104->mstate;
+//		qDebug() << "state = " << piec104->mstate;
 		config.isMaster = true;
 		if(piec104->createData(config))
 		{
@@ -169,18 +169,154 @@ void DialogPMA::on_pushButton_104calltitle_clicked()
 	config.controltype = ITYPE;
 	config.vsq = 0;
 	config.cot = 5;
-	config.iec103config = new IECDataConfig;
+	if(!config.iec103config)
+	{
+		config.iec103config = new IECDataConfig;
+	}
 	config.iec103config->isMaster = config.isMaster;
 	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
 	config.iec103config->asdutype = 0x15;
+	config.iec103config->vsq = 0x81;
+	config.iec103config->cot = 0x2a;
 	config.iec103config->fun = 0xfe;
 	config.iec103config->inf = 0xf0;
 	config.iec103config->rii = 0;
-	config.iec103config->ngd = 0;
+	config.iec103config->nog = 0;
 	createAndSendData(config);
-	if(config.iec103config)
+}
+
+void DialogPMA::on_pushButton_104callRange_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = 167;
+	config.controltype = ITYPE;
+	config.vsq = 0;
+	config.cot = 5;
+	if(!config.iec103config)
 	{
-		delete config.iec103config;
-		config.iec103config = NULL;
+		config.iec103config = new IECDataConfig;
 	}
+	config.iec103config->isMaster = config.isMaster;
+	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+	config.iec103config->asdutype = 0x15;
+	config.iec103config->vsq = 0x81;
+	config.iec103config->cot = 0x2a;
+	config.iec103config->fun = 0xfe;
+	config.iec103config->inf = 0xf1;
+	config.iec103config->rii = 0;
+	config.iec103config->nog = 1;
+	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+	config.iec103config->gin[0][1] = 0;
+	config.iec103config->kod[0] = 3;
+	createAndSendData(config);
+
+}
+
+void DialogPMA::on_pushButton_104calldescription_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = 167;
+	config.controltype = ITYPE;
+	config.vsq = 0;
+	config.cot = 5;
+	if(!config.iec103config)
+	{
+		config.iec103config = new IECDataConfig;
+	}
+	config.iec103config->isMaster = config.isMaster;
+	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+	config.iec103config->asdutype = 0x15;
+	config.iec103config->vsq = 0x81;
+	config.iec103config->cot = 0x2a;
+	config.iec103config->fun = 0xfe;
+	config.iec103config->inf = 0xf1;
+	config.iec103config->rii = 0;
+	config.iec103config->nog = 1;
+	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+	config.iec103config->gin[0][1] = 0;
+	config.iec103config->kod[0] = 0x0a;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104callAccuracy_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = 167;
+	config.controltype = ITYPE;
+	config.vsq = 0;
+	config.cot = 5;
+	if(!config.iec103config)
+	{
+		config.iec103config = new IECDataConfig;
+	}
+	config.iec103config->isMaster = config.isMaster;
+	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+	config.iec103config->asdutype = 0x15;
+	config.iec103config->vsq = 0x81;
+	config.iec103config->cot = 0x2a;
+	config.iec103config->fun = 0xfe;
+	config.iec103config->inf = 0xf1;
+	config.iec103config->rii = 0;
+	config.iec103config->nog = 1;
+	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+	config.iec103config->gin[0][1] = 0;
+	config.iec103config->kod[0] = 5;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104calldimension_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = 167;
+	config.controltype = ITYPE;
+	config.vsq = 0;
+	config.cot = 5;
+	if(!config.iec103config)
+	{
+		config.iec103config = new IECDataConfig;
+	}
+	config.iec103config->isMaster = config.isMaster;
+	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+	config.iec103config->asdutype = 0x15;
+	config.iec103config->vsq = 0x81;
+	config.iec103config->cot = 0x2a;
+	config.iec103config->fun = 0xfe;
+	config.iec103config->inf = 0xf1;
+	config.iec103config->rii = 0;
+	config.iec103config->nog = 1;
+	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+	config.iec103config->gin[0][1] = 0;
+	config.iec103config->kod[0] = 9;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104callsetting_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = 167;
+	config.controltype = ITYPE;
+	config.vsq = 0;
+	config.cot = 5;
+	if(!config.iec103config)
+	{
+		config.iec103config = new IECDataConfig;
+	}
+	config.iec103config->isMaster = config.isMaster;
+	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+	config.iec103config->asdutype = 0x15;
+	config.iec103config->vsq = 0x81;
+	config.iec103config->cot = 0x2a;
+	config.iec103config->fun = 0xfe;
+	config.iec103config->inf = 0xf1;
+	config.iec103config->rii = 0;
+	config.iec103config->nog = 1;
+	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+	config.iec103config->gin[0][1] = 0;
+	config.iec103config->kod[0] = 1;
+	createAndSendData(config);
 }

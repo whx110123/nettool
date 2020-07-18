@@ -4,7 +4,7 @@
 IEC103asdu21data::IEC103asdu21data()
 {
 	rii = 0;
-	ngd = 0;
+	nog = 0;
 }
 
 IEC103asdu21data::~IEC103asdu21data()
@@ -34,11 +34,11 @@ bool IEC103asdu21data::init(QByteArray buff)
 		return true;
 	}
 
-	ngd = *(buff.data() + len);
-	setnum = ngd & 0x3f;
-	datacount = ngd & 0x40;
-	datacont = ngd & 0x80;
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + ngdToText(ngd) + "\r\n");
+	nog = *(buff.data() + len);
+//	setnum = ngd & 0x3f;
+//	datacount = ngd & 0x40;
+//	datacont = ngd & 0x80;
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + nogToText(nog) + "\r\n");
 	len++;
 
 	if (len == buff.size())
@@ -46,8 +46,8 @@ bool IEC103asdu21data::init(QByteArray buff)
 		return true;
 	}
 
-	uchar *gin = (uchar *)(buff.data() + len);
-	for (int index = 0; index < setnum; index++)
+
+	for (int index = 0; index < nog; index++)
 	{
 		IEC103asdudataset *mset = new IEC103asdudataset;
 		bool isOk = mset->init(buff.mid(len,3));
@@ -84,9 +84,15 @@ bool IEC103asdu21data::createData(IECDataConfig &config)
 {
 	config.data += config.inf;
 	config.data += config.rii;
-	config.data += config.ngd;
+	config.data += config.nog;
 	if(config.isMaster)
 	{
+		for(int i = 0;i <config.nog; i++ )
+		{
+			config.data += config.gin[i][0];
+			config.data += config.gin[i][1];
+			config.data += config.kod[i];
+		}
 		return true;
 	}
 

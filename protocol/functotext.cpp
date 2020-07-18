@@ -614,6 +614,12 @@ QString ngdToText(uchar ch)
 	return text;
 }
 
+QString nogToText(uchar ch)
+{
+	QString text;
+	text.append("NOG:" + QString::number(ch) + " 通用分类标识数目");
+	return text;
+}
 QString kodToText(uchar ch)
 {
 	QString text = "KOD:" + QString::number(ch) + " ";
@@ -782,6 +788,7 @@ QString gdd3ToText(uchar ch)
 	}
 	return text;
 }
+
 
 
 

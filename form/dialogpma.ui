@@ -23,132 +23,40 @@
       <enum>QFrame::Plain</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0" colspan="2">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QComboBox" name="comboBox_connect">
-          <item>
-           <property name="text">
-            <string>TCP客户端</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>TCP服务端</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>UDP客户端</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>UDP服务端</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>COM串口</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QComboBox" name="comboBox_protocol">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <item>
-           <property name="text">
-            <string>104</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="comboBox_state">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <item>
-           <property name="text">
-            <string>模拟主站</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>模拟子站</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_start">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>开始</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_reflash">
-          <property name="text">
-           <string>暂停刷新</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_clear">
-          <property name="text">
-           <string>清空</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_10">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>规约模拟</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="minimumSize">
          <size>
-          <width>570</width>
+          <width>600</width>
           <height>0</height>
          </size>
         </property>
@@ -206,7 +114,7 @@
            <rect>
             <x>20</x>
             <y>140</y>
-            <width>531</width>
+            <width>551</width>
             <height>191</height>
            </rect>
           </property>
@@ -217,7 +125,7 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>92</y>
+             <y>62</y>
              <width>48</width>
              <height>16</height>
             </rect>
@@ -227,32 +135,6 @@
            </property>
           </widget>
           <widget class="QLineEdit" name="lineEdit_104setGroup">
-           <property name="geometry">
-            <rect>
-             <x>90</x>
-             <y>90</y>
-             <width>41</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>1</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_4">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>62</y>
-             <width>48</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>定值区号</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="lineEdit_104setNo">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -307,27 +189,14 @@
           <widget class="QPushButton" name="pushButton_104callRange">
            <property name="geometry">
             <rect>
-             <x>360</x>
-             <y>90</y>
-             <width>91</width>
-             <height>23</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>召唤定值量程</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="pushButton_3">
-           <property name="geometry">
-            <rect>
-             <x>250</x>
+             <x>350</x>
              <y>60</y>
              <width>91</width>
              <height>23</height>
             </rect>
            </property>
            <property name="text">
-            <string>选择定值区号</string>
+            <string>召唤量程</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_104callsetting">
@@ -335,41 +204,15 @@
             <rect>
              <x>150</x>
              <y>90</y>
-             <width>91</width>
+             <width>191</width>
              <height>23</height>
             </rect>
            </property>
            <property name="text">
-            <string>召唤定值</string>
+            <string>召唤定值或定值区号</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_104calldimension">
-           <property name="geometry">
-            <rect>
-             <x>360</x>
-             <y>60</y>
-             <width>91</width>
-             <height>23</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>召唤定值量纲</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="pushButton_104calldescription">
-           <property name="geometry">
-            <rect>
-             <x>250</x>
-             <y>30</y>
-             <width>91</width>
-             <height>23</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>召唤定值描述</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="pushButton_104changesetNo">
            <property name="geometry">
             <rect>
              <x>150</x>
@@ -379,27 +222,40 @@
             </rect>
            </property>
            <property name="text">
-            <string>修改定值区号</string>
+            <string>召唤量纲</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_104callAccuracy">
+          <widget class="QPushButton" name="pushButton_104calldescription">
            <property name="geometry">
             <rect>
-             <x>360</x>
-             <y>30</y>
+             <x>450</x>
+             <y>60</y>
              <width>91</width>
              <height>23</height>
             </rect>
            </property>
            <property name="text">
-            <string>召唤定值精度</string>
+            <string>召唤描述</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButton_104callAccuracy">
+           <property name="geometry">
+            <rect>
+             <x>250</x>
+             <y>60</y>
+             <width>91</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>召唤精度</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_9">
            <property name="geometry">
             <rect>
              <x>150</x>
-             <y>150</y>
+             <y>120</y>
              <width>91</width>
              <height>23</height>
             </rect>
@@ -412,7 +268,7 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>122</y>
+             <y>92</y>
              <width>48</width>
              <height>16</height>
             </rect>
@@ -425,7 +281,7 @@
            <property name="geometry">
             <rect>
              <x>90</x>
-             <y>120</y>
+             <y>90</y>
              <width>41</width>
              <height>20</height>
             </rect>
@@ -438,7 +294,7 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>152</y>
+             <y>122</y>
              <width>48</width>
              <height>16</height>
             </rect>
@@ -451,6 +307,58 @@
            <property name="geometry">
             <rect>
              <x>90</x>
+             <y>120</y>
+             <width>41</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>1</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButton_10">
+           <property name="geometry">
+            <rect>
+             <x>250</x>
+             <y>120</y>
+             <width>91</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>固化定值</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButton_3">
+           <property name="geometry">
+            <rect>
+             <x>250</x>
+             <y>150</y>
+             <width>91</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>固化定值区号</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButton_104changesetNo">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>150</y>
+             <width>91</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>修改定值区号</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="lineEdit_104setNo">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
              <y>150</y>
              <width>41</width>
              <height>20</height>
@@ -460,13 +368,26 @@
             <string>1</string>
            </property>
           </widget>
+          <widget class="QLabel" name="label_4">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>152</y>
+             <width>48</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>定值区号</string>
+           </property>
+          </widget>
          </widget>
          <widget class="QGroupBox" name="groupBox_4">
           <property name="geometry">
            <rect>
             <x>200</x>
             <y>30</y>
-            <width>351</width>
+            <width>371</width>
             <height>91</height>
            </rect>
           </property>
@@ -526,43 +447,12 @@
            </property>
           </widget>
          </widget>
-         <widget class="QGroupBox" name="groupBox_3">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>490</y>
-            <width>541</width>
-            <height>131</height>
-           </rect>
-          </property>
-          <property name="title">
-           <string>手动输入ASDU报文</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_18">
-           <item>
-            <widget class="QTextEdit" name="textEdit_104asdu"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_104sendasdu">
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>发送</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
          <widget class="QGroupBox" name="groupBox_5">
           <property name="geometry">
            <rect>
             <x>20</x>
             <y>350</y>
-            <width>531</width>
+            <width>551</width>
             <height>131</height>
            </rect>
           </property>
@@ -705,37 +595,160 @@
         <widget class="QWidget" name="page_2"/>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QTextEdit" name="textEdit_data"/>
+      <item row="1" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QComboBox" name="comboBox_connect">
+          <item>
+           <property name="text">
+            <string>TCP客户端</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>TCP服务端</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>UDP客户端</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>UDP服务端</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM串口</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_protocol">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>104</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_state">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>模拟主站</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>模拟子站</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_start">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>开始</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_reflash">
+          <property name="text">
+           <string>暂停刷新</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_clear">
+          <property name="text">
+           <string>清空</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_10">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>50</height>
-         </size>
-        </property>
+      <item row="3" column="0">
+       <widget class="QGroupBox" name="groupBox_3">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>16777215</height>
+          <height>100</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
+        <property name="title">
+         <string>手动输入ASDU报文</string>
         </property>
-        <property name="text">
-         <string>规约模拟</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_18">
+         <item>
+          <widget class="QTextEdit" name="textEdit_104asdu"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_sendasdu">
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>发送</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
+      </item>
+      <item row="2" column="1" rowspan="2">
+       <widget class="QTextEdit" name="textEdit_data"/>
       </item>
      </layout>
     </widget>

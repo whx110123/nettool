@@ -19,10 +19,10 @@ public:
 
 public:
 	uchar rii;
-	uchar ngd;
-	uchar datacount;
-	uchar datacont;
-	int setnum;
+	uchar nog;
+//	uchar datacount;
+//	uchar datacont;
+//	int setnum;
 	QList<IEC103asdudataset *> setlist;
 };
 
