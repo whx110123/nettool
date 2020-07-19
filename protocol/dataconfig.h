@@ -32,8 +32,10 @@ public:
 	uchar rii;
 	uchar ngd;				//通用分类数据集数目，包括GIN、KOD、GDD、GID
 	uchar nog;				//通用分类标识数目，包括GIN、KOD
-	uchar gin[80][2];
-	uchar kod[80];
+	uchar gin[20][2];
+	uchar kod[20];
+	uchar gdd[20][3];
+	uchar gid[255];
 	/***************************/
 
 	IECDataConfig *iec103config;
