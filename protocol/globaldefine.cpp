@@ -183,8 +183,14 @@ QByteArray uintToBa(uint data, int len)
 	}
 	return tmp;
 }
-
-QByteArray dataTimeToBa(QDateTime datatime, int len, int model)
+QByteArray floatToBa(float data)
+{
+	char ch[4];
+	memcpy(ch,&data,4);
+	QByteArray ba(ch,4);
+	return ba;
+}
+QByteArray dateTimeToBa(QDateTime datatime, int len, int model)
 {
 
 	QByteArray ba;
@@ -246,3 +252,5 @@ uchar crcsum(char *data, int start, int end)
 	}
 	return tmp;
 }
+
+

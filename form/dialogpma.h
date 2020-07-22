@@ -32,6 +32,7 @@ private slots:
 	void stopdebug();
 	void showToText(QByteArray ba);
 	void emitsignals(const QString &data);
+	QByteArray getYKYTData(uchar type);
 
 	void on_pushButton_start_clicked();
 
@@ -58,6 +59,14 @@ private slots:
 
 
 	void on_pushButton_clear_clicked();
+
+	void on_pushButton_104select_clicked();
+
+	void on_pushButton_104execute_clicked();
+
+	void on_pushButton_104cancel_clicked();
+
+	void on_checkBox_104isHex_stateChanged(int arg1);
 
 private:
 	Ui::DialogPMA *ui;

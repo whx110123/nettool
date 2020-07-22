@@ -494,6 +494,46 @@
              <height>22</height>
             </rect>
            </property>
+           <item>
+            <property name="text">
+             <string>45 单点遥控</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>46 双点遥控</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>47 升降命令</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>48 设点 规一化值</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>49 设点 标度化值</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>50 设点 短浮点数</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>58 带时标的单点遥控</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>59 带时标的双点遥控</string>
+            </property>
+           </item>
           </widget>
           <widget class="QLineEdit" name="lineEdit_104YTvalue">
            <property name="geometry">
@@ -504,16 +544,29 @@
              <height>20</height>
             </rect>
            </property>
+           <property name="text">
+            <string>1</string>
+           </property>
           </widget>
           <widget class="QComboBox" name="comboBox_104YKvalue">
            <property name="geometry">
             <rect>
-             <x>200</x>
+             <x>190</x>
              <y>60</y>
-             <width>61</width>
+             <width>71</width>
              <height>22</height>
             </rect>
            </property>
+           <item>
+            <property name="text">
+             <string>合 - 升</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>分 - 降</string>
+            </property>
+           </item>
           </widget>
           <widget class="QLineEdit" name="lineEdit_104infaddr">
            <property name="geometry">
@@ -524,13 +577,16 @@
              <height>20</height>
             </rect>
            </property>
+           <property name="text">
+            <string>24577</string>
+           </property>
           </widget>
           <widget class="QCheckBox" name="checkBox_104isHex">
            <property name="geometry">
             <rect>
-             <x>200</x>
+             <x>190</x>
              <y>90</y>
-             <width>61</width>
+             <width>71</width>
              <height>21</height>
             </rect>
            </property>

@@ -26,6 +26,8 @@ public:
 	uchar asdutype;			//asdu类型
 	uchar cot;              //传送原因
 	uchar vsq;              //信息元素个数
+	uint infaddr;			//信息体地址
+	QByteArray infdata;		//信息体数据
 	/***IEC103参数*************************/
 	uchar fun;
 	uchar inf;

@@ -160,6 +160,67 @@ void DialogPMA::emitsignals(const QString &data)
 	}
 }
 
+QByteArray DialogPMA::getYKYTData(uchar type)
+{
+	uchar asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
+	QByteArray tmp;
+	ushort tmp_us = 0;
+	short tmp_s = 0;
+	float tmp_f = 0;
+	QDateTime datetime = QDateTime::currentDateTime();
+	switch (asdutype)
+	{
+	case 45:
+	case 58:
+		if(ui->comboBox_104remotetype->currentText().contains("合"))
+		{
+			tmp += 0x01|type;
+		}
+		else
+		{
+			tmp += type;
+		}
+		if(asdutype==58)
+		{
+			tmp += dateTimeToBa(datetime,7,BINARYTIME2A);
+		}
+		break;
+	case 46:
+	case 47:
+	case 59:
+		if(ui->comboBox_104remotetype->currentText().contains("合"))
+		{
+			tmp += 0x02|type;
+		}
+		else
+		{
+			tmp += 0x01|type;
+		}
+		if(asdutype==59)
+		{
+			tmp += dateTimeToBa(datetime,7,BINARYTIME2A);
+		}
+		break;
+	case 48:
+	case 49:
+		tmp_s = ui->lineEdit_104YTvalue->text().toShort();
+		tmp_us = (ushort)tmp_s;
+		tmp += tmp_us & 0xff;
+		tmp += (tmp_us>>8)&0xff;
+		tmp += type;
+		break;
+	case 50:
+		tmp_f = ui->lineEdit_104YTvalue->text().toFloat();
+		tmp += floatToBa(tmp_f);
+		tmp += type;
+		break;
+	default:
+		break;
+
+	}
+	return tmp;
+}
+
 void DialogPMA::on_pushButton_start_clicked()
 {
 	if(ui->pushButton_start->text() == QString("开始"))
@@ -435,4 +496,70 @@ void DialogPMA::on_pushButton_104setUintDowm_clicked()
 void DialogPMA::on_pushButton_clear_clicked()
 {
 	ui->textEdit_data->clear();
+}
+
+void DialogPMA::on_pushButton_104select_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
+	config.controltype = ITYPE;
+	config.vsq = 1;
+	config.cot = 6;
+	if(ui->checkBox_104isHex->isChecked())
+	{
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0,16);
+	}
+	else
+	{
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
+	}
+	config.infdata = getYKYTData(0x80);
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104execute_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
+	config.controltype = ITYPE;
+	config.vsq = 1;
+	config.cot = 6;
+	if(ui->checkBox_104isHex->isChecked())
+	{
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0,16);
+	}
+	else
+	{
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
+	}
+	config.infdata = getYKYTData('\0');
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104cancel_clicked()
+{
+	config.state = STATE_HOTKEY;
+	config.isMaster = true;
+	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
+	config.controltype = ITYPE;
+	config.vsq = 1;
+	config.cot = 8;
+	if(ui->checkBox_104isHex->isChecked())
+	{
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0,16);
+	}
+	else
+	{
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
+	}
+	config.infdata = getYKYTData('\0');
+	createAndSendData(config);
+}
+
+void DialogPMA::on_checkBox_104isHex_stateChanged(int arg1)
+{
+	uint ss = ui->lineEdit_104infaddr->text().toUInt(0,arg1?10:16);
+	ui->lineEdit_104infaddr->setText(QString::number(ss,arg1?16:10));
 }

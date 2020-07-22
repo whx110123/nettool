@@ -50,9 +50,10 @@ float charTofloat(char *data,int model = 0);
 float charTofloat(uchar *data,int model = 0);
 QDateTime charToDateTime(uchar *data,int len,int model);//将len个uchar合成一个日期,model时间类型
 QDateTime charToDateTime(char *data, int len, int model);//将len个char合成一个日期,model时间类型
-QByteArray uintToBa(uint data,int len);
 
-QByteArray dataTimeToBa(QDateTime datatime, int len, int model);
+QByteArray uintToBa(uint data,int len);
+QByteArray floatToBa(float data);
+QByteArray dateTimeToBa(QDateTime datatime, int len, int model);
 
 uchar crcsum(char *data,int start,int end);
 
