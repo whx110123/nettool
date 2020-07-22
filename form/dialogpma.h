@@ -30,6 +30,7 @@ private slots:
 	void handleData();
 	void startdebug();
 	void stopdebug();
+	void showToText(QByteArray ba);
 	void emitsignals(const QString &data);
 
 	void on_pushButton_start_clicked();
@@ -49,13 +50,14 @@ private slots:
 	void on_pushButton_104callSetting_clicked();
 
 
-	void on_pushButton_104settingDowm_clicked();
+	void on_pushButton_104setFloatDowm_clicked();
 
 	void on_pushButton_104settingCuring_clicked();
 
-	void on_pushButton_104setNoDowm_clicked();
+	void on_pushButton_104setUintDowm_clicked();
 
-	void on_pushButton_104setNoCuring_clicked();
+
+	void on_pushButton_clear_clicked();
 
 private:
 	Ui::DialogPMA *ui;

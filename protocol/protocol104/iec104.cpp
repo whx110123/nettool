@@ -66,7 +66,10 @@ QString IEC104::showToText()
 {
 	QString text;
 	text.append(apci.showToText());
-	text.append(asdu.showToText());
+	if(apci.control.type == ITYPE)
+	{
+		text.append(asdu.showToText());
+	}
 	return text;
 }
 

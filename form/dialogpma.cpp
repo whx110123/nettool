@@ -40,6 +40,7 @@ bool DialogPMA::createAndSendData(IECDataConfig &config)
 		if(piec104->createData(config))
 		{
 			emitsignals(config.data.toHex(' '));
+			showToText(config.data);
 			return true;
 		}
 	}
@@ -70,6 +71,7 @@ void DialogPMA::handleData()
 		else
 		{
 			haveData = true;
+			showToText(recvData.left(piec104->apci.length+2));
 			recvData.remove(0,piec104->apci.length+2);
 		}
 	}
@@ -113,6 +115,24 @@ void DialogPMA::stopdebug()
 		piec104->mstate = STATE_INIT;
 		piec104->apci.control.localRecvNo = 0;
 		piec104->apci.control.localSendNo = 0;
+	}
+}
+
+void DialogPMA::showToText(QByteArray ba)
+{
+	while(!ba.isEmpty())
+	{
+		if(!piec104->init(ba))
+		{
+			stopdebug();
+			QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟\r\n"+piec104->mRecvData.toHex(' '));
+			return;
+		}
+		else
+		{
+			ui->textEdit_data->append(piec104->showToText());
+			ba.remove(0,piec104->apci.length+2);
+		}
 	}
 }
 
@@ -322,7 +342,7 @@ void DialogPMA::on_pushButton_104callSetting_clicked()
 }
 
 
-void DialogPMA::on_pushButton_104settingDowm_clicked()
+void DialogPMA::on_pushButton_104setFloatDowm_clicked()
 {
 	config.state = STATE_HOTKEY;
 	config.isMaster = true;
@@ -349,7 +369,7 @@ void DialogPMA::on_pushButton_104settingDowm_clicked()
 	config.iec103config->gdd[0][0] = 7;
 	config.iec103config->gdd[0][1] = 4;
 	config.iec103config->gdd[0][2] = 1;
-	float tmp = ui->lineEdit_104settingvalue->text().toFloat();
+	float tmp = ui->lineEdit_104setValueFloat->text().toFloat();
 	memcpy(config.iec103config->gid,&tmp,4);
 	createAndSendData(config);
 }
@@ -378,7 +398,7 @@ void DialogPMA::on_pushButton_104settingCuring_clicked()
 	createAndSendData(config);
 }
 
-void DialogPMA::on_pushButton_104setNoDowm_clicked()
+void DialogPMA::on_pushButton_104setUintDowm_clicked()
 {
 	config.state = STATE_HOTKEY;
 	config.isMaster = true;
@@ -405,31 +425,14 @@ void DialogPMA::on_pushButton_104setNoDowm_clicked()
 	config.iec103config->gdd[0][0] = 3;
 	config.iec103config->gdd[0][1] = 4;
 	config.iec103config->gdd[0][2] = 1;
-	uint tmp = ui->lineEdit_104settingvalue->text().toUInt();
+	uint tmp = ui->lineEdit_104setValueUint->text().toUInt();
 	memcpy(config.iec103config->gid,&tmp,4);
 	createAndSendData(config);
 }
 
-void DialogPMA::on_pushButton_104setNoCuring_clicked()
+
+
+void DialogPMA::on_pushButton_clear_clicked()
 {
-	config.state = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x0a;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x28;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xfa;
-	config.iec103config->rii = 0;
-	config.iec103config->ngd = 0;
-	createAndSendData(config);
+	ui->textEdit_data->clear();
 }

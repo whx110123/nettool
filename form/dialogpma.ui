@@ -137,9 +137,9 @@
           <widget class="QLineEdit" name="lineEdit_104setGroup">
            <property name="geometry">
             <rect>
-             <x>90</x>
+             <x>170</x>
              <y>60</y>
-             <width>41</width>
+             <width>51</width>
              <height>20</height>
             </rect>
            </property>
@@ -163,9 +163,9 @@
           <widget class="QLineEdit" name="lineEdit_104devaddr">
            <property name="geometry">
             <rect>
-             <x>90</x>
+             <x>170</x>
              <y>30</y>
-             <width>41</width>
+             <width>51</width>
              <height>20</height>
             </rect>
            </property>
@@ -176,7 +176,7 @@
           <widget class="QPushButton" name="pushButton_104callTitle">
            <property name="geometry">
             <rect>
-             <x>150</x>
+             <x>250</x>
              <y>30</y>
              <width>91</width>
              <height>23</height>
@@ -202,7 +202,7 @@
           <widget class="QPushButton" name="pushButton_104callSetting">
            <property name="geometry">
             <rect>
-             <x>150</x>
+             <x>250</x>
              <y>90</y>
              <width>191</width>
              <height>23</height>
@@ -215,8 +215,8 @@
           <widget class="QPushButton" name="pushButton_104callDimension">
            <property name="geometry">
             <rect>
-             <x>150</x>
-             <y>60</y>
+             <x>350</x>
+             <y>30</y>
              <width>91</width>
              <height>23</height>
             </rect>
@@ -251,17 +251,17 @@
             <string>召唤精度</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_104settingDowm">
+          <widget class="QPushButton" name="pushButton_104setFloatDowm">
            <property name="geometry">
             <rect>
-             <x>150</x>
+             <x>250</x>
              <y>120</y>
              <width>91</width>
              <height>23</height>
             </rect>
            </property>
            <property name="text">
-            <string>修改定值</string>
+            <string>修改浮点数定值</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_6">
@@ -280,9 +280,9 @@
           <widget class="QLineEdit" name="lineEdit_104setInf">
            <property name="geometry">
             <rect>
-             <x>90</x>
+             <x>170</x>
              <y>90</y>
-             <width>41</width>
+             <width>51</width>
              <height>20</height>
             </rect>
            </property>
@@ -295,20 +295,20 @@
             <rect>
              <x>20</x>
              <y>122</y>
-             <width>48</width>
+             <width>111</width>
              <height>16</height>
             </rect>
            </property>
            <property name="text">
-            <string>定值</string>
+            <string>定值(浮点数)</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="lineEdit_104settingvalue">
+          <widget class="QLineEdit" name="lineEdit_104setValueFloat">
            <property name="geometry">
             <rect>
-             <x>90</x>
+             <x>170</x>
              <y>120</y>
-             <width>41</width>
+             <width>51</width>
              <height>20</height>
             </rect>
            </property>
@@ -319,17 +319,17 @@
           <widget class="QPushButton" name="pushButton_104settingCuring">
            <property name="geometry">
             <rect>
-             <x>250</x>
+             <x>350</x>
              <y>120</y>
              <width>91</width>
-             <height>23</height>
+             <height>51</height>
             </rect>
            </property>
            <property name="text">
             <string>固化定值</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_104setNoCuring">
+          <widget class="QPushButton" name="pushButton_104setUintDowm">
            <property name="geometry">
             <rect>
              <x>250</x>
@@ -339,28 +339,15 @@
             </rect>
            </property>
            <property name="text">
-            <string>固化定值区号</string>
+            <string>修改整数型定值</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="pushButton_104setNoDowm">
+          <widget class="QLineEdit" name="lineEdit_104setValueUint">
            <property name="geometry">
             <rect>
-             <x>150</x>
+             <x>170</x>
              <y>150</y>
-             <width>91</width>
-             <height>23</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>修改定值区号</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="lineEdit_104setNo">
-           <property name="geometry">
-            <rect>
-             <x>90</x>
-             <y>150</y>
-             <width>41</width>
+             <width>51</width>
              <height>20</height>
             </rect>
            </property>
@@ -373,12 +360,12 @@
             <rect>
              <x>20</x>
              <y>152</y>
-             <width>48</width>
+             <width>161</width>
              <height>16</height>
             </rect>
            </property>
            <property name="text">
-            <string>定值区号</string>
+            <string>定值(整数,包括定值区号)</string>
            </property>
           </widget>
          </widget>
