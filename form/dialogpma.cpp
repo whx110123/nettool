@@ -9,6 +9,7 @@ DialogPMA::DialogPMA(QWidget *parent) :
 {
 	ui->setupUi(this);
 	piec104 = NULL;
+	piec104Show = NULL;
 	init();
 }
 
@@ -19,6 +20,11 @@ DialogPMA::~DialogPMA()
 	{
 		delete piec104;
 		piec104 = NULL;
+	}
+	if(piec104Show)
+	{
+		delete piec104Show;
+		piec104Show = NULL;
 	}
 }
 
@@ -83,6 +89,7 @@ void DialogPMA::handleData()
 		config.isMaster = true;
 		if(piec104->createData(config))
 		{
+			showToText(config.data);
 			QString str = config.data.toHex(' ');
 			emitsignals(str);
 		}
@@ -96,6 +103,10 @@ void DialogPMA::startdebug()
 	if(!piec104)
 	{
 		piec104 = new IEC104;
+	}
+	if(!piec104Show)
+	{
+		piec104Show = new IEC104;
 	}
 	piec104->mstate = STATE_INIT;
 	App::IEC_COMADDR = ui->lineEdit_104asduaddr->text().toUInt();
@@ -122,16 +133,20 @@ void DialogPMA::showToText(QByteArray ba)
 {
 	while(!ba.isEmpty())
 	{
-		if(!piec104->init(ba))
+		if(!piec104Show->init(ba))
 		{
 			stopdebug();
-			QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟\r\n"+piec104->mRecvData.toHex(' '));
+			QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟\r\n"+piec104Show->mRecvData.toHex(' '));
 			return;
 		}
 		else
 		{
-			ui->textEdit_data->append(piec104->showToText());
-			ba.remove(0,piec104->apci.length+2);
+			if(ui->pushButton_reflash->text().contains("暂停刷新"))
+			{
+				ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+				ui->textEdit_data->append(piec104Show->showToText());
+			}
+			ba.remove(0,piec104Show->apci.length+2);
 		}
 	}
 }
@@ -172,7 +187,7 @@ QByteArray DialogPMA::getYKYTData(uchar type)
 	{
 	case 45:
 	case 58:
-		if(ui->comboBox_104remotetype->currentText().contains("合"))
+		if(ui->comboBox_104YKvalue->currentText().contains("合"))
 		{
 			tmp += 0x01|type;
 		}
@@ -188,7 +203,7 @@ QByteArray DialogPMA::getYKYTData(uchar type)
 	case 46:
 	case 47:
 	case 59:
-		if(ui->comboBox_104remotetype->currentText().contains("合"))
+		if(ui->comboBox_104YKvalue->currentText().contains("合"))
 		{
 			tmp += 0x02|type;
 		}
@@ -562,4 +577,16 @@ void DialogPMA::on_checkBox_104isHex_stateChanged(int arg1)
 {
 	uint ss = ui->lineEdit_104infaddr->text().toUInt(0,arg1?10:16);
 	ui->lineEdit_104infaddr->setText(QString::number(ss,arg1?16:10));
+}
+
+void DialogPMA::on_pushButton_reflash_clicked()
+{
+	if(ui->pushButton_reflash->text().contains("暂停刷新"))
+	{
+		ui->pushButton_reflash->setText("正常刷新");
+	}
+	else
+	{
+		ui->pushButton_reflash->setText("暂停刷新");
+	}
 }

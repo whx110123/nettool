@@ -68,9 +68,12 @@ private slots:
 
 	void on_checkBox_104isHex_stateChanged(int arg1);
 
+	void on_pushButton_reflash_clicked();
+
 private:
 	Ui::DialogPMA *ui;
 	IEC104 *piec104;
+	IEC104 *piec104Show;
 	IECDataConfig config;
 	QTimer *handleDataTimer;
 	QByteArray recvData;

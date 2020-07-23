@@ -54,5 +54,7 @@ QString IEC101asdu50data::showToText()
 
 bool IEC101asdu50data::createData(IECDataConfig &config)
 {
+	config.data += uintToBa(config.infaddr,3);
+	config.data += config.infdata;
 	return true;
 }

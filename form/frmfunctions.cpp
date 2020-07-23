@@ -7,8 +7,8 @@ frmFunctions::frmFunctions(QWidget *parent) :
     ui(new Ui::frmFunctions)
 {
     ui->setupUi(this);
-    m_dialogsenddata = new DialogSendData(this);
-    m_dialogdealdata = new DialogDealData(this);
+	m_dialogsenddata = new DialogSendData(this);
+	m_dialogdealdata = new DialogDealData(this);
 	m_dialogintroduction = new DialogIntroduction(this);
 	m_dialogdebug = new DialogDebug(this);
 	m_dialogpma = new DialogPMA(this);
