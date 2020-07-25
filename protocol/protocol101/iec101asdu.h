@@ -4,42 +4,33 @@
 #include <QByteArray>
 #include <QString>
 #include <dataconfig.h>
+#include <mybase.h>
 
-class IEC101asdudata
+class IEC101AsduData : public MyBase
 {
 public:
-	IEC101asdudata();
-	virtual ~IEC101asdudata();
-	virtual bool init(QByteArray buff)= 0;
-	virtual bool init(QByteArray buff,uint addr)=0;
-	virtual QString showToText()=0;
-	virtual bool createData(IECDataConfig &config)=0;
+	IEC101AsduData();
+	virtual ~IEC101AsduData();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
 public:
 	uint infaddr;
 };
 
-class IEC101asdu
+class IEC101Asdu : public MyBase
 {
 public:
-	IEC101asdu();
-	~IEC101asdu();
-	bool init(QByteArray buff);				//初始化
-	QString showToText();					//显示到文本
-	bool createData(IECDataConfig &config);
-
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
+	IEC101Asdu();
+	~IEC101Asdu();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
 public:
 	QString typeToText();
@@ -55,10 +46,10 @@ public:
 	int datalen;                //每个信息元素数据的字节数
 	int other;                  //信息元素之外的字节数
 
-	QList<IEC101asdudata *> datalist;
+	QList<IEC101AsduData *> datalist;
 
 private:
-	IEC101asdudata *CreateAsduData(uchar type);
+	IEC101AsduData *CreateAsduData(uchar type);
 };
 
 #endif // IEC101ASDU_H

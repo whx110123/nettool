@@ -1,17 +1,17 @@
 ﻿#include "iec103netwiscom.h"
 
-IEC103NETwiscom::IEC103NETwiscom()
+IEC103NetWiscom::IEC103NetWiscom()
 {
 	error = 0;
 	mstate = STATE_INIT;
 }
 
-IEC103NETwiscom::~IEC103NETwiscom()
+IEC103NetWiscom::~IEC103NetWiscom()
 {
 
 }
 
-bool IEC103NETwiscom::init(QByteArray buff)
+bool IEC103NetWiscom::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -61,7 +61,17 @@ bool IEC103NETwiscom::init(QByteArray buff)
 	return true;
 }
 
-QString IEC103NETwiscom::showToText()
+bool IEC103NetWiscom::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC103NetWiscom::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC103NetWiscom::showToText()
 {
 	QString text;
 	text.append(apci.showToText());
@@ -69,7 +79,7 @@ QString IEC103NETwiscom::showToText()
 	return text;
 }
 
-bool IEC103NETwiscom::createData(IECDataConfig &config)
+bool IEC103NetWiscom::createData(IECDataConfig &config)
 {
 //	config.data.clear();
 //	if(config.isMaster)

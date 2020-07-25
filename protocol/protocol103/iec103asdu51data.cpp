@@ -1,6 +1,6 @@
 #include "iec103asdu51data.h"
 
-IEC103asdu51data::IEC103asdu51data()
+IEC103Asdu51Data::IEC103Asdu51Data()
 {
 
 }

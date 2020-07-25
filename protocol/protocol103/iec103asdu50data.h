@@ -5,10 +5,10 @@
 
 
 
-class IEC103asdu50data : public IEC103asdudata
+class IEC103Asdu50Data : public IEC103AsduData
 {
 public:
-	IEC103asdu50data();
+	IEC103Asdu50Data();
 };
 
 #endif // IEC103ASDU50DATA_H

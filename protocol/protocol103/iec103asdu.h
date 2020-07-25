@@ -5,47 +5,36 @@
 #include <QByteArray>
 #include <QString>
 #include <dataconfig.h>
+#include <mybase.h>
 
 
-class IEC103asdudata
+class IEC103AsduData : public MyBase
 {
 public:
-	IEC103asdudata();
-	virtual ~IEC103asdudata();
-	virtual bool init(QByteArray buff)= 0;
-	virtual bool init(QByteArray buff,uint addr)=0;
-	virtual QString showToText()=0;
-	virtual bool createData(IECDataConfig &config)=0;
+	IEC103AsduData();
+	~IEC103AsduData();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
-	int len;
 public:
 	uchar inf;
 public:
 	QString infToText();
 };
 
-class IEC103asdu
+class IEC103Asdu : public MyBase
 {
 public:
-	IEC103asdu();
-	~IEC103asdu();
-	bool init(QByteArray buff);				//初始化
-	QString showToText();					//显示到文本
-	bool createData(IECDataConfig &config);
-
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
-	int len;
+	IEC103Asdu();
+	~IEC103Asdu();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
 public:
 	QString typeToText();
@@ -63,9 +52,9 @@ public:
 //	int timelen;                //每个信息元素时间的字节数
 //	int other;                  //信息元素之外的字节数
 
-	QList<IEC103asdudata *> datalist;
+	QList<IEC103AsduData *> datalist;
 private:
-	IEC103asdudata *CreateAsduData(uchar type);
+	IEC103AsduData *CreateAsduData(uchar type);
 };
 
 #endif // IEC103ASDU_H

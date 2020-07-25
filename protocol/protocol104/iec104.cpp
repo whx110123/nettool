@@ -62,6 +62,16 @@ bool IEC104::init(QByteArray buff)
 	return true;
 }
 
+bool IEC104::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC104::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
 QString IEC104::showToText()
 {
 	QString text;

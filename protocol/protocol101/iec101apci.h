@@ -2,43 +2,33 @@
 #define IEC101APCI_H
 
 #include <dataconfig.h>
+#include <mybase.h>
 
-class IEC101Code
+class IEC101Code : public MyBase
 {
 public:
 	IEC101Code();
 	~IEC101Code();
-	bool init(QByteArray buff);				//初始化
-	QString showToText();					//显示到文本
-	bool createData(IECDataConfig &config);
-
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
 public:
 	uchar mcode;		//功能码
 };
 
-class IEC101apci
+class IEC101Apci : public MyBase
 {
 public:
-	IEC101apci();
-	~IEC101apci();
-	bool init(QByteArray buff);				//初始化
-	QString showToText();					//显示到文本
-	bool createData(IECDataConfig &config);
-
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
-	int len;
+	IEC101Apci();
+	~IEC101Apci();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
 public:
 	uchar flag1;

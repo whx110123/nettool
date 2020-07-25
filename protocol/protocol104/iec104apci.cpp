@@ -158,6 +158,16 @@ bool IEC104Control::init(QByteArray buff)
 	return true;
 }
 
+bool IEC104Control::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC104Control::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
 QString IEC104Control::showToText()
 {
 	return mText;
@@ -220,19 +230,19 @@ bool IEC104Control::createData(IECDataConfig &config)
 	}
 	return true;
 }
-IEC104apci::IEC104apci()
+IEC104Apci::IEC104Apci()
 {
 	error = 0;
 	first = 0;
 	length = 0;
 }
 
-IEC104apci::~IEC104apci()
+IEC104Apci::~IEC104Apci()
 {
 
 }
 
-bool IEC104apci::init(QByteArray buff)
+bool IEC104Apci::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -279,7 +289,17 @@ bool IEC104apci::init(QByteArray buff)
 
 }
 
-QString IEC104apci::showToText()
+bool IEC104Apci::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC104Apci::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC104Apci::showToText()
 {
 	QString text;
 	text.append(mText);
@@ -287,7 +307,7 @@ QString IEC104apci::showToText()
 	return text;
 }
 
-bool IEC104apci::createData(IECDataConfig &config)
+bool IEC104Apci::createData(IECDataConfig &config)
 {
 	config.data += 0x68;
 	config.data += '\0';

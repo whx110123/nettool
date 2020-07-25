@@ -2,22 +2,16 @@
 #define IEC103ASDU10DATA_H
 
 #include "iec103asdu.h"
-class IEC103asdudatasetgid
+class IEC103AsduDataSetGid : public MyBase
 {
 public:
-	IEC103asdudatasetgid();
-	~IEC103asdudatasetgid();
-	bool init(QByteArray buff,uchar *gdd);				//初始化
-	QString showToText();								//显示到文本
-	bool createData(IECDataConfig &config);
-
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
-	int len;
+	IEC103AsduDataSetGid();
+	~IEC103AsduDataSetGid();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
 public:
 	QString gbkstr;
@@ -32,39 +26,33 @@ public:
 	QDateTime datat;
 };
 
-class IEC103asdudataset
+class IEC103AsduDataSet : public MyBase
 {
 public:
-	IEC103asdudataset();
-	~IEC103asdudataset();
-	bool init(QByteArray buff);				//初始化
-	bool init(QByteArray buff, uchar *ch);
-	QString showToText();					//显示到文本
-	bool createData(IECDataConfig &config);
-
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
-	int len;
+	IEC103AsduDataSet();
+	~IEC103AsduDataSet();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
 public:
 	uchar gin[2];
 	uchar kod;
 	uchar gdd[3];
 	int gidnum;
-	QList<IEC103asdudatasetgid *> gidlist;
+	QList<IEC103AsduDataSetGid *> gidlist;
 };
 
-class IEC103asdu10data : public IEC103asdudata
+class IEC103Asdu10Data : public IEC103AsduData
 {
 public:
-	IEC103asdu10data();
-	~IEC103asdu10data();
+	IEC103Asdu10Data();
+	~IEC103Asdu10Data();
 	virtual bool init(QByteArray buff);
 	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
@@ -74,7 +62,7 @@ public:
 	uchar datacount;
 	uchar datacont;
 	int setnum;
-	QList<IEC103asdudataset *> setlist;
+	QList<IEC103AsduDataSet *> setlist;
 
 };
 

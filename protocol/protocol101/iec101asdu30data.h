@@ -5,11 +5,11 @@
 #include <QDateTime>
 
 
-class IEC101asdu30data : public IEC101asdudata
+class IEC101Asdu30Data : public IEC101AsduData
 {
 public:
-	IEC101asdu30data();
-	~IEC101asdu30data();
+	IEC101Asdu30Data();
+	~IEC101Asdu30Data();
 	virtual bool init(QByteArray buff);
 	virtual bool init(QByteArray buff, uint addr);
 	virtual QString showToText();

@@ -7,11 +7,11 @@
 
 
 
-class IEC103asdu21data : public IEC103asdudata
+class IEC103Asdu21Data : public IEC103AsduData
 {
 public:
-	IEC103asdu21data();
-	~IEC103asdu21data();
+	IEC103Asdu21Data();
+	~IEC103Asdu21Data();
 	virtual bool init(QByteArray buff);
 	virtual bool init(QByteArray buff, uint addr);
 	virtual QString showToText();
@@ -23,7 +23,7 @@ public:
 //	uchar datacount;
 //	uchar datacont;
 //	int setnum;
-	QList<IEC103asdudataset *> setlist;
+	QList<IEC103AsduDataSet *> setlist;
 };
 
 #endif // IEC103ASDU21DATA_H

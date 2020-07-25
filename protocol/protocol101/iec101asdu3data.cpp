@@ -3,17 +3,17 @@
 #include "app.h"
 #include "functotext.h"
 
-IEC101asdu3data::IEC101asdu3data()
+IEC101Asdu3Data::IEC101Asdu3Data()
 {
 	diq = 0;
 }
 
-IEC101asdu3data::~IEC101asdu3data()
+IEC101Asdu3Data::~IEC101Asdu3Data()
 {
 
 }
 
-bool IEC101asdu3data::init(QByteArray buff)
+bool IEC101Asdu3Data::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -26,7 +26,7 @@ bool IEC101asdu3data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101asdu3data::init(QByteArray buff, uint addr)
+bool IEC101Asdu3Data::init(QByteArray buff, uint addr)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -38,12 +38,12 @@ bool IEC101asdu3data::init(QByteArray buff, uint addr)
 	return true;
 }
 
-QString IEC101asdu3data::showToText()
+QString IEC101Asdu3Data::showToText()
 {
 	return mText;
 }
 
-bool IEC101asdu3data::createData(IECDataConfig &config)
+bool IEC101Asdu3Data::createData(IECDataConfig &config)
 {
 	return true;
 }

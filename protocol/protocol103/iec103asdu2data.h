@@ -6,11 +6,11 @@
 
 
 
-class IEC103asdu2data : public IEC103asdudata
+class IEC103Asdu2Data : public IEC103AsduData
 {
 public:
-	IEC103asdu2data();
-	~IEC103asdu2data();
+	IEC103Asdu2Data();
+	~IEC103Asdu2Data();
 	virtual bool init(QByteArray buff);
 	virtual bool init(QByteArray buff, uint addr);
 	virtual QString showToText();

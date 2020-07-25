@@ -4,11 +4,11 @@
 #include "iec101asdu.h"
 
 
-class IEC101asdu50data : public IEC101asdudata
+class IEC101Asdu50Data : public IEC101AsduData
 {
 public:
-	IEC101asdu50data();
-	~IEC101asdu50data();
+	IEC101Asdu50Data();
+	~IEC101Asdu50Data();
 	virtual bool init(QByteArray buff);
 	virtual bool init(QByteArray buff, uint addr);
 	virtual QString showToText();

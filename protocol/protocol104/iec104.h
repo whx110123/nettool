@@ -5,26 +5,23 @@
 #include "iec101asdu.h"
 #include <QByteArray>
 #include <QString>
+#include <mybase.h>
 #include "dataconfig.h"
 
-class IEC104
+class IEC104 : public MyBase
 {
 public:
 	IEC104();
 	~IEC104();
-	bool init(QByteArray buff);
-	QString showToText();
-	bool createData(IECDataConfig &config);
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
 public:
-	IEC104apci apci;
-	IEC101asdu asdu;
+	IEC104Apci apci;
+	IEC101Asdu asdu;
 
 
 };

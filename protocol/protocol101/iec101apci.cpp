@@ -29,6 +29,16 @@ bool IEC101Code::init(QByteArray buff)
 	return true;
 }
 
+bool IEC101Code::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC101Code::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
 QString IEC101Code::showToText()
 {
 	return mText;
@@ -39,7 +49,7 @@ bool IEC101Code::createData(IECDataConfig &config)
 
 	return false;
 }
-IEC101apci::IEC101apci()
+IEC101Apci::IEC101Apci()
 {
 	error = 0;
 	mstate = STATE_INIT;
@@ -51,12 +61,12 @@ IEC101apci::IEC101apci()
 	addr = 0;
 }
 
-IEC101apci::~IEC101apci()
+IEC101Apci::~IEC101Apci()
 {
 
 }
 
-bool IEC101apci::init(QByteArray buff)
+bool IEC101Apci::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -124,14 +134,24 @@ bool IEC101apci::init(QByteArray buff)
 
 }
 
-QString IEC101apci::showToText()
+bool IEC101Apci::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC101Apci::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC101Apci::showToText()
 {
 	QString text;
 	text.append(mText);
 	return text;
 }
 
-bool IEC101apci::createData(IECDataConfig &config)
+bool IEC101Apci::createData(IECDataConfig &config)
 {
 //	config.data += 0x68;
 //	config.data += '\0';

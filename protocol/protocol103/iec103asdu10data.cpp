@@ -5,15 +5,25 @@
 #include "QTextCodec"
 
 
-IEC103asdudatasetgid::IEC103asdudatasetgid()
+IEC103AsduDataSetGid::IEC103AsduDataSetGid()
 {
 }
 
-IEC103asdudatasetgid::~IEC103asdudatasetgid()
+IEC103AsduDataSetGid::~IEC103AsduDataSetGid()
 {
 }
 
-bool IEC103asdudatasetgid::init(QByteArray buff,uchar *gdd)
+bool IEC103AsduDataSetGid::init(QByteArray buff)
+{
+	return false;
+}
+
+bool IEC103AsduDataSetGid::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -132,17 +142,17 @@ bool IEC103asdudatasetgid::init(QByteArray buff,uchar *gdd)
 }
 
 
-QString IEC103asdudatasetgid::showToText()
+QString IEC103AsduDataSetGid::showToText()
 {
 	return mText;
 }
 
-bool IEC103asdudatasetgid::createData(IECDataConfig & config)
+bool IEC103AsduDataSetGid::createData(IECDataConfig & config)
 {
 	return false;
 }
 
-IEC103asdudataset::IEC103asdudataset()
+IEC103AsduDataSet::IEC103AsduDataSet()
 {
 	error = 0;
 	len = 0;
@@ -150,13 +160,13 @@ IEC103asdudataset::IEC103asdudataset()
 	gidnum = 0;
 }
 
-IEC103asdudataset::~IEC103asdudataset()
+IEC103AsduDataSet::~IEC103AsduDataSet()
 {
 	qDeleteAll(gidlist);
 	gidlist.clear();
 }
 
-bool IEC103asdudataset::init(QByteArray buff)
+bool IEC103AsduDataSet::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -194,7 +204,7 @@ bool IEC103asdudataset::init(QByteArray buff)
 
 	for (int i = 0;i < gidnum;i++)
 	{
-		IEC103asdudatasetgid *mgid = new IEC103asdudatasetgid;
+		IEC103AsduDataSetGid *mgid = new IEC103AsduDataSetGid;
 		bool isOk = mgid->init(buff.mid(len),gdd);
 		if (!isOk)
 		{
@@ -209,40 +219,45 @@ bool IEC103asdudataset::init(QByteArray buff)
 	return true;
 }
 
-bool IEC103asdudataset::init(QByteArray buff, uchar * ch)
+bool IEC103AsduDataSet::init(QByteArray buff, uint addr)
 {
 	return false;
 }
 
-QString IEC103asdudataset::showToText()
+bool IEC103AsduDataSet::init(QByteArray buff, uchar * ch)
+{
+	return false;
+}
+
+QString IEC103AsduDataSet::showToText()
 {
 	QString text = mText;
-	for (IEC103asdudatasetgid *mgid : gidlist)
+	for (IEC103AsduDataSetGid *mgid : gidlist)
 	{
 		text.append(mgid->showToText());
 	}
 	return text;
 }
 
-bool IEC103asdudataset::createData(IECDataConfig & config)
+bool IEC103AsduDataSet::createData(IECDataConfig & config)
 {
 	return false;
 }
 
 
-IEC103asdu10data::IEC103asdu10data()
+IEC103Asdu10Data::IEC103Asdu10Data()
 {
 	rii = 0;
 	ngd = 0;
 }
 
-IEC103asdu10data::~IEC103asdu10data()
+IEC103Asdu10Data::~IEC103Asdu10Data()
 {
 	qDeleteAll(setlist);
 	setlist.clear();
 }
 
-bool IEC103asdu10data::init(QByteArray buff)
+bool IEC103Asdu10Data::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -273,7 +288,7 @@ bool IEC103asdu10data::init(QByteArray buff)
 	uchar *gin = (uchar *)(buff.data() + len);
 	for (int index = 0; index < setnum; index++)
 	{
-		IEC103asdudataset *mset = new IEC103asdudataset;
+		IEC103AsduDataSet *mset = new IEC103AsduDataSet;
 		bool isOk = mset->init(buff.mid(len));
 		if (!isOk)
 		{
@@ -289,22 +304,27 @@ bool IEC103asdu10data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC103asdu10data::init(QByteArray buff, uint addr)
+bool IEC103Asdu10Data::init(QByteArray buff, uint addr)
 {
 	return false;
 }
 
-QString IEC103asdu10data::showToText()
+bool IEC103Asdu10Data::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC103Asdu10Data::showToText()
 {
 	QString text = mText;
-	for (IEC103asdudataset *mset : setlist)
+	for (IEC103AsduDataSet *mset : setlist)
 	{
 		text.append(mset->showToText());
 	}
 	return text;
 }
 
-bool IEC103asdu10data::createData(IECDataConfig &config)
+bool IEC103Asdu10Data::createData(IECDataConfig &config)
 {
 	config.data += config.inf;
 	config.data += config.rii;

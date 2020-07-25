@@ -3,18 +3,18 @@
 #include "app.h"
 #include "functotext.h"
 
-IEC101asdu50data::IEC101asdu50data()
+IEC101Asdu50Data::IEC101Asdu50Data()
 {
 	floatdata = 0;
 	qos = 0;
 }
 
-IEC101asdu50data::~IEC101asdu50data()
+IEC101Asdu50Data::~IEC101Asdu50Data()
 {
 
 }
 
-bool IEC101asdu50data::init(QByteArray buff)
+bool IEC101Asdu50Data::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -31,7 +31,7 @@ bool IEC101asdu50data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101asdu50data::init(QByteArray buff, uint addr)
+bool IEC101Asdu50Data::init(QByteArray buff, uint addr)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -47,12 +47,12 @@ bool IEC101asdu50data::init(QByteArray buff, uint addr)
 	return true;
 }
 
-QString IEC101asdu50data::showToText()
+QString IEC101Asdu50Data::showToText()
 {
 	return mText;
 }
 
-bool IEC101asdu50data::createData(IECDataConfig &config)
+bool IEC101Asdu50Data::createData(IECDataConfig &config)
 {
 	config.data += uintToBa(config.infaddr,3);
 	config.data += config.infdata;

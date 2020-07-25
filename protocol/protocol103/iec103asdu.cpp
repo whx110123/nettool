@@ -12,7 +12,7 @@
 #include "iec103asdu51data.h"
 
 
-IEC103asdudata::IEC103asdudata()
+IEC103AsduData::IEC103AsduData()
 {
 	error = 0;
 	len = 0;
@@ -20,12 +20,37 @@ IEC103asdudata::IEC103asdudata()
 	mstate = STATE_NORMAL;
 }
 
-IEC103asdudata::~IEC103asdudata()
+IEC103AsduData::~IEC103AsduData()
 {
 
 }
 
-QString IEC103asdudata::infToText()
+bool IEC103AsduData::init(QByteArray buff)
+{
+	return false;
+}
+
+bool IEC103AsduData::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC103AsduData::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC103AsduData::showToText()
+{
+	return QString();
+}
+
+bool IEC103AsduData::createData(IECDataConfig &config)
+{
+	return false;
+}
+
+QString IEC103AsduData::infToText()
 {
 	QString text = "INF:" + QString::number(inf) + " ";
 	switch (inf)
@@ -63,7 +88,7 @@ QString IEC103asdudata::infToText()
 	return text;
 }
 
-IEC103asdu::IEC103asdu()
+IEC103Asdu::IEC103Asdu()
 {
 	error = 0;
 	type = 0;
@@ -78,13 +103,13 @@ IEC103asdu::IEC103asdu()
 	mstate = STATE_NORMAL;
 }
 
-IEC103asdu::~IEC103asdu()
+IEC103Asdu::~IEC103Asdu()
 {
 	qDeleteAll(datalist);
 	datalist.clear();
 }
 
-bool IEC103asdu::init(QByteArray buff)
+bool IEC103Asdu::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -125,7 +150,7 @@ bool IEC103asdu::init(QByteArray buff)
 	uchar inf = *(buff.data()+len);;
 	for(int index = 0;index<datanum;index++)
 	{
-		IEC103asdudata *mdata = CreateAsduData(type);
+		IEC103AsduData *mdata = CreateAsduData(type);
 		if (!mdata)
 		{
 			return false;
@@ -153,17 +178,27 @@ bool IEC103asdu::init(QByteArray buff)
 	return true;
 }
 
-QString IEC103asdu::showToText()
+bool IEC103Asdu::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC103Asdu::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC103Asdu::showToText()
 {
 	QString text = mText;
-	for(IEC103asdudata *mdata:datalist)
+	for(IEC103AsduData *mdata:datalist)
 	{
 		text.append(mdata->showToText());
 	}
 	return text;
 }
 
-bool IEC103asdu::createData(IECDataConfig &config)
+bool IEC103Asdu::createData(IECDataConfig &config)
 {
 	qDeleteAll(datalist);
 	datalist.clear();
@@ -177,7 +212,7 @@ bool IEC103asdu::createData(IECDataConfig &config)
 		config.data += config.fun;
 		for(int i = 0;i < (config.vsq & 0x7f);i++)
 		{
-			IEC103asdudata *data = CreateAsduData(config.asdutype);
+			IEC103AsduData *data = CreateAsduData(config.asdutype);
 			if(!data)
 			{
 				return false;
@@ -207,7 +242,7 @@ bool IEC103asdu::createData(IECDataConfig &config)
 	return true;
 }
 
-QString IEC103asdu::typeToText()
+QString IEC103Asdu::typeToText()
 {
 	QString text = "ASDU"+ QString::number(type) + ":类型标识 ";
 	switch (type)
@@ -321,7 +356,7 @@ QString IEC103asdu::typeToText()
 	return text;
 }
 
-QString IEC103asdu::vsqToText()
+QString IEC103Asdu::vsqToText()
 {
 	QString text = "VSQ 可变结构限定词，";
 	sqflag = (vsq>>7) & 0x01;
@@ -340,7 +375,7 @@ QString IEC103asdu::vsqToText()
 	return text;
 }
 
-QString IEC103asdu::cotToText()
+QString IEC103Asdu::cotToText()
 {
 	QString text = "COT:"+ QString::number(cot) + " 传送原因:";
 	switch (cot)
@@ -412,7 +447,7 @@ QString IEC103asdu::cotToText()
 	return text;
 }
 
-QString IEC103asdu::funToText()
+QString IEC103Asdu::funToText()
 {
 	QString text = "FUN:"+ QString::number(fun) + " ";
 	switch (fun)
@@ -429,9 +464,9 @@ QString IEC103asdu::funToText()
 	return text;
 }
 
-IEC103asdudata *IEC103asdu::CreateAsduData(uchar type)
+IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 {
-	IEC103asdudata *asdudata = NULL;
+	IEC103AsduData *asdudata = NULL;
 	switch (type)
 	{
 	// 	case 1:
@@ -447,10 +482,10 @@ IEC103asdudata *IEC103asdu::CreateAsduData(uchar type)
 	// 		asdudata = new IEC103asdu7data;
 	// 		break;
 	case 10:
-		asdudata = new IEC103asdu10data;
+		asdudata = new IEC103Asdu10Data;
 		break;
 	case 21:
-		asdudata = new IEC103asdu21data;
+		asdudata = new IEC103Asdu21Data;
 		break;
 		// 	case 44:
 		// 		asdudata = new IEC103asdu44data;

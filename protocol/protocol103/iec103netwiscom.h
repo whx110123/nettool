@@ -6,24 +6,20 @@
 
 
 
-class IEC103NETwiscom
+class IEC103NetWiscom : public MyBase
 {
 public:
-	IEC103NETwiscom();
-	~IEC103NETwiscom();
-	bool init(QByteArray buff);
-	QString showToText();
-	bool createData(IECDataConfig &config);
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
+	IEC103NetWiscom();
+	~IEC103NetWiscom();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
 
 public:
-	IEC103NETapciwiscom apci;
-	IEC103asdu asdu;
+	IEC103NetApciWiscom apci;
+	IEC103Asdu asdu;
 };
 
 #endif // IEC103NETWISCOM_H

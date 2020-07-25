@@ -3,19 +3,19 @@
 #include "app.h"
 #include "functotext.h"
 
-IEC101asdu167data::IEC101asdu167data()
+IEC101Asdu167Data::IEC101Asdu167Data()
 {
 	ctrl = 0;
 	memset(devaddr, 0, sizeof(devaddr));
 	iec103len = 0;
 }
 
-IEC101asdu167data::~IEC101asdu167data()
+IEC101Asdu167Data::~IEC101Asdu167Data()
 {
 
 }
 
-bool IEC101asdu167data::init(QByteArray buff)
+bool IEC101Asdu167Data::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -43,7 +43,7 @@ bool IEC101asdu167data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101asdu167data::init(QByteArray buff, uint addr)
+bool IEC101Asdu167Data::init(QByteArray buff, uint addr)
 {
 // 	mRecvData = buff;
 // 	mText.clear();
@@ -57,14 +57,14 @@ bool IEC101asdu167data::init(QByteArray buff, uint addr)
 	return false;
 }
 
-QString IEC101asdu167data::showToText()
+QString IEC101Asdu167Data::showToText()
 {
 	QString text = mText;
 	text.append(asdu.showToText());
 	return text;
 }
 
-bool IEC101asdu167data::createData(IECDataConfig &config)
+bool IEC101Asdu167Data::createData(IECDataConfig &config)
 {
 	config.data += '\0';
 	config.data.append(uintToBa(config.iec103config->devaddr,2));
@@ -84,7 +84,7 @@ bool IEC101asdu167data::createData(IECDataConfig &config)
 
 }
 
-QString IEC101asdu167data::ctrlToText()
+QString IEC101Asdu167Data::ctrlToText()
 {
 	QString text = "保护信息传输控制字节，A/S(bit8):" + QString::number(ctrl & 0x80, 16).toUpper() + " ";
 	uchar datanum = ctrl & 0x7f;

@@ -1,6 +1,6 @@
 ﻿#include "iec103netapciwiscom.h"
 
-IEC103NETapciwiscom::IEC103NETapciwiscom()
+IEC103NetApciWiscom::IEC103NetApciWiscom()
 {
 	error = 0;
 	mstate = STATE_INIT;
@@ -14,12 +14,12 @@ IEC103NETapciwiscom::IEC103NETapciwiscom()
 	memset(reserve,0,sizeof (reserve));
 }
 
-IEC103NETapciwiscom::~IEC103NETapciwiscom()
+IEC103NetApciWiscom::~IEC103NetApciWiscom()
 {
 
 }
 
-bool IEC103NETapciwiscom::init(QByteArray buff)
+bool IEC103NetApciWiscom::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -104,7 +104,17 @@ bool IEC103NETapciwiscom::init(QByteArray buff)
 
 }
 
-QString IEC103NETapciwiscom::showToText()
+bool IEC103NetApciWiscom::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC103NetApciWiscom::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC103NetApciWiscom::showToText()
 {
 	QString text;
 	text.append(mText);
@@ -112,7 +122,7 @@ QString IEC103NETapciwiscom::showToText()
 	return text;
 }
 
-bool IEC103NETapciwiscom::createData(IECDataConfig &config)
+bool IEC103NetApciWiscom::createData(IECDataConfig &config)
 {
 	config.data += 0x68;
 	config.data += '\0';

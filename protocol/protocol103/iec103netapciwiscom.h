@@ -6,22 +6,27 @@
 
 
 
-class IEC103NETapciwiscom
+class IEC103NetApciWiscom  : public MyBase
 {
 public:
-	IEC103NETapciwiscom();
-	~IEC103NETapciwiscom();
-	bool init(QByteArray buff);				//初始化
-	QString showToText();					//显示到文本
-	bool createData(IECDataConfig &config);
+	IEC103NetApciWiscom();
+	~IEC103NetApciWiscom();
+	virtual bool init(QByteArray buff);
+	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
+//	bool init(QByteArray buff);				//初始化
+//	QString showToText();					//显示到文本
+//	bool createData(IECDataConfig &config);
 
-public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
-	int len;
+//public:
+//	QByteArray mRecvData;
+//	QByteArray mSendData;
+//	QString mText;
+//	int error;
+//	int mstate;
+//	int len;
 
 public:
 	uchar first;					//启动字符

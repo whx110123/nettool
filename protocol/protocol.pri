@@ -2,6 +2,7 @@ HEADERS += \
     $$PWD/dataconfig.h \
     $$PWD/functotext.h \
     $$PWD/globaldefine.h \
+    $$PWD/mybase.h \
     $$PWD/protocol101apdu.h \
     $$PWD/protocol101asdu.h \
     $$PWD/protocol103asdu.h \
@@ -13,6 +14,7 @@ SOURCES += \
     $$PWD/dataconfig.cpp \
     $$PWD/functotext.cpp \
     $$PWD/globaldefine.cpp \
+    $$PWD/mybase.cpp \
     $$PWD/protocol101apdu.cpp \
     $$PWD/protocol101asdu.cpp \
     $$PWD/protocol103asdu.cpp \

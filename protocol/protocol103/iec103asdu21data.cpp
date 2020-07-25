@@ -1,19 +1,19 @@
 ﻿#include "iec103asdu21data.h"
 #include "functotext.h"
 
-IEC103asdu21data::IEC103asdu21data()
+IEC103Asdu21Data::IEC103Asdu21Data()
 {
 	rii = 0;
 	nog = 0;
 }
 
-IEC103asdu21data::~IEC103asdu21data()
+IEC103Asdu21Data::~IEC103Asdu21Data()
 {
 	qDeleteAll(setlist);
 	setlist.clear();
 }
 
-bool IEC103asdu21data::init(QByteArray buff)
+bool IEC103Asdu21Data::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -49,7 +49,7 @@ bool IEC103asdu21data::init(QByteArray buff)
 
 	for (int index = 0; index < nog; index++)
 	{
-		IEC103asdudataset *mset = new IEC103asdudataset;
+		IEC103AsduDataSet *mset = new IEC103AsduDataSet;
 		bool isOk = mset->init(buff.mid(len,3));
 		if (!isOk)
 		{
@@ -65,22 +65,22 @@ bool IEC103asdu21data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC103asdu21data::init(QByteArray buff, uint addr)
+bool IEC103Asdu21Data::init(QByteArray buff, uint addr)
 {
 	return false;
 }
 
-QString IEC103asdu21data::showToText()
+QString IEC103Asdu21Data::showToText()
 {
 	QString text = mText;
-	for (IEC103asdudataset *mset : setlist)
+	for (IEC103AsduDataSet *mset : setlist)
 	{
 		text.append(mset->showToText());
 	}
 	return text;
 }
 
-bool IEC103asdu21data::createData(IECDataConfig &config)
+bool IEC103Asdu21Data::createData(IECDataConfig &config)
 {
 	config.data += config.inf;
 	config.data += config.rii;

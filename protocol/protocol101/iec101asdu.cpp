@@ -20,19 +20,44 @@
 #include "iec101asdu137data.h"
 #include "iec101asdu167data.h"
 
-IEC101asdudata::IEC101asdudata()
+IEC101AsduData::IEC101AsduData()
 {
 	error = 0;
 	infaddr = 0;
 	mstate = STATE_NORMAL;
 }
 
-IEC101asdudata::~IEC101asdudata()
+IEC101AsduData::~IEC101AsduData()
 {
 
 }
 
-IEC101asdu::IEC101asdu()
+bool IEC101AsduData::init(QByteArray buff)
+{
+	return false;
+}
+
+bool IEC101AsduData::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC101AsduData::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC101AsduData::showToText()
+{
+	return QString();
+}
+
+bool IEC101AsduData::createData(IECDataConfig &config)
+{
+	return false;
+}
+
+IEC101Asdu::IEC101Asdu()
 {
 	error = 0;
 	type = 0;
@@ -46,13 +71,13 @@ IEC101asdu::IEC101asdu()
 	mstate = STATE_NORMAL;
 }
 
-IEC101asdu::~IEC101asdu()
+IEC101Asdu::~IEC101Asdu()
 {
 	qDeleteAll(datalist);
 	datalist.clear();
 }
 
-bool IEC101asdu::init(QByteArray buff)
+bool IEC101Asdu::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -98,7 +123,7 @@ bool IEC101asdu::init(QByteArray buff)
 
 	if (type == 167)			//由于167号报文数据长度不固定,单独处理
 	{
-		IEC101asdudata *mdata = CreateAsduData(type);
+		IEC101AsduData *mdata = CreateAsduData(type);
 		if (!mdata)
 		{
 			return false;
@@ -125,7 +150,7 @@ bool IEC101asdu::init(QByteArray buff)
 	uint dataaddr = charTouint((uchar *)(buff.data()+i),infaddrlen);
 	for(int index = 0;index<datanum;index++)
 	{
-		IEC101asdudata *mdata = CreateAsduData(type);
+		IEC101AsduData *mdata = CreateAsduData(type);
 		if (!mdata)
 		{
 			return false;
@@ -153,17 +178,27 @@ bool IEC101asdu::init(QByteArray buff)
 	return true;
 }
 
-QString IEC101asdu::showToText()
+bool IEC101Asdu::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool IEC101Asdu::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString IEC101Asdu::showToText()
 {
 	QString text = mText;
-	for(IEC101asdudata *mdata:datalist)
+	for(IEC101AsduData *mdata:datalist)
 	{
 		text.append(mdata->showToText());
 	}
 	return text;
 }
 
-bool IEC101asdu::createData(IECDataConfig &config)
+bool IEC101Asdu::createData(IECDataConfig &config)
 {
 	qDeleteAll(datalist);
 	datalist.clear();
@@ -182,7 +217,7 @@ bool IEC101asdu::createData(IECDataConfig &config)
 	}
 	for(int i = 0;i < num ;i++)
 	{
-		IEC101asdudata *newdata = CreateAsduData(config.asdutype);
+		IEC101AsduData *newdata = CreateAsduData(config.asdutype);
 		if (!newdata)
 		{
 			return false;
@@ -197,7 +232,7 @@ bool IEC101asdu::createData(IECDataConfig &config)
 	return true;
 }
 
-QString IEC101asdu::typeToText()
+QString IEC101Asdu::typeToText()
 {
 	other = 0;
 	datalen = 0;
@@ -494,7 +529,7 @@ QString IEC101asdu::typeToText()
 	return text;
 }
 
-QString IEC101asdu::vsqToText()
+QString IEC101Asdu::vsqToText()
 {
 	QString text = "VSQ 可变结构限定词，";
 	sqflag = (vsq>>7) & 0x01;
@@ -514,7 +549,7 @@ QString IEC101asdu::vsqToText()
 	return text;
 }
 
-QString IEC101asdu::cotToText()
+QString IEC101Asdu::cotToText()
 {
 	QString text = "COT(bit1-6):"+ QString::number(cot[0] & 0x3f) + " 传送原因:";
 	switch (cot[0] & 0x3f)
@@ -674,66 +709,66 @@ QString IEC101asdu::cotToText()
 	return text;
 }
 
-IEC101asdudata *IEC101asdu::CreateAsduData(uchar type)
+IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 {
-	IEC101asdudata *asdudata = NULL;
+	IEC101AsduData *asdudata = NULL;
 	mstate = STATE_NORMAL;
 	switch (type)
 	{
 	case 1:
-		asdudata = new IEC101asdu1data;
+		asdudata = new IEC101Asdu1Data;
 		break;
 	case 3:
-		asdudata = new IEC101asdu3data;
+		asdudata = new IEC101Asdu3Data;
 		break;
 	case 9:
-		asdudata = new IEC101asdu9data;
+		asdudata = new IEC101Asdu9Data;
 		break;
 	case 13:
-		asdudata = new IEC101asdu13data;
+		asdudata = new IEC101Asdu13Data;
 		break;
 	case 15:
-		asdudata = new IEC101asdu15data;
+		asdudata = new IEC101Asdu15Data;
 		break;
 	case 21:
-		asdudata = new IEC101asdu21data;
+		asdudata = new IEC101Asdu21Data;
 		break;
 	case 30:
-		asdudata = new IEC101asdu30data;
+		asdudata = new IEC101Asdu30Data;
 		break;
 	case 31:
-		asdudata = new IEC101asdu31data;
+		asdudata = new IEC101Asdu31Data;
 		break;
 	case 32:
-		asdudata = new IEC101asdu32data;
+		asdudata = new IEC101Asdu32Data;
 		break;
 	case 45:
-		asdudata = new IEC101asdu45data;
+		asdudata = new IEC101Asdu45Data;
 		break;
 	case 46:
-		asdudata = new IEC101asdu46data;
+		asdudata = new IEC101Asdu46Data;
 		break;
 	case 50:
-		asdudata = new IEC101asdu50data;
+		asdudata = new IEC101Asdu50Data;
 		break;
 	case 70:
-		asdudata = new IEC101asdu70data;
+		asdudata = new IEC101Asdu70Data;
 		mstate = STATE_CALLALL;
 		break;
 	case 100:
-		asdudata = new IEC101asdu100data;
+		asdudata = new IEC101Asdu100Data;
 		break;
 	case 101:
-		asdudata = new IEC101asdu101data;
+		asdudata = new IEC101Asdu101Data;
 		break;
 	case 103:
-		asdudata = new IEC101asdu103data;
+		asdudata = new IEC101Asdu103Data;
 		break;
 	case 137:
-		asdudata = new IEC101asdu137data;
+		asdudata = new IEC101Asdu137Data;
 		break;
 	case 167:
-		asdudata = new IEC101asdu167data;
+		asdudata = new IEC101Asdu167Data;
 		break;
 	default:
 		break;

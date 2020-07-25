@@ -3,18 +3,18 @@
 #include "app.h"
 #include "functotext.h"
 
-IEC103asdu2data::IEC103asdu2data()
+IEC103Asdu2Data::IEC103Asdu2Data()
 {
 	dpi = 0;
 	sin = 0;
 }
 
-IEC103asdu2data::~IEC103asdu2data()
+IEC103Asdu2Data::~IEC103Asdu2Data()
 {
 
 }
 
-bool IEC103asdu2data::init(QByteArray buff)
+bool IEC103Asdu2Data::init(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
@@ -47,17 +47,17 @@ bool IEC103asdu2data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC103asdu2data::init(QByteArray buff, uint addr)
+bool IEC103Asdu2Data::init(QByteArray buff, uint addr)
 {
 	return false;
 }
 
-QString IEC103asdu2data::showToText()
+QString IEC103Asdu2Data::showToText()
 {
 	return mText;
 }
 
-bool IEC103asdu2data::createData(IECDataConfig &config)
+bool IEC103Asdu2Data::createData(IECDataConfig &config)
 {
 	return false;
 }
