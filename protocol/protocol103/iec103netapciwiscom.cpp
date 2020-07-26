@@ -72,25 +72,17 @@ bool IEC103NetApciWiscom::init(QByteArray buff)
 	mText.append(CharToHexStr(buff.data()+len)+"\t源厂站地址:"+QString::number(source_factory_addr) +"\r\n");
 	len++;
 
-	source_dev_addr[0] = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data()+len) + "\t源设备地址低位:"+QString::number(source_dev_addr[0])+"\r\n");
-	len++;
-
-	source_dev_addr[1] = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data()+len) + "\t源设备地址高位:"+QString::number(source_dev_addr[1])+"\r\n");
-	len++;
+	memcpy(source_dev_addr,buff.data()+len,2);
+	mText.append(CharToHexStr(buff.data()+len,2) + "\t源设备地址:"+QString::number(source_dev_addr[1]*0x100 + source_dev_addr[0])+"\r\n");
+	len += 2;
 
 	destination_factory_addr = *(buff.data()+len);
 	mText.append(CharToHexStr(buff.data()+len) + "\t目的厂站地址:"+QString::number(destination_factory_addr)+"\r\n");
 	len++;
 
-	destination_dev_addr[0] = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data()+len) + "\t目的设备地址低位:"+QString::number(destination_dev_addr[0])+"\r\n");
-	len++;
-
-	destination_dev_addr[1] = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data()+len) + "\t目的设备地址高位:"+QString::number(destination_dev_addr[1])+"\r\n");
-	len++;
+	memcpy(destination_dev_addr,buff.data()+len,2);
+	mText.append(CharToHexStr(buff.data()+len,2) + "\t目的设备地址:"+QString::number(destination_dev_addr[1]*0x100 + destination_dev_addr[0])+"\r\n");
+	len += 2;
 
 	reserve[0] = *(buff.data()+len);
 	mText.append(CharToHexStr(buff.data()+len) + "\t备用\r\n");

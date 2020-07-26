@@ -23,7 +23,6 @@ public:
 	IEC104Apci apci;
 	IEC101Asdu asdu;
 
-
 };
 
 #endif // IEC104_H

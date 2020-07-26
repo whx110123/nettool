@@ -289,7 +289,7 @@ QString ovToText(uchar ch)
 QString erToText(uchar ch)
 {
 	QString text = "ER(bit2):" + QString::number(ch & 0x02, 16).toUpper() + " ";
-	if (ch)
+	if (ch & 0x02)
 	{
 		text.append("被测值无效");
 	}

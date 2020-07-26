@@ -16,17 +16,6 @@ public:
 	virtual bool init(QByteArray buff, uchar *ch);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
-//	bool init(QByteArray buff);				//初始化
-//	QString showToText();					//显示到文本
-//	bool createData(IECDataConfig &config);
-
-//public:
-//	QByteArray mRecvData;
-//	QByteArray mSendData;
-//	QString mText;
-//	int error;
-//	int mstate;
-//	int len;
 
 public:
 	uchar first;					//启动字符

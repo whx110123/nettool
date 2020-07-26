@@ -87,7 +87,7 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 			return false;
 		}
 		datashort = charToshortwithQ(buff.data());
-		mText.append(CharToHexStr(buff.data(),2) + "\tGID:带品质描述词的被测值(bit4-16):" + QString::number(datashort) + ovToText(*buff.data()) +erToText(*buff.data())+"\r\n");
+		mText.append(CharToHexStr(buff.data(),2) + "\tGID:带品质描述词的被测值(bit4-16):" + QString::number(datashort) + "   "+ ovToText(*buff.data()) + "   "+erToText(*buff.data()));
 		len += gdd[1];
 		break;
 	case 18:
