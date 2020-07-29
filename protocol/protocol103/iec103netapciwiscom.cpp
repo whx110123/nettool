@@ -3,7 +3,7 @@
 IEC103NetApciWiscom::IEC103NetApciWiscom()
 {
 	error = 0;
-	mstate = STATE_INIT;
+	masterState = STATE_INIT;
 	len = 0;
 	first = 0;
 	length = 0;
@@ -64,7 +64,7 @@ bool IEC103NetApciWiscom::init(QByteArray buff)
 	{
 		return false;
 	}
-	mstate = control.mstate;
+	masterState = control.masterState;
 	mText.append(control.showToText());
 	len +=4;
 

@@ -3,7 +3,7 @@
 IEC103NetWiscom::IEC103NetWiscom()
 {
 	error = 0;
-	mstate = STATE_INIT;
+	masterState = STATE_INIT;
 }
 
 IEC103NetWiscom::~IEC103NetWiscom()
@@ -28,7 +28,7 @@ bool IEC103NetWiscom::init(QByteArray buff)
 		return false;
 	}
 	mRecvData = buff.left(apci.length+3);
-	mstate = apci.mstate;
+	masterState = apci.masterState;
 	if(apci.length+3 > buff.count())
 	{
 		error = 3;
@@ -57,7 +57,7 @@ bool IEC103NetWiscom::init(QByteArray buff)
 		error =asdu.error;
 		return false;
 	}
-	mstate = asdu.mstate;
+	masterState = asdu.masterState;
 	return true;
 }
 

@@ -35,13 +35,13 @@ bool IEC104Control::init(QByteArray buff)
 		if(code & 0x80)
 		{
 			mText.append("(bit8):1 子站确认TESTFR，子站响应启用测试\r\n");
-			mstate = STATE_TESTACT;
+			masterState = STATE_TESTACT;
 			sum++;
 		}
 		if(code & 0x40)
 		{
 			mText.append("(bit7):1 主站激活TESTFR，主站启用测试\r\n");
-			mstate = STATE_TESTCONFIRM;
+			masterState = STATE_TESTCONFIRM;
 			sum++;
 		}
 		if(code & 0x20)
@@ -57,7 +57,7 @@ bool IEC104Control::init(QByteArray buff)
 		if(code & 0x08)
 		{
 			mText.append("(bit4):1 子站确认STARTDT，子站响应激活链路\r\n");
-			mstate = STATE_CALLALL;
+			masterState = STATE_CALLALL;
 			sum++;
 		}
 		if(code & 0x04)
@@ -127,7 +127,7 @@ bool IEC104Control::init(QByteArray buff)
 		}
 		remoteRecvNo /= 2;
 		mText.append(CharToHexStr(buff.data()+2,2) + "\t接受序号: " + QString::number(remoteRecvNo) + "\r\n");
-		mstate = STATE_TESTACT;
+		masterState = STATE_TESTACT;
 		break;
 	case ITYPE:
 		if(mRecvData.count() < 4)
@@ -150,7 +150,7 @@ bool IEC104Control::init(QByteArray buff)
 		remoteRecvNo /= 2;
 		localSendNo = remoteRecvNo;		//根据对面序号修改
 		mText.append(CharToHexStr(buff.data()+2,2) + "\t接受序号: " + QString::number(remoteRecvNo) + "\r\n");
-		mstate = STATE_NORMAL;
+		masterState = STATE_NORMAL;
 		break;
 	default:
 		break;
@@ -175,19 +175,30 @@ QString IEC104Control::showToText()
 
 bool IEC104Control::createData(IECDataConfig &config)
 {
-	if(config.isMaster)
-	{
+
 		switch (config.controltype)
 		{
 		case UTYPE:
-			switch (config.state)
+			switch (config.masterState)
 			{
 			case STATE_INIT:
-				config.data += 0x07;
+				if(config.isMaster)
+				{
+					config.data += 0x07;
+				}
+				else
+				{
+					config.data += 0x0b;
+				}
 				config.data += '\0';
 				config.data += '\0';
 				config.data += '\0';
 				break;
+			case STATE_NORMAL:
+				if(config.isMaster)
+				{
+					break;
+				}
 			case STATE_TESTACT:
 				config.data += 0x43;
 				config.data += '\0';
@@ -223,11 +234,7 @@ bool IEC104Control::createData(IECDataConfig &config)
 			break;
 		}
 
-	}
-	else
-	{
 
-	}
 	return true;
 }
 IEC104Apci::IEC104Apci()
@@ -284,7 +291,7 @@ bool IEC104Apci::init(QByteArray buff)
 	{
 		return false;
 	}
-	mstate = control.mstate;
+	masterState = control.masterState;
 	return true;
 
 }

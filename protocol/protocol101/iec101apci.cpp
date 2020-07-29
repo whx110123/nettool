@@ -52,7 +52,7 @@ bool IEC101Code::createData(IECDataConfig &config)
 IEC101Apci::IEC101Apci()
 {
 	error = 0;
-	mstate = STATE_INIT;
+	masterState = STATE_INIT;
 	len = 0;
 	flag1 = 0;
 	length1 = 0;
@@ -122,7 +122,7 @@ bool IEC101Apci::init(QByteArray buff)
 	{
 		return false;
 	}
-	mstate = code.mstate;
+	masterState = code.masterState;
 	mText.append(code.showToText());
 	len++;
 

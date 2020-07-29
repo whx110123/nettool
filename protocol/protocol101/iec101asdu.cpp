@@ -24,7 +24,7 @@ IEC101AsduData::IEC101AsduData()
 {
 	error = 0;
 	infaddr = 0;
-	mstate = STATE_NORMAL;
+	masterState = STATE_NORMAL;
 }
 
 IEC101AsduData::~IEC101AsduData()
@@ -68,7 +68,7 @@ IEC101Asdu::IEC101Asdu()
 	datanum = 0;
 	datalen = 0;
 	other = 0;
-	mstate = STATE_NORMAL;
+	masterState = STATE_NORMAL;
 }
 
 IEC101Asdu::~IEC101Asdu()
@@ -712,7 +712,7 @@ QString IEC101Asdu::cotToText()
 IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 {
 	IEC101AsduData *asdudata = NULL;
-	mstate = STATE_NORMAL;
+	masterState = STATE_NORMAL;
 	switch (type)
 	{
 	case 1:
@@ -753,7 +753,7 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	case 70:
 		asdudata = new IEC101Asdu70Data;
-		mstate = STATE_CALLALL;
+		masterState = STATE_CALLALL;
 		break;
 	case 100:
 		asdudata = new IEC101Asdu100Data;

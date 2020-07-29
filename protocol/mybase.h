@@ -17,12 +17,13 @@ public:
 	virtual bool createData(IECDataConfig &config) = 0;
 
 public:
-	QByteArray mRecvData;
-	QByteArray mSendData;
-	QString mText;
-	int error;
-	int mstate;
-	int len;
+	QByteArray mRecvData;	//接收报文
+	QByteArray mSendData;	//发送报文
+	QString mText;			//解析
+	int error;				//错误标识
+	int masterState;		//主站状态
+	int slaveState;			//子站状态
+	int len;				//报文长度
 };
 
 #endif // MYBASE_H

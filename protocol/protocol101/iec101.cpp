@@ -3,7 +3,7 @@
 IEC101::IEC101()
 {
 	error = 0;
-	mstate = STATE_INIT;
+	masterState = STATE_INIT;
 	len = 0;
 	crc = 0;
 	end = 0;
@@ -49,7 +49,7 @@ bool IEC101::init(QByteArray buff)
 		return false;
 	}
 	mRecvData = buff.left(apci.length);
-	mstate = apci.mstate;
+	masterState = apci.masterState;
 
 	if(apci.flag1 == 0x68 && buff.count()> 9)
 	{
@@ -58,7 +58,7 @@ bool IEC101::init(QByteArray buff)
 			error =asdu.error;
 			return false;
 		}
-		mstate = asdu.mstate;
+		masterState = asdu.masterState;
 		len += apci.length1-2;
 
 	}

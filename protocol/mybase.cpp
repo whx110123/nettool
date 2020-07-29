@@ -4,7 +4,7 @@ MyBase::MyBase()
 {
 	error = 0;
 	len = 0;
-	mstate = STATE_NORMAL;
+	masterState = STATE_NORMAL;
 }
 
 MyBase::~MyBase()

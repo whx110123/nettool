@@ -17,7 +17,7 @@ IEC103AsduData::IEC103AsduData()
 	error = 0;
 	len = 0;
 	inf = 0;
-	mstate = STATE_NORMAL;
+	masterState = STATE_NORMAL;
 }
 
 IEC103AsduData::~IEC103AsduData()
@@ -100,7 +100,7 @@ IEC103Asdu::IEC103Asdu()
 	len = 0;
 	//	timelen = 0;
 	//	other = 0;
-	mstate = STATE_NORMAL;
+	masterState = STATE_NORMAL;
 }
 
 IEC103Asdu::~IEC103Asdu()

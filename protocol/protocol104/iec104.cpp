@@ -4,7 +4,7 @@
 IEC104::IEC104()
 {
 	error = 0;
-	mstate = STATE_INIT;
+	masterState = STATE_INIT;
 }
 
 IEC104::~IEC104()
@@ -29,7 +29,7 @@ bool IEC104::init(QByteArray buff)
 		return false;
 	}
 	mRecvData = buff.left(apci.length+2);
-	mstate = apci.mstate;
+	masterState = apci.masterState;
 	if(apci.length+2 > buff.count())
 	{
 		error = 3;
@@ -58,7 +58,7 @@ bool IEC104::init(QByteArray buff)
 		error =asdu.error;
 		return false;
 	}
-	mstate = asdu.mstate;
+	masterState = asdu.masterState;
 	return true;
 }
 
@@ -88,7 +88,7 @@ bool IEC104::createData(IECDataConfig &config)
 	config.data.clear();
 	if(config.isMaster)
 	{
-		switch (config.state)
+		switch (config.masterState)
 		{
 		case STATE_INIT:
 		case STATE_TESTACT:
@@ -116,7 +116,24 @@ bool IEC104::createData(IECDataConfig &config)
 	}
 	else
 	{
-		return false;
+		switch (config.masterState)
+		{
+		case STATE_INIT:
+		case STATE_TESTACT:
+		case STATE_TESTCONFIRM:
+		case STATE_NORMAL:
+		case STATE_CALLALL:
+			config.controltype = UTYPE;
+			break;
+		case STATE_USER:
+			config.controltype = ITYPE;
+			break;
+		case STATE_HOTKEY:
+			break;
+		default:
+			return false;
+			break;
+		}
 	}
 
 	if(!apci.createData(config))
@@ -134,7 +151,7 @@ bool IEC104::createData(IECDataConfig &config)
 	{
 		return false;
 	}
-	if(config.state == STATE_USER)
+	if(config.masterState == STATE_USER)
 	{
 		config.data.append(config.userdata);
 	}

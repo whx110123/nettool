@@ -81,12 +81,22 @@ void DialogPMA::handleData()
 			recvData.remove(0,piec104->apci.length+2);
 		}
 	}
-	if(haveData || piec104->mstate == STATE_INIT)
+	if(haveData || piec104->masterState == STATE_INIT)
 	{
 		haveData = false;
-		config.state = piec104->mstate;
-//		qDebug() << "state = " << piec104->mstate;
-		config.isMaster = true;
+
+		config.asdutype = 0;
+		//		qDebug() << "state = " << piec104->mstate;
+		if(ui->comboBox_state->currentText() == QString("模拟主站"))
+		{
+			config.isMaster = true;
+			config.masterState = piec104->masterState;
+		}
+		else
+		{
+			config.isMaster = false;
+			config.slaveState = piec104->slaveState;
+		}
 		if(piec104->createData(config))
 		{
 			showToText(config.data);
@@ -100,17 +110,21 @@ void DialogPMA::startdebug()
 {
 	recvData.clear();
 	ui->pushButton_start->setText("停止");
-	if(!piec104)
+	if(ui->comboBox_protocol->currentText()==QString("104"))
 	{
-		piec104 = new IEC104;
+		if(!piec104)
+		{
+			piec104 = new IEC104;
+		}
+		if(!piec104Show)
+		{
+			piec104Show = new IEC104;
+		}
+		piec104->masterState = STATE_INIT;
+		piec104->slaveState = STATE_INIT;
+		App::IEC_COMADDR = ui->lineEdit_104asduaddr->text().toUInt();
+		handleDataTimer->start(1000);
 	}
-	if(!piec104Show)
-	{
-		piec104Show = new IEC104;
-	}
-	piec104->mstate = STATE_INIT;
-	App::IEC_COMADDR = ui->lineEdit_104asduaddr->text().toUInt();
-	handleDataTimer->start(1000);
 }
 
 void DialogPMA::stopdebug()
@@ -123,7 +137,7 @@ void DialogPMA::stopdebug()
 	}
 	if(piec104)
 	{
-		piec104->mstate = STATE_INIT;
+		piec104->masterState = STATE_INIT;
 		piec104->apci.control.localRecvNo = 0;
 		piec104->apci.control.localSendNo = 0;
 	}
@@ -251,7 +265,7 @@ void DialogPMA::on_pushButton_start_clicked()
 void DialogPMA::on_pushButton_sendasdu_clicked()
 {
 	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu->toPlainText());
-	config.state = STATE_USER;
+	config.masterState = STATE_USER;
 	config.isMaster = true;
 	config.asdutype = 0;
 	createAndSendData(config);
@@ -259,7 +273,7 @@ void DialogPMA::on_pushButton_sendasdu_clicked()
 
 void DialogPMA::on_pushButton_104callTitle_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -283,7 +297,7 @@ void DialogPMA::on_pushButton_104callTitle_clicked()
 
 void DialogPMA::on_pushButton_104callRange_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -311,7 +325,7 @@ void DialogPMA::on_pushButton_104callRange_clicked()
 
 void DialogPMA::on_pushButton_104callDescription_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -338,7 +352,7 @@ void DialogPMA::on_pushButton_104callDescription_clicked()
 
 void DialogPMA::on_pushButton_104callAccuracy_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -365,7 +379,7 @@ void DialogPMA::on_pushButton_104callAccuracy_clicked()
 
 void DialogPMA::on_pushButton_104callDimension_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -392,7 +406,7 @@ void DialogPMA::on_pushButton_104callDimension_clicked()
 
 void DialogPMA::on_pushButton_104callSetting_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -420,7 +434,7 @@ void DialogPMA::on_pushButton_104callSetting_clicked()
 
 void DialogPMA::on_pushButton_104setFloatDowm_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -452,7 +466,7 @@ void DialogPMA::on_pushButton_104setFloatDowm_clicked()
 
 void DialogPMA::on_pushButton_104settingCuring_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -476,7 +490,7 @@ void DialogPMA::on_pushButton_104settingCuring_clicked()
 
 void DialogPMA::on_pushButton_104setUintDowm_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = 167;
 	config.controltype = ITYPE;
@@ -515,7 +529,7 @@ void DialogPMA::on_pushButton_clear_clicked()
 
 void DialogPMA::on_pushButton_104select_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
 	config.controltype = ITYPE;
@@ -535,7 +549,7 @@ void DialogPMA::on_pushButton_104select_clicked()
 
 void DialogPMA::on_pushButton_104execute_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
 	config.controltype = ITYPE;
@@ -555,7 +569,7 @@ void DialogPMA::on_pushButton_104execute_clicked()
 
 void DialogPMA::on_pushButton_104cancel_clicked()
 {
-	config.state = STATE_HOTKEY;
+	config.masterState = STATE_HOTKEY;
 	config.isMaster = true;
 	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
 	config.controltype = ITYPE;

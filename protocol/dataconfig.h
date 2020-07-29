@@ -19,7 +19,8 @@ public:
 	~IECDataConfig();
 	QByteArray data;		//总报文
 	QByteArray userdata;	//自定义asdu报文
-	int state;				//状态
+	int masterState;		//主站状态
+	int slaveState;			//子站状态
 	bool isMaster;			//是否为主站
 	bool isfirst;			//是否是第一个信息体
 	uchar controltype;		//帧类型 I、U、S 帧

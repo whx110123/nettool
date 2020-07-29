@@ -156,7 +156,7 @@ IEC103AsduDataSet::IEC103AsduDataSet()
 {
 	error = 0;
 	len = 0;
-	mstate = STATE_NORMAL;
+	masterState = STATE_NORMAL;
 	gidnum = 0;
 }
 
