@@ -10,9 +10,6 @@ public:
 	IEC101Code();
 	~IEC101Code();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
-	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
 public:
@@ -25,9 +22,6 @@ public:
 	IEC101Apci();
 	~IEC101Apci();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
-	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
 public:

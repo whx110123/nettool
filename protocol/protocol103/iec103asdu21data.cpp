@@ -65,10 +65,6 @@ bool IEC103Asdu21Data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC103Asdu21Data::init(QByteArray buff, uint addr)
-{
-	return false;
-}
 
 QString IEC103Asdu21Data::showToText()
 {

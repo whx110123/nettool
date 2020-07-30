@@ -13,11 +13,6 @@ class IEC103AsduData : public MyBase
 public:
 	IEC103AsduData();
 	~IEC103AsduData();
-	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
-	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
 
 public:
 	uchar inf;
@@ -31,8 +26,6 @@ public:
 	IEC103Asdu();
 	~IEC103Asdu();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 

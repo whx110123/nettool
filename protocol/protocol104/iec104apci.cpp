@@ -36,12 +36,14 @@ bool IEC104Control::init(QByteArray buff)
 		{
 			mText.append("(bit8):1 子站确认TESTFR，子站响应启用测试\r\n");
 			masterState = STATE_TESTACT;
+			slaveState = STATE_TESTACT;
 			sum++;
 		}
 		if(code & 0x40)
 		{
 			mText.append("(bit7):1 主站激活TESTFR，主站启用测试\r\n");
 			masterState = STATE_TESTCONFIRM;
+			slaveState = STATE_TESTCONFIRM;
 			sum++;
 		}
 		if(code & 0x20)
@@ -63,6 +65,7 @@ bool IEC104Control::init(QByteArray buff)
 		if(code & 0x04)
 		{
 			mText.append("(bit3):1 主站激活STARTDT，主站激活链路\r\n");
+			slaveState = STATE_INIT;
 			sum++;
 		}
 
@@ -128,6 +131,7 @@ bool IEC104Control::init(QByteArray buff)
 		remoteRecvNo /= 2;
 		mText.append(CharToHexStr(buff.data()+2,2) + "\t接受序号: " + QString::number(remoteRecvNo) + "\r\n");
 		masterState = STATE_TESTACT;
+		slaveState = STATE_NORMAL;
 		break;
 	case ITYPE:
 		if(mRecvData.count() < 4)
@@ -151,6 +155,7 @@ bool IEC104Control::init(QByteArray buff)
 		localSendNo = remoteRecvNo;		//根据对面序号修改
 		mText.append(CharToHexStr(buff.data()+2,2) + "\t接受序号: " + QString::number(remoteRecvNo) + "\r\n");
 		masterState = STATE_NORMAL;
+		slaveState = STATE_NORMAL;
 		break;
 	default:
 		break;
@@ -158,20 +163,6 @@ bool IEC104Control::init(QByteArray buff)
 	return true;
 }
 
-bool IEC104Control::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC104Control::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
-
-QString IEC104Control::showToText()
-{
-	return mText;
-}
 
 bool IEC104Control::createData(IECDataConfig &config)
 {
@@ -296,15 +287,6 @@ bool IEC104Apci::init(QByteArray buff)
 
 }
 
-bool IEC104Apci::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC104Apci::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
 
 QString IEC104Apci::showToText()
 {

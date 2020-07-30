@@ -12,8 +12,6 @@ public:
 	IEC103Asdu2Data();
 	~IEC103Asdu2Data();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
 public:

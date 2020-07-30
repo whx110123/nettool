@@ -104,21 +104,15 @@ bool IEC101::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC101::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
 
 QString IEC101::showToText()
 {
 	QString text;
 	text.append(apci.showToText());
-	text.append(asdu.showToText());
+	if(apci.flag1 == 0x68)
+	{
+		text.append(asdu.showToText());
+	}
 	mText.append(CharToHexStr(crc)+"\t校验和:"+QString::number(crc) +"\r\n");
 	mText.append(CharToHexStr(end)+"\t结束字符:0x16"+QString::number(end) +"\r\n");
 	return text;
@@ -126,6 +120,5 @@ QString IEC101::showToText()
 
 bool IEC101::createData(IECDataConfig &config)
 {
-
 	return false;
 }

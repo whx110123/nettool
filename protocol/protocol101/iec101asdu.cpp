@@ -32,30 +32,7 @@ IEC101AsduData::~IEC101AsduData()
 
 }
 
-bool IEC101AsduData::init(QByteArray buff)
-{
-	return false;
-}
 
-bool IEC101AsduData::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC101AsduData::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
-
-QString IEC101AsduData::showToText()
-{
-	return QString();
-}
-
-bool IEC101AsduData::createData(IECDataConfig &config)
-{
-	return false;
-}
 
 IEC101Asdu::IEC101Asdu()
 {
@@ -178,15 +155,7 @@ bool IEC101Asdu::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101Asdu::init(QByteArray buff, uint addr)
-{
-	return false;
-}
 
-bool IEC101Asdu::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
 
 QString IEC101Asdu::showToText()
 {

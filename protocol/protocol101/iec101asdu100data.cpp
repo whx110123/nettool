@@ -39,11 +39,6 @@ bool IEC101Asdu100Data::init(QByteArray buff, uint addr)
 	return true;
 }
 
-QString IEC101Asdu100Data::showToText()
-{
-	return mText;
-}
-
 bool IEC101Asdu100Data::createData(IECDataConfig &config)
 {
 

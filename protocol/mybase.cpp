@@ -11,3 +11,28 @@ MyBase::~MyBase()
 {
 
 }
+
+bool MyBase::init(QByteArray buff)
+{
+	return false;
+}
+
+bool MyBase::init(QByteArray buff, uint addr)
+{
+	return false;
+}
+
+bool MyBase::init(QByteArray buff, uchar *ch)
+{
+	return false;
+}
+
+QString MyBase::showToText()
+{
+	return mText;
+}
+
+bool MyBase::createData(IECDataConfig &config)
+{
+	return false;
+}

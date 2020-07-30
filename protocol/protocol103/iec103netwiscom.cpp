@@ -61,15 +61,6 @@ bool IEC103NetWiscom::init(QByteArray buff)
 	return true;
 }
 
-bool IEC103NetWiscom::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC103NetWiscom::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
 
 QString IEC103NetWiscom::showToText()
 {

@@ -13,16 +13,13 @@ public:
 	IEC103Asdu21Data();
 	~IEC103Asdu21Data();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
 public:
 	uchar rii;
 	uchar nog;
-//	uchar datacount;
-//	uchar datacont;
-//	int setnum;
+
 	QList<IEC103AsduDataSet *> setlist;
 };
 

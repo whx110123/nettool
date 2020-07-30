@@ -25,30 +25,6 @@ IEC103AsduData::~IEC103AsduData()
 
 }
 
-bool IEC103AsduData::init(QByteArray buff)
-{
-	return false;
-}
-
-bool IEC103AsduData::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC103AsduData::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
-
-QString IEC103AsduData::showToText()
-{
-	return QString();
-}
-
-bool IEC103AsduData::createData(IECDataConfig &config)
-{
-	return false;
-}
 
 QString IEC103AsduData::infToText()
 {
@@ -176,16 +152,6 @@ bool IEC103Asdu::init(QByteArray buff)
 		len += mdata->len;
 	}
 	return true;
-}
-
-bool IEC103Asdu::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC103Asdu::init(QByteArray buff, uchar *ch)
-{
-	return false;
 }
 
 QString IEC103Asdu::showToText()

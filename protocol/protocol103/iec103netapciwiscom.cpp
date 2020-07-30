@@ -96,16 +96,6 @@ bool IEC103NetApciWiscom::init(QByteArray buff)
 
 }
 
-bool IEC103NetApciWiscom::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC103NetApciWiscom::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
-
 QString IEC103NetApciWiscom::showToText()
 {
 	QString text;

@@ -30,6 +30,7 @@ bool IEC104::init(QByteArray buff)
 	}
 	mRecvData = buff.left(apci.length+2);
 	masterState = apci.masterState;
+	slaveState = apci.slaveState;
 	if(apci.length+2 > buff.count())
 	{
 		error = 3;
@@ -59,18 +60,10 @@ bool IEC104::init(QByteArray buff)
 		return false;
 	}
 	masterState = asdu.masterState;
+	slaveState = asdu.slaveState;
 	return true;
 }
 
-bool IEC104::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC104::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
 
 QString IEC104::showToText()
 {

@@ -12,8 +12,6 @@ public:
 	IEC103NetWiscom();
 	~IEC103NetWiscom();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 

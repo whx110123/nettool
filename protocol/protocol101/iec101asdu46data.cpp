@@ -38,11 +38,6 @@ bool IEC101Asdu46Data::init(QByteArray buff, uint addr)
 	return true;
 }
 
-QString IEC101Asdu46Data::showToText()
-{
-	return mText;
-}
-
 bool IEC101Asdu46Data::createData(IECDataConfig &config)
 {
 	config.data += uintToBa(config.infaddr,3);

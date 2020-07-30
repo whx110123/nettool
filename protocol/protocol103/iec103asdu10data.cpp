@@ -13,16 +13,6 @@ IEC103AsduDataSetGid::~IEC103AsduDataSetGid()
 {
 }
 
-bool IEC103AsduDataSetGid::init(QByteArray buff)
-{
-	return false;
-}
-
-bool IEC103AsduDataSetGid::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
 bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 {
 	mRecvData = buff;
@@ -142,10 +132,6 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 }
 
 
-QString IEC103AsduDataSetGid::showToText()
-{
-	return mText;
-}
 
 bool IEC103AsduDataSetGid::createData(IECDataConfig & config)
 {
@@ -217,16 +203,6 @@ bool IEC103AsduDataSet::init(QByteArray buff)
 		gidlist.append(mgid);
 	}
 	return true;
-}
-
-bool IEC103AsduDataSet::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC103AsduDataSet::init(QByteArray buff, uchar * ch)
-{
-	return false;
 }
 
 QString IEC103AsduDataSet::showToText()
@@ -304,15 +280,6 @@ bool IEC103Asdu10Data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC103Asdu10Data::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC103Asdu10Data::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
 
 QString IEC103Asdu10Data::showToText()
 {

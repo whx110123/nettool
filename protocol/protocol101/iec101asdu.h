@@ -11,11 +11,6 @@ class IEC101AsduData : public MyBase
 public:
 	IEC101AsduData();
 	virtual ~IEC101AsduData();
-	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
-	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
 
 public:
 	uint infaddr;
@@ -27,8 +22,6 @@ public:
 	IEC101Asdu();
 	~IEC101Asdu();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 

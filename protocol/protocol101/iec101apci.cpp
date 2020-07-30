@@ -29,21 +29,6 @@ bool IEC101Code::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101Code::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC101Code::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
-
-QString IEC101Code::showToText()
-{
-	return mText;
-}
-
 bool IEC101Code::createData(IECDataConfig &config)
 {
 
@@ -134,22 +119,6 @@ bool IEC101Apci::init(QByteArray buff)
 
 }
 
-bool IEC101Apci::init(QByteArray buff, uint addr)
-{
-	return false;
-}
-
-bool IEC101Apci::init(QByteArray buff, uchar *ch)
-{
-	return false;
-}
-
-QString IEC101Apci::showToText()
-{
-	QString text;
-	text.append(mText);
-	return text;
-}
 
 bool IEC101Apci::createData(IECDataConfig &config)
 {

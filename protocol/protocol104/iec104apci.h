@@ -14,9 +14,6 @@ public:
 	IEC104Control();
 	~IEC104Control();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
-	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
 public:
@@ -34,8 +31,6 @@ public:
 	IEC104Apci();
 	~IEC104Apci();
 	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
