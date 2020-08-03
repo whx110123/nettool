@@ -22,6 +22,7 @@ public:
 	int masterState;		//主站状态
 	int slaveState;			//子站状态
 	bool isMaster;			//是否为主站
+	/***数据*************************/
 	bool isfirst;			//是否是第一个信息体
 	uchar controltype;		//帧类型 I、U、S 帧
 	uchar asdutype;			//asdu类型
@@ -39,8 +40,7 @@ public:
 	uchar kod[20];
 	uchar gdd[20][3];
 	uchar gid[255];
-	/***************************/
-
+	/***IEC104 167号报文************************/
 	IECDataConfig *iec103config;
 	ushort devaddr;
 };

@@ -10,11 +10,11 @@ class MyBase
 public:
 	MyBase();
 	virtual ~MyBase();
-	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
-	virtual bool init(QByteArray buff, uchar *ch);
-	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
+	virtual bool init(QByteArray buff);					//初始化
+	virtual bool init(QByteArray buff, uint addr);		//初始化
+	virtual bool init(QByteArray buff, uchar *ch);		//初始化
+	virtual QString showToText();						//显示解析结果
+	virtual bool createData(IECDataConfig &config);		//生成报文
 
 public:
 	QByteArray mRecvData;	//接收报文
