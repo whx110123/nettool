@@ -18,23 +18,13 @@ UI_DIR              = temp/ui
 OBJECTS_DIR         = temp/obj
 DESTDIR             = bin
 win32:RC_FILE       = other/main.rc
-
-
-SOURCES             += main.cpp
-HEADERS             += head.h
-
 CONFIG              += warn_off
 CONFIG				+= C++11
-include             ($$PWD/api/api.pri)
-include             ($$PWD/form/form.pri)
-include             ($$PWD/protocol/protocol.pri)
-include             ($$PWD/qextserialport/qextserialport.pri)
+
+include             ($$PWD/src/src.pri)
 
 INCLUDEPATH         += $$PWD
-INCLUDEPATH         += $$PWD/api
-INCLUDEPATH         += $$PWD/form
-INCLUDEPATH         += $$PWD/protocol
-INCLUDEPATH         += $$PWD/qextserialport
+INCLUDEPATH         += $$PWD/src
 
 RESOURCES += \
 	other/main.qrc
