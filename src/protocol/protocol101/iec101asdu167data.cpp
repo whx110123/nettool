@@ -17,8 +17,7 @@ IEC101Asdu167Data::~IEC101Asdu167Data()
 
 bool IEC101Asdu167Data::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
 
 	ctrl = *buff.data();
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
@@ -43,19 +42,6 @@ bool IEC101Asdu167Data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101Asdu167Data::init(QByteArray buff, uint addr)
-{
-// 	mRecvData = buff;
-// 	mText.clear();
-// 	infaddr = addr;
-// 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-// 	mText.append("\t信息元素地址:" + QString::number(infaddr) + "\r\n");
-// 
-// 	shortdata = charToint(buff.data(), 2);
-// 	mText.append(CharToHexStr(buff.data(), 2) + "\t规一化值:" + QString::number(shortdata) + "\r\n");
-
-	return false;
-}
 
 QString IEC101Asdu167Data::showToText()
 {

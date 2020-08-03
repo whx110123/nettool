@@ -13,11 +13,12 @@ IEC103NetWiscom::~IEC103NetWiscom()
 
 bool IEC103NetWiscom::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	if(buff.count()<15)
 	{
 		error =1;
+		mText.append("出错！报文总长不满15个字节，条件不满足，因此报文有问题\r\n");
 		return false;
 	}
 
@@ -29,7 +30,8 @@ bool IEC103NetWiscom::init(QByteArray buff)
 	}
 	mRecvData = buff.left(apci.length+3);
 	masterState = apci.masterState;
-	if(apci.length+3 > buff.count())
+	len = apci.length+3;
+	if(len > buff.count())
 	{
 		error = 3;
 		return false;
@@ -41,7 +43,7 @@ bool IEC103NetWiscom::init(QByteArray buff)
 	}
 	else if (apci.control.type == UTYPE||apci.control.type == STYPE )
 	{
-		if(apci.length!=12)
+		if(len!=15)
 		{
 			error = 4;
 			return false;
@@ -52,7 +54,7 @@ bool IEC103NetWiscom::init(QByteArray buff)
 		}
 	}
 
-	if(!asdu.init(buff.mid(15,apci.length-12)))
+	if(!asdu.init(buff.mid(15,len-15)))
 	{
 		error =asdu.error;
 		return false;
@@ -64,9 +66,12 @@ bool IEC103NetWiscom::init(QByteArray buff)
 
 QString IEC103NetWiscom::showToText()
 {
-	QString text;
-	text.append(apci.showToText());
-	if(apci.control.type == ITYPE)
+	QString text(mText);
+	if(len >14)
+	{
+		text.append(apci.showToText());
+	}
+	if(len >15 && apci.control.type == ITYPE)
 	{
 		text.append(asdu.showToText());
 	}

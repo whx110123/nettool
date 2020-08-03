@@ -2,9 +2,9 @@
 
 MyBase::MyBase()
 {
-	error = 0;
-	len = 0;
+	setDefault(NULL);
 	masterState = STATE_NORMAL;
+	slaveState = STATE_NORMAL;
 }
 
 MyBase::~MyBase()
@@ -35,4 +35,12 @@ QString MyBase::showToText()
 bool MyBase::createData(IECDataConfig &config)
 {
 	return false;
+}
+
+void MyBase::setDefault(QByteArray buff)
+{
+	mRecvData = buff;
+	mText.clear();
+	error = 0;
+	len = 0;
 }

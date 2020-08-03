@@ -13,9 +13,7 @@ IEC101Code::~IEC101Code()
 
 bool IEC101Code::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
-	mcode = *buff.data();
+	setDefault(buff);
 
 	mText.append(CharToHexStr(buff.data())+"\t" +prmToText(mcode) +"\r\n");
 	if(mcode & 0x40)
@@ -53,9 +51,8 @@ IEC101Apci::~IEC101Apci()
 
 bool IEC101Apci::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
-	len = 0;
+	setDefault(buff);
+
 	if(mRecvData.count() < 5)
 	{
 		error = 1;

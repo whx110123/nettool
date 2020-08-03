@@ -15,9 +15,7 @@ IEC103AsduDataSetGid::~IEC103AsduDataSetGid()
 
 bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 {
-	mRecvData = buff;
-	mText.clear();
-	len = 0;
+	setDefault(buff);
 
 	switch (gdd[0])
 	{
@@ -154,11 +152,10 @@ IEC103AsduDataSet::~IEC103AsduDataSet()
 
 bool IEC103AsduDataSet::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	qDeleteAll(gidlist);
 	gidlist.clear();
-	len = 0;
 
 	memcpy(gin, buff.data(), 2);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
@@ -235,11 +232,10 @@ IEC103Asdu10Data::~IEC103Asdu10Data()
 
 bool IEC103Asdu10Data::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	qDeleteAll(setlist);
 	setlist.clear();
-	len = 0;
 
 	inf = *(buff.data() + len);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");

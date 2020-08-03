@@ -16,9 +16,8 @@ IEC101::~IEC101()
 
 bool IEC101::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
-	len = 0;
+	setDefault(buff);
+
 	if(buff.count()<5)
 	{
 		error =1;

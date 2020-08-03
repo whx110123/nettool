@@ -15,8 +15,8 @@ IEC101Asdu1Data::~IEC101Asdu1Data()
 
 bool IEC101Asdu1Data::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	int infaddrlen = App::IEC_INFADDRLEN;			//信息体地址长度
 	infaddr = charTouint(buff.data(),infaddrlen);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
@@ -28,8 +28,8 @@ bool IEC101Asdu1Data::init(QByteArray buff)
 
 bool IEC101Asdu1Data::init(QByteArray buff, uint addr)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	infaddr = addr;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	mText.append("\t信息元素地址:" + QString::number(infaddr) + "\t对应点号是:" + QString::number(infaddr - 1) + "\r\n");

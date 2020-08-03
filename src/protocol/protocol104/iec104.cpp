@@ -14,11 +14,12 @@ IEC104::~IEC104()
 
 bool IEC104::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	if(buff.count()<6)
 	{
-		error =1;
+		error = 1;
+		mText.append("出错！报文总长不满6个字节，条件不满足，因此报文有问题\r\n");
 		return false;
 	}
 
@@ -31,7 +32,8 @@ bool IEC104::init(QByteArray buff)
 	mRecvData = buff.left(apci.length+2);
 	masterState = apci.masterState;
 	slaveState = apci.slaveState;
-	if(apci.length+2 > buff.count())
+	len = apci.length+2;
+	if(len > buff.count())
 	{
 		error = 3;
 		return false;
@@ -43,7 +45,7 @@ bool IEC104::init(QByteArray buff)
 	}
 	else if (apci.control.type == UTYPE||apci.control.type == STYPE )
 	{
-		if(apci.length!=4)
+		if(len!=6)
 		{
 			error = 4;
 			return false;
@@ -54,7 +56,7 @@ bool IEC104::init(QByteArray buff)
 		}
 	}
 
-	if(!asdu.init(buff.mid(6,apci.length-4)))
+	if(!asdu.init(buff.mid(6,len-6)))
 	{
 		error =asdu.error;
 		return false;
@@ -67,9 +69,12 @@ bool IEC104::init(QByteArray buff)
 
 QString IEC104::showToText()
 {
-	QString text;
-	text.append(apci.showToText());
-	if(apci.control.type == ITYPE)
+	QString text(mText);
+	if(len >5)
+	{
+		text.append(apci.showToText());
+	}
+	if(len >6 && apci.control.type == ITYPE)
 	{
 		text.append(asdu.showToText());
 	}
@@ -111,6 +116,9 @@ bool IEC104::createData(IECDataConfig &config)
 	{
 		switch (config.masterState)
 		{
+		case STATE_NODATA:
+			return false;
+			break;
 		case STATE_INIT:
 		case STATE_TESTACT:
 		case STATE_TESTCONFIRM:

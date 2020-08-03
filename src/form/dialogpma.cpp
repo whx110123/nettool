@@ -84,7 +84,6 @@ void DialogPMA::handleData()
 	if(haveData || piec104->masterState == STATE_INIT)
 	{
 		haveData = false;
-
 		config.asdutype = 0;
 		//		qDebug() << "state = " << piec104->mstate;
 		if(ui->comboBox_state->currentText() == QString("模拟主站"))
@@ -121,7 +120,7 @@ void DialogPMA::startdebug()
 			piec104Show = new IEC104;
 		}
 		piec104->masterState = STATE_INIT;
-		piec104->slaveState = STATE_INIT;
+		piec104->slaveState = STATE_NODATA;
 		App::IEC_COMADDR = ui->lineEdit_104asduaddr->text().toUInt();
 		handleDataTimer->start(1000);
 	}
@@ -138,6 +137,7 @@ void DialogPMA::stopdebug()
 	if(piec104)
 	{
 		piec104->masterState = STATE_INIT;
+		piec104->slaveState = STATE_INIT;
 		piec104->apci.control.localRecvNo = 0;
 		piec104->apci.control.localSendNo = 0;
 	}

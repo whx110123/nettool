@@ -248,7 +248,7 @@ void frmAnalysis::on_PBtest_clicked()
 			ui->resulttext->append(myiec104->showToText());
 			if(isOk)
 			{
-				buffer.remove(0, myiec104->apci.length + 2);
+				buffer.remove(0, myiec104->len);
 			}
 			else
 			{
@@ -275,7 +275,7 @@ void frmAnalysis::on_PBtest_clicked()
 			ui->resulttext->append(myiec103->showToText());
 			if(isOk)
 			{
-				buffer.remove(0, myiec103->apci.length + 3);
+				buffer.remove(0, myiec103->len);
 			}
 			else
 			{

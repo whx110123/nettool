@@ -18,8 +18,10 @@ IEC104Control::~IEC104Control()
 
 bool IEC104Control::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
+	masterState = STATE_NORMAL;
+	slaveState = STATE_NORMAL;
 	switch (type)
 	{
 	case UTYPE:
@@ -242,11 +244,12 @@ IEC104Apci::~IEC104Apci()
 
 bool IEC104Apci::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	if(mRecvData.count() < 6)
 	{
 		error = 1;
+		mText.append("出错！报文长度不满6个字节，条件不满足，因此报文有问题\r\n");
 		return false;
 	}
 	first = mRecvData.at(0);
@@ -283,6 +286,7 @@ bool IEC104Apci::init(QByteArray buff)
 		return false;
 	}
 	masterState = control.masterState;
+	slaveState = control.slaveState;
 	return true;
 
 }
@@ -290,8 +294,7 @@ bool IEC104Apci::init(QByteArray buff)
 
 QString IEC104Apci::showToText()
 {
-	QString text;
-	text.append(mText);
+	QString text(mText);
 	text.append(control.showToText());
 	return text;
 }

@@ -15,11 +15,10 @@ IEC103Asdu21Data::~IEC103Asdu21Data()
 
 bool IEC103Asdu21Data::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	qDeleteAll(setlist);
 	setlist.clear();
-	len = 0;
 
 	inf = *(buff.data() + len);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");

@@ -16,9 +16,7 @@ IEC103Asdu2Data::~IEC103Asdu2Data()
 
 bool IEC103Asdu2Data::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
-	len = 0;
+	setDefault(buff);
 
 	inf = *(buff.data() + len);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");

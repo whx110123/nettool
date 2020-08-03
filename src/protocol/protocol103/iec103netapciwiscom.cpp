@@ -21,12 +21,12 @@ IEC103NetApciWiscom::~IEC103NetApciWiscom()
 
 bool IEC103NetApciWiscom::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
-	len = 0;
+	setDefault(buff);
+
 	if(mRecvData.count() < 15)
 	{
 		error = 1;
+		mText.append("出错！报文长度不满15个字节，条件不满足，因此报文有问题\r\n");
 		return false;
 	}
 	first = *buff.data();

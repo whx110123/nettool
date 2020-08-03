@@ -17,7 +17,8 @@ enum
 
 enum
 {
-	STATE_INIT = 0,				//初始化
+	STATE_NODATA,				//无数据
+	STATE_INIT,					//初始化
 	STATE_CALLALL,				//发送总召
 	STATE_NORMAL,				//正常,状态,回复S帧
 	STATE_TESTACT,				//激活测试

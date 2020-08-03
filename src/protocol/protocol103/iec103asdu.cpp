@@ -87,11 +87,10 @@ IEC103Asdu::~IEC103Asdu()
 
 bool IEC103Asdu::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	qDeleteAll(datalist);
 	datalist.clear();
-	len = 0;
 	if(buff.count() < 4)
 	{
 		error = 1;

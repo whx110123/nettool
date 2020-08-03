@@ -22,9 +22,7 @@
 
 IEC101AsduData::IEC101AsduData()
 {
-	error = 0;
 	infaddr = 0;
-	masterState = STATE_NORMAL;
 }
 
 IEC101AsduData::~IEC101AsduData()
@@ -36,7 +34,6 @@ IEC101AsduData::~IEC101AsduData()
 
 IEC101Asdu::IEC101Asdu()
 {
-	error = 0;
 	type = 0;
 	vsq = 0;
 	memset(cot,0,sizeof (cot));
@@ -45,7 +42,6 @@ IEC101Asdu::IEC101Asdu()
 	datanum = 0;
 	datalen = 0;
 	other = 0;
-	masterState = STATE_NORMAL;
 }
 
 IEC101Asdu::~IEC101Asdu()
@@ -56,8 +52,8 @@ IEC101Asdu::~IEC101Asdu()
 
 bool IEC101Asdu::init(QByteArray buff)
 {
-	mRecvData = buff;
-	mText.clear();
+	setDefault(buff);
+
 	qDeleteAll(datalist);
 	datalist.clear();
 	int cotlen = App::IEC_COTLEN;					//cot长度
@@ -682,6 +678,7 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 {
 	IEC101AsduData *asdudata = NULL;
 	masterState = STATE_NORMAL;
+	slaveState = STATE_NORMAL;
 	switch (type)
 	{
 	case 1:
