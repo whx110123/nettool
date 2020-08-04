@@ -2,9 +2,7 @@
 
 IEC103NetApciWiscom::IEC103NetApciWiscom()
 {
-	error = 0;
 	masterState = STATE_INIT;
-	len = 0;
 	first = 0;
 	length = 0;
 	source_factory_addr = 0;
@@ -25,15 +23,13 @@ bool IEC103NetApciWiscom::init(QByteArray buff)
 
 	if(mRecvData.count() < 15)
 	{
-		error = 1;
-		mText.append("出错！报文长度不满15个字节，条件不满足，因此报文有问题\r\n");
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满15个字节");
 		return false;
 	}
 	first = *buff.data();
 	if(first != 0x68)
 	{
-		error = 2;
-		mText.append(CharToHexStr(buff.data())+"\t启动字符不是0x68\r\n");
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
 		return false;
 	}
 	mText.append(CharToHexStr(buff.data())+"\t启动字符:0x68\n");

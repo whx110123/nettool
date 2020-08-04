@@ -21,7 +21,7 @@ public:
 	QByteArray mRecvData;	//接收报文
 	int len;				//接收报文长度
 	QString mText;			//解析
-	int error;				//错误标识
+	static QString error;	//错误说明
 	int masterState;		//主站状态
 	int slaveState;			//子站状态
 };

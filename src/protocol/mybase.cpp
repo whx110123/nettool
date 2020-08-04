@@ -41,6 +41,7 @@ void MyBase::setDefault(QByteArray buff)
 {
 	mRecvData = buff;
 	mText.clear();
-	error = 0;
+	error.clear();
 	len = 0;
 }
+QString MyBase::error = QString();

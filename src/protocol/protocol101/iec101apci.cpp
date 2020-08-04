@@ -29,14 +29,11 @@ bool IEC101Code::init(QByteArray buff)
 
 bool IEC101Code::createData(IECDataConfig &config)
 {
-
+	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }
 IEC101Apci::IEC101Apci()
 {
-	error = 0;
-	masterState = STATE_INIT;
-	len = 0;
 	flag1 = 0;
 	length1 = 0;
 	length2 = 0;
@@ -55,7 +52,7 @@ bool IEC101Apci::init(QByteArray buff)
 
 	if(mRecvData.count() < 5)
 	{
-		error = 1;
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于5");
 		return false;
 	}
 	flag1 = *buff.data();
@@ -75,6 +72,7 @@ bool IEC101Apci::init(QByteArray buff)
 
 		if(length1 != length2)
 		{
+			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度域不同");
 			return false;
 		}
 
@@ -83,6 +81,7 @@ bool IEC101Apci::init(QByteArray buff)
 		len++;
 		if(flag2 != 0x68)
 		{
+			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！第二个标志位错误");
 			return false;
 		}
 		length = length1 + 6;
@@ -95,8 +94,7 @@ bool IEC101Apci::init(QByteArray buff)
 	}
 	else
 	{
-		error = 2;
-		mText.append(CharToHexStr(buff.data())+"\t启动字符不是0x68\r\n");
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data())+"\t启动字符不是0x68");
 		return false;
 	}
 
@@ -119,11 +117,6 @@ bool IEC101Apci::init(QByteArray buff)
 
 bool IEC101Apci::createData(IECDataConfig &config)
 {
-//	config.data += 0x68;
-//	config.data += '\0';
-//	if(!code.createData(config))
-//	{
-//		return false;
-//	}
+	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }

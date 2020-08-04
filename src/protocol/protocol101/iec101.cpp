@@ -18,7 +18,7 @@ bool IEC101::init(QByteArray buff)
 
 	if(buff.count()<5)
 	{
-		error =1;
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于5");
 		return false;
 	}
 	if(*buff.data() == 0x68)
@@ -31,18 +31,17 @@ bool IEC101::init(QByteArray buff)
 	}
 	else
 	{
-		error =2;
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
 		return false;
 	}
 	if(!apci.init(buff.left(len)))
 	{
 		mRecvData = buff.left(len);
-		error =apci.error;
 		return false;
 	}
 	if(apci.length > buff.count())
 	{
-		error = 3;
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 	mRecvData = buff.left(apci.length);
@@ -52,7 +51,6 @@ bool IEC101::init(QByteArray buff)
 	{
 		if(!asdu.init(buff.mid(len,apci.length1-2)))
 		{
-			error =asdu.error;
 			return false;
 		}
 		masterState = asdu.masterState;
@@ -63,13 +61,13 @@ bool IEC101::init(QByteArray buff)
 	{
 		if(apci.length!=5)
 		{
-			error = 4;
+			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
 		}
 	}
 	else
 	{
-		error = 3;
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 	uchar crctmp = 0;
@@ -88,6 +86,7 @@ bool IEC101::init(QByteArray buff)
 	len++;
 	if(crc != crctmp)
 	{
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！校验错误");
 		return false;
 	}
 
@@ -95,6 +94,7 @@ bool IEC101::init(QByteArray buff)
 	len++;
 	if(end != 0x16)
 	{
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文结束位错误");
 		return false;
 	}
 
@@ -117,5 +117,6 @@ QString IEC101::showToText()
 
 bool IEC101::createData(IECDataConfig &config)
 {
+	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }

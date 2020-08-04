@@ -62,7 +62,7 @@ bool IEC101Asdu::init(QByteArray buff)
 	int i = 0;
 	if(buff.count() < 2 +cotlen +comaddrlen)
 	{
-		error = 1;
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 
@@ -87,7 +87,7 @@ bool IEC101Asdu::init(QByteArray buff)
 
 	if(comaddrlen != 2 && comaddrlen != 1)
 	{
-		error = 1;
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
 		return false;
 	}
 	commonaddr = charTouint(buff.data()+i,comaddrlen);
@@ -99,14 +99,12 @@ bool IEC101Asdu::init(QByteArray buff)
 		IEC101AsduData *mdata = CreateAsduData(type);
 		if (!mdata)
 		{
+			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
-		bool isOk;
-		isOk = mdata->init(buff.mid(i));
-		if (!isOk)
+		if (!mdata->init(buff.mid(i)))
 		{
 			mText.append(mdata->showToText());
-			error = 1;
 			delete mdata;
 			mdata = NULL;
 			return false;
@@ -126,6 +124,7 @@ bool IEC101Asdu::init(QByteArray buff)
 		IEC101AsduData *mdata = CreateAsduData(type);
 		if (!mdata)
 		{
+			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
 		bool isOk;
@@ -141,7 +140,6 @@ bool IEC101Asdu::init(QByteArray buff)
 		}
 		if(!isOk)
 		{
-			error = 1;
 			delete mdata;
 			mdata =NULL;
 			return false;
@@ -185,13 +183,15 @@ bool IEC101Asdu::createData(IECDataConfig &config)
 		IEC101AsduData *newdata = CreateAsduData(config.asdutype);
 		if (!newdata)
 		{
+			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
+		datalist.append(newdata);
 		if(!newdata->createData(config))
 		{
 			return false;
 		}
-		datalist.append(newdata);
+
 	}
 
 	return true;

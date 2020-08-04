@@ -138,9 +138,6 @@ bool IEC103AsduDataSetGid::createData(IECDataConfig & config)
 
 IEC103AsduDataSet::IEC103AsduDataSet()
 {
-	error = 0;
-	len = 0;
-	masterState = STATE_NORMAL;
 	gidnum = 0;
 }
 
@@ -191,7 +188,6 @@ bool IEC103AsduDataSet::init(QByteArray buff)
 		bool isOk = mgid->init(buff.mid(len),gdd);
 		if (!isOk)
 		{
-			error = 1;
 			delete mgid;
 			mgid = NULL;
 			return false;
@@ -264,7 +260,6 @@ bool IEC103Asdu10Data::init(QByteArray buff)
 		bool isOk = mset->init(buff.mid(len));
 		if (!isOk)
 		{
-			error = 1;
 			delete mset;
 			mset = NULL;
 			return false;

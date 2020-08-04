@@ -52,7 +52,6 @@ bool IEC103Asdu21Data::init(QByteArray buff)
 		bool isOk = mset->init(buff.mid(len,3));
 		if (!isOk)
 		{
-			error = 1;
 			delete mset;
 			mset = NULL;
 			return false;
