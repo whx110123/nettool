@@ -2,9 +2,7 @@
 
 IEC101::IEC101()
 {
-	error = 0;
 	masterState = STATE_INIT;
-	len = 0;
 	crc = 0;
 	end = 0;
 }

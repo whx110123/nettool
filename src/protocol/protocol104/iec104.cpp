@@ -15,37 +15,38 @@ IEC104::~IEC104()
 bool IEC104::init(QByteArray buff)
 {
 	setDefault(buff);
-
-	if(buff.count()<6)
+	const int APCI_LEN = 6;			//APCI总字节数
+	const int LENGTH_LEN = 1;		//长度域字节数
+	if(buff.count() < APCI_LEN)
 	{
 		error = 1;
-		mText.append("出错！报文总长不满6个字节，条件不满足，因此报文有问题\r\n");
+		mText.append(QString("出错！报文总长不满%1个字节，条件不满足，因此报文有问题\r\n").arg(APCI_LEN));
 		return false;
 	}
 
-	if(!apci.init(buff.left(6)))
+	if(!apci.init(buff.left(APCI_LEN)))
 	{
-		mRecvData = buff.left(6);
+		mRecvData = buff.left(APCI_LEN);
 		error =apci.error;
 		return false;
 	}
-	mRecvData = buff.left(apci.length+2);
+	len = apci.length+LENGTH_LEN+1;
 	masterState = apci.masterState;
 	slaveState = apci.slaveState;
-	len = apci.length+2;
 	if(len > buff.count())
 	{
-		error = 3;
+		error = 2;
 		return false;
 	}
-	if(apci.control.type == ITYPE && buff.count()< 7)
+	mRecvData = buff.left(len);
+	if(apci.control.type == ITYPE && buff.count()<= APCI_LEN)
 	{
 		error = 3;
 		return false;
 	}
 	else if (apci.control.type == UTYPE||apci.control.type == STYPE )
 	{
-		if(len!=6)
+		if(len!=APCI_LEN)
 		{
 			error = 4;
 			return false;
@@ -56,7 +57,7 @@ bool IEC104::init(QByteArray buff)
 		}
 	}
 
-	if(!asdu.init(buff.mid(6,len-6)))
+	if(!asdu.init(buff.mid(APCI_LEN,len-APCI_LEN)))
 	{
 		error =asdu.error;
 		return false;
