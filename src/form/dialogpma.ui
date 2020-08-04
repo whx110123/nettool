@@ -649,7 +649,7 @@
           </item>
           <item>
            <property name="text">
-            <string>TCP服务端</string>
+            <string>TCP服务器</string>
            </property>
           </item>
           <item>
@@ -659,7 +659,7 @@
           </item>
           <item>
            <property name="text">
-            <string>UDP服务端</string>
+            <string>UDP服务器</string>
            </property>
           </item>
           <item>

@@ -222,7 +222,7 @@ void frmTcpServer::receiveData(const QString &ip, int port, const QString &data)
 {
     QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
     append(1, str);
-    emit dlgTodialogsenddata(str,"TCP服务器");
+    emit dlgTodialogsenddata(data,"TCP服务器");
 }
 
 void frmTcpServer::on_btnListen_clicked()

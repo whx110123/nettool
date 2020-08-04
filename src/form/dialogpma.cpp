@@ -70,9 +70,13 @@ void DialogPMA::handleData()
 	{
 		if(!piec104->init(recvData))
 		{
-			stopdebug();
-			QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟\r\n"+piec104->mRecvData.toHex(' '));
-			return;
+			//QMessageBox::warning(this,"告警窗","收到未识别的报文\r\n"+piec104->mRecvData.toHex(' '));
+			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+			ui->textEdit_data->append("收到未识别的报文: " + piec104->mRecvData.toHex(' '));
+			recvData.clear();
+			haveData = false;
+			//stopdebug();
+			//return;
 		}
 		else
 		{
@@ -149,9 +153,12 @@ void DialogPMA::showToText(QByteArray ba)
 	{
 		if(!piec104Show->init(ba))
 		{
-			stopdebug();
-			QMessageBox::warning(this,"告警窗","收到未识别的报文,停止模拟\r\n"+piec104Show->mRecvData.toHex(' '));
-			return;
+// 			QMessageBox::warning(this,"告警窗","收到未识别的报文\r\n"+piec104Show->mRecvData.toHex(' '));
+// 			stopdebug();
+// 			return;
+			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+			ui->textEdit_data->append("收到未识别的报文: " + piec104Show->mRecvData.toHex(' '));
+			ba.clear();
 		}
 		else
 		{
@@ -265,8 +272,16 @@ void DialogPMA::on_pushButton_start_clicked()
 void DialogPMA::on_pushButton_sendasdu_clicked()
 {
 	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu->toPlainText());
-	config.masterState = STATE_USER;
-	config.isMaster = true;
+	if (ui->comboBox_state->currentText() == QString("模拟主站"))
+	{
+		config.masterState = STATE_USER;
+		config.isMaster = true;
+	}
+	else
+	{
+		config.isMaster = false;
+		config.slaveState = STATE_USER;
+	}
 	config.asdutype = 0;
 	createAndSendData(config);
 }

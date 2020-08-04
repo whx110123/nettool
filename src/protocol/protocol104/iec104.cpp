@@ -92,9 +92,11 @@ bool IEC104::createData(IECDataConfig &config)
 		case STATE_TESTACT:
 		case STATE_TESTCONFIRM:
 			config.controltype = UTYPE;
+			config.asdutype = 0;
 			break;
 		case STATE_NORMAL:
 			config.controltype = STYPE;
+			config.asdutype = 0;
 			break;
 		case STATE_CALLALL:
 			config.controltype = ITYPE;
@@ -114,7 +116,7 @@ bool IEC104::createData(IECDataConfig &config)
 	}
 	else
 	{
-		switch (config.masterState)
+		switch (config.slaveState)
 		{
 		case STATE_NODATA:
 			return false;
@@ -125,9 +127,11 @@ bool IEC104::createData(IECDataConfig &config)
 		case STATE_NORMAL:
 		case STATE_CALLALL:
 			config.controltype = UTYPE;
+			config.asdutype = 0;
 			break;
 		case STATE_USER:
 			config.controltype = ITYPE;
+			config.asdutype = 0;
 			break;
 		case STATE_HOTKEY:
 			break;
@@ -152,9 +156,10 @@ bool IEC104::createData(IECDataConfig &config)
 	{
 		return false;
 	}
-	if(config.masterState == STATE_USER)
+	if(config.masterState == STATE_USER || config.slaveState == STATE_USER)
 	{
 		config.data.append(config.userdata);
+		config.userdata.clear();
 	}
 	char len = config.data.size()-2;
 	config.data.replace(1,1,&len,1);
