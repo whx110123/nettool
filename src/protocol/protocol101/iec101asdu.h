@@ -14,6 +14,7 @@ public:
 
 public:
 	uint infaddr;
+	int infaddrlen ;			//信息体地址长度
 };
 
 class IEC101Asdu : public MyBase

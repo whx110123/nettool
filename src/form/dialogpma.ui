@@ -74,9 +74,9 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>30</y>
-            <width>151</width>
-            <height>91</height>
+            <y>10</y>
+            <width>221</width>
+            <height>141</height>
            </rect>
           </property>
           <property name="title">
@@ -85,9 +85,9 @@
           <widget class="QLineEdit" name="lineEdit_104asduaddr">
            <property name="geometry">
             <rect>
-             <x>80</x>
+             <x>140</x>
              <y>20</y>
-             <width>31</width>
+             <width>71</width>
              <height>20</height>
             </rect>
            </property>
@@ -100,7 +100,7 @@
             <rect>
              <x>10</x>
              <y>22</y>
-             <width>48</width>
+             <width>111</width>
              <height>16</height>
             </rect>
            </property>
@@ -108,12 +108,128 @@
             <string>公共地址</string>
            </property>
           </widget>
+          <widget class="QComboBox" name="comboBox_infaddrlen">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>110</y>
+             <width>71</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QLabel" name="label_11">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>80</y>
+             <width>111</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>公共地址字节数</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="comboBox_comaddrlen">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>80</y>
+             <width>71</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QLabel" name="label_12">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>50</y>
+             <width>111</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>传送原因字节数</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="comboBox_cotlen">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>50</y>
+             <width>71</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QLabel" name="label_13">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>110</y>
+             <width>111</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>信息体地址字节数</string>
+           </property>
+          </widget>
          </widget>
          <widget class="QGroupBox" name="groupBox_2">
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>140</y>
+            <y>160</y>
             <width>551</width>
             <height>191</height>
            </rect>
@@ -372,10 +488,10 @@
          <widget class="QGroupBox" name="groupBox_4">
           <property name="geometry">
            <rect>
-            <x>200</x>
-            <y>30</y>
-            <width>371</width>
-            <height>91</height>
+            <x>260</x>
+            <y>10</y>
+            <width>311</width>
+            <height>141</height>
            </rect>
           </property>
           <property name="title">
@@ -438,7 +554,7 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>350</y>
+            <y>360</y>
             <width>551</width>
             <height>131</height>
            </rect>

@@ -72,8 +72,8 @@ private slots:
 
 private:
 	Ui::DialogPMA *ui;
-	IEC104 *piec104;
-	IEC104 *piec104Show;
+	MyBase *mProtocol;
+	MyBase *mProtocolShow;
 	IECDataConfig config;
 	QTimer *handleDataTimer;
 	QByteArray recvData;

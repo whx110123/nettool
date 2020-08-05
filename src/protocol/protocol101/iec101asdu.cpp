@@ -23,6 +23,7 @@
 IEC101AsduData::IEC101AsduData()
 {
 	infaddr = 0;
+	infaddrlen = 0;
 }
 
 IEC101AsduData::~IEC101AsduData()
@@ -743,6 +744,10 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	default:
 		break;
+	}
+	if(asdudata)
+	{
+		asdudata->infaddrlen = infaddrlen;
 	}
 	return asdudata;
 }

@@ -298,9 +298,7 @@ QStringList App::Protocollst = QStringList();
 QStringList App::Transferlst = QStringList();
 QStringList App::CRClst = QStringList();
 QStringList App::Transfermode = QStringList();
-int App::IEC_COTLEN = 2;
-int App::IEC_COMADDRLEN = 2;
-int App::IEC_INFADDRLEN = 3;
+
 void App::readSendData()
 {
     //读取发送数据列表

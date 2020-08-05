@@ -8,23 +8,23 @@ DialogPMA::DialogPMA(QWidget *parent) :
 	ui(new Ui::DialogPMA)
 {
 	ui->setupUi(this);
-	piec104 = NULL;
-	piec104Show = NULL;
+	mProtocol = NULL;
+	mProtocolShow = NULL;
 	init();
 }
 
 DialogPMA::~DialogPMA()
 {
 	delete ui;
-	if(piec104)
+	if(mProtocol)
 	{
-		delete piec104;
-		piec104 = NULL;
+		delete mProtocol;
+		mProtocol = NULL;
 	}
-	if(piec104Show)
+	if(mProtocolShow)
 	{
-		delete piec104Show;
-		piec104Show = NULL;
+		delete mProtocolShow;
+		mProtocolShow = NULL;
 	}
 }
 
@@ -41,9 +41,9 @@ void DialogPMA::dealData(const QString &data, const QString &title)
 
 bool DialogPMA::createAndSendData(IECDataConfig &config)
 {
-	if(ui->pushButton_start->text() == QString("停止") && piec104)
+	if(ui->pushButton_start->text() == QString("停止") && mProtocol)
 	{
-		if(piec104->createData(config))
+		if(mProtocol->createData(config))
 		{
 			if(config.data.isEmpty())
 			{
@@ -55,7 +55,7 @@ bool DialogPMA::createAndSendData(IECDataConfig &config)
 		}
 		else
 		{
-			ui->textEdit_data->append("错误描述：" + piec104->error);
+			ui->textEdit_data->append("错误描述：" + mProtocol->error);
 		}
 	}
 	return false;
@@ -70,46 +70,42 @@ void DialogPMA::init()
 
 void DialogPMA::handleData()
 {
-	if(!piec104)
+	if(!mProtocol)
 	{
 		return;
 	}
 	while(!recvData.isEmpty())
 	{
-		if(!piec104->init(recvData))
+		if(!mProtocol->init(recvData))
 		{
-			//QMessageBox::warning(this,"告警窗","收到未识别的报文\r\n"+piec104->mRecvData.toHex(' '));
 			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-			ui->textEdit_data->append("收到未识别的报文: " + piec104->mRecvData.toHex(' '));
-			ui->textEdit_data->append("错误描述：" + piec104->error);
+			ui->textEdit_data->append("收到未识别的报文: " + mProtocol->mRecvData.toHex(' '));
+			ui->textEdit_data->append("错误描述：" + mProtocol->error);
 			recvData.clear();
 			haveData = false;
-			//stopdebug();
-			//return;
 		}
 		else
 		{
 			haveData = true;
-			showToText(recvData.left(piec104->apci.length+2));
-			recvData.remove(0,piec104->apci.length+2);
+			showToText(recvData.left(mProtocol->len));
+			recvData.remove(0,mProtocol->len);
 		}
 	}
-	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && piec104->masterState == STATE_INIT))
+	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && mProtocol->masterState == STATE_INIT))
 	{
 		haveData = false;
 		config.asdutype = 0;
-		//		qDebug() << "state = " << piec104->mstate;
 		if(ui->comboBox_state->currentText() == QString("模拟主站"))
 		{
 			config.isMaster = true;
-			config.masterState = piec104->masterState;
+			config.masterState = mProtocol->masterState;
 		}
 		else
 		{
 			config.isMaster = false;
-			config.slaveState = piec104->slaveState;
+			config.slaveState = mProtocol->slaveState;
 		}
-		if(piec104->createData(config))
+		if(mProtocol->createData(config))
 		{
 			if(config.data.isEmpty())
 			{
@@ -121,7 +117,7 @@ void DialogPMA::handleData()
 		}
 		else
 		{
-			ui->textEdit_data->append("错误描述：" + piec104->error);
+			ui->textEdit_data->append("错误描述：" + mProtocol->error);
 		}
 	}
 }
@@ -130,20 +126,32 @@ void DialogPMA::startdebug()
 {
 	recvData.clear();
 	ui->pushButton_start->setText("停止");
+	if(mProtocol)
+	{
+		delete mProtocol;
+		mProtocol = NULL;
+	}
+	if(mProtocolShow)
+	{
+		delete mProtocolShow;
+		mProtocolShow = NULL;
+	}
 	if(ui->comboBox_protocol->currentText()==QString("104"))
 	{
-		if(!piec104)
-		{
-			piec104 = new IEC104;
-		}
-		if(!piec104Show)
-		{
-			piec104Show = new IEC104;
-		}
-		piec104->masterState = STATE_INIT;
-		piec104->slaveState = STATE_NODATA;
-		piec104->apci.control.localRecvNo = 0;
-		piec104->apci.control.localSendNo = 0;
+		IEC104 *tmp = new IEC104;
+		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
+		tmp->masterState = STATE_INIT;
+		tmp->slaveState = STATE_NODATA;
+		mProtocol = tmp;
+
+		tmp = new IEC104;
+		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
+		mProtocolShow = tmp;
+
 		config.comaddr = ui->lineEdit_104asduaddr->text().toUInt();
 		handleDataTimer->start(1000);
 	}
@@ -161,16 +169,17 @@ void DialogPMA::stopdebug()
 
 void DialogPMA::showToText(QByteArray ba)
 {
+	if(!mProtocolShow)
+	{
+		return;
+	}
 	while(!ba.isEmpty())
 	{
-		if(!piec104Show->init(ba))
+		if(!mProtocolShow->init(ba))
 		{
-// 			QMessageBox::warning(this,"告警窗","收到未识别的报文\r\n"+piec104Show->mRecvData.toHex(' '));
-// 			stopdebug();
-// 			return;
 			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-			ui->textEdit_data->append("收到未识别的报文: " + piec104Show->mRecvData.toHex(' '));
-			ui->textEdit_data->append("错误描述：" + piec104Show->error);
+			ui->textEdit_data->append("收到未识别的报文: " + mProtocolShow->mRecvData.toHex(' '));
+			ui->textEdit_data->append("错误描述：" + mProtocolShow->error);
 			ba.clear();
 		}
 		else
@@ -178,9 +187,9 @@ void DialogPMA::showToText(QByteArray ba)
 			if(ui->pushButton_reflash->text().contains("暂停刷新"))
 			{
 				ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				ui->textEdit_data->append(piec104Show->showToText());
+				ui->textEdit_data->append(mProtocolShow->showToText());
 			}
-			ba.remove(0,piec104Show->apci.length+2);
+			ba.remove(0,mProtocolShow->len);
 		}
 	}
 }

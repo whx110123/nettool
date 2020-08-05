@@ -101,11 +101,6 @@ public:
     static QStringList CRClst;          //校验方式
     static QStringList Transfermode;    //数字与16进制转换方式
 
-	static int IEC_COTLEN;				//104cot长度
-	static int IEC_COMADDRLEN;			//104公共地址长度
-	static int IEC_INFADDRLEN;			//104信息体地址长度
-
-
     static void readSendData();
     static void readDeviceData();
 };
