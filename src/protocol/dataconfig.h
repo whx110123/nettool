@@ -27,6 +27,7 @@ public:
 	uchar controltype;		//帧类型 I、U、S 帧
 	uchar asdutype;			//asdu类型
 	uchar cot;              //传送原因
+	uint comaddr;			//公共地址
 	uchar vsq;              //信息元素个数
 	uint infaddr;			//信息体地址
 	QByteArray infdata;		//信息体数据

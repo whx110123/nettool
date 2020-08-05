@@ -42,6 +42,9 @@ IEC101Asdu::IEC101Asdu()
 	datanum = 0;
 	datalen = 0;
 	other = 0;
+	cotlen = 0 ;
+	comaddrlen = 0 ;
+	infaddrlen = 0 ;
 }
 
 IEC101Asdu::~IEC101Asdu()
@@ -56,9 +59,7 @@ bool IEC101Asdu::init(QByteArray buff)
 
 	qDeleteAll(datalist);
 	datalist.clear();
-	int cotlen = App::IEC_COTLEN;					//cot长度
-	int comaddrlen = App::IEC_COMADDRLEN;			//公共地址长度
-	int infaddrlen = App::IEC_INFADDRLEN;			//信息体地址长度
+
 	int i = 0;
 	if(buff.count() < 2 +cotlen +comaddrlen)
 	{
@@ -74,10 +75,14 @@ bool IEC101Asdu::init(QByteArray buff)
 	mText.append(CharToHexStr(buff.data()+i) + "\t" + vsqToText()+"\r\n");
 	i++;
 
+	if(cotlen != 2 && cotlen != 1)
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
+		return false;
+	}
 	cot[0] = *(buff.data()+i);
 	mText.append(CharToHexStr(buff.data()+i) + "\t" +cotToText()+"\r\n");
 	i++;
-
 	if(cotlen == 2)
 	{
 		cot[1] = *(buff.data()+i);
@@ -170,7 +175,7 @@ bool IEC101Asdu::createData(IECDataConfig &config)
 	config.data += config.vsq;
 	config.data += config.cot;
 	config.data += '\0';
-	config.data += uintToBa(App::IEC_COMADDR,2);
+	config.data += uintToBa(config.comaddr,2);
 	config.isfirst = true;
 
 	int num = config.vsq&0x7f;

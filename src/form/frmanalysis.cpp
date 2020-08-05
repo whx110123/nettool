@@ -235,20 +235,29 @@ void frmAnalysis::on_PBtest_clicked()
 	}
 	QByteArray buffer;
 	buffer = QUIHelper::hexStrToByteArray(data);
-	App::IEC_COTLEN =ui->comboBox_1->currentText().toInt();
-	App::IEC_COMADDRLEN = ui->comboBox_2->currentText().toInt();
-	App::IEC_INFADDRLEN = ui->comboBox_3->currentText().toInt();
+
 
 	int i = 1;
 	MyBase *myprotocol = NULL;
 	if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
 	{
-		myprotocol = new IEC104;
 
+		IEC104 *tmp = new IEC104;
+		tmp->asdu.cotlen = 2;
+		tmp->asdu.comaddrlen = 2;
+		tmp->asdu.infaddrlen = 3;
+		myprotocol = tmp;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_101)      //分析101报文
 	{
-		myprotocol = new IEC101;
+		IEC101 *tmp = new IEC101;
+		tmp->asdu.cotlen = 1;
+		tmp->asdu.comaddrlen = 1;
+		tmp->asdu.infaddrlen = 2;
+		App::IEC_COTLEN = 1;
+		App::IEC_COMADDRLEN = 1;
+		App::IEC_INFADDRLEN = 2;
+		myprotocol = tmp;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
 	{

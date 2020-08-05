@@ -38,7 +38,9 @@ public:
 	int datanum;                //信息元素的数量
 	int datalen;                //每个信息元素数据的字节数
 	int other;                  //信息元素之外的字节数
-
+	int cotlen ;					//cot长度
+	int comaddrlen ;			//公共地址长度
+	int infaddrlen ;			//信息体地址长度
 	QList<IEC101AsduData *> datalist;
 
 private:

@@ -104,7 +104,7 @@ public:
 	static int IEC_COTLEN;				//104cot长度
 	static int IEC_COMADDRLEN;			//104公共地址长度
 	static int IEC_INFADDRLEN;			//104信息体地址长度
-	static uint IEC_COMADDR;				//公共地址
+
 
     static void readSendData();
     static void readDeviceData();

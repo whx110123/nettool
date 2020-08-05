@@ -185,7 +185,7 @@
        </size>
       </property>
       <property name="text">
-       <string>报文模拟</string>
+       <string>规约模拟</string>
       </property>
      </widget>
     </item>
@@ -211,7 +211,7 @@
        </size>
       </property>
       <property name="text">
-       <string>1.模拟104主站</string>
+       <string>1.模拟104</string>
       </property>
      </widget>
     </item>
@@ -387,7 +387,7 @@
     <string>软件介绍</string>
    </property>
    <property name="icon">
-    <iconset resource="../other/main.qrc">
+    <iconset resource="../../other/main.qrc">
      <normaloff>:/res/main.ico</normaloff>:/res/main.ico</iconset>
    </property>
    <property name="iconSize">
@@ -399,7 +399,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="../other/main.qrc"/>
+  <include location="../../other/main.qrc"/>
  </resources>
  <connections/>
 </ui>

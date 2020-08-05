@@ -110,8 +110,8 @@ QString IEC101::showToText()
 	{
 		text.append(asdu.showToText());
 	}
-	mText.append(CharToHexStr(crc)+"\t校验和:"+QString::number(crc) +"\r\n");
-	mText.append(CharToHexStr(end)+"\t结束字符:0x16"+QString::number(end) +"\r\n");
+	text.append(CharToHexStr(crc)+"\t校验和:"+QString::number(crc) +"\r\n");
+	text.append(CharToHexStr(end)+"\t结束字符:0x16"+QString::number(end) +"\r\n");
 	return text;
 }
 

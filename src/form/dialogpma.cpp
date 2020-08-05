@@ -144,7 +144,7 @@ void DialogPMA::startdebug()
 		piec104->slaveState = STATE_NODATA;
 		piec104->apci.control.localRecvNo = 0;
 		piec104->apci.control.localSendNo = 0;
-		App::IEC_COMADDR = ui->lineEdit_104asduaddr->text().toUInt();
+		config.comaddr = ui->lineEdit_104asduaddr->text().toUInt();
 		handleDataTimer->start(1000);
 	}
 }
