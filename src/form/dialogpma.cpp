@@ -45,9 +45,17 @@ bool DialogPMA::createAndSendData(IECDataConfig &config)
 	{
 		if(piec104->createData(config))
 		{
+			if(config.data.isEmpty())
+			{
+				return true;
+			}
 			emitsignals(config.data.toHex(' '));
 			showToText(config.data);
 			return true;
+		}
+		else
+		{
+			ui->textEdit_data->append("错误描述：" + piec104->error);
 		}
 	}
 	return false;
@@ -73,6 +81,7 @@ void DialogPMA::handleData()
 			//QMessageBox::warning(this,"告警窗","收到未识别的报文\r\n"+piec104->mRecvData.toHex(' '));
 			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 			ui->textEdit_data->append("收到未识别的报文: " + piec104->mRecvData.toHex(' '));
+			ui->textEdit_data->append("错误描述：" + piec104->error);
 			recvData.clear();
 			haveData = false;
 			//stopdebug();
@@ -102,9 +111,17 @@ void DialogPMA::handleData()
 		}
 		if(piec104->createData(config))
 		{
+			if(config.data.isEmpty())
+			{
+				return;
+			}
 			showToText(config.data);
 			QString str = config.data.toHex(' ');
 			emitsignals(str);
+		}
+		else
+		{
+			ui->textEdit_data->append("错误描述：" + piec104->error);
 		}
 	}
 }
@@ -158,6 +175,7 @@ void DialogPMA::showToText(QByteArray ba)
 // 			return;
 			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 			ui->textEdit_data->append("收到未识别的报文: " + piec104Show->mRecvData.toHex(' '));
+			ui->textEdit_data->append("错误描述：" + piec104Show->error);
 			ba.clear();
 		}
 		else

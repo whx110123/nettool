@@ -191,6 +191,7 @@ bool IEC103Asdu::createData(IECDataConfig &config)
 	}
 	else
 	{
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 		return false;
 	}
 	//	config.data += config.asdutype;

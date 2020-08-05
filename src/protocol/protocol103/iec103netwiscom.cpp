@@ -80,54 +80,6 @@ QString IEC103NetWiscom::showToText()
 
 bool IEC103NetWiscom::createData(IECDataConfig &config)
 {
-//	config.data.clear();
-//	if(config.isMaster)
-//	{
-//		switch (config.state)
-//		{
-//		case STATE_INIT:
-//		case STATE_TESTACT:
-//		case STATE_TESTCONFIRM:
-//			config.controltype = UTYPE;
-//			break;
-//		case STATE_NORMAL:
-//			config.controltype = STYPE;
-//			break;
-//		case STATE_CALLALL:
-//			config.controltype = ITYPE;
-//			config.asdutype = 0x64;
-//			config.vsq = 1;
-//			config.cot = 0x06;
-//			break;
-//		case STATE_USER:
-//			config.controltype = ITYPE;
-//			config.asdutype = 0;
-//			break;
-//		default:
-//			break;
-//		}
-//	}
-//	else
-//	{
-
-//	}
-
-//	if(!apci.createData(config))
-//	{
-//		return false;
-//	}
-//	if(config.asdutype >0)
-//	{
-//		if(!asdu.createData(config))
-//		{
-//			return false;
-//		}
-//	}
-//	if(config.data.size()<5)
-//	{
-//		return false;
-//	}
-//	char len = config.data.size()-2;
-//	config.data.replace(1,1,&len,1);
+	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }

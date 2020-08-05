@@ -107,6 +107,7 @@ bool IEC104::createData(IECDataConfig &config)
 		case STATE_HOTKEY:
 			break;
 		default:
+			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
 			return false;
 			break;
 		}
@@ -116,7 +117,7 @@ bool IEC104::createData(IECDataConfig &config)
 		switch (config.slaveState)
 		{
 		case STATE_NODATA:
-			return false;
+			return true;
 			break;
 		case STATE_INIT:
 		case STATE_TESTACT:
@@ -133,6 +134,7 @@ bool IEC104::createData(IECDataConfig &config)
 		case STATE_HOTKEY:
 			break;
 		default:
+			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
 			return false;
 			break;
 		}
@@ -151,6 +153,7 @@ bool IEC104::createData(IECDataConfig &config)
 	}
 	if(config.data.size()<5)
 	{
+		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文长度不足5");
 		return false;
 	}
 	if(config.masterState == STATE_USER || config.slaveState == STATE_USER)

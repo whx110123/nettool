@@ -190,6 +190,7 @@ bool IEC104Control::createData(IECDataConfig &config)
 				config.data += '\0';
 				break;
 			default:
+				error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
 				return false;
 				break;
 			}
@@ -240,6 +241,7 @@ bool IEC104Control::createData(IECDataConfig &config)
 				config.data += '\0';
 				break;
 			default:
+				error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
 				return false;
 				break;
 			}
