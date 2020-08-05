@@ -91,7 +91,7 @@ bool IEC103Asdu::init(QByteArray buff)
 	datalist.clear();
 	if(buff.count() < 4)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度小于4");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度小于4");
 		return false;
 	}
 
@@ -126,7 +126,7 @@ bool IEC103Asdu::init(QByteArray buff)
 		IEC103AsduData *mdata = CreateAsduData(type);
 		if (!mdata)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
 		bool isOk;
@@ -178,7 +178,7 @@ bool IEC103Asdu::createData(IECDataConfig &config)
 			IEC103AsduData *newdata = CreateAsduData(config.asdutype);
 			if (!newdata)
 			{
-				error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 				return false;
 			}
 			datalist.append(newdata);
@@ -191,7 +191,7 @@ bool IEC103Asdu::createData(IECDataConfig &config)
 	}
 	else
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 		return false;
 	}
 	//	config.data += config.asdutype;

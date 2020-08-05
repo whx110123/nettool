@@ -28,7 +28,7 @@ bool IEC104Control::init(QByteArray buff)
 	{
 		if(mRecvData.count() < 4)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度小于4");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度小于4");
 			return false;
 		}
 		code = buff.at(0);
@@ -73,12 +73,12 @@ bool IEC104Control::init(QByteArray buff)
 
 		if(sum==0)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此U帧报文未包含任何控制功能");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此U帧报文未包含任何控制功能");
 			return false;
 		}
 		else if(sum>1)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此U帧报文包含2种或2种以上控制功能");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此U帧报文包含2种或2种以上控制功能");
 			return false;
 		}
 
@@ -86,7 +86,7 @@ bool IEC104Control::init(QByteArray buff)
 		{
 			if(buff.at(i+1) != 0)
 			{
-				error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！出现不为0的数据");
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！U帧控制域后3个字节出现不为0的数据");
 				return false;
 			}
 			mText.append(CharToHexStr(buff.at(i+1)) + "\t固定为0x00\r\n");
@@ -96,7 +96,7 @@ bool IEC104Control::init(QByteArray buff)
 	case STYPE:
 		if(mRecvData.count() < 4)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
 		}
 
@@ -104,7 +104,7 @@ bool IEC104Control::init(QByteArray buff)
 
 		if(code != 0x01)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.at(0)) + "\t出错！当此字节后2位bit是0和1，可以确定是S帧，但S帧其他bit必须为0，条件不满足，因此报文有问题");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.at(0)) + "\t出错！当此字节后2位bit是0和1，可以确定是S帧，但S帧其他bit必须为0，条件不满足，因此报文有问题");
 			return false;
 		}
 		mText.append(CharToHexStr(buff.at(0)) + "\tS帧报文(bit1为1，bit2为0) 带编号，用于监视报文序号\r\n");
@@ -115,17 +115,18 @@ bool IEC104Control::init(QByteArray buff)
 		}
 		else
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.at(1)) + "\t出错！已确定此帧报文是S帧，但S帧这个位置固定为0，条件不满足，因此报文有问题");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.at(1)) + "\t出错！已确定此帧报文是S帧，但S帧这个位置固定为0，条件不满足，因此报文有问题");
 			return false;
 		}
 
 		remoteRecvNo = (ushort )charTouint((uchar *)(buff.data()+2),2);
 		if(remoteRecvNo % 2)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data()+2,2) + "\t出错！接受序列号低字节，最后一个bit位必须为0，所以此数字必须为偶数，条件不满足，因此报文有问题");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data()+2,2) + "\t出错！接受序列号低字节，最后一个bit位必须为0，所以此数字必须为偶数，条件不满足，因此报文有问题");
 			return false;
 		}
 		remoteRecvNo /= 2;
+		localSendNo = remoteRecvNo;		//根据对面序号修改
 		mText.append(CharToHexStr(buff.data()+2,2) + "\t接受序号: " + QString::number(remoteRecvNo) + "\r\n");
 		masterState = STATE_TESTACT;
 		slaveState = STATE_NORMAL;
@@ -133,7 +134,7 @@ bool IEC104Control::init(QByteArray buff)
 	case ITYPE:
 		if(mRecvData.count() < 4)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
 		}
 		remoteSendNo = (ushort )charTouint((uchar *)buff.data(),2);
@@ -144,7 +145,7 @@ bool IEC104Control::init(QByteArray buff)
 		remoteRecvNo = (ushort )charTouint((uchar *)(buff.data()+2),2);
 		if(remoteRecvNo % 2)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data()+2,2) + "\t出错！接受序列号低字节，最后一个bit位必须为0，所以此数字必须为偶数，条件不满足，因此报文有问题");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data()+2,2) + "\t出错！接受序列号低字节，最后一个bit位必须为0，所以此数字必须为偶数，条件不满足，因此报文有问题");
 			return false;
 		}
 		remoteRecvNo /= 2;
@@ -190,7 +191,7 @@ bool IEC104Control::createData(IECDataConfig &config)
 				config.data += '\0';
 				break;
 			default:
-				error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
 				return false;
 				break;
 			}
@@ -241,7 +242,7 @@ bool IEC104Control::createData(IECDataConfig &config)
 				config.data += '\0';
 				break;
 			default:
-				error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
 				return false;
 				break;
 			}
@@ -282,13 +283,13 @@ bool IEC104Apci::init(QByteArray buff)
 
 	if(mRecvData.count() < 6)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满6个字节，条件不满足，因此报文有问题");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满6个字节，条件不满足，因此报文有问题");
 		return false;
 	}
 	first = mRecvData.at(0);
 	if(first != 0x68)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data())+"\t启动字符不是0x68");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data())+"\t启动字符不是0x68");
 		return false;
 	}
 

@@ -2,6 +2,8 @@
 #include "ui_frmanalysis.h"
 #include "quiwidget.h"
 #include <QString>
+#include <iec101.h>
+#include <iec103com.h>
 #include <iec103netwiscom.h>
 #include "myhighlighter.h"
 #include "iec104.h"
@@ -238,58 +240,43 @@ void frmAnalysis::on_PBtest_clicked()
 	App::IEC_INFADDRLEN = ui->comboBox_3->currentText().toInt();
 
 	int i = 1;
+	MyBase *myprotocol = NULL;
 	if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
 	{
-		IEC104 *myiec104 = new IEC104;
-		while (!buffer.isEmpty())
-		{
-			bool isOk = myiec104->init(buffer);
-			ui->resulttext->append(QString("####第%1帧####").arg(i++));
-			ui->resulttext->append(myiec104->showToText());
-			if(isOk)
-			{
-				buffer.remove(0, myiec104->len);
-			}
-			else
-			{
-				break;
-			}
-		}
-		if (myiec104)
-		{
-			delete myiec104;
-			myiec104 = NULL;
-		}
+		myprotocol = new IEC104;
+
 	}
 	else if(ui->protocolcbox->currentText() == IEC_101)      //分析101报文
 	{
-
+		myprotocol = new IEC101;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
 	{
-		IEC103NetWiscom *myiec103 = new IEC103NetWiscom;
-		while (!buffer.isEmpty())
-		{
-			bool isOk = myiec103->init(buffer);
-			ui->resulttext->append(QString("####第%1帧####").arg(i++));
-			ui->resulttext->append(myiec103->showToText());
-			if(isOk)
-			{
-				buffer.remove(0, myiec103->len);
-			}
-			else
-			{
-				break;
-			}
-		}
-		if (myiec103)
-		{
-			delete myiec103;
-			myiec103 = NULL;
-		}
+		myprotocol = new IEC103NetWiscom;
+
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103COM)
 	{
+		myprotocol = new IEC103COM;
+	}
 
+	if (myprotocol)
+	{
+		while (!buffer.isEmpty())
+		{
+			ui->resulttext->append(QString("####第%1帧####").arg(i++));
+			if(myprotocol->init(buffer))
+			{
+				ui->resulttext->append(myprotocol->showToText());
+				buffer.remove(0, myprotocol->len);
+			}
+			else
+			{
+				ui->resulttext->append(myprotocol->error);
+				break;
+			}
+		}
+		delete myprotocol;
+		myprotocol = NULL;
 	}
 }

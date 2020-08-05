@@ -18,7 +18,7 @@ bool IEC101::init(QByteArray buff)
 
 	if(buff.count()<5)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于5");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于5");
 		return false;
 	}
 	if(*buff.data() == 0x68)
@@ -31,7 +31,7 @@ bool IEC101::init(QByteArray buff)
 	}
 	else
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
 		return false;
 	}
 	if(!apci.init(buff.left(len)))
@@ -41,7 +41,7 @@ bool IEC101::init(QByteArray buff)
 	}
 	if(apci.length > buff.count())
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 	mRecvData = buff.left(apci.length);
@@ -61,13 +61,13 @@ bool IEC101::init(QByteArray buff)
 	{
 		if(apci.length!=5)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
 		}
 	}
 	else
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 	uchar crctmp = 0;
@@ -86,7 +86,7 @@ bool IEC101::init(QByteArray buff)
 	len++;
 	if(crc != crctmp)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！校验错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！校验错误");
 		return false;
 	}
 
@@ -94,7 +94,7 @@ bool IEC101::init(QByteArray buff)
 	len++;
 	if(end != 0x16)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文结束位错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文结束位错误");
 		return false;
 	}
 
@@ -117,6 +117,6 @@ QString IEC101::showToText()
 
 bool IEC101::createData(IECDataConfig &config)
 {
-	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }

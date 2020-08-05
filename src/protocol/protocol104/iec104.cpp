@@ -18,7 +18,7 @@ bool IEC104::init(QByteArray buff)
 	const int LENGTH_LEN = 1;			//长度域字节数
 	if(buff.count() < APCI_LEN)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！报文总长不满%1个字节，条件不满足，因此报文有问题\r\n").arg(APCI_LEN));
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！报文总长不满%1个字节，条件不满足，因此报文有问题\r\n").arg(APCI_LEN));
 		return false;
 	}
 
@@ -32,20 +32,20 @@ bool IEC104::init(QByteArray buff)
 	slaveState = apci.slaveState;
 	if(len > buff.count())
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 	mRecvData = buff.left(len);
 	if(apci.control.type == ITYPE && buff.count()<= APCI_LEN)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 	else if (apci.control.type == UTYPE||apci.control.type == STYPE )
 	{
 		if(len!=APCI_LEN)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
 		}
 		else
@@ -107,7 +107,7 @@ bool IEC104::createData(IECDataConfig &config)
 		case STATE_HOTKEY:
 			break;
 		default:
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
 			return false;
 			break;
 		}
@@ -134,7 +134,7 @@ bool IEC104::createData(IECDataConfig &config)
 		case STATE_HOTKEY:
 			break;
 		default:
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
 			return false;
 			break;
 		}
@@ -153,7 +153,7 @@ bool IEC104::createData(IECDataConfig &config)
 	}
 	if(config.data.size()<5)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文长度不足5");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文长度不足5");
 		return false;
 	}
 	if(config.masterState == STATE_USER || config.slaveState == STATE_USER)

@@ -94,7 +94,7 @@ void DialogPMA::handleData()
 			recvData.remove(0,piec104->apci.length+2);
 		}
 	}
-	if(haveData || piec104->masterState == STATE_INIT)
+	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && piec104->masterState == STATE_INIT))
 	{
 		haveData = false;
 		config.asdutype = 0;
@@ -142,6 +142,8 @@ void DialogPMA::startdebug()
 		}
 		piec104->masterState = STATE_INIT;
 		piec104->slaveState = STATE_NODATA;
+		piec104->apci.control.localRecvNo = 0;
+		piec104->apci.control.localSendNo = 0;
 		App::IEC_COMADDR = ui->lineEdit_104asduaddr->text().toUInt();
 		handleDataTimer->start(1000);
 	}
@@ -149,19 +151,12 @@ void DialogPMA::startdebug()
 
 void DialogPMA::stopdebug()
 {
-	recvData.clear();
-	ui->pushButton_start->setText("开始");
 	if(handleDataTimer->isActive())
 	{
 		handleDataTimer->stop();
 	}
-	if(piec104)
-	{
-		piec104->masterState = STATE_INIT;
-		piec104->slaveState = STATE_INIT;
-		piec104->apci.control.localRecvNo = 0;
-		piec104->apci.control.localSendNo = 0;
-	}
+	ui->pushButton_start->setText("开始");
+	recvData.clear();
 }
 
 void DialogPMA::showToText(QByteArray ba)

@@ -23,13 +23,13 @@ bool IEC103NetApciWiscom::init(QByteArray buff)
 
 	if(mRecvData.count() < 15)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满15个字节");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满15个字节");
 		return false;
 	}
 	first = *buff.data();
 	if(first != 0x68)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
 		return false;
 	}
 	mText.append(CharToHexStr(buff.data())+"\t启动字符:0x68\n");

@@ -29,7 +29,7 @@ bool IEC101Code::init(QByteArray buff)
 
 bool IEC101Code::createData(IECDataConfig &config)
 {
-	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }
 IEC101Apci::IEC101Apci()
@@ -52,7 +52,7 @@ bool IEC101Apci::init(QByteArray buff)
 
 	if(mRecvData.count() < 5)
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于5");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于5");
 		return false;
 	}
 	flag1 = *buff.data();
@@ -72,7 +72,7 @@ bool IEC101Apci::init(QByteArray buff)
 
 		if(length1 != length2)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度域不同");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度域不同");
 			return false;
 		}
 
@@ -81,7 +81,7 @@ bool IEC101Apci::init(QByteArray buff)
 		len++;
 		if(flag2 != 0x68)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！第二个标志位错误");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！第二个标志位错误");
 			return false;
 		}
 		length = length1 + 6;
@@ -94,7 +94,7 @@ bool IEC101Apci::init(QByteArray buff)
 	}
 	else
 	{
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data())+"\t启动字符不是0x68");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data())+"\t启动字符不是0x68");
 		return false;
 	}
 
@@ -117,6 +117,6 @@ bool IEC101Apci::init(QByteArray buff)
 
 bool IEC101Apci::createData(IECDataConfig &config)
 {
-	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }

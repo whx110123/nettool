@@ -48,7 +48,7 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 	case 7:
 		if (gdd[1] != 4)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！GDD2不是4");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！GDD2不是4");
 			return false;
 		}
 		datafloat = charTofloat(buff.data());
@@ -73,7 +73,7 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 	case 12:
 		if (gdd[1] != 2)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！GDD2不是2");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！GDD2不是2");
 			return false;
 		}
 		datashort = charToshortwithQ(buff.data());
@@ -83,7 +83,7 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 	case 18:
 		if (gdd[1] != 6)
 		{
-			error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！GDD2不是6");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！GDD2不是6");
 			return false;
 		}
 		datauchar = *buff.data();
@@ -125,7 +125,7 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 		len++;
 		break;
 	default:
-		error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的GDD1");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的GDD1");
 		return false;
 		break;
 	}
@@ -137,7 +137,7 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 
 bool IEC103AsduDataSetGid::createData(IECDataConfig & config)
 {
-	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }
 
@@ -215,7 +215,7 @@ QString IEC103AsduDataSet::showToText()
 
 bool IEC103AsduDataSet::createData(IECDataConfig & config)
 {
-	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }
 
@@ -310,7 +310,7 @@ bool IEC103Asdu10Data::createData(IECDataConfig &config)
 		}
 		return true;
 	}
-	error = QString("\"%1\" %2 [%3行] %4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }
 
