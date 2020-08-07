@@ -157,6 +157,7 @@ bool IEC104Control::init(QByteArray buff)
 	default:
 		break;
 	}
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	return true;
 }
 

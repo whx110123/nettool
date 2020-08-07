@@ -44,7 +44,7 @@ bool IEC101Asdu46Data::init(QByteArray buff, uint addr)
 
 bool IEC101Asdu46Data::createData(IECDataConfig &config)
 {
-	config.data += uintToBa(config.infaddr,3);
+	config.data += uintToBa(config.infaddr,infaddrlen);
 	config.data += config.infdata;
 	return true;
 }

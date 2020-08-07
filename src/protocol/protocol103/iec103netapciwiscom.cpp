@@ -87,7 +87,7 @@ bool IEC103NetApciWiscom::init(QByteArray buff)
 	reserve[1] = *(buff.data()+len);
 	mText.append(CharToHexStr(buff.data()+len) + "\t备用\r\n");
 	len++;
-
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	return true;
 
 }

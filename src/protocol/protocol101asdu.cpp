@@ -1114,11 +1114,11 @@ QString protocol101::protocol101asdu::dealASDU9Data(int index)
     text.append(tmp + "\t规一化值:"+QString::number(data) + "\r\n");
 
     tmp = CharToHexStr(m_asdu->groupdata[index].data[2]);
-    iv = m_asdu->groupdata[index].data[4] & 0x80;
-    nt = m_asdu->groupdata[index].data[4] & 0x40;
-    sb = m_asdu->groupdata[index].data[4] & 0x20;
-    bl = m_asdu->groupdata[index].data[4] & 0x10;
-    ov = m_asdu->groupdata[index].data[4] & 0x01;
+	iv = m_asdu->groupdata[index].data[2] & 0x80;
+	nt = m_asdu->groupdata[index].data[2] & 0x40;
+	sb = m_asdu->groupdata[index].data[2] & 0x20;
+	bl = m_asdu->groupdata[index].data[2] & 0x10;
+	ov = m_asdu->groupdata[index].data[2] & 0x01;
     text.append(tmp + "\t品质位:" + dealIV() + dealNT()+ dealSB()+ dealBL()+dealOV() + "\r\n");
 
     return text;

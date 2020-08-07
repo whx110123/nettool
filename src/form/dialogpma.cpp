@@ -66,6 +66,9 @@ void DialogPMA::init()
 	handleDataTimer = new QTimer(this);
 	haveData = false;
 	connect(handleDataTimer, SIGNAL(timeout()), this, SLOT(handleData()));
+	ui->comboBox_cotlen->setCurrentText("2");
+	ui->comboBox_comaddrlen->setCurrentText("2");
+	ui->comboBox_infaddrlen->setCurrentText("3");
 }
 
 void DialogPMA::handleData()

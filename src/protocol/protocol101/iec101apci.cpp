@@ -14,8 +14,8 @@ IEC101Code::~IEC101Code()
 bool IEC101Code::init(QByteArray buff)
 {
 	setDefault(buff);
-
-	mText.append(CharToHexStr(buff.data())+"\t" +prmToText(mcode) +"\r\n");
+	mcode = *buff.data();
+	mText.append(CharToHexStr(buff.data())+"\t" +prmToText(mcode) +"\r\n\t");
 	if(mcode & 0x40)
 	{
 		mText.append(fcbToText(mcode)+"\r\n\t"+ fcvToText(mcode) +"\r\n\t"+ cw1ToText(mcode)+"\r\n");
@@ -24,6 +24,7 @@ bool IEC101Code::init(QByteArray buff)
 	{
 		mText.append(acdToText(mcode)+"\r\n\t" + dfcToText(mcode)+"\r\n\t" + cw2ToText(mcode)+"\r\n");
 	}
+	len++;
 	return true;
 }
 
@@ -50,15 +51,20 @@ bool IEC101Apci::init(QByteArray buff)
 {
 	setDefault(buff);
 
-	if(mRecvData.count() < 5)
+	if(mRecvData.count() < 3)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于5");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于3");
 		return false;
 	}
 	flag1 = *buff.data();
 
 	if(flag1 == 0x68)
 	{
+		if(mRecvData.count() < 6)
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于6");
+			return false;
+		}
 		mText.append(CharToHexStr(buff.data()+len)+"\t启动字符:0x68\r\n");
 		len++;
 
@@ -84,13 +90,16 @@ bool IEC101Apci::init(QByteArray buff)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！第二个标志位错误");
 			return false;
 		}
-		length = length1 + 6;
+
 	}
 	else if (flag1 == 0x10)
 	{
 		mText.append(CharToHexStr(buff.data()+len)+"\t启动字符:0x10\r\n");
 		len++;
-		length = 5;
+		length1 = 2;
+		length2 = 2;
+		flag2 = flag1;
+
 	}
 	else
 	{
@@ -103,13 +112,14 @@ bool IEC101Apci::init(QByteArray buff)
 		return false;
 	}
 	masterState = code.masterState;
+	slaveState = code.slaveState;
 	mText.append(code.showToText());
 	len++;
 
 	addr = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data()+len)+"\t地址域:"+QString::number(addr) +"\r\n");
 	len++;
-
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	return true;
 
 }

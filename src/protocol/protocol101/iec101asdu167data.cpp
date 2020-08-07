@@ -53,6 +53,11 @@ QString IEC101Asdu167Data::showToText()
 
 bool IEC101Asdu167Data::createData(IECDataConfig &config)
 {
+	if (infaddrlen != 3)
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！167号报文信息体地址长度错误");
+		return false;
+	}
 	config.data += '\0';
 	config.data.append(uintToBa(config.iec103config->devaddr,2));
 	if(config.isMaster)

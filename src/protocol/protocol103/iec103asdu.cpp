@@ -437,18 +437,18 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 	IEC103AsduData *asdudata = NULL;
 	switch (type)
 	{
-	// 	case 1:
-	// 		asdudata = new IEC103asdu1data;
-	// 		break;
-	// 	case 2:
-	// 		asdudata = new IEC103asdu2data;
-	// 		break;
-	// 	case 6:
-	// 		asdudata = new IEC103asdu6data;
-	// 		break;
-	// 	case 7:
-	// 		asdudata = new IEC103asdu7data;
-	// 		break;
+	case 1:
+		asdudata = new IEC103Asdu1Data;
+		break;
+	case 2:
+		asdudata = new IEC103Asdu2Data;
+		break;
+		// 	case 6:
+		// 		asdudata = new IEC103asdu6data;
+		// 		break;
+		// 	case 7:
+		// 		asdudata = new IEC103asdu7data;
+		// 		break;
 	case 10:
 		asdudata = new IEC103Asdu10Data;
 		break;

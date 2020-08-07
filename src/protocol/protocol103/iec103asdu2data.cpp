@@ -40,7 +40,7 @@ bool IEC103Asdu2Data::init(QByteArray buff)
 	len += 4;
 
 	sin = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data()) + "\tGID:附加信息SIN:" + QString::number(sin));
+	mText.append(CharToHexStr(buff.data()) + "\t附加信息SIN:" + QString::number(sin) + "\r\n");
 	len++;
 	return true;
 }

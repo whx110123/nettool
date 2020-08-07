@@ -174,9 +174,8 @@ bool IEC101Asdu::createData(IECDataConfig &config)
 
 	config.data += config.asdutype;
 	config.data += config.vsq;
-	config.data += config.cot;
-	config.data += '\0';
-	config.data += uintToBa(config.comaddr,2);
+	config.data += uintToBa(config.cot,cotlen);
+	config.data += uintToBa(config.comaddr,comaddrlen);
 	config.isfirst = true;
 
 	int num = config.vsq&0x7f;
