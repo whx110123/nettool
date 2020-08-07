@@ -116,6 +116,16 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 		len++;
 
 		break;
+	case 22:
+		if (gdd[1] != 1)
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！GDD2不是1");
+			return false;
+		}
+		datauchar = *buff.data();
+		mText.append(CharToHexStr(buff.data()) + "\tGID:" + grcToText(datauchar));
+		len ++;
+		break;
 	case 201:
 		datauint = charTouint(buff.data() , 4);
 		mText.append(CharToHexStr(buff.data() ,4) + "\tGID:无符号整数:" + QString::number(datauint) + "\r\n");
@@ -124,6 +134,7 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 		mText.append(CharToHexStr(buff.data()+len) + "\tGID:预留字节,无定义");
 		len++;
 		break;
+
 	default:
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的GDD1");
 		return false;

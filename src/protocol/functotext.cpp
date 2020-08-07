@@ -679,6 +679,9 @@ QString kodToText(uchar ch)
 	case 23:
 		text.append("相关联的条目");
 		break;
+	case 103:
+		text.append("属性结构(保信规约专用)");
+		break;
 	default:
 		text.append("备用");
 		break;
@@ -789,6 +792,50 @@ QString gdd3ToText(uchar ch)
 	return text;
 }
 
-
-
-
+QString grcToText(uchar ch)
+{
+	QString text = "GRC:" + QString::number(ch) + "通用分类回答码:" ;
+	switch (ch)
+	{
+	case 0:
+		text.append("认可");
+		break;
+	case 1:
+		text.append("无效的通用分类标识序号（GIN）");
+		break;
+	case 2:
+		text.append("不存在所请求的数据");
+		break;
+	case 3:
+		text.append("数据不能用，过后再来一次");
+		break;
+	case 4:
+		text.append("改变设定时确认出错");
+		break;
+	case 5:
+		text.append("改变设定时超出量程");
+		break;
+	case 6:
+		text.append("条目的范围太大");
+		break;
+	case 7:
+		text.append("太多的命令");
+		break;
+	case 8:
+		text.append("条目是只读");
+		break;
+	case 9:
+		text.append("设定受口令保护");
+		break;
+	case 10:
+		text.append("当地设定在进行中");
+		break;
+	case 11:
+		text.append("带有下面所描述的差错");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}

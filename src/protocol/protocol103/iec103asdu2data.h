@@ -18,7 +18,8 @@ public:
 	uchar dpi;
 	ushort ret;
 	ushort fan;
-	QDateTime datetime;
+	QDateTime datetime1;
+	QDateTime datetime2;
 	uchar sin;
 };
 

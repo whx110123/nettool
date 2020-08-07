@@ -14,7 +14,6 @@
 
 IEC103AsduData::IEC103AsduData()
 {
-	len = 0;
 	inf = 0;
 	masterState = STATE_NORMAL;
 }
@@ -71,10 +70,9 @@ IEC103Asdu::IEC103Asdu()
 	commonaddr = 0;
 	sqflag = 0;
 	datanum = 0;
-	len = 0;
-	//	timelen = 0;
-	//	other = 0;
 	masterState = STATE_NORMAL;
+	cotlen = 1;
+	comaddrlen = 1;
 }
 
 IEC103Asdu::~IEC103Asdu()
@@ -103,13 +101,29 @@ bool IEC103Asdu::init(QByteArray buff)
 	mText.append(CharToHexStr(buff.data()+len) + "\t" + vsqToText()+"\r\n");
 	len++;
 
-	cot = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data()+len) + "\t" +cotToText()+"\r\n");
-	len++;
+	if(cotlen >0)
+	{
+		cot = *(buff.data()+len);
+		mText.append(CharToHexStr(buff.data()+len,cotlen) + "\t" +cotToText()+"\r\n");
+	}
+	else
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
+		return false;
+	}
+	len += cotlen;
 
-	commonaddr = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data()+len) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
-	len ++;
+	if(comaddrlen >0)
+	{
+		commonaddr = charTouint(buff.data()+len,comaddrlen);
+		mText.append(CharToHexStr(buff.data()+len,comaddrlen) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
+	}
+	else
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
+		return false;
+	}
+	len += comaddrlen;
 
 	fun = *(buff.data()+len);
 	mText.append(CharToHexStr(buff.data()+len) + "\t" + funToText() +"\r\n");
@@ -420,6 +434,15 @@ QString IEC103Asdu::funToText()
 	QString text = "FUN:"+ QString::number(fun) + " ";
 	switch (fun)
 	{
+	case 251:
+		text.append("二次设备运行状态（保信规约专用），此时INF表示装置地址");
+		break;
+	case 252:
+		text.append("装置定值变化（保信规约专用），此时INF表示装置地址");
+		break;
+	case 253:
+		text.append("二次设备通信状态（保信规约专用），此时INF表示装置地址");
+		break;
 	case 254:
 		text.append("通用分类功能类型GEN");
 		break;

@@ -41,4 +41,5 @@ QString nogToText(uchar ch);
 QString kodToText(uchar ch);
 QString gdd1ToText(uchar ch);
 QString gdd3ToText(uchar ch);
+QString grcToText(uchar ch);
 #endif // FUNCTOTEXT_H

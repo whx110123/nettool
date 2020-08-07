@@ -64,6 +64,6 @@ uchar crcsum(char *data,int start,int end);
 #define IEC_101 "101"
 #define IEC_103WISCOMNET "金智网络103"
 #define IEC_103COM "串口103"
-
+#define IEC_103ASDU "103ASDU"
 
 #endif // GLOBALDEFINE_H

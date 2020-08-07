@@ -34,9 +34,6 @@ bool IEC103Asdu21Data::init(QByteArray buff)
 	}
 
 	nog = *(buff.data() + len);
-//	setnum = ngd & 0x3f;
-//	datacount = ngd & 0x40;
-//	datacont = ngd & 0x80;
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + nogToText(nog) + "\r\n");
 	len++;
 

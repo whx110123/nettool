@@ -14,7 +14,8 @@ public:
 
 public:
 	uchar dpi;
-	QDateTime datetime;
+	QDateTime datetime1;
+	QDateTime datetime2;
 	uchar sin;
 };
 

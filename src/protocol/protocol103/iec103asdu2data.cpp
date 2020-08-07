@@ -35,9 +35,21 @@ bool IEC103Asdu2Data::init(QByteArray buff)
 	mText.append(CharToHexStr(buff.data() + len, 2) + "\t故障序号FAN:" + QString::number(fan) + "\r\n");
 	len += 2;
 
-	datetime = charToDateTime(buff.data() + len, 4, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + len, 4));
-	len += 4;
+	if(buff.length() < 20)
+	{
+		datetime1 = charToDateTime(buff.data() + len, 4, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + len, 4));
+		len += 4;
+	}
+	else
+	{
+		datetime1 = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + len, 7));
+		len += 7;
+		datetime2 = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + len, 7));
+		len += 7;
+	}
 
 	sin = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data()) + "\t附加信息SIN:" + QString::number(sin) + "\r\n");

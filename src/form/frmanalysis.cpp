@@ -59,6 +59,9 @@ void frmAnalysis::on_clearBtn_clicked()
 
 void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString &arg1)
 {
+	ui->comboBox_cotlen->setCurrentText("1");
+	ui->comboBox_comaddrlen->setCurrentText("1");
+	ui->comboBox_infaddrlen->setCurrentText("1");
 	if(arg1 == IEC_104)
 	{
 		ui->comboBox_cotlen->setCurrentText("2");
@@ -67,21 +70,19 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString &arg1)
 	}
 	else if(arg1 == IEC_101)
 	{
-		ui->comboBox_cotlen->setCurrentText("1");
-		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("2");
 	}
 	else if(arg1 == IEC_103WISCOMNET)
 	{
-		ui->comboBox_cotlen->setCurrentText("1");
-		ui->comboBox_comaddrlen->setCurrentText("1");
-		ui->comboBox_infaddrlen->setCurrentText("2");
+
 	}
 	else if(arg1 == IEC_103COM)
 	{
-		ui->comboBox_cotlen->setCurrentText("1");
-		ui->comboBox_comaddrlen->setCurrentText("1");
-		ui->comboBox_infaddrlen->setCurrentText("2");
+
+	}
+	else if(arg1 == IEC_103ASDU)
+	{
+
 	}
 }
 
@@ -222,6 +223,10 @@ void frmAnalysis::on_AnalysisBtn_clicked()
 			}
 			delete m_103com;
 		}
+		else
+		{
+			break;
+		}
 	}
 	ui->resulttext->setText(text);
 	return;
@@ -259,12 +264,25 @@ void frmAnalysis::on_PBtest_clicked()
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
 	{
-		myprotocol = new IEC103NetWiscom;
+		IEC103NetWiscom *tmp = new IEC103NetWiscom;
+		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		myprotocol = tmp;
 
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103COM)
 	{
-		myprotocol = new IEC103COM;
+		IEC103COM *tmp = new IEC103COM;
+		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		myprotocol = tmp;
+	}
+	else if(ui->protocolcbox->currentText() == IEC_103ASDU)
+	{
+		IEC103Asdu *tmp = new IEC103Asdu;
+		tmp->cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		myprotocol = tmp;
 	}
 
 	if (myprotocol)
