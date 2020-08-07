@@ -2,12 +2,15 @@
 #define IEC103ASDU10DATA_H
 
 #include "iec103asdu.h"
+
+class IEC103AsduDataSetGdd;
 class IEC103AsduDataSetGid : public MyBase
 {
 public:
 	IEC103AsduDataSetGid();
 	~IEC103AsduDataSetGid();
 	virtual bool init(QByteArray buff, uchar *ch);
+	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
 public:
@@ -21,6 +24,22 @@ public:
 	uchar datauchar;
 	uchar datauchar1;
 	QDateTime datat;
+	QList<IEC103AsduDataSetGdd *> gddlist;
+};
+
+class IEC103AsduDataSetGdd : public MyBase
+{
+public:
+	IEC103AsduDataSetGdd();
+	~IEC103AsduDataSetGdd();
+	virtual bool init(QByteArray buff);
+	virtual QString showToText();
+	virtual bool createData(IECDataConfig &config);
+
+public:
+	uchar gdd[3];
+	int gidnum;
+	QList<IEC103AsduDataSetGid *> gidlist;
 };
 
 class IEC103AsduDataSet : public MyBase
@@ -35,9 +54,7 @@ public:
 public:
 	uchar gin[2];
 	uchar kod;
-	uchar gdd[3];
-	int gidnum;
-	QList<IEC103AsduDataSetGid *> gidlist;
+	IEC103AsduDataSetGdd mygdd;
 };
 
 class IEC103Asdu10Data : public IEC103AsduData

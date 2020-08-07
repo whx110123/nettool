@@ -11,11 +11,16 @@ IEC103AsduDataSetGid::IEC103AsduDataSetGid()
 
 IEC103AsduDataSetGid::~IEC103AsduDataSetGid()
 {
+	qDeleteAll(gddlist);
+	gddlist.clear();
 }
 
 bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 {
 	setDefault(buff);
+
+	qDeleteAll(gddlist);
+	gddlist.clear();
 
 	switch (gdd[0])
 	{
@@ -126,6 +131,27 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 		mText.append(CharToHexStr(buff.data()) + "\tGID:" + grcToText(datauchar));
 		len ++;
 		break;
+	case 23:
+		while(len < gdd[1])
+		{
+			IEC103AsduDataSetGdd *mgdd = new IEC103AsduDataSetGdd;
+			if (!mgdd->init(buff.mid(len)))
+			{
+				delete mgdd;
+				mgdd = NULL;
+				return false;
+			}
+			len += mgdd->len;
+			gddlist.append(mgdd);
+		}
+		if (len != gdd[1])
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！GID长度错误");
+			return false;
+		}
+		mText.append("-----------------------------------------------------------------------------------------------\r\n");
+		return true;
+		break;
 	case 201:
 		datauint = charTouint(buff.data() , 4);
 		mText.append(CharToHexStr(buff.data() ,4) + "\tGID:无符号整数:" + QString::number(datauint) + "\r\n");
@@ -136,12 +162,22 @@ bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
 		break;
 
 	default:
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的GDD1");
+		error = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的GDD1").arg(gdd[0]);
 		return false;
 		break;
 	}
-	mText.append("\r\n");
+	mText.append("\r\n-----------------------------------------------------------------------------------------------\r\n");
 	return true;
+}
+
+QString IEC103AsduDataSetGid::showToText()
+{
+	QString text = mText;
+	for (IEC103AsduDataSetGdd *mgdd : gddlist)
+	{
+		text.append(mgdd->showToText());
+	}
+	return text;
 }
 
 
@@ -152,46 +188,33 @@ bool IEC103AsduDataSetGid::createData(IECDataConfig & config)
 	return false;
 }
 
-IEC103AsduDataSet::IEC103AsduDataSet()
+
+IEC103AsduDataSetGdd::IEC103AsduDataSetGdd()
 {
 	gidnum = 0;
 }
 
-IEC103AsduDataSet::~IEC103AsduDataSet()
+IEC103AsduDataSetGdd::~IEC103AsduDataSetGdd()
 {
 	qDeleteAll(gidlist);
 	gidlist.clear();
 }
 
-bool IEC103AsduDataSet::init(QByteArray buff)
+bool IEC103AsduDataSetGdd::init(QByteArray buff)
 {
 	setDefault(buff);
 
 	qDeleteAll(gidlist);
 	gidlist.clear();
 
-	memcpy(gin, buff.data(), 2);
-	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	mText.append(CharToHexStr(buff.data()+len,2) + "\tGIN:组号" + QString::number(gin[0]) + "   条目号" + QString::number(gin[1]) + "\r\n");
-	len += 2;
-
-	kod = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + kodToText(kod) + "\r\n");
-	len++;
-
-	if (buff.size() == len)
-	{
-		return true;
-	}
-
-	memcpy(gdd, buff.data()+len, 3);
+	memcpy(gdd, buff.data(), 3);
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + gdd1ToText(gdd[0]) + "\r\n");
 	mText.append(CharToHexStr(buff.data() + len+1) + "\tGDD2:" + QString::number(gdd[1]) + " 数据宽度\r\n");
 	mText.append(CharToHexStr(buff.data() + len+2) + "\t" + gdd3ToText(gdd[2]) + "\r\n");
 	if (gdd[0] == 2)
 	{
 		gidnum = ((ushort)gdd[1] * (gdd[2]&0x7f) - 1) / 8 + 1;
-	} 
+	}
 	else
 	{
 		gidnum = gdd[2] & 0x7f;
@@ -214,13 +237,61 @@ bool IEC103AsduDataSet::init(QByteArray buff)
 	return true;
 }
 
-QString IEC103AsduDataSet::showToText()
+QString IEC103AsduDataSetGdd::showToText()
 {
 	QString text = mText;
 	for (IEC103AsduDataSetGid *mgid : gidlist)
 	{
 		text.append(mgid->showToText());
 	}
+	return text;
+}
+
+bool IEC103AsduDataSetGdd::createData(IECDataConfig &config)
+{
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+	return false;
+}
+
+IEC103AsduDataSet::IEC103AsduDataSet()
+{
+
+}
+
+IEC103AsduDataSet::~IEC103AsduDataSet()
+{
+
+}
+
+bool IEC103AsduDataSet::init(QByteArray buff)
+{
+	setDefault(buff);
+
+	memcpy(gin, buff.data(), 2);
+
+	mText.append(CharToHexStr(buff.data()+len,2) + "\tGIN:组号" + QString::number(gin[0]) + "   条目号" + QString::number(gin[1]) + "\r\n");
+	len += 2;
+
+	kod = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + kodToText(kod) + "\r\n");
+	len++;
+
+	if (buff.size() == len)
+	{
+		return true;
+	}
+	if(!mygdd.init(buff.mid(len)))
+	{
+		return false;
+	}
+	len += mygdd.len;
+	return true;
+}
+
+QString IEC103AsduDataSet::showToText()
+{
+	QString text = mText;
+	text.append(mygdd.showToText());
 	return text;
 }
 
@@ -251,7 +322,7 @@ bool IEC103Asdu10Data::init(QByteArray buff)
 	setlist.clear();
 
 	inf = *(buff.data() + len);
-	mText.append("-----------------------------------------------------------------------------------------------\r\n");
+
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
 	len++;
 
@@ -269,7 +340,7 @@ bool IEC103Asdu10Data::init(QByteArray buff)
 	datacont = ngd & 0x80;
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + ngdToText(ngd) + "\r\n");
 	len++;
-
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	uchar *gin = (uchar *)(buff.data() + len);
 	for (int index = 0; index < setnum; index++)
 	{
@@ -324,5 +395,6 @@ bool IEC103Asdu10Data::createData(IECDataConfig &config)
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }
+
 
 
