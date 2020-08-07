@@ -10,7 +10,9 @@ HEADERS += \
 	$$PWD/iec103asdu6data.h \
 	$$PWD/iec103asdu7data.h \
 	$$PWD/iec103com.h \
+	$$PWD/iec103netapcibaoxin.h \
 	$$PWD/iec103netapciwiscom.h \
+	$$PWD/iec103netbaoxin.h \
 	$$PWD/iec103netwiscom.h
 
 SOURCES += \
@@ -25,5 +27,7 @@ SOURCES += \
 	$$PWD/iec103asdu6data.cpp \
 	$$PWD/iec103asdu7data.cpp \
 	$$PWD/iec103com.cpp \
+	$$PWD/iec103netapcibaoxin.cpp \
 	$$PWD/iec103netapciwiscom.cpp \
+	$$PWD/iec103netbaoxin.cpp \
 	$$PWD/iec103netwiscom.cpp

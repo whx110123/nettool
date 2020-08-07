@@ -19,7 +19,7 @@ bool IEC103Asdu2Data::init(QByteArray buff)
 	setDefault(buff);
 
 	inf = *(buff.data() + len);
-	mText.append("-----------------------------------------------------------------------------------------------\r\n");
+
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
 	len++;
 

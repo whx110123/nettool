@@ -21,7 +21,7 @@ bool IEC103Asdu21Data::init(QByteArray buff)
 	setlist.clear();
 
 	inf = *(buff.data() + len);
-	mText.append("-----------------------------------------------------------------------------------------------\r\n");
+
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
 	len++;
 
@@ -36,7 +36,7 @@ bool IEC103Asdu21Data::init(QByteArray buff)
 	nog = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + nogToText(nog) + "\r\n");
 	len++;
-
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if (len == buff.size())
 	{
 		return true;

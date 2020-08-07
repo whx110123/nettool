@@ -4,6 +4,7 @@
 #include <QString>
 #include <iec101.h>
 #include <iec103com.h>
+#include <iec103netbaoxin.h>
 #include <iec103netwiscom.h>
 #include "myhighlighter.h"
 #include "iec104.h"
@@ -83,6 +84,10 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString &arg1)
 	else if(arg1 == IEC_103ASDU)
 	{
 
+	}
+	else if(arg1 == IEC_103BAOXINNET)
+	{
+		ui->comboBox_comaddrlen->setCurrentText("2");
 	}
 }
 
@@ -273,6 +278,13 @@ void frmAnalysis::on_PBtest_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_103COM)
 	{
 		IEC103COM *tmp = new IEC103COM;
+		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		myprotocol = tmp;
+	}
+	else if(ui->protocolcbox->currentText() == IEC_103BAOXINNET)
+	{
+		IEC103NetBaoXin *tmp = new IEC103NetBaoXin;
 		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;

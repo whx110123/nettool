@@ -113,10 +113,15 @@ bool IEC103Asdu::init(QByteArray buff)
 	}
 	len += cotlen;
 
-	if(comaddrlen >0)
+	commonaddr = charTouint(buff.data()+len,comaddrlen);
+	if(comaddrlen == 1 )
 	{
-		commonaddr = charTouint(buff.data()+len,comaddrlen);
-		mText.append(CharToHexStr(buff.data()+len,comaddrlen) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
+		mText.append(CharToHexStr(buff.data()+len) + "\t公共地址:" + QString::number(commonaddr&0xff) +"\r\n");
+	}
+	else if(comaddrlen == 2)
+	{
+		mText.append(CharToHexStr(buff.data()+len) + "\t公共地址低位:" + QString::number(commonaddr&0xff) +"\r\n");
+		mText.append(CharToHexStr(buff.data()+len+1) + "\t公共地址高位:" + QString::number((commonaddr>>8)&0xff) +" 装置地址\r\n");
 	}
 	else
 	{
