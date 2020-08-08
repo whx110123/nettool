@@ -11,6 +11,8 @@ class IEC101AsduData : public MyBase
 public:
 	IEC101AsduData();
 	virtual ~IEC101AsduData();
+	virtual bool init(const QByteArray &buff);
+	virtual bool init(const QByteArray &buff,uint addr);
 
 public:
 	uint infaddr;

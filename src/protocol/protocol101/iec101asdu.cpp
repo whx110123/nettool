@@ -31,6 +31,39 @@ IEC101AsduData::~IEC101AsduData()
 
 }
 
+bool IEC101AsduData::init(const QByteArray &buff)
+{
+	setDefault(buff);
+
+	if(infaddrlen!=3&&infaddrlen!=2&&infaddrlen!=1)
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！信息体地址长度错误");
+		return false;
+	}
+	infaddr = charTouint(buff.data(),infaddrlen);
+	mText.append(CharToHexStr(buff.data(),infaddrlen));
+	len += infaddrlen;
+
+	if(!handle(buff))
+	{
+		return false;
+	}
+	return true;
+}
+
+bool IEC101AsduData::init(const QByteArray &buff, uint addr)
+{
+	setDefault(buff);
+
+	infaddr = addr;
+
+	if(!handle(buff))
+	{
+		return false;
+	}
+	return true;
+}
+
 
 
 IEC101Asdu::IEC101Asdu()

@@ -14,38 +14,38 @@ IEC101Asdu100Data::~IEC101Asdu100Data()
 
 }
 
-bool IEC101Asdu100Data::init(const QByteArray &buff)
-{
-	setDefault(buff);
+//bool IEC101Asdu100Data::init(const QByteArray &buff)
+//{
+//	setDefault(buff);
 
-	if(infaddrlen!=3&&infaddrlen!=2&&infaddrlen!=1)
-	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！信息体地址长度错误");
-		return false;
-	}
-	infaddr = charTouint(buff.data(),infaddrlen);
-	mText.append(CharToHexStr(buff.data(),infaddrlen));
-	len += infaddrlen;
+//	if(infaddrlen!=3&&infaddrlen!=2&&infaddrlen!=1)
+//	{
+//		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！信息体地址长度错误");
+//		return false;
+//	}
+//	infaddr = charTouint(buff.data(),infaddrlen);
+//	mText.append(CharToHexStr(buff.data(),infaddrlen));
+//	len += infaddrlen;
 
-	if(!handle(buff))
-	{
-		return false;
-	}
-	return true;
-}
+//	if(!handle(buff))
+//	{
+//		return false;
+//	}
+//	return true;
+//}
 
-bool IEC101Asdu100Data::init(const QByteArray &buff, uint addr)
-{
-	setDefault(buff);
+//bool IEC101Asdu100Data::init(const QByteArray &buff, uint addr)
+//{
+//	setDefault(buff);
 
-	infaddr = addr;
+//	infaddr = addr;
 
-	if(!handle(buff))
-	{
-		return false;
-	}
-	return true;
-}
+//	if(!handle(buff))
+//	{
+//		return false;
+//	}
+//	return true;
+//}
 
 bool IEC101Asdu100Data::handle(const QByteArray &buff)
 {
