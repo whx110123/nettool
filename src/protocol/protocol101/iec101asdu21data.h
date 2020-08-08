@@ -9,8 +9,8 @@ class IEC101Asdu21Data : public IEC101AsduData
 public:
 	IEC101Asdu21Data();
 	~IEC101Asdu21Data();
-	virtual bool init(QByteArray buff);
-	virtual bool init(QByteArray buff, uint addr);
+	virtual bool init(const QByteArray &buff);
+	virtual bool init(const QByteArray &buff, uint addr);
 	virtual bool createData(IECDataConfig &config);
 
 public:

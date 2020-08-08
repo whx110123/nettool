@@ -11,7 +11,7 @@ class IEC103Asdu2Data : public IEC103AsduData
 public:
 	IEC103Asdu2Data();
 	~IEC103Asdu2Data();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual bool createData(IECDataConfig &config);
 
 public:
@@ -20,7 +20,6 @@ public:
 	ushort fan;
 	QDateTime datetime1;
 	QDateTime datetime2;
-	uchar sin;
 };
 
 #endif // IEC103ASDU2DATA_H

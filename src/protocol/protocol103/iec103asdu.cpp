@@ -73,6 +73,8 @@ IEC103Asdu::IEC103Asdu()
 	masterState = STATE_NORMAL;
 	cotlen = 1;
 	comaddrlen = 1;
+	endflag = 0;
+	end = 0;
 }
 
 IEC103Asdu::~IEC103Asdu()
@@ -81,7 +83,7 @@ IEC103Asdu::~IEC103Asdu()
 	datalist.clear();
 }
 
-bool IEC103Asdu::init(QByteArray buff)
+bool IEC103Asdu::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -155,7 +157,12 @@ bool IEC103Asdu::init(QByteArray buff)
 		}
 		else
 		{
-			isOk = mdata->init(buff.mid(len),inf+index);
+			int k = 1;
+			if(type == 44)
+			{
+				k = 16;
+			}
+			isOk = mdata->init(buff.mid(len),(uint)(inf+index*k));
 		}
 		if(!isOk)
 		{
@@ -167,6 +174,11 @@ bool IEC103Asdu::init(QByteArray buff)
 		datalist.append(mdata);
 		len += mdata->len;
 	}
+	if(endflag != IEC103END_NO)
+	{
+		end = *(buff.data() + len);
+		len++;
+	}
 	return true;
 }
 
@@ -176,6 +188,10 @@ QString IEC103Asdu::showToText()
 	for(IEC103AsduData *mdata:datalist)
 	{
 		text.append(mdata->showToText());
+	}
+	if(endflag != IEC103END_NO)
+	{
+		text.append(CharToHexStr(end) + "\t" + endToText() + QString::number(end) + "\r\n");
 	}
 	return text;
 }
@@ -232,13 +248,16 @@ bool IEC103Asdu::createData(IECDataConfig &config)
 QString IEC103Asdu::typeToText()
 {
 	QString text = "ASDU"+ QString::number(type) + ":类型标识 ";
+	endflag = IEC103END_NO;
 	switch (type)
 	{
 	case 1:
 		text.append("带时标的报文");
+		endflag = IEC103END_SIN;
 		break;
 	case 2:
 		text.append("具有相对时间的带时标的报文");
+		endflag = IEC103END_SIN;
 		break;
 	case 3:
 		text.append("被测值I");
@@ -254,9 +273,11 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 7:
 		text.append("总查询(总召唤)");
+		endflag = IEC103END_SCN;
 		break;
 	case 8:
 		text.append("总查询(总召唤)终止");
+		endflag = IEC103END_SCN;
 		break;
 	case 9:
 		text.append("被测值II");
@@ -269,6 +290,7 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 20:
 		text.append("一般命令");
+		endflag = IEC103END_RII;
 		break;
 	case 21:
 		text.append("通用分类命令");
@@ -302,6 +324,7 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 36:
 		text.append("电能脉冲量上送");
+		endflag = IEC103END_RII;
 		break;
 	case 38:
 		text.append("总查询及变位上送步位置");
@@ -311,18 +334,23 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 40:
 		text.append("上送变位遥信");
+		endflag = IEC103END_SIN;
 		break;
 	case 41:
 		text.append("上送SOE");
+		endflag = IEC103END_SIN;
 		break;
 	case 42:
 		text.append("总控上送变位遥信");
+		endflag = IEC103END_SIN;
 		break;
 	case 43:
 		text.append("总控上送SOE");
+		endflag = IEC103END_SIN;
 		break;
 	case 44:
 		text.append("上送全遥信");
+		endflag = IEC103END_SIN;
 		break;
 	case 50:
 		text.append("遥测上送");
@@ -332,9 +360,11 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 64:
 		text.append("遥控选择/执行/撤消");
+		endflag = IEC103END_RII;
 		break;
 	case 88:
 		text.append("电能脉冲量召唤（冻结）");
+		endflag = IEC103END_RII;
 		break;
 	default:
 		text.append("未知ASDU类型，无法继续解析");
@@ -460,6 +490,26 @@ QString IEC103Asdu::funToText()
 	return text;
 }
 
+QString IEC103Asdu::endToText()
+{
+	QString text;
+	switch (endflag)
+	{
+	case IEC103END_RII:
+		text.append("返回信息标识符RII:");
+		break;
+	case IEC103END_SCN:
+		text.append("扫描序号SCN:");
+		break;
+	case IEC103END_SIN:
+		text.append("附加信息SIN:");
+		break;
+	default:
+		break;
+	}
+	return text;
+}
+
 IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 {
 	IEC103AsduData *asdudata = NULL;
@@ -483,14 +533,14 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 	case 21:
 		asdudata = new IEC103Asdu21Data;
 		break;
-		// 	case 44:
-		// 		asdudata = new IEC103asdu44data;
-		// 		break;
+	case 44:
+		asdudata = new IEC103Asdu44Data;
+		break;
 		// 	case 50:
-		// 		asdudata = new IEC103asdu50data;
+		// 		asdudata = new IEC103Asdu50Data;
 		// 		break;
 		// 	case 51:
-		// 		asdudata = new IEC103asdu51data;
+		// 		asdudata = new IEC103Asdu51Data;
 		// 		break;
 	default:
 		break;

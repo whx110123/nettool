@@ -25,7 +25,7 @@ class IEC103Asdu : public MyBase
 public:
 	IEC103Asdu();
 	~IEC103Asdu();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
@@ -34,6 +34,7 @@ public:
 	QString vsqToText();
 	QString cotToText();
 	QString funToText();
+	QString endToText();
 	uchar type;
 	uchar vsq;
 	uchar cot;
@@ -44,6 +45,8 @@ public:
 	int datanum;                //信息元素的数量
 	int cotlen ;				//cot长度
 	int comaddrlen ;			//公共地址长度
+	int endflag;				//结尾标识,用来识别报文最后一个字节的类型
+	uchar end;
 	QList<IEC103AsduData *> datalist;
 private:
 	IEC103AsduData *CreateAsduData(uchar type);

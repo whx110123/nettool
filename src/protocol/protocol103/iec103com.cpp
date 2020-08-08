@@ -12,7 +12,7 @@ IEC103COM::~IEC103COM()
 
 }
 
-bool IEC103COM::init(QByteArray buff)
+bool IEC103COM::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -98,7 +98,6 @@ QString IEC103COM::showToText()
 	if(apci.flag1 == 0x68)
 	{
 		text.append(asdu.showToText());
-		text.append("-----------------------------------------------------------------------------------------------\r\n");
 	}
 	text.append(CharToHexStr(crc)+"\t校验和\r\n");
 	text.append(CharToHexStr(end)+"\t结束字符\r\n");

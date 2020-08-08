@@ -11,7 +11,7 @@ class IEC103NetBaoXin : public MyBase
 public:
 	IEC103NetBaoXin();
 	~IEC103NetBaoXin();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 

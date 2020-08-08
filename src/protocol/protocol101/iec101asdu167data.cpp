@@ -15,7 +15,7 @@ IEC101Asdu167Data::~IEC101Asdu167Data()
 
 }
 
-bool IEC101Asdu167Data::init(QByteArray buff)
+bool IEC101Asdu167Data::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

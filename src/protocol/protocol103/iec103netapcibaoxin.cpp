@@ -11,7 +11,7 @@ IEC103NetApciBaoXin::~IEC103NetApciBaoXin()
 
 }
 
-bool IEC103NetApciBaoXin::init(QByteArray buff)
+bool IEC103NetApciBaoXin::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

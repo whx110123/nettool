@@ -11,7 +11,7 @@ class IEC103NetApciWiscom  : public MyBase
 public:
 	IEC103NetApciWiscom();
 	~IEC103NetApciWiscom();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 

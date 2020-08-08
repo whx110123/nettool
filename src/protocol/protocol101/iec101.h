@@ -14,7 +14,7 @@ class IEC101 : public MyBase
 public:
 	IEC101();
 	~IEC101();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 

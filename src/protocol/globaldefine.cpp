@@ -5,7 +5,7 @@ QString CharToHexStr(uchar data)
 {
     return QString("%1").arg(QString::number(data,16).toUpper(),2,QLatin1Char('0'));
 }
-QString CharToHexStr(char *data, int len)
+QString CharToHexStr(const char *data, int len)
 {
 	uchar *mdata = (uchar *)data;
 	return CharToHexStr(mdata, len);
@@ -21,7 +21,7 @@ QString CharToHexStr(uchar *data, int len)
 	return str.trimmed();
 }
 
-uint charTouint(char *data, int len, int model)
+uint charTouint(const char *data, int len, int model)
 {
 	uchar *mdata = (uchar *)data;
 	return charTouint(mdata, len, model);
@@ -56,7 +56,7 @@ int charToint(uchar *data, int len,int model)
     int tmp = *(int *)(&tmp1)>>((4-len)*8);
     return tmp;
 }
-int charToint(char * data, int len, int model)
+int charToint(const char * data, int len, int model)
 {
 	uchar *mdata = (uchar *)data;
 	return charToint(mdata, len, model);
@@ -95,13 +95,13 @@ short charToshortwithQ(uchar * data, int model)
 	return tmp;
 }
 
-short charToshortwithQ(char * data, int model)
+short charToshortwithQ(const char * data, int model)
 {
 	uchar *mdata = (uchar *)data;
 	return charToshortwithQ(mdata, model);
 }
 
-float charTofloat(char *data, int model)
+float charTofloat(const char *data, int model)
 {
 	uchar *mdata = (uchar *)data;
 	return charTofloat(mdata,model);
@@ -168,7 +168,7 @@ QDateTime charToDateTime(uchar *data,int len, int model)
     return datetime;
 }
 
-QDateTime charToDateTime(char * data, int len, int model)
+QDateTime charToDateTime(const char * data, int len, int model)
 {
 	uchar *mdata = (uchar *)data;
 	return charToDateTime(mdata, len, model);
@@ -219,7 +219,7 @@ QByteArray dateTimeToBa(QDateTime datatime, int len, int model)
 			break;
 		}
 		uch = datatime.date().dayOfWeek();
-		uch = uch << 5 + datatime.date().day();
+		uch = (uch << 5) + datatime.date().day();
 		ba.append(uch);
 		if (len == 5)
 		{
@@ -243,7 +243,7 @@ QByteArray dateTimeToBa(QDateTime datatime, int len, int model)
 	return ba;
 }
 
-uchar crcsum(char *data, int start, int end)
+uchar crcsum(const char *data, int start, int end)
 {
 	uchar tmp = 0;
 	for (int i = start;i < end+1 ;i++)

@@ -11,7 +11,7 @@ IEC101Code::~IEC101Code()
 
 }
 
-bool IEC101Code::init(QByteArray buff)
+bool IEC101Code::init(const QByteArray &buff)
 {
 	setDefault(buff);
 	mcode = *buff.data();
@@ -47,7 +47,7 @@ IEC101Apci::~IEC101Apci()
 
 }
 
-bool IEC101Apci::init(QByteArray buff)
+bool IEC101Apci::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

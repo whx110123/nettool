@@ -12,17 +12,22 @@ MyBase::~MyBase()
 
 }
 
-bool MyBase::init(QByteArray buff)
+bool MyBase::init(const QByteArray &buff)
 {
 	return false;
 }
 
-bool MyBase::init(QByteArray buff, uint addr)
+bool MyBase::init(const QByteArray &buff, uint addr)
 {
 	return false;
 }
 
-bool MyBase::init(QByteArray buff, uchar *ch)
+bool MyBase::init(const QByteArray &buff, uchar *ch)
+{
+	return false;
+}
+
+bool MyBase::handle(const QByteArray &buff)
 {
 	return false;
 }
@@ -37,7 +42,7 @@ bool MyBase::createData(IECDataConfig &config)
 	return false;
 }
 
-void MyBase::setDefault(QByteArray buff)
+void MyBase::setDefault(const QByteArray &buff)
 {
 	mRecvData = buff;
 	mText.clear();

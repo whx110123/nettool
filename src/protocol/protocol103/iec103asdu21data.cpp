@@ -13,7 +13,7 @@ IEC103Asdu21Data::~IEC103Asdu21Data()
 	setlist.clear();
 }
 
-bool IEC103Asdu21Data::init(QByteArray buff)
+bool IEC103Asdu21Data::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

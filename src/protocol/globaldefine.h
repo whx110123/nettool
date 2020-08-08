@@ -27,6 +27,14 @@ enum
 	STATE_HOTKEY,				//通过点击快捷键
 	STATE_NUM					//所有状态的数目
 };
+
+enum
+{
+	IEC103END_NO,
+	IEC103END_SIN,
+	IEC103END_SCN,
+	IEC103END_RII
+};
 enum
 {
 	BCDTIME1 = 0,		//BCD时间1
@@ -38,25 +46,25 @@ enum
     
 
 QString CharToHexStr(uchar data);           //将一个uchar字符转换成2个字符的16进制QString
-QString CharToHexStr(char *data,int len=1);
+QString CharToHexStr(const char *data,int len=1);
 QString CharToHexStr(uchar *data, int len = 1);
-uint charTouint(char *data,int len,int model = 0);
+uint charTouint(const char *data,int len,int model = 0);
 uint charTouint(uchar *data,int len,int model = 0);      //将len个uchar合成一个uint,model 0:低字节在前
 int charToint(uchar *data,int len,int model = 0);      //将4个uchar合成一个int,model 0:低字节在前 1:高字节在前
-int charToint(char *data, int len, int model = 0);      //将4个char合成一个int,model 0:低字节在前 1:高字节在前
+int charToint(const char *data, int len, int model = 0);      //将4个char合成一个int,model 0:低字节在前 1:高字节在前
 short charToshortwithQ(uchar *data,uchar &ov,uchar &er,int model = 0);
 short charToshortwithQ(uchar *data, int model = 0);
-short charToshortwithQ(char *data, int model = 0);
-float charTofloat(char *data,int model = 0);
+short charToshortwithQ(const char *data, int model = 0);
+float charTofloat(const char *data,int model = 0);
 float charTofloat(uchar *data,int model = 0);
 QDateTime charToDateTime(uchar *data,int len,int model);//将len个uchar合成一个日期,model时间类型
-QDateTime charToDateTime(char *data, int len, int model);//将len个char合成一个日期,model时间类型
+QDateTime charToDateTime(const char *data, int len, int model);//将len个char合成一个日期,model时间类型
 
 QByteArray uintToBa(uint data,int len);
 QByteArray floatToBa(float data);
 QByteArray dateTimeToBa(QDateTime datatime, int len, int model);
 
-uchar crcsum(char *data,int start,int end);
+uchar crcsum(const char *data,int start,int end);
 
 
 

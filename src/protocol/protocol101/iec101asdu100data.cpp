@@ -14,7 +14,7 @@ IEC101Asdu100Data::~IEC101Asdu100Data()
 
 }
 
-bool IEC101Asdu100Data::init(QByteArray buff)
+bool IEC101Asdu100Data::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -24,22 +24,36 @@ bool IEC101Asdu100Data::init(QByteArray buff)
 		return false;
 	}
 	infaddr = charTouint(buff.data(),infaddrlen);
-	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	mText.append(CharToHexStr(buff.data(),infaddrlen) + "\t信息元素地址:" + QString::number(infaddr)+"\r\n");
-	qoi = *(buff.data()+infaddrlen);
-	mText.append(CharToHexStr(buff.data()+infaddrlen) + "\t" + qoiToText(qoi) +"\r\n");
+	mText.append(CharToHexStr(buff.data(),infaddrlen));
+	len += infaddrlen;
+
+	if(!handle(buff))
+	{
+		return false;
+	}
 	return true;
 }
 
-bool IEC101Asdu100Data::init(QByteArray buff, uint addr)
+bool IEC101Asdu100Data::init(const QByteArray &buff, uint addr)
 {
 	setDefault(buff);
 
 	infaddr = addr;
+
+	if(!handle(buff))
+	{
+		return false;
+	}
+	return true;
+}
+
+bool IEC101Asdu100Data::handle(const QByteArray &buff)
+{
+	mText.append( "\t信息元素地址:" + QString::number(infaddr)+"\r\n");
+	qoi = *(buff.data()+len);
+	mText.append(CharToHexStr(buff.data()+len) + "\t" + qoiToText(qoi) +"\r\n");
+	len++;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	mText.append("\t信息元素地址:" + QString::number(infaddr) +"\r\n");
-	qoi = *buff.data();
-	mText.append(CharToHexStr(buff.data()) + "\t" + qoiToText(qoi) +"\r\n");
 	return true;
 }
 

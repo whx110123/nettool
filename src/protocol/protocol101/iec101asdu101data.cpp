@@ -13,7 +13,7 @@ IEC101Asdu101Data::~IEC101Asdu101Data()
 
 }
 
-bool IEC101Asdu101Data::init(QByteArray buff)
+bool IEC101Asdu101Data::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -30,7 +30,7 @@ bool IEC101Asdu101Data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101Asdu101Data::init(QByteArray buff, uint addr)
+bool IEC101Asdu101Data::init(const QByteArray &buff, uint addr)
 {
 	setDefault(buff);
 

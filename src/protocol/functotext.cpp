@@ -550,7 +550,7 @@ QString qosToText(uchar ch)
 	return text;
 }
 
-QString timeToText(char * time, int timelen)
+QString timeToText(const char * time, int timelen)
 {
 	uchar *mtime = (uchar *)time;
 	return timeToText(mtime, timelen);

@@ -10,7 +10,7 @@ IEC103NetWiscom::~IEC103NetWiscom()
 
 }
 
-bool IEC103NetWiscom::init(QByteArray buff)
+bool IEC103NetWiscom::init(const QByteArray &buff)
 {
 	setDefault(buff);
 	const int APCI_LEN = 15;			//APCI总字节数

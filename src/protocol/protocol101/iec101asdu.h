@@ -22,7 +22,7 @@ class IEC101Asdu : public MyBase
 public:
 	IEC101Asdu();
 	~IEC101Asdu();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 

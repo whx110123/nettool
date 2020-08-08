@@ -54,7 +54,7 @@ IEC101Asdu::~IEC101Asdu()
 	datalist.clear();
 }
 
-bool IEC101Asdu::init(QByteArray buff)
+bool IEC101Asdu::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

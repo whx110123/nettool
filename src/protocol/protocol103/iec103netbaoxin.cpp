@@ -10,7 +10,7 @@ IEC103NetBaoXin::~IEC103NetBaoXin()
 
 }
 
-bool IEC103NetBaoXin::init(QByteArray buff)
+bool IEC103NetBaoXin::init(const QByteArray &buff)
 {
 	setDefault(buff);
 	const int APCI_LEN = 7;				//APCI总字节数

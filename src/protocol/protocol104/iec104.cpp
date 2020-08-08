@@ -11,7 +11,7 @@ IEC104::~IEC104()
 
 }
 
-bool IEC104::init(QByteArray buff)
+bool IEC104::init(const QByteArray &buff)
 {
 	setDefault(buff);
 	const int APCI_LEN = 6;				//APCI总字节数

@@ -6,7 +6,7 @@
 IEC103Asdu2Data::IEC103Asdu2Data()
 {
 	dpi = 0;
-	sin = 0;
+
 }
 
 IEC103Asdu2Data::~IEC103Asdu2Data()
@@ -14,7 +14,7 @@ IEC103Asdu2Data::~IEC103Asdu2Data()
 
 }
 
-bool IEC103Asdu2Data::init(QByteArray buff)
+bool IEC103Asdu2Data::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -50,10 +50,7 @@ bool IEC103Asdu2Data::init(QByteArray buff)
 		mText.append(timeToText(buff.data() + len, 7));
 		len += 7;
 	}
-
-	sin = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data()) + "\t附加信息SIN:" + QString::number(sin) + "\r\n");
-	len++;
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	return true;
 }
 

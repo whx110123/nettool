@@ -8,7 +8,7 @@ class IEC101Asdu167Data : public IEC101AsduData
 public:
 	IEC101Asdu167Data();
 	~IEC101Asdu167Data();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 

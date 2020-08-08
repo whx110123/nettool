@@ -12,7 +12,7 @@ IEC101::~IEC101()
 
 }
 
-bool IEC101::init(QByteArray buff)
+bool IEC101::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

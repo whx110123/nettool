@@ -14,7 +14,7 @@ IEC101Asdu32Data::~IEC101Asdu32Data()
 
 }
 
-bool IEC101Asdu32Data::init(QByteArray buff)
+bool IEC101Asdu32Data::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -35,7 +35,7 @@ bool IEC101Asdu32Data::init(QByteArray buff)
 	return true;
 }
 
-bool IEC101Asdu32Data::init(QByteArray buff, uint addr)
+bool IEC101Asdu32Data::init(const QByteArray &buff, uint addr)
 {
 	setDefault(buff);
 

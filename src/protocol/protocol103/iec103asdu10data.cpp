@@ -15,7 +15,7 @@ IEC103AsduDataSetGid::~IEC103AsduDataSetGid()
 	gddlist.clear();
 }
 
-bool IEC103AsduDataSetGid::init(QByteArray buff,uchar *gdd)
+bool IEC103AsduDataSetGid::init(const QByteArray &buff,uchar *gdd)
 {
 	setDefault(buff);
 
@@ -200,7 +200,7 @@ IEC103AsduDataSetGdd::~IEC103AsduDataSetGdd()
 	gidlist.clear();
 }
 
-bool IEC103AsduDataSetGdd::init(QByteArray buff)
+bool IEC103AsduDataSetGdd::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -263,7 +263,7 @@ IEC103AsduDataSet::~IEC103AsduDataSet()
 
 }
 
-bool IEC103AsduDataSet::init(QByteArray buff)
+bool IEC103AsduDataSet::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -314,7 +314,7 @@ IEC103Asdu10Data::~IEC103Asdu10Data()
 	setlist.clear();
 }
 
-bool IEC103Asdu10Data::init(QByteArray buff)
+bool IEC103Asdu10Data::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

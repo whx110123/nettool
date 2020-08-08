@@ -16,7 +16,7 @@ IEC104Control::~IEC104Control()
 
 }
 
-bool IEC104Control::init(QByteArray buff)
+bool IEC104Control::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
@@ -275,7 +275,7 @@ IEC104Apci::~IEC104Apci()
 
 }
 
-bool IEC104Apci::init(QByteArray buff)
+bool IEC104Apci::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

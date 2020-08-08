@@ -17,7 +17,7 @@ IEC103NetApciWiscom::~IEC103NetApciWiscom()
 
 }
 
-bool IEC103NetApciWiscom::init(QByteArray buff)
+bool IEC103NetApciWiscom::init(const QByteArray &buff)
 {
 	setDefault(buff);
 

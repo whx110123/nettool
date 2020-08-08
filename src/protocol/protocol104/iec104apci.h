@@ -13,7 +13,7 @@ class IEC104Control : public MyBase
 public:
 	IEC104Control();
 	~IEC104Control();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual bool createData(IECDataConfig &config);
 
 public:
@@ -30,7 +30,7 @@ class IEC104Apci : public MyBase
 public:
 	IEC104Apci();
 	~IEC104Apci();
-	virtual bool init(QByteArray buff);
+	virtual bool init(const QByteArray &buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
