@@ -49,7 +49,7 @@ IEC101Asdu100Data::~IEC101Asdu100Data()
 
 bool IEC101Asdu100Data::handle(const QByteArray &buff)
 {
-	mText.append( "\t信息元素地址:" + QString::number(infaddr)+"\r\n");
+	mText.append("\r\n");
 	qoi = *(buff.data()+len);
 	mText.append(CharToHexStr(buff.data()+len) + "\t" + qoiToText(qoi) +"\r\n");
 	len++;

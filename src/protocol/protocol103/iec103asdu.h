@@ -13,6 +13,8 @@ class IEC103AsduData : public MyBase
 public:
 	IEC103AsduData();
 	~IEC103AsduData();
+	virtual bool init(const QByteArray &buff);
+	virtual bool init(const QByteArray &buff, uint addr);
 
 public:
 	uchar inf;

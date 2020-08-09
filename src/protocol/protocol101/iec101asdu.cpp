@@ -41,7 +41,7 @@ bool IEC101AsduData::init(const QByteArray &buff)
 		return false;
 	}
 	infaddr = charTouint(buff.data(),infaddrlen);
-	mText.append(CharToHexStr(buff.data(),infaddrlen));
+	mText.append(CharToHexStr(buff.data(),infaddrlen)+"\t信息元素地址:" + QString::number(infaddr));
 	len += infaddrlen;
 
 	if(!handle(buff))
@@ -56,6 +56,7 @@ bool IEC101AsduData::init(const QByteArray &buff, uint addr)
 	setDefault(buff);
 
 	infaddr = addr;
+	mText.append( "\t信息元素地址:" + QString::number(infaddr));
 
 	if(!handle(buff))
 	{
@@ -106,6 +107,8 @@ bool IEC101Asdu::init(const QByteArray &buff)
 	i++;
 
 	vsq = *(buff.data()+i);
+	sqflag = (vsq>>7) & 0x01;
+	datanum = vsq & 0x7f;
 	mText.append(CharToHexStr(buff.data()+i) + "\t" + vsqToText()+"\r\n");
 	i++;
 
@@ -534,11 +537,8 @@ QString IEC101Asdu::typeToText()
 
 QString IEC101Asdu::vsqToText()
 {
-	QString text = "VSQ 可变结构限定词，";
-	sqflag = (vsq>>7) & 0x01;
-	datanum = vsq & 0x7f;
-
-	text.append("信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n");
+	QString text;
+	text.append("VSQ 可变结构限定词，信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n");
 	text.append("\tSQ(bit8):" + QString::number(vsq & 0x80,16).toUpper() + " ");
 	if(sqflag)
 	{

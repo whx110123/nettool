@@ -314,18 +314,19 @@ IEC103Asdu10Data::~IEC103Asdu10Data()
 	setlist.clear();
 }
 
-bool IEC103Asdu10Data::init(const QByteArray &buff)
-{
-	setDefault(buff);
+//bool IEC103Asdu10Data::init(const QByteArray &buff)
+//{
+//	setDefault(buff);
 
+//	inf = *(buff.data() + len);
+//	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
+//	len++;
+//}
+
+bool IEC103Asdu10Data::handle(const QByteArray &buff)
+{
 	qDeleteAll(setlist);
 	setlist.clear();
-
-	inf = *(buff.data() + len);
-
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
-	len++;
-
 	rii = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
 	len++;
@@ -341,7 +342,7 @@ bool IEC103Asdu10Data::init(const QByteArray &buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + ngdToText(ngd) + "\r\n");
 	len++;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	uchar *gin = (uchar *)(buff.data() + len);
+//	uchar *gin = (uchar *)(buff.data() + len);
 	for (int index = 0; index < setnum; index++)
 	{
 		IEC103AsduDataSet *mset = new IEC103AsduDataSet;
