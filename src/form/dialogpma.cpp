@@ -644,3 +644,31 @@ void DialogPMA::on_pushButton_reflash_clicked()
 		ui->pushButton_reflash->setText("暂停刷新");
 	}
 }
+
+void DialogPMA::on_pushButton_104sendUstart_clicked()
+{
+	config.masterState = STATE_INIT;
+	config.isMaster = true;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104sendS_clicked()
+{
+	config.masterState = STATE_NORMAL;
+	config.isMaster = true;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104sendUtest_clicked()
+{
+	config.masterState = STATE_TESTACT;
+	config.isMaster = true;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_104callall_clicked()
+{
+	config.masterState = STATE_CALLALL;
+	config.isMaster = true;
+	createAndSendData(config);
+}

@@ -15,7 +15,7 @@ bool IEC103Asdu51Data::handle(const QByteArray &buff)
 {
 	shortdata = charToshortwithQ(buff.data() + len);
 	qds = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data(),2) + "\tGID:带品质描述词的被测值(bit4-16):" + QString::number(shortdata) + "\r\n\t"+ ovToText(qds) + "   "+erToText(qds)+"\r\n");
+	mText.append(CharToHexStr(buff.data() + len,2) + "\tGID:带品质描述词的被测值(bit4-16):" + QString::number(shortdata) + "\r\n\t"+ ovToText(qds) + "   "+erToText(qds)+"\r\n");
 	len += 2;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");

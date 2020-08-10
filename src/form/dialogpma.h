@@ -70,6 +70,14 @@ private slots:
 
 	void on_pushButton_reflash_clicked();
 
+	void on_pushButton_104sendUstart_clicked();
+
+	void on_pushButton_104sendS_clicked();
+
+	void on_pushButton_104sendUtest_clicked();
+
+	void on_pushButton_104callall_clicked();
+
 private:
 	Ui::DialogPMA *ui;
 	MyBase *mProtocol;
