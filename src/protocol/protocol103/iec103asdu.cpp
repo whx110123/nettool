@@ -29,9 +29,14 @@ bool IEC103AsduData::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
+	fun = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + funToText() + "\r\n");
+	len++;
+
 	inf = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
 	len++;
+
 	if(!handle(buff))
 	{
 		return false;
@@ -39,16 +44,66 @@ bool IEC103AsduData::init(const QByteArray &buff)
 	return true;
 }
 
-bool IEC103AsduData::init(const QByteArray &buff, uint addr)
+bool IEC103AsduData::init(const QByteArray &buff, uchar ch_fun)
 {
 	setDefault(buff);
 
-	inf = addr & 0xff;
+	fun = ch_fun & 0xff;
+
+	inf = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
+	len++;
+
 	if(!handle(buff))
 	{
 		return false;
 	}
 	return true;
+}
+
+bool IEC103AsduData::init(const QByteArray &buff, uchar ch_fun, uchar ch_inf)
+{
+	setDefault(buff);
+
+	fun = ch_fun & 0xff;
+	inf = ch_inf & 0xff;
+
+	if(!handle(buff))
+	{
+		return false;
+	}
+	return true;
+}
+
+bool IEC103AsduData::handle(const QByteArray &buff)
+{
+	return false;
+}
+
+QString IEC103AsduData::funToText()
+{
+	QString text = "FUN:"+ QString::number(fun) + " ";
+	switch (fun)
+	{
+	case 251:
+		text.append("二次设备运行状态（分:检修 | 合:正常）（保信规约专用），此时INF表示装置地址");
+		break;
+	case 252:
+		text.append("装置定值变化（保信规约专用），此时INF表示装置地址");
+		break;
+	case 253:
+		text.append("二次设备通信状态（分:断 | 合:通）（保信规约专用），此时INF表示装置地址");
+		break;
+	case 254:
+		text.append("通用分类功能类型GEN");
+		break;
+	case 255:
+		text.append("全局功能类型GLB");
+		break;
+	default:
+		break;
+	}
+	return text;
 }
 
 
@@ -162,67 +217,56 @@ bool IEC103Asdu::init(const QByteArray &buff)
 	}
 	len += comaddrlen;
 
-	if(type == 42)	//asdu42单独处理
+	uchar fun = *(buff.data()+len);
+	uchar inf = *(buff.data()+len+1);;
+	for(int index = 0;index<datanum;index++)
 	{
-		for(int index = 0;index<datanum;index++)
+		IEC103AsduData *mdata = CreateAsduData(type);
+		if (!mdata)
 		{
-			IEC103AsduData *mdata = CreateAsduData(type);
-			if (!mdata)
-			{
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
-				return false;
-			}
-			if(!mdata->init(buff.mid(len)))
-			{
-				mText.append(mdata->showToText());
-				delete mdata;
-				mdata =NULL;
-				return false;
-			}
-			datalist.append(mdata);
-			len += mdata->len;
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
+			return false;
 		}
-	}
-	else
-	{
-		fun = *(buff.data()+len);
-		mText.append(CharToHexStr(buff.data()+len) + "\t" + funToText() +"\r\n");
-		len ++;
-
-		uchar inf = *(buff.data()+len);;
-		for(int index = 0;index<datanum;index++)
+		bool isOk = false;
+		if(index ==0 )
 		{
-			IEC103AsduData *mdata = CreateAsduData(type);
-			if (!mdata)
+			isOk = mdata->init(buff.mid(len));
+		}
+		else if(sqflag == 1)
+		{
+			switch (type)
 			{
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
-				return false;
-			}
-			bool isOk;
-			if(index ==0 || sqflag == 1)
-			{
+			case 42:
 				isOk = mdata->init(buff.mid(len));
+				break;
+			case 50:
+			case 51:
+				isOk = mdata->init(buff.mid(len),fun);
+			default:
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此asdu信息体地址未知");
+				break;
 			}
-			else
-			{
-				int k = 1;
-				if(type == 44)
-				{
-					k = 16;
-				}
-				isOk = mdata->init(buff.mid(len),(uint)(inf+index*k));
-			}
-			if(!isOk)
-			{
-				mText.append(mdata->showToText());
-				delete mdata;
-				mdata =NULL;
-				return false;
-			}
-			datalist.append(mdata);
-			len += mdata->len;
 		}
+		else
+		{
+			int k = 1;
+			if(type == 44)
+			{
+				k = 16;
+			}
+			isOk = mdata->init(buff.mid(len),fun,(uchar)(inf+index*k));
+		}
+		if(!isOk)
+		{
+			mText.append(mdata->showToText());
+			delete mdata;
+			mdata =NULL;
+			return false;
+		}
+		datalist.append(mdata);
+		len += mdata->len;
 	}
+
 	if(endflag != IEC103END_NO)
 	{
 		end = *(buff.data() + len);
@@ -262,7 +306,7 @@ bool IEC103Asdu::createData(IECDataConfig &config)
 			IEC103AsduData *newdata = CreateAsduData(config.asdutype);
 			if (!newdata)
 			{
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
 				return false;
 			}
 			datalist.append(newdata);
@@ -505,32 +549,6 @@ QString IEC103Asdu::cotToText()
 		break;
 	default:
 		text.append("未知，无法识别当前的传送原因");
-		break;
-	}
-	return text;
-}
-
-QString IEC103Asdu::funToText()
-{
-	QString text = "FUN:"+ QString::number(fun) + " ";
-	switch (fun)
-	{
-	case 251:
-		text.append("二次设备运行状态（分:检修 | 合:正常）（保信规约专用），此时INF表示装置地址");
-		break;
-	case 252:
-		text.append("装置定值变化（保信规约专用），此时INF表示装置地址");
-		break;
-	case 253:
-		text.append("二次设备通信状态（分:断 | 合:通）（保信规约专用），此时INF表示装置地址");
-		break;
-	case 254:
-		text.append("通用分类功能类型GEN");
-		break;
-	case 255:
-		text.append("全局功能类型GLB");
-		break;
-	default:
 		break;
 	}
 	return text;

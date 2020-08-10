@@ -13,51 +13,6 @@ IEC103Asdu44Data::~IEC103Asdu44Data()
 
 }
 
-//bool IEC103Asdu44Data::init(const QByteArray &buff)
-//{
-//	setDefault(buff);
-
-//	inf = *(buff.data() + len);
-
-//	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
-//	len++;
-
-//	yx16 = charTouint(buff.data() + len,2);
-//	mText.append(CharToHexStr(buff.data() + len,2) + "\t" + yxToText() + "\r\n");
-//	len += 2;
-
-//	yx16flag = charTouint(buff.data() + len, 2);
-//	mText.append(CharToHexStr(buff.data() + len,2) + "\t" + yxFlagToText() + "\r\n");
-//	len += 2;
-
-//	qds = *(buff.data() + len);
-//	mText.append(CharToHexStr(buff.data()+len) + "\t品质位:" + ivToText(qds) +"   "+ ntToText(qds)+"   "+ sbToText(qds)+"   "+ blToText(qds)+"   "+ ovToText(qds)+"\r\n");
-//	len++;
-//	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-//	return true;
-//}
-
-//bool IEC103Asdu44Data::init(const QByteArray &buff, uint addr)
-//{
-//	setDefault(buff);
-
-//	inf = addr & 0xff;
-
-//	yx16 = charTouint(buff.data() + len,2);
-//	mText.append(CharToHexStr(buff.data() + len,2) + "\t" + yxToText() + "\r\n");
-//	len += 2;
-
-//	yx16flag = charTouint(buff.data() + len, 2);
-//	mText.append(CharToHexStr(buff.data() + len,2) + "\t" + yxFlagToText() + "\r\n");
-//	len += 2;
-
-//	qds = *(buff.data() + len);
-//	mText.append(CharToHexStr(buff.data()+len) + "\t品质位:" + ivToText(qds) +"   "+ ntToText(qds)+"   "+ sbToText(qds)+"   "+ blToText(qds)+"   "+ ovToText(qds)+"\r\n");
-//	len++;
-//	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-//	return true;
-//}
-
 bool IEC103Asdu44Data::handle(const QByteArray &buff)
 {
 	yx16 = charTouint(buff.data() + len,2);

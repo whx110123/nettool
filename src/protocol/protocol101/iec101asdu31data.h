@@ -8,8 +8,6 @@ class IEC101Asdu31Data : public IEC101AsduData
 public:
 	IEC101Asdu31Data();
 	~IEC101Asdu31Data();
-//	virtual bool init(const QByteArray &buff);
-//	virtual bool init(const QByteArray &buff, uint addr);
 	virtual bool handle(const QByteArray &buff);
 	virtual bool createData(IECDataConfig &config);
 

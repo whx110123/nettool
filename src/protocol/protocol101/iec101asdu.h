@@ -13,6 +13,7 @@ public:
 	virtual ~IEC101AsduData();
 	virtual bool init(const QByteArray &buff);
 	virtual bool init(const QByteArray &buff,uint addr);
+	virtual bool handle(const QByteArray &buff);				//单独处理数据
 
 public:
 	uint infaddr;

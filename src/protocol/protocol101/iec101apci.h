@@ -31,7 +31,6 @@ public:
 	uchar flag2;
 	IEC101Code code;
 	uchar addr;
-//	uchar length;	//计算出此帧101报文的总长度
 };
 
 #endif // IEC101APCI_H

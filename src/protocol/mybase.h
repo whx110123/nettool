@@ -11,9 +11,6 @@ public:
 	MyBase();
 	virtual ~MyBase();
 	virtual bool init(const QByteArray &buff);					//初始化
-	virtual bool init(const QByteArray &buff, uint addr);		//初始化
-	virtual bool init(const QByteArray &buff, uchar *ch);		//初始化
-	virtual bool handle(const QByteArray &buff);				//单独处理数据
 	virtual QString showToText();						//显示解析结果
 	virtual bool createData(IECDataConfig &config);		//生成报文
 	void setDefault(const QByteArray &buff);

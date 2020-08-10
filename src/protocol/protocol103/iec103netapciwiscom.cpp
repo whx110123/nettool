@@ -26,13 +26,13 @@ bool IEC103NetApciWiscom::init(const QByteArray &buff)
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满15个字节");
 		return false;
 	}
-	first = *buff.data();
+	first = *(buff.data() + len);
 	if(first != 0x68)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
 		return false;
 	}
-	mText.append(CharToHexStr(buff.data())+"\t启动字符:0x68\n");
+	mText.append(CharToHexStr(buff.data() + len)+"\t启动字符:0x68\n");
 	len++;
 
 	length = charTouint(buff.data()+len,2);

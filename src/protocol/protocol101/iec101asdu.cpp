@@ -40,8 +40,8 @@ bool IEC101AsduData::init(const QByteArray &buff)
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！信息体地址长度错误");
 		return false;
 	}
-	infaddr = charTouint(buff.data(),infaddrlen);
-	mText.append(CharToHexStr(buff.data(),infaddrlen)+"\t信息元素地址:" + QString::number(infaddr));
+	infaddr = charTouint(buff.data() + len,infaddrlen);
+	mText.append(CharToHexStr(buff.data() + len,infaddrlen)+"\t信息元素地址:" + QString::number(infaddr));
 	len += infaddrlen;
 
 	if(!handle(buff))
@@ -63,6 +63,11 @@ bool IEC101AsduData::init(const QByteArray &buff, uint addr)
 		return false;
 	}
 	return true;
+}
+
+bool IEC101AsduData::handle(const QByteArray &buff)
+{
+	return false;
 }
 
 
@@ -95,36 +100,35 @@ bool IEC101Asdu::init(const QByteArray &buff)
 	qDeleteAll(datalist);
 	datalist.clear();
 
-	int i = 0;
 	if(buff.count() < 2 +cotlen +comaddrlen)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 
-	type = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t" +typeToText()+"\r\n");
-	i++;
+	type = *(buff.data()+len);
+	mText.append(CharToHexStr(buff.data()+len) + "\t" +typeToText()+"\r\n");
+	len++;
 
-	vsq = *(buff.data()+i);
+	vsq = *(buff.data()+len);
 	sqflag = (vsq>>7) & 0x01;
 	datanum = vsq & 0x7f;
-	mText.append(CharToHexStr(buff.data()+i) + "\t" + vsqToText()+"\r\n");
-	i++;
+	mText.append(CharToHexStr(buff.data()+len) + "\t" + vsqToText()+"\r\n");
+	len++;
 
 	if(cotlen != 2 && cotlen != 1)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
 		return false;
 	}
-	cot[0] = *(buff.data()+i);
-	mText.append(CharToHexStr(buff.data()+i) + "\t" +cotToText()+"\r\n");
-	i++;
+	cot[0] = *(buff.data()+len);
+	mText.append(CharToHexStr(buff.data()+len) + "\t" +cotToText()+"\r\n");
+	len++;
 	if(cotlen == 2)
 	{
-		cot[1] = *(buff.data()+i);
-		mText.append(CharToHexStr(buff.data()+i) + "\t源发站地址号:"+QString::number(cot[1])+"\r\n");
-		i++;
+		cot[1] = *(buff.data()+len);
+		mText.append(CharToHexStr(buff.data()+len) + "\t源发站地址号:"+QString::number(cot[1])+"\r\n");
+		len++;
 	}
 
 	if(comaddrlen != 2 && comaddrlen != 1)
@@ -132,9 +136,9 @@ bool IEC101Asdu::init(const QByteArray &buff)
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
 		return false;
 	}
-	commonaddr = charTouint(buff.data()+i,comaddrlen);
-	mText.append(CharToHexStr(buff.data()+i,comaddrlen) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
-	i += comaddrlen;
+	commonaddr = charTouint(buff.data()+len,comaddrlen);
+	mText.append(CharToHexStr(buff.data()+len,comaddrlen) + "\t公共地址:" + QString::number(commonaddr) +"\r\n");
+	len += comaddrlen;
 
 	if (type == 167)			//由于167号报文数据长度不固定,单独处理
 	{
@@ -144,7 +148,7 @@ bool IEC101Asdu::init(const QByteArray &buff)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
-		if (!mdata->init(buff.mid(i)))
+		if (!mdata->init(buff.mid(len)))
 		{
 			mText.append(mdata->showToText());
 			delete mdata;
@@ -154,13 +158,14 @@ bool IEC101Asdu::init(const QByteArray &buff)
 		datalist.append(mdata);
 		return true;
 	}
+
 	int lengthtmp = 2+cotlen+comaddrlen+infaddrlen+(1-sqflag)*(datanum-1)* infaddrlen+datanum*datalen+other;
 	if( lengthtmp!= buff.count())
 	{
 		mText.append( "\r\n\t出错！通过VSQ与ASDU类型计算出ASDU长度为"+QString::number(lengthtmp)+"，而实际ASDU长度为"+QString::number(buff.count())+"。报文长度不符，因此报文有问题，下面的解析可能会出现异常\r\n");
 	}
 
-	uint dataaddr = charTouint((uchar *)(buff.data()+i),infaddrlen);
+	uint dataaddr = charTouint((uchar *)(buff.data()+len),infaddrlen);
 	for(int index = 0;index<datanum;index++)
 	{
 		IEC101AsduData *mdata = CreateAsduData(type);
@@ -172,13 +177,13 @@ bool IEC101Asdu::init(const QByteArray &buff)
 		bool isOk;
 		if(index ==0 || sqflag == 0)
 		{
-			isOk = mdata->init(buff.mid(i,infaddrlen+datalen));
-			i += infaddrlen+datalen;
+			isOk = mdata->init(buff.mid(len,infaddrlen+datalen));
+			len += infaddrlen+datalen;
 		}
 		else
 		{
-			isOk = mdata->init(buff.mid(i,datalen),dataaddr+index);
-			i += datalen;
+			isOk = mdata->init(buff.mid(len,datalen),dataaddr+index);
+			len += datalen;
 		}
 		if(!isOk)
 		{
@@ -224,7 +229,7 @@ bool IEC101Asdu::createData(IECDataConfig &config)
 		IEC101AsduData *newdata = CreateAsduData(config.asdutype);
 		if (!newdata)
 		{
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
 			return false;
 		}
 		datalist.append(newdata);

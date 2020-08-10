@@ -17,21 +17,6 @@ bool MyBase::init(const QByteArray &buff)
 	return false;
 }
 
-bool MyBase::init(const QByteArray &buff, uint addr)
-{
-	return false;
-}
-
-bool MyBase::init(const QByteArray &buff, uchar *ch)
-{
-	return false;
-}
-
-bool MyBase::handle(const QByteArray &buff)
-{
-	return false;
-}
-
 QString MyBase::showToText()
 {
 	return mText;

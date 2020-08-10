@@ -237,7 +237,7 @@ void frmAnalysis::on_AnalysisBtn_clicked()
 	return;
 }
 
-void frmAnalysis::on_PBtest_clicked()
+void frmAnalysis::on_pushButton_Analysis_clicked()
 {
 	ui->resulttext->clear();
 	App::readConfig();
@@ -245,11 +245,7 @@ void frmAnalysis::on_PBtest_clicked()
 	if (data.length() <= 0) {
 		return;
 	}
-	QByteArray buffer;
-	buffer = QUIHelper::hexStrToByteArray(data);
 
-
-	int i = 1;
 	MyBase *myprotocol = NULL;
 	if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
 	{
@@ -299,20 +295,25 @@ void frmAnalysis::on_PBtest_clicked()
 
 	if (myprotocol)
 	{
+		QString tmp;
+		int i = 1;
+		QByteArray buffer = QUIHelper::hexStrToByteArray(data);
 		while (!buffer.isEmpty())
 		{
-			ui->resulttext->append(QString("####第%1帧####").arg(i++));
+			tmp.append(QString("####第%1帧####\r\n").arg(i++));
 			if(myprotocol->init(buffer))
 			{
-				ui->resulttext->append(myprotocol->showToText());
+				tmp.append(myprotocol->showToText());
 				buffer.remove(0, myprotocol->len);
 			}
 			else
 			{
-				ui->resulttext->append(myprotocol->error);
+				tmp.append(myprotocol->error);
 				break;
 			}
+			tmp.append("****************************************************************************************************\r\n");
 		}
+		ui->resulttext->setText(tmp);
 		delete myprotocol;
 		myprotocol = NULL;
 	}

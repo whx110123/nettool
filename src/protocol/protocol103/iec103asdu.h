@@ -14,12 +14,16 @@ public:
 	IEC103AsduData();
 	~IEC103AsduData();
 	virtual bool init(const QByteArray &buff);
-	virtual bool init(const QByteArray &buff, uint addr);
+	virtual bool init(const QByteArray &buff, uchar ch_fun);
+	virtual bool init(const QByteArray &buff, uchar ch_fun, uchar ch_inf);
+	virtual bool handle(const QByteArray &buff);				//单独处理数据
 
 public:
-	uchar inf;
-public:
+	QString funToText();
 	QString infToText();
+	uchar fun;
+	uchar inf;
+
 };
 
 class IEC103Asdu : public MyBase
@@ -35,13 +39,11 @@ public:
 	QString typeToText();
 	QString vsqToText();
 	QString cotToText();
-	QString funToText();
 	QString endToText();
 	uchar type;
 	uchar vsq;
 	uchar cot;
 	ushort commonaddr;
-	uchar fun;
 	uchar sqflag;				//SQ 1：每个信息元素都带地址
 								//   0：只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1
 	int datanum;                //信息元素的数量

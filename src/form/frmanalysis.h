@@ -40,7 +40,7 @@ private slots:
 
     void on_fontchange_clicked();
 
-	void on_PBtest_clicked();
+	void on_pushButton_Analysis_clicked();
 
 private:
 

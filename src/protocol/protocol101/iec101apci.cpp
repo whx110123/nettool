@@ -14,8 +14,8 @@ IEC101Code::~IEC101Code()
 bool IEC101Code::init(const QByteArray &buff)
 {
 	setDefault(buff);
-	mcode = *buff.data();
-	mText.append(CharToHexStr(buff.data())+"\t" +prmToText(mcode) +"\r\n\t");
+	mcode = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len)+"\t" +prmToText(mcode) +"\r\n\t");
 	if(mcode & 0x40)
 	{
 		mText.append(fcbToText(mcode)+"\r\n\t"+ fcvToText(mcode) +"\r\n\t"+ cw1ToText(mcode)+"\r\n");
@@ -56,7 +56,7 @@ bool IEC101Apci::init(const QByteArray &buff)
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于3");
 		return false;
 	}
-	flag1 = *buff.data();
+	flag1 = *(buff.data() + len);
 
 	if(flag1 == 0x68)
 	{
@@ -103,7 +103,7 @@ bool IEC101Apci::init(const QByteArray &buff)
 	}
 	else
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data())+"\t启动字符不是0x68");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len)+"\t启动字符不是0x68");
 		return false;
 	}
 

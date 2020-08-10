@@ -9,7 +9,7 @@ class IEC103AsduDataSetGid : public MyBase
 public:
 	IEC103AsduDataSetGid();
 	~IEC103AsduDataSetGid();
-	virtual bool init(const QByteArray &buff, uchar *ch);
+	bool initgid(const QByteArray &buff, uchar *ch);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);
 
@@ -62,7 +62,6 @@ class IEC103Asdu10Data : public IEC103AsduData
 public:
 	IEC103Asdu10Data();
 	~IEC103Asdu10Data();
-//	virtual bool init(const QByteArray &buff);
 	virtual bool handle(const QByteArray &buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig &config);

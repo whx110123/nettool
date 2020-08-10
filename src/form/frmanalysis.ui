@@ -69,11 +69,24 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QPushButton" name="AnalysisBtn">
+          <widget class="QPushButton" name="pushButton_Analysis">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>40</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>解析(新)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="AnalysisBtn">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
@@ -83,7 +96,7 @@
             </size>
            </property>
            <property name="text">
-            <string>报文解析</string>
+            <string>解析(旧)</string>
            </property>
           </widget>
          </item>
@@ -193,13 +206,6 @@
        <widget class="QLabel" name="label">
         <property name="text">
          <string>原始报文</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="PBtest">
-        <property name="text">
-         <string>调试</string>
         </property>
        </widget>
       </item>

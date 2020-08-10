@@ -19,22 +19,26 @@ bool IEC101Asdu167Data::init(const QByteArray &buff)
 {
 	setDefault(buff);
 
-	ctrl = *buff.data();
+	ctrl = *(buff.data() + len);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	mText.append(CharToHexStr(buff.data()) + "\t" + ctrlToText() + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + ctrlToText() + "\r\n");
+	len++;
 
-//	devaddr = charTouint(buff.data() + 1, 2);
-	memcpy(devaddr, buff.data() + 1, 2);
-	mText.append(CharToHexStr(buff.data() + 1) + "\t保护装置地址L:" + QString::number(devaddr[0]) + "\r\n");
-	mText.append(CharToHexStr(buff.data() + 2) + "\t保护装置地址H:" + QString::number(devaddr[1]) + "\r\n");
+	memcpy(devaddr, buff.data() + len, 2);
+	mText.append(CharToHexStr(buff.data() + len) + "\t保护装置地址L:" + QString::number(devaddr[0]) + "\r\n");
+	len++;
+	mText.append(CharToHexStr(buff.data() + len) + "\t保护装置地址H:" + QString::number(devaddr[1]) + "\r\n");
+	len++;
 
-	iec103len = *(buff.data()+3);
-	mText.append(CharToHexStr(buff.data() + 3) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
+	iec103len = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
+	len++;
 
-	if (!asdu.init(buff.mid(4, iec103len)))
+	if (!asdu.init(buff.mid(len, iec103len)))
 	{
 		return false;
 	}
+	len += asdu.len;
 	if (asdu.len != iec103len)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
