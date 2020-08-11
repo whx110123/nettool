@@ -25,7 +25,7 @@ IEC103AsduData::~IEC103AsduData()
 
 }
 
-bool IEC103AsduData::init(const QByteArray &buff)
+bool IEC103AsduData::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -44,7 +44,7 @@ bool IEC103AsduData::init(const QByteArray &buff)
 	return true;
 }
 
-bool IEC103AsduData::init(const QByteArray &buff, uchar ch_fun)
+bool IEC103AsduData::init(const QByteArray& buff, uchar ch_fun)
 {
 	setDefault(buff);
 
@@ -61,7 +61,7 @@ bool IEC103AsduData::init(const QByteArray &buff, uchar ch_fun)
 	return true;
 }
 
-bool IEC103AsduData::init(const QByteArray &buff, uchar ch_fun, uchar ch_inf)
+bool IEC103AsduData::init(const QByteArray& buff, uchar ch_fun, uchar ch_inf)
 {
 	setDefault(buff);
 
@@ -75,15 +75,15 @@ bool IEC103AsduData::init(const QByteArray &buff, uchar ch_fun, uchar ch_inf)
 	return true;
 }
 
-bool IEC103AsduData::handle(const QByteArray &buff)
+bool IEC103AsduData::handle(const QByteArray& buff)
 {
 	return false;
 }
 
 QString IEC103AsduData::funToText()
 {
-	QString text = "FUN:"+ QString::number(fun) + " ";
-	switch (fun)
+	QString text = "FUN:" + QString::number(fun) + " ";
+	switch(fun)
 	{
 	case 251:
 		text.append("二次设备运行状态（分:检修 | 合:正常）（保信规约专用），此时INF表示装置地址");
@@ -110,7 +110,7 @@ QString IEC103AsduData::funToText()
 QString IEC103AsduData::infToText()
 {
 	QString text = "INF:" + QString::number(inf) + " ";
-	switch (inf)
+	switch(inf)
 	{
 	case 240:
 		text.append("读所有被定义组的标题");
@@ -166,7 +166,7 @@ IEC103Asdu::~IEC103Asdu()
 	datalist.clear();
 }
 
-bool IEC103Asdu::init(const QByteArray &buff)
+bool IEC103Asdu::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -178,20 +178,20 @@ bool IEC103Asdu::init(const QByteArray &buff)
 		return false;
 	}
 
-	type = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data()+len) + "\t" + typeToText()+"\r\n");
+	type = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + typeToText() + "\r\n");
 	len++;
 
-	vsq = *(buff.data()+len);
-	sqflag = (vsq>>7) & 0x01;
+	vsq = *(buff.data() + len);
+	sqflag = (vsq >> 7) & 0x01;
 	datanum = vsq & 0x7f;
-	mText.append(CharToHexStr(buff.data()+len) + "\t" + vsqToText()+"\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + vsqToText() + "\r\n");
 	len++;
 
-	if(cotlen >0)
+	if(cotlen > 0)
 	{
-		cot = *(buff.data()+len);
-		mText.append(CharToHexStr(buff.data()+len,cotlen) + "\t" +cotToText()+"\r\n");
+		cot = *(buff.data() + len);
+		mText.append(CharToHexStr(buff.data() + len, cotlen) + "\t" + cotToText() + "\r\n");
 	}
 	else
 	{
@@ -200,15 +200,15 @@ bool IEC103Asdu::init(const QByteArray &buff)
 	}
 	len += cotlen;
 
-	commonaddr = charTouint(buff.data()+len,comaddrlen);
-	if(comaddrlen == 1 )
+	commonaddr = charTouint(buff.data() + len, comaddrlen);
+	if(comaddrlen == 1)
 	{
-		mText.append(CharToHexStr(buff.data()+len) + "\t公共地址:" + QString::number(commonaddr&0xff) +"\r\n");
+		mText.append(CharToHexStr(buff.data() + len) + "\t公共地址:" + QString::number(commonaddr & 0xff) + "\r\n");
 	}
 	else if(comaddrlen == 2)
 	{
-		mText.append(CharToHexStr(buff.data()+len) + "\t公共地址低位:" + QString::number(commonaddr&0xff) +"\r\n");
-		mText.append(CharToHexStr(buff.data()+len+1) + "\t公共地址高位:" + QString::number((commonaddr>>8)&0xff) +" 装置地址\r\n");
+		mText.append(CharToHexStr(buff.data() + len) + "\t公共地址低位:" + QString::number(commonaddr & 0xff) + "\r\n");
+		mText.append(CharToHexStr(buff.data() + len + 1) + "\t公共地址高位:" + QString::number((commonaddr >> 8) & 0xff) + " 装置地址\r\n");
 	}
 	else
 	{
@@ -217,31 +217,31 @@ bool IEC103Asdu::init(const QByteArray &buff)
 	}
 	len += comaddrlen;
 
-	uchar fun = *(buff.data()+len);
-	uchar inf = *(buff.data()+len+1);;
-	for(int index = 0;index<datanum;index++)
+	uchar fun = *(buff.data() + len);
+	uchar inf = *(buff.data() + len + 1);;
+	for(int index = 0; index < datanum; index++)
 	{
 		IEC103AsduData *mdata = CreateAsduData(type);
-		if (!mdata)
+		if(!mdata)
 		{
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
 		bool isOk = false;
-		if(index ==0 )
+		if(index == 0)
 		{
 			isOk = mdata->init(buff.mid(len));
 		}
 		else if(sqflag == 1)
 		{
-			switch (type)
+			switch(type)
 			{
 			case 42:
 				isOk = mdata->init(buff.mid(len));
 				break;
 			case 50:
 			case 51:
-				isOk = mdata->init(buff.mid(len),fun);
+				isOk = mdata->init(buff.mid(len), fun);
 			default:
 				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此asdu信息体地址未知");
 				break;
@@ -254,13 +254,13 @@ bool IEC103Asdu::init(const QByteArray &buff)
 			{
 				k = 16;
 			}
-			isOk = mdata->init(buff.mid(len),fun,(uchar)(inf+index*k));
+			isOk = mdata->init(buff.mid(len), fun, (uchar)(inf + index * k));
 		}
 		if(!isOk)
 		{
 			mText.append(mdata->showToText());
 			delete mdata;
-			mdata =NULL;
+			mdata = NULL;
 			return false;
 		}
 		datalist.append(mdata);
@@ -278,7 +278,7 @@ bool IEC103Asdu::init(const QByteArray &buff)
 QString IEC103Asdu::showToText()
 {
 	QString text = mText;
-	for(IEC103AsduData *mdata:datalist)
+	for(IEC103AsduData *mdata : datalist)
 	{
 		text.append(mdata->showToText());
 	}
@@ -289,7 +289,7 @@ QString IEC103Asdu::showToText()
 	return text;
 }
 
-bool IEC103Asdu::createData(IECDataConfig &config)
+bool IEC103Asdu::createData(IECDataConfig& config)
 {
 	qDeleteAll(datalist);
 	datalist.clear();
@@ -299,12 +299,12 @@ bool IEC103Asdu::createData(IECDataConfig &config)
 		config.data += config.asdutype;
 		config.data += config.vsq;
 		config.data += config.cot;
-		config.data += (char)(config.devaddr &0xff);
+		config.data += (char)(config.devaddr & 0xff);
 		config.data += config.fun;
-		for(int i = 0;i < (config.vsq & 0x7f);i++)
+		for(int i = 0; i < (config.vsq & 0x7f); i++)
 		{
 			IEC103AsduData *newdata = CreateAsduData(config.asdutype);
-			if (!newdata)
+			if(!newdata)
 			{
 				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
 				return false;
@@ -340,9 +340,9 @@ bool IEC103Asdu::createData(IECDataConfig &config)
 
 QString IEC103Asdu::typeToText()
 {
-	QString text = "ASDU"+ QString::number(type) + ":类型标识 ";
+	QString text = "ASDU" + QString::number(type) + ":类型标识 ";
 	endflag = IEC103END_NO;
-	switch (type)
+	switch(type)
 	{
 	case 1:
 		text.append("带时标的报文");
@@ -470,7 +470,7 @@ QString IEC103Asdu::vsqToText()
 {
 	QString text;
 	text.append("VSQ 可变结构限定词，信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n");
-	text.append("\tSQ(bit8):" + QString::number(vsq & 0x80,16).toUpper() + " ");
+	text.append("\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + " ");
 	if(sqflag)
 	{
 		text.append("每个信息元素都有独自的地址");
@@ -484,8 +484,8 @@ QString IEC103Asdu::vsqToText()
 
 QString IEC103Asdu::cotToText()
 {
-	QString text = "COT:"+ QString::number(cot) + " 传送原因:";
-	switch (cot)
+	QString text = "COT:" + QString::number(cot) + " 传送原因:";
+	switch(cot)
 	{
 	case 1:
 		text.append("自发(突发)");
@@ -557,7 +557,7 @@ QString IEC103Asdu::cotToText()
 QString IEC103Asdu::endToText()
 {
 	QString text;
-	switch (endflag)
+	switch(endflag)
 	{
 	case IEC103END_RII:
 		text.append("返回信息标识符RII:");
@@ -577,7 +577,7 @@ QString IEC103Asdu::endToText()
 IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 {
 	IEC103AsduData *asdudata = NULL;
-	switch (type)
+	switch(type)
 	{
 	case 1:
 		asdudata = new IEC103Asdu1Data;

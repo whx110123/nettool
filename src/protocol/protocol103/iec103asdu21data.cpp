@@ -14,7 +14,7 @@ IEC103Asdu21Data::~IEC103Asdu21Data()
 }
 
 
-bool IEC103Asdu21Data::handle(const QByteArray &buff)
+bool IEC103Asdu21Data::handle(const QByteArray& buff)
 {
 	qDeleteAll(setlist);
 	setlist.clear();
@@ -22,7 +22,7 @@ bool IEC103Asdu21Data::handle(const QByteArray &buff)
 	rii = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
 	len++;
-	if (len == buff.size())
+	if(len == buff.size())
 	{
 		return true;
 	}
@@ -31,17 +31,17 @@ bool IEC103Asdu21Data::handle(const QByteArray &buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + nogToText(nog) + "\r\n");
 	len++;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	if (len == buff.size())
+	if(len == buff.size())
 	{
 		return true;
 	}
 
 
-	for (int index = 0; index < nog; index++)
+	for(int index = 0; index < nog; index++)
 	{
 		IEC103AsduDataSet *mset = new IEC103AsduDataSet;
-		bool isOk = mset->init(buff.mid(len,3));
-		if (!isOk)
+		bool isOk = mset->init(buff.mid(len, 3));
+		if(!isOk)
 		{
 			delete mset;
 			mset = NULL;
@@ -58,21 +58,21 @@ bool IEC103Asdu21Data::handle(const QByteArray &buff)
 QString IEC103Asdu21Data::showToText()
 {
 	QString text = mText;
-	for (IEC103AsduDataSet *mset : setlist)
+	for(IEC103AsduDataSet *mset : setlist)
 	{
 		text.append(mset->showToText());
 	}
 	return text;
 }
 
-bool IEC103Asdu21Data::createData(IECDataConfig &config)
+bool IEC103Asdu21Data::createData(IECDataConfig& config)
 {
 	config.data += config.inf;
 	config.data += config.rii;
 	config.data += config.nog;
 	if(config.isMaster)
 	{
-		for(int i = 0;i <config.nog; i++ )
+		for(int i = 0; i < config.nog; i++)
 		{
 			config.data += config.gin[i][0];
 			config.data += config.gin[i][1];
@@ -82,5 +82,4 @@ bool IEC103Asdu21Data::createData(IECDataConfig &config)
 	}
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
-
 }
