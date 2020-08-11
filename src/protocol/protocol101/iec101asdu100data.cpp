@@ -14,23 +14,23 @@ IEC101Asdu100Data::~IEC101Asdu100Data()
 
 }
 
-bool IEC101Asdu100Data::handle(const QByteArray &buff)
+bool IEC101Asdu100Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
-	qoi = *(buff.data()+len);
-	mText.append(CharToHexStr(buff.data()+len) + "\t" + qoiToText(qoi) +"\r\n");
+	qoi = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + qoiToText(qoi) + "\r\n");
 	len++;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	return true;
 }
 
-bool IEC101Asdu100Data::createData(IECDataConfig &config)
+bool IEC101Asdu100Data::createData(IECDataConfig& config)
 {
 
 	if(config.isfirst || (config.vsq & 0x80) == 0)
 	{
 		infaddr = 0;
-		config.data += uintToBa(infaddr,infaddrlen);
+		config.data += uintToBa(infaddr, infaddrlen);
 	}
 
 	if(config.isMaster)
