@@ -3,25 +3,26 @@
 
 #include <QWidget>
 
-namespace Ui {
-class frmMain;
+namespace Ui
+{
+	class frmMain;
 }
 
 class frmMain : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit frmMain(QWidget *parent = 0);
-    ~frmMain();
+	explicit frmMain(QWidget *parent = 0);
+	~frmMain();
 
 private slots:
-    void on_tabWidget_currentChanged(int index);
+	void on_tabWidget_currentChanged(int index);
 
 private:
-    void initform();
+	void initform();
 private:
-    Ui::frmMain *ui;
+	Ui::frmMain *ui;
 
 };
 

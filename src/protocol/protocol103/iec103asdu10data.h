@@ -9,9 +9,9 @@ class IEC103AsduDataSetGid : public MyBase
 public:
 	IEC103AsduDataSetGid();
 	~IEC103AsduDataSetGid();
-	bool initgid(const QByteArray &buff, uchar *ch);
+	bool initgid(const QByteArray& buff, uchar *ch);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	QString gbkstr;
@@ -32,9 +32,9 @@ class IEC103AsduDataSetGdd : public MyBase
 public:
 	IEC103AsduDataSetGdd();
 	~IEC103AsduDataSetGdd();
-	virtual bool init(const QByteArray &buff);
+	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar gdd[3];
@@ -47,9 +47,9 @@ class IEC103AsduDataSet : public MyBase
 public:
 	IEC103AsduDataSet();
 	~IEC103AsduDataSet();
-	virtual bool init(const QByteArray &buff);
+	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar gin[2];
@@ -62,9 +62,9 @@ class IEC103Asdu10Data : public IEC103AsduData
 public:
 	IEC103Asdu10Data();
 	~IEC103Asdu10Data();
-	virtual bool handle(const QByteArray &buff);
+	virtual bool handle(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar rii;

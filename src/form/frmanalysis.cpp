@@ -32,10 +32,10 @@ void frmAnalysis::initForm()
 {
 	ui->protocolcbox->addItems(App::Protocollst);
 	QStringList list = QStringList();
-	list << "1" <<"2";
+	list << "1" << "2";
 	ui->comboBox_cotlen->addItems(list);
 	ui->comboBox_comaddrlen->addItems(list);
-	list <<"3";
+	list << "3";
 	ui->comboBox_infaddrlen->addItems(list);
 }
 
@@ -58,7 +58,7 @@ void frmAnalysis::on_clearBtn_clicked()
 	ui->resulttext->clear();
 }
 
-void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString &arg1)
+void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 {
 	ui->comboBox_cotlen->setCurrentText("1");
 	ui->comboBox_comaddrlen->setCurrentText("1");
@@ -91,7 +91,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString &arg1)
 	}
 }
 
-void frmAnalysis::on_highlightEdit_textChanged(const QString &arg1)
+void frmAnalysis::on_highlightEdit_textChanged(const QString& arg1)
 {
 	highlighter1->hlstr = arg1;
 	highlighter2->hlstr = arg1;
@@ -102,7 +102,7 @@ void frmAnalysis::on_highlightEdit_textChanged(const QString &arg1)
 
 void frmAnalysis::on_fontcolor_clicked()
 {
-	QColor color = QColorDialog::getColor(Qt::magenta,this,tr("颜色对话框"));
+	QColor color = QColorDialog::getColor(Qt::magenta, this, tr("颜色对话框"));
 	if(color.isValid())
 	{
 		highlighter1->hlformat.setForeground(color);
@@ -116,7 +116,7 @@ void frmAnalysis::on_fontcolor_clicked()
 
 void frmAnalysis::on_backgroundcolor_clicked()
 {
-	QColor color = QColorDialog::getColor(Qt::white,this,tr("颜色对话框"));
+	QColor color = QColorDialog::getColor(Qt::white, this, tr("颜色对话框"));
 	if(color.isValid())
 	{
 		highlighter1->hlformat.setBackground(color);
@@ -130,7 +130,7 @@ void frmAnalysis::on_backgroundcolor_clicked()
 void frmAnalysis::on_fontchange_clicked()
 {
 	bool ok;
-	QFont font = QFontDialog::getFont(&ok,this);
+	QFont font = QFontDialog::getFont(&ok, this);
 	if(ok)
 	{
 		highlighter1->hlformat.setFont(font);
@@ -145,7 +145,8 @@ void frmAnalysis::on_AnalysisBtn_clicked()
 	ui->resulttext->clear();
 	App::readConfig();
 	QString data = ui->originaltext->toPlainText();
-	if (data.length() <= 0) {
+	if(data.length() <= 0)
+	{
 		return;
 	}
 	QByteArray buffer;
@@ -154,17 +155,17 @@ void frmAnalysis::on_AnalysisBtn_clicked()
 	QString text;
 	/************************************************************/
 	int i = 1;
-	while (!buffer.isEmpty())
+	while(!buffer.isEmpty())
 	{
 		text.append(QString("####第%1帧####\r\n").arg(i++));
 		if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
 		{
 			m_104 = new protocol101::protocol104apdu;
-			m_104->cotlen =ui->comboBox_cotlen->currentText().toInt();
+			m_104->cotlen = ui->comboBox_cotlen->currentText().toInt();
 			m_104->comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 			m_104->dataaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
-			err =m_104->CharT0APDU(buffer.data(),buffer.length());
-			buffer.remove(0,m_104->m_apdu->length);
+			err = m_104->CharT0APDU(buffer.data(), buffer.length());
+			buffer.remove(0, m_104->m_apdu->length);
 			if(err)
 			{
 				text.append(m_104->dealERR(err));
@@ -180,11 +181,11 @@ void frmAnalysis::on_AnalysisBtn_clicked()
 		else if(ui->protocolcbox->currentText() == IEC_101)      //分析101报文
 		{
 			m_101 = new protocol101::protocol101apdu;
-			m_101->cotlen =ui->comboBox_cotlen->currentText().toInt();
+			m_101->cotlen = ui->comboBox_cotlen->currentText().toInt();
 			m_101->comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 			m_101->dataaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
-			err =m_101->CharT0APDU(buffer.data(),buffer.length());
-			buffer.remove(0,m_101->m_apdu->length);
+			err = m_101->CharT0APDU(buffer.data(), buffer.length());
+			buffer.remove(0, m_101->m_apdu->length);
 			if(err)
 			{
 				text.append(m_101->dealERR(err));
@@ -199,8 +200,8 @@ void frmAnalysis::on_AnalysisBtn_clicked()
 		else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
 		{
 			m_103wiscomnet = new protocol103::protocol103wiscomnet;
-			err =m_103wiscomnet->CharT0APDU(buffer.data(),buffer.length());
-			buffer.remove(0,m_103wiscomnet->m_apdu->length);
+			err = m_103wiscomnet->CharT0APDU(buffer.data(), buffer.length());
+			buffer.remove(0, m_103wiscomnet->m_apdu->length);
 			if(err)
 			{
 				text.append(m_103wiscomnet->dealERR(err));
@@ -215,8 +216,8 @@ void frmAnalysis::on_AnalysisBtn_clicked()
 		else if(ui->protocolcbox->currentText() == IEC_103COM)
 		{
 			m_103com = new protocol103::protocol103com;
-			err =m_103com->CharT0APDU(buffer.data(),buffer.length());
-			buffer.remove(0,m_103com->m_apdu->length);
+			err = m_103com->CharT0APDU(buffer.data(), buffer.length());
+			buffer.remove(0, m_103com->m_apdu->length);
 			if(err)
 			{
 				text.append(m_103com->dealERR(err));
@@ -242,7 +243,8 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	ui->resulttext->clear();
 	App::readConfig();
 	QString data = ui->originaltext->toPlainText();
-	if (data.length() <= 0) {
+	if(data.length() <= 0)
+	{
 		return;
 	}
 
@@ -250,7 +252,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
 	{
 		IEC104 *tmp = new IEC104;
-		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 		myprotocol = tmp;
@@ -258,7 +260,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_101)      //分析101报文
 	{
 		IEC101 *tmp = new IEC101;
-		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 		myprotocol = tmp;
@@ -266,7 +268,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
 	{
 		IEC103NetWiscom *tmp = new IEC103NetWiscom;
-		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
 
@@ -274,31 +276,31 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_103COM)
 	{
 		IEC103COM *tmp = new IEC103COM;
-		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103BAOXINNET)
 	{
 		IEC103NetBaoXin *tmp = new IEC103NetBaoXin;
-		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103ASDU)
 	{
 		IEC103Asdu *tmp = new IEC103Asdu;
-		tmp->cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
 	}
 
-	if (myprotocol)
+	if(myprotocol)
 	{
 		QString tmp;
 		int i = 1;
 		QByteArray buffer = QUIHelper::hexStrToByteArray(data);
-		while (!buffer.isEmpty())
+		while(!buffer.isEmpty())
 		{
 			tmp.append(QString("####第%1帧####\r\n").arg(i++));
 			if(myprotocol->init(buffer))

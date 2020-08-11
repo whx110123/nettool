@@ -2,7 +2,7 @@
 
 QString prmToText(uchar ch)
 {
-	QString text = "PRM(bit7):" + QString::number(ch & 0x40,16).toUpper() + " ";
+	QString text = "PRM(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " ";
 	if(ch & 0x40)
 	{
 		text.append("启动站向从动站传输的报文");
@@ -16,13 +16,13 @@ QString prmToText(uchar ch)
 
 QString fcbToText(uchar ch)
 {
-	QString text = "FCB(bit6):" + QString::number(ch & 0x20,16).toUpper() + " 帧计数位";
+	QString text = "FCB(bit6):" + QString::number(ch & 0x20, 16).toUpper() + " 帧计数位";
 	return text;
 }
 
 QString fcvToText(uchar ch)
 {
-	QString text = "FCV(bit5):" + QString::number(ch & 0x10,16).toUpper() + " ";
+	QString text = "FCV(bit5):" + QString::number(ch & 0x10, 16).toUpper() + " ";
 	if(ch & 0x10)
 	{
 		text.append("表示帧计数位FCB的变化有效");
@@ -36,7 +36,7 @@ QString fcvToText(uchar ch)
 
 QString acdToText(uchar ch)
 {
-	QString text = "ACD(bit6):" + QString::number(ch & 0x20,16).toUpper() + " ";
+	QString text = "ACD(bit6):" + QString::number(ch & 0x20, 16).toUpper() + " ";
 	if(ch & 0x20)
 	{
 		text.append("从动站有1级用户数据要求访问");
@@ -50,7 +50,7 @@ QString acdToText(uchar ch)
 
 QString dfcToText(uchar ch)
 {
-	QString text = "DFC(bit5):" + QString::number(ch & 0x10,16).toUpper() + " ";
+	QString text = "DFC(bit5):" + QString::number(ch & 0x10, 16).toUpper() + " ";
 	if(ch & 0x10)
 	{
 		text.append("表示从动站接收后续报文将引起数据溢出");
@@ -65,7 +65,7 @@ QString dfcToText(uchar ch)
 QString cw1ToText(uchar ch)
 {
 	QString text = "功能码(bit1-4):" + QString::number(ch & 0x0f) + " ";
-	switch (ch & 0x0f)
+	switch(ch & 0x0f)
 	{
 	case 0:
 		text.append("帧类型:发送/确认帧  功能描述:复位通信单元  帧计数有效位FCV:0");
@@ -104,7 +104,7 @@ QString cw1ToText(uchar ch)
 QString cw2ToText(uchar ch)
 {
 	QString text = "功能码(bit1-4):" + QString::number(ch & 0x0f) + " ";
-	switch (ch & 0x0f)
+	switch(ch & 0x0f)
 	{
 	case 0:
 		text.append("帧类型:确认帧  功能描述:认可，肯定认可");
@@ -145,7 +145,7 @@ QString spiToText(uchar ch)
 QString dpiToText(uchar ch)
 {
 	QString text = "双点遥信DPI(bit1-2):" + QString::number(ch & 0x03) + " ";
-	switch (ch & 0x03)
+	switch(ch & 0x03)
 	{
 	case 1:
 		text.append("分位");
@@ -163,7 +163,7 @@ QString dpiToText(uchar ch)
 QString dpiteToText(uchar ch)
 {
 	QString text = "带瞬变与差错的双点遥信DPI(bit1-2):" + QString::number(ch & 0x03) + " ";
-	switch (ch & 0x03)
+	switch(ch & 0x03)
 	{
 	case 0:
 		text.append("瞬变状态");
@@ -201,7 +201,7 @@ QString scsToText(uchar ch)
 QString dcsToText(uchar ch)
 {
 	QString text = "双点命令(bit1-2):" + QString::number(ch & 0x03) + " ";
-	switch (ch & 0x03)
+	switch(ch & 0x03)
 	{
 	case 1:
 		text.append("分");
@@ -218,7 +218,7 @@ QString dcsToText(uchar ch)
 
 QString blToText(uchar ch)
 {
-	QString text = "BL(bit5):" + QString::number(ch & 0x10,16).toUpper() + " ";
+	QString text = "BL(bit5):" + QString::number(ch & 0x10, 16).toUpper() + " ";
 	if(ch & 0x10)
 	{
 		text.append("被闭锁");
@@ -232,7 +232,7 @@ QString blToText(uchar ch)
 
 QString sbToText(uchar ch)
 {
-	QString text = "SB(bit6):" + QString::number(ch & 0x20,16).toUpper() + " ";
+	QString text = "SB(bit6):" + QString::number(ch & 0x20, 16).toUpper() + " ";
 	if(ch & 0x20)
 	{
 		text.append("被取代");
@@ -246,7 +246,7 @@ QString sbToText(uchar ch)
 
 QString ntToText(uchar ch)
 {
-	QString text = "NT(bit7):" + QString::number(ch & 0x40,16).toUpper() + " ";
+	QString text = "NT(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " ";
 	if(ch & 0x40)
 	{
 		text.append("非当前值");
@@ -260,10 +260,10 @@ QString ntToText(uchar ch)
 
 QString ivToText(uchar ch)
 {
-	QString text = "IV(bit8):" + QString::number(ch & 0x80,16).toUpper() + " ";
+	QString text = "IV(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ";
 	if(ch & 0x80)
 	{
-		 text.append("无效");
+		text.append("无效");
 	}
 	else
 	{
@@ -277,7 +277,7 @@ QString ovToText(uchar ch)
 	QString text = "OV(bit1):" + QString::number(ch & 0x01) + " ";
 	if(ch & 0x01)
 	{
-		 text.append("溢出");
+		text.append("溢出");
 	}
 	else
 	{
@@ -289,7 +289,7 @@ QString ovToText(uchar ch)
 QString erToText(uchar ch)
 {
 	QString text = "ER(bit2):" + QString::number(ch & 0x02, 16).toUpper() + " ";
-	if (ch & 0x02)
+	if(ch & 0x02)
 	{
 		text.append("被测值无效");
 	}
@@ -303,7 +303,7 @@ QString erToText(uchar ch)
 QString qoiToText(uchar ch)
 {
 	QString text = "召唤限定词:" + QString::number(ch) + " ";
-	switch (ch)
+	switch(ch)
 	{
 	case 20:
 		text.append("站召唤");
@@ -366,7 +366,7 @@ QString qoiToText(uchar ch)
 QString coiToText(uchar ch)
 {
 	QString text = "初始化原因(bit1-7):" + QString::number(ch & 0x7f) + " ";
-	switch (ch & 0x7f)
+	switch(ch & 0x7f)
 	{
 	case 0:
 		text.append("当地电源合上");
@@ -381,7 +381,7 @@ QString coiToText(uchar ch)
 		text.append("保留");
 		break;
 	}
-	text.append("   BS(bit8):") + QString::number(ch & 0x80,16).toUpper() + " ";
+	text.append("   BS(bit8):") + QString::number(ch & 0x80, 16).toUpper() + " ";
 	if(ch & 0x80)
 	{
 		text.append("改变当地参数后的初始化");
@@ -396,7 +396,7 @@ QString coiToText(uchar ch)
 QString rqtToText(uchar ch)
 {
 	QString text = "计数量召唤命令限定词(QCC):请求RQT(bit1-6):"  + QString::number(ch & 0x3f) + " ";
-	switch (ch & 0x3f)
+	switch(ch & 0x3f)
 	{
 	case 0:
 		text.append("没请求计数量（未采用）");
@@ -425,8 +425,8 @@ QString rqtToText(uchar ch)
 
 QString frzToText(uchar ch)
 {
-	QString text = "冻结FRZ(bit7-8):"  + QString::number(ch & 0xc0,16).toUpper() + " ";
-	switch (ch>>6)
+	QString text = "冻结FRZ(bit7-8):"  + QString::number(ch & 0xc0, 16).toUpper() + " ";
+	switch(ch >> 6)
 	{
 	case 0:
 		text.append("读(无冻结或复位）");
@@ -449,7 +449,7 @@ QString frzToText(uchar ch)
 
 QString suToText(uchar ch)
 {
-	QString text = "SU(bit8):" + QString::number(ch & 0x80,16).toUpper() + " ";
+	QString text = "SU(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ";
 	if(ch & 0x80)
 	{
 		text.append("夏季时间");
@@ -463,8 +463,8 @@ QString suToText(uchar ch)
 
 QString quToText(uchar ch)
 {
-	QString text = "QU(bit3-7):" + QString::number(ch & 0x7c,16).toUpper() + " ";
-	switch ((ch & 0x7c)>>2)
+	QString text = "QU(bit3-7):" + QString::number(ch & 0x7c, 16).toUpper() + " ";
+	switch((ch & 0x7c) >> 2)
 	{
 	case 0:
 		text.append("无另外的定义");
@@ -487,7 +487,7 @@ QString quToText(uchar ch)
 
 QString seToText(uchar ch)
 {
-	QString text = "S/E(bit8):" + QString::number(ch & 0x80,16).toUpper() + " ";
+	QString text = "S/E(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ";
 	if(ch & 0x80)
 	{
 		text.append("命令类型:选择");
@@ -501,7 +501,7 @@ QString seToText(uchar ch)
 
 QString caToText(uchar ch)
 {
-	QString text = "CA(bit7):" + QString::number(ch & 0x40,16).toUpper() + " ";
+	QString text = "CA(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " ";
 	if(ch & 0x40)
 	{
 		text.append("上次读数后计数器被调整");
@@ -515,7 +515,7 @@ QString caToText(uchar ch)
 
 QString cyToText(uchar ch)
 {
-	QString text = "CY(bit6):" + QString::number(ch & 0x20,16).toUpper() + " ";
+	QString text = "CY(bit6):" + QString::number(ch & 0x20, 16).toUpper() + " ";
 	if(ch & 0x20)
 	{
 		text.append("在相应的累加周期内计数器溢出");
@@ -529,10 +529,10 @@ QString cyToText(uchar ch)
 
 QString vtiToText(uchar ch)
 {
-	QString text = "步位置(bit1-7):"  + QString::number(ch&0x7f) ;
+	QString text = "步位置(bit1-7):"  + QString::number(ch & 0x7f) ;
 
-	text.append("   瞬变状态BS1(bit8):") + QString::number(ch & 0x80,16).toUpper() + " ";
-	if(ch&0x80)
+	text.append("   瞬变状态BS1(bit8):") + QString::number(ch & 0x80, 16).toUpper() + " ";
+	if(ch & 0x80)
 	{
 		text.append("设备处理瞬变状态");
 	}
@@ -546,11 +546,11 @@ QString vtiToText(uchar ch)
 QString qosToText(uchar ch)
 {
 	QString text = "设定命令限定词QOS";
-	text.append("  QL(bit1-7):" + QString::number(ch&0x7f)+"   "+ seToText(ch) );
+	text.append("  QL(bit1-7):" + QString::number(ch & 0x7f) + "   " + seToText(ch));
 	return text;
 }
 
-QString timeToText(const char * time, int timelen)
+QString timeToText(const char *time, int timelen)
 {
 	uchar *mtime = (uchar *)time;
 	return timeToText(mtime, timelen);
@@ -563,32 +563,32 @@ QString timeToText(uchar *time, int timelen)
 	QDateTime datetime = charToDateTime(time, timelen, BINARYTIME2A);
 
 	uint datauint = charTouint(time, 2);
-	text.append(CharToHexStr(time,2) + "\t" + QString::number(datauint) + "   秒:" + QString::number(datetime.time().second()) + "   毫秒:" + QString::number(datetime.time().msec()) + " \r\n");
-	if (timelen == 2)
+	text.append(CharToHexStr(time, 2) + "\t" + QString::number(datauint) + "   秒:" + QString::number(datetime.time().second()) + "   毫秒:" + QString::number(datetime.time().msec()) + " \r\n");
+	if(timelen == 2)
 	{
 		return text;
 	}
 
 	text.append(CharToHexStr(time[2]) + "\t分(bit1-6):" + QString::number(datetime.time().minute()) + "   " + ivToText(time[2]) + "\r\n");
-	if (timelen == 3)
+	if(timelen == 3)
 	{
 		return text;
 	}
 
 	text.append(CharToHexStr(time[3]) + "\t时(bit1-5):" + QString::number(datetime.time().hour()) + "   " + suToText(time[3]) + "\r\n");
-	if (timelen == 4)
+	if(timelen == 4)
 	{
 		return text;
 	}
 
 	text.append(CharToHexStr(time[4]) + "\t日(bit1-5):" + QString::number(datetime.date().day()) + "   周(bit6-8):" + QString::number(time[4] >> 5) + " (7表示星期天,0表示未用)\r\n");
-	if (timelen == 5)
+	if(timelen == 5)
 	{
 		return text;
 	}
 
 	text.append(CharToHexStr(time[5]) + "\t月(bit1-4):" + QString::number(datetime.date().month()) + "\r\n");
-	if (timelen == 6)
+	if(timelen == 6)
 	{
 		return text;
 	}
@@ -601,9 +601,9 @@ QString ngdToText(uchar ch)
 {
 	QString text;
 	text.append("NO(bit1-6):" + QString::number(ch & 0x3f) + " 通用分类数据集数目\r\n\t");
-	text.append("COUNT(bit7):" + QString::number(ch & 0x40,16).toUpper() + " 具有相同返回信息标识符(RII)的应用服务数据单元的一位计数器位\r\n\t");
+	text.append("COUNT(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " 具有相同返回信息标识符(RII)的应用服务数据单元的一位计数器位\r\n\t");
 	text.append("CONT(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
-	if (ch & 0x80)
+	if(ch & 0x80)
 	{
 		text.append("后面跟着具有相同返回信息标识符(RII)的应用服务数据单元");
 	}
@@ -623,7 +623,7 @@ QString nogToText(uchar ch)
 QString kodToText(uchar ch)
 {
 	QString text = "KOD:" + QString::number(ch) + " ";
-	switch (ch)
+	switch(ch)
 	{
 	case 0:
 		text.append("无所指定的描述类别");
@@ -692,7 +692,7 @@ QString kodToText(uchar ch)
 QString gdd1ToText(uchar ch)
 {
 	QString text = "GDD1:" + QString::number(ch) + " ";
-	switch (ch)
+	switch(ch)
 	{
 	case 0:
 		text.append("无数据");
@@ -780,8 +780,8 @@ QString gdd3ToText(uchar ch)
 {
 	QString text;
 	text.append("GDD3:NUMBER(bit1-7):" + QString::number(ch & 0x7f) + " 信息数目   ");
-	text.append("CONT(bit8):" + QString::number(ch & 0x80 , 16).toUpper() + " ");
-	if (ch & 0x80)
+	text.append("CONT(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
+	if(ch & 0x80)
 	{
 		text.append("后面跟随的数据元素具有相同的返回信息标识符(RII)");
 	}
@@ -795,7 +795,7 @@ QString gdd3ToText(uchar ch)
 QString grcToText(uchar ch)
 {
 	QString text = "GRC:" + QString::number(ch) + "通用分类回答码:" ;
-	switch (ch)
+	switch(ch)
 	{
 	case 0:
 		text.append("认可");

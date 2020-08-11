@@ -28,11 +28,11 @@ QString protocol103::protocol103asdu::dealASDU()
 	text.append(dealCOT());
 
 	tmp = CharToHexStr(m_asdu->commonaddr);
-	text.append(tmp + "\t公共地址:" + QString::number(m_asdu->commonaddr) +"\r\n");
+	text.append(tmp + "\t公共地址:" + QString::number(m_asdu->commonaddr) + "\r\n");
 
 	text.append("-----------------------------------------------------------------------------------------------\r\n");
 
-	switch (m_asdu->type)
+	switch(m_asdu->type)
 	{
 	case 1:
 		text.append(dealASDU1Data());
@@ -70,8 +70,8 @@ QString protocol103::protocol103asdu::dealASDU()
 
 QString protocol103::protocol103asdu::dealTYPE()
 {
-	QString text = "类型标识TYPE ASDU"+ QString::number(m_asdu->type) + ":";
-	switch (m_asdu->type)
+	QString text = "类型标识TYPE ASDU" + QString::number(m_asdu->type) + ":";
+	switch(m_asdu->type)
 	{
 	case 1:
 		text.append("带时标的报文");
@@ -185,8 +185,8 @@ QString protocol103::protocol103asdu::dealTYPE()
 
 QString protocol103::protocol103asdu::dealCOT()
 {
-	QString text = "传送原因COT:"+ QString::number(m_asdu->cot) + " ";
-	switch (m_asdu->cot)
+	QString text = "传送原因COT:" + QString::number(m_asdu->cot) + " ";
+	switch(m_asdu->cot)
 	{
 	case 1:
 		text.append("自发(突发)");
@@ -259,7 +259,7 @@ QString protocol103::protocol103asdu::dealCOT()
 QString protocol103::protocol103asdu::dealVSQ()
 {
 	QString text = "可变结构限定词VSQ，";
-	sqflag = (m_asdu->vsq>>7) & 0x01;
+	sqflag = (m_asdu->vsq >> 7) & 0x01;
 	datanum = m_asdu->vsq & 0x7f;
 
 	text.append("信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n\t");
@@ -277,8 +277,8 @@ QString protocol103::protocol103asdu::dealVSQ()
 
 QString protocol103::protocol103asdu::dealFUN()
 {
-	QString text = "FUN:"+ QString::number(fun) + " ";
-	switch (fun)
+	QString text = "FUN:" + QString::number(fun) + " ";
+	switch(fun)
 	{
 	case 254:
 		text.append("通用分类功能类型GEN");
@@ -295,8 +295,8 @@ QString protocol103::protocol103asdu::dealFUN()
 
 QString protocol103::protocol103asdu::dealINFGEN()
 {
-	QString text = "INF:"+ QString::number(infgen) + " ";
-	switch (infgen)
+	QString text = "INF:" + QString::number(infgen) + " ";
+	switch(infgen)
 	{
 	case 240:
 		text.append("读所有被定义组的标题");
@@ -338,11 +338,11 @@ QString protocol103::protocol103asdu::dealNGD()
 	QString text ;
 	no = ngd & 0x3f;
 	text.append("NO(bit1-6):" + QString::number(no) + " 通用分类数据集数目\r\n\t");
-	count = (ngd>>6) & 0x01;
-	text.append("COUNT(bit7):"+ QString::number(count) + " 具有相同返回信息标识符(RII)的应用服务数据单元的一位计数器位\r\n\t");
+	count = (ngd >> 6) & 0x01;
+	text.append("COUNT(bit7):" + QString::number(count) + " 具有相同返回信息标识符(RII)的应用服务数据单元的一位计数器位\r\n\t");
 
-	cont = (ngd>>7) & 0x01;
-	text.append("CONT(bit8):"+ QString::number(cont));
+	cont = (ngd >> 7) & 0x01;
+	text.append("CONT(bit8):" + QString::number(cont));
 	if(cont)
 	{
 		text.append(" 后面跟着具有相同返回信息标识符(RII)的应用服务数据单元");
@@ -358,8 +358,8 @@ QString protocol103::protocol103asdu::dealNGD()
 
 QString protocol103::protocol103asdu::dealKOD(uchar kod)
 {
-	QString text = "KOD:"+ QString::number(kod) + " ";
-	switch (kod)
+	QString text = "KOD:" + QString::number(kod) + " ";
+	switch(kod)
 	{
 	case 0:
 		text.append("无所指定的描述类别");
@@ -428,8 +428,8 @@ QString protocol103::protocol103asdu::dealGDD3(GROUPDATA *gpdata)
 	QString text ;
 	gpdata->number = gpdata->gdd[2] & 0x7f;
 	text.append("GDD3:NUMBER(bit1-7):" + QString::number(gpdata->number) + " 信息数目   ");
-	cont = (gpdata->gdd[2] >>7) & 0x01;
-	text.append("CONT(bit8):"+ QString::number(cont));
+	cont = (gpdata->gdd[2] >> 7) & 0x01;
+	text.append("CONT(bit8):" + QString::number(cont));
 	if(cont)
 	{
 		text.append(" 后面跟随的数据元素具有相同的返回信息标识符(RII)");
@@ -443,7 +443,7 @@ QString protocol103::protocol103asdu::dealGDD3(GROUPDATA *gpdata)
 	return text;
 }
 
-QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata,int index)
+QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata, int index)
 {
 	QString text ;
 	QString tmp;
@@ -453,44 +453,44 @@ QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata,int
 	uint datauint;
 	int dataint;
 	QDateTime datat;
-	uchar *m_gid = &gpdata->gid[index*gpdata->gdd[1]];
+	uchar *m_gid = &gpdata->gid[index * gpdata->gdd[1]];
 
-	switch (gpdata->gdd[0])
+	switch(gpdata->gdd[0])
 	{
 	case 0:
 		text.append("无数据");
 		break;
 	case 1:
-	{
-		for(int k = 0;k<gpdata->gdd[1];k++)
 		{
-			tmp.append(CharToHexStr(*(m_gid+k))+ " ");
-		}
-		QByteArray ba((char *)m_gid,gpdata->gdd[1]);
-		QTextCodec *gbk = QTextCodec::codecForName("GB18030");
-		tmpstr = gbk->toUnicode(ba);
+			for(int k = 0; k < gpdata->gdd[1]; k++)
+			{
+				tmp.append(CharToHexStr(*(m_gid + k)) + " ");
+			}
+			QByteArray ba((char *)m_gid, gpdata->gdd[1]);
+			QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+			tmpstr = gbk->toUnicode(ba);
 
-		text.append(tmp + "\tOS8(ASCII8位码):" + tmpstr);
-	}
-		break;
-		//    case 2:
-		//        text.append("成组8位串");
-		//        break;
-	case 3:
-		for(int k = 0;k<gpdata->gdd[1];k++)
-		{
-			tmp.append(CharToHexStr(*(m_gid+k))+ " ");
+			text.append(tmp + "\tOS8(ASCII8位码):" + tmpstr);
 		}
-		datauint = charTouint(m_gid,gpdata->gdd[1]);
-		text.append(tmp + "\tGID:无符号整数:"+QString::number(datauint));
+		break;
+	//    case 2:
+	//        text.append("成组8位串");
+	//        break;
+	case 3:
+		for(int k = 0; k < gpdata->gdd[1]; k++)
+		{
+			tmp.append(CharToHexStr(*(m_gid + k)) + " ");
+		}
+		datauint = charTouint(m_gid, gpdata->gdd[1]);
+		text.append(tmp + "\tGID:无符号整数:" + QString::number(datauint));
 		break;
 	case 4:
-		for(int k = 0;k<gpdata->gdd[1];k++)
+		for(int k = 0; k < gpdata->gdd[1]; k++)
 		{
-			tmp.append(CharToHexStr(*(m_gid+k))+ " ");
+			tmp.append(CharToHexStr(*(m_gid + k)) + " ");
 		}
-		dataint = charToint(m_gid,gpdata->gdd[1]);
-		text.append(tmp + "\tGID:整数:"+QString::number(dataint));
+		dataint = charToint(m_gid, gpdata->gdd[1]);
+		text.append(tmp + "\tGID:整数:" + QString::number(dataint));
 		break;
 	case 5:
 		text.append("无符号浮点数");
@@ -499,42 +499,42 @@ QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata,int
 		text.append("浮点数");
 		break;
 	case 7:
-		for(int k = 0;k<gpdata->gdd[1];k++)
+		for(int k = 0; k < gpdata->gdd[1]; k++)
 		{
-			tmp.append(CharToHexStr(*(m_gid+k))+ " ");
+			tmp.append(CharToHexStr(*(m_gid + k)) + " ");
 		}
 		datafloat = charTofloat(m_gid);
-		text.append(tmp + "\tGID:IEEE标准754短实数:"+QString::number(datafloat));
+		text.append(tmp + "\tGID:IEEE标准754短实数:" + QString::number(datafloat));
 		break;
 	case 8:
 		text.append("IEEE标准754实数");
 		break;
 	case 9:
-		tmp =CharToHexStr(*m_gid);
+		tmp = CharToHexStr(*m_gid);
 		dpi = *m_gid & 0x03;
 		text.append(tmp +  "\tGID:" + dealDPI());
 		//        text.append("双点信息");
 		break;
 	case 10:
-		tmp =CharToHexStr(*m_gid);
+		tmp = CharToHexStr(*m_gid);
 		spi = *m_gid & 0x01;
 		text.append(tmp +  "\tGID:" + dealSPI());
 		//        text.append("单点信息");
 		break;
 	case 11:
-		tmp =CharToHexStr(*m_gid);
+		tmp = CharToHexStr(*m_gid);
 		dpi = *m_gid & 0x03;
 		text.append(tmp +  "\tGID:" + dealDPITE());
 		//        text.append("带瞬变和差错的双点信息");
 		break;
 	case 12:
-		for(int k = 0;k<gpdata->gdd[1];k++)
+		for(int k = 0; k < gpdata->gdd[1]; k++)
 		{
-			tmp.append(CharToHexStr(gpdata->gid[k + index*gpdata->gdd[1]])+ " ");
+			tmp.append(CharToHexStr(gpdata->gid[k + index * gpdata->gdd[1]]) + " ");
 		}
-		datashort = charToshortwithQ(m_gid,ov,er);
-		text.append(tmp + "\tGID:带品质描述词的被测值(bit4-16):"+QString::number(datashort) + "\r\n\t");
-		text.append(dealOV() + dealER() );
+		datashort = charToshortwithQ(m_gid, ov, er);
+		text.append(tmp + "\tGID:带品质描述词的被测值(bit4-16):" + QString::number(datashort) + "\r\n\t");
+		text.append(dealOV() + dealER());
 		break;
 	case 14:
 		text.append("二进制时间");
@@ -549,34 +549,34 @@ QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata,int
 		text.append("功能类型和信息序号");
 		break;
 	case 18:
-		tmp =CharToHexStr(*m_gid);
+		tmp = CharToHexStr(*m_gid);
 		dpi = *m_gid & 0x03;
-		text.append(tmp + "\tGID:" + dealDPI()+"\r\n");
+		text.append(tmp + "\tGID:" + dealDPI() + "\r\n");
 
-		text.append(dealDateTime(m_gid+1,4));
+		text.append(dealDateTime(m_gid + 1, 4));
 
-		tmp =CharToHexStr(*(m_gid+5));
-		text.append(tmp +  "\tGID:附加信息SIN:"+QString::number(*(m_gid+5)));
+		tmp = CharToHexStr(*(m_gid + 5));
+		text.append(tmp +  "\tGID:附加信息SIN:" + QString::number(*(m_gid + 5)));
 		//        text.append("带时标的报文");
 		break;
 	case 19:
-		tmp =CharToHexStr(*m_gid);
+		tmp = CharToHexStr(*m_gid);
 		dpi = *m_gid & 0x03;
-		text.append(tmp +  "\tGID:" + dealDPI()+ "\r\n");
+		text.append(tmp +  "\tGID:" + dealDPI() + "\r\n");
 
-		tmp =CharToHexStr(*(m_gid+1))+ " "+ CharToHexStr(*(m_gid+2));
-		datauint = charTouint(m_gid+1,2);
-		text.append(tmp +  "\tGID:相对时间RET:"+QString::number(datauint) );
-		text.append("   秒:" + QString::number(datauint/1000) +"   毫秒:" + QString::number(datauint%1000) + " \r\n");
+		tmp = CharToHexStr(*(m_gid + 1)) + " " + CharToHexStr(*(m_gid + 2));
+		datauint = charTouint(m_gid + 1, 2);
+		text.append(tmp +  "\tGID:相对时间RET:" + QString::number(datauint));
+		text.append("   秒:" + QString::number(datauint / 1000) + "   毫秒:" + QString::number(datauint % 1000) + " \r\n");
 
-		tmp =CharToHexStr(*(m_gid+3))+ " "+ CharToHexStr(*(m_gid+4));
-		datauint = charTouint(m_gid+3,2);
-		text.append(tmp +  "\tGID:故障序号FAN:"+QString::number(datauint) + "\r\n");
+		tmp = CharToHexStr(*(m_gid + 3)) + " " + CharToHexStr(*(m_gid + 4));
+		datauint = charTouint(m_gid + 3, 2);
+		text.append(tmp +  "\tGID:故障序号FAN:" + QString::number(datauint) + "\r\n");
 
-		text.append(dealDateTime(m_gid+5,4));
+		text.append(dealDateTime(m_gid + 5, 4));
 
-		tmp =CharToHexStr(*(m_gid+9));
-		text.append(tmp +  "\tGID:附加信息SIN:"+QString::number(*(m_gid+9)));
+		tmp = CharToHexStr(*(m_gid + 9));
+		text.append(tmp +  "\tGID:附加信息SIN:" + QString::number(*(m_gid + 9)));
 
 		//        text.append("带相对时间的时标报文");
 		break;
@@ -596,13 +596,13 @@ QString protocol103::protocol103asdu::dealGID(protocol103::GROUPDATA *gpdata,int
 		text.append("索引");
 		break;
 	case 201:
-		for(int k = 0;k<4;k++)
+		for(int k = 0; k < 4; k++)
 		{
-			tmp.append(CharToHexStr(*(m_gid+k))+ " ");
+			tmp.append(CharToHexStr(*(m_gid + k)) + " ");
 		}
-		datauint = charTouint(m_gid,4);
-		text.append(tmp + "\tGID:无符号整数:"+QString::number(datauint)+"\r\n");
-		tmp =CharToHexStr(*(m_gid+4));
+		datauint = charTouint(m_gid, 4);
+		text.append(tmp + "\tGID:无符号整数:" + QString::number(datauint) + "\r\n");
+		tmp = CharToHexStr(*(m_gid + 4));
 		text.append(tmp + "\tGID:预留字节,无定义");
 
 //		text.append("遥脉数据");
@@ -620,10 +620,10 @@ QString protocol103::protocol103asdu::dealGDDandGID(protocol103::GROUPDATA *gpda
 	QString text ;
 	QString tmp;
 	int i;
-	tmp =CharToHexStr(gpdata->gdd[0]) ;
-	text.append(tmp + "\tGDD1:"+ QString::number(gpdata->gdd[0]) + " ");
+	tmp = CharToHexStr(gpdata->gdd[0]) ;
+	text.append(tmp + "\tGDD1:" + QString::number(gpdata->gdd[0]) + " ");
 
-	switch (gpdata->gdd[0])
+	switch(gpdata->gdd[0])
 	{
 	case 0:
 		text.append("无数据");
@@ -704,24 +704,24 @@ QString protocol103::protocol103asdu::dealGDDandGID(protocol103::GROUPDATA *gpda
 		text.append("备用");
 		break;
 	}
-	tmp =CharToHexStr(gpdata->gdd[1]) ;
-	text.append("\r\n"+tmp + "\tGDD2:" +QString::number(gpdata->gdd[1])+" 数据宽度\r\n");
-	tmp =CharToHexStr(gpdata->gdd[2]) ;
+	tmp = CharToHexStr(gpdata->gdd[1]) ;
+	text.append("\r\n" + tmp + "\tGDD2:" + QString::number(gpdata->gdd[1]) + " 数据宽度\r\n");
+	tmp = CharToHexStr(gpdata->gdd[2]) ;
 	text.append(tmp + "\t" + dealGDD3(gpdata));
 	if(gpdata->gdd[0] == 2)
 	{
 		tmp.clear();
-		for(i = 0;i<gpdata->gidlen;i++)
+		for(i = 0; i < gpdata->gidlen; i++)
 		{
-			tmp.append(CharToHexStr(gpdata->gid[i])+ " ");
+			tmp.append(CharToHexStr(gpdata->gid[i]) + " ");
 		}
 		text.append(tmp + "\tGID:成组8位串，每一位bit为一个信息点,共" + QString::number((ushort)gpdata->gdd[1]*gpdata->number) + "个信息点\r\n");
 	}
 	else
 	{
-		for(i = 0;i<gpdata->number;i++)
+		for(i = 0; i < gpdata->number; i++)
 		{
-			text.append(dealGID(gpdata,i));
+			text.append(dealGID(gpdata, i));
 		}
 	}
 
@@ -761,7 +761,7 @@ QString protocol103::protocol103asdu::dealER()
 QString protocol103::protocol103asdu::dealDPI()
 {
 	QString text = "双点遥信DPI(bit1-2):" + QString::number(dpi) + " ";
-	switch (dpi)
+	switch(dpi)
 	{
 	case 1:
 		text.append("分位");
@@ -780,7 +780,7 @@ QString protocol103::protocol103asdu::dealDPI()
 QString protocol103::protocol103asdu::dealDPITE()
 {
 	QString text = "带瞬变与差错的双点遥信DPI(bit1-2):" + QString::number(dpi) + " ";
-	switch (dpi)
+	switch(dpi)
 	{
 	case 0:
 		text.append("瞬变状态");
@@ -893,29 +893,29 @@ QString protocol103::protocol103asdu::dealASDU1Data()
 	QString tmp;
 	int i = 0;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	fun = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealFUN());
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	inf = m_asdu->data[i++];
-	text.append(tmp + "\tINF:" + QString::number(inf)+"\r\n");
+	text.append(tmp + "\tINF:" + QString::number(inf) + "\r\n");
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	dpi = m_asdu->data[i++] & 0x03;
-	text.append(tmp + "\t" + dealDPI()+"\r\n");
+	text.append(tmp + "\t" + dealDPI() + "\r\n");
 
-	text.append(dealDateTime(&m_asdu->data[i],4));
+	text.append(dealDateTime(&m_asdu->data[i], 4));
 	i += 4;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
-	text.append(tmp +  "\t附加信息SIN:"+QString::number(m_asdu->data[i])+"\r\n");
+	tmp = CharToHexStr(m_asdu->data[i]);
+	text.append(tmp +  "\t附加信息SIN:" + QString::number(m_asdu->data[i]) + "\r\n");
 	i++;
-	if(i+4 > m_asdu->length)
+	if(i + 4 > m_asdu->length)
 	{
 		text.append("\t出错！解析的报文多于实际报文，说明报文存在问题\r\n");
 	}
-	else if(i+4 < m_asdu->length)
+	else if(i + 4 < m_asdu->length)
 	{
 		text.append("\t出错！解析的报文少于实际报文，说明报文存在问题\r\n");
 	}
@@ -929,40 +929,40 @@ QString protocol103::protocol103asdu::dealASDU2Data()
 	int i = 0;
 	uint datauint;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	fun = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealFUN());
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	inf = m_asdu->data[i++];
-	text.append(tmp + "\tINF:" + QString::number(inf)+"\r\n");
+	text.append(tmp + "\tINF:" + QString::number(inf) + "\r\n");
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	dpi = m_asdu->data[i++];
-	text.append(tmp + "\t" + dealDPI()+"\r\n");
+	text.append(tmp + "\t" + dealDPI() + "\r\n");
 
-	tmp =CharToHexStr(m_asdu->data[i])+ " "+ CharToHexStr(m_asdu->data[i+1]);
-	datauint = charTouint(&m_asdu->data[i],2);
-	text.append(tmp +  "\t相对时间RET:"+QString::number(datauint) );
-	text.append("   秒:" + QString::number(datauint/1000) +"   毫秒:" + QString::number(datauint%1000) + " \r\n");
+	tmp = CharToHexStr(m_asdu->data[i]) + " " + CharToHexStr(m_asdu->data[i + 1]);
+	datauint = charTouint(&m_asdu->data[i], 2);
+	text.append(tmp +  "\t相对时间RET:" + QString::number(datauint));
+	text.append("   秒:" + QString::number(datauint / 1000) + "   毫秒:" + QString::number(datauint % 1000) + " \r\n");
 	i += 2;
 
-	tmp =CharToHexStr(m_asdu->data[i])+ " "+ CharToHexStr(m_asdu->data[i+1]);
-	datauint = charTouint(&m_asdu->data[i],2);
-	text.append(tmp +  "\t故障序号FAN:"+QString::number(datauint) + "\r\n");
+	tmp = CharToHexStr(m_asdu->data[i]) + " " + CharToHexStr(m_asdu->data[i + 1]);
+	datauint = charTouint(&m_asdu->data[i], 2);
+	text.append(tmp +  "\t故障序号FAN:" + QString::number(datauint) + "\r\n");
 	i += 2;
 
-	text.append(dealDateTime(&m_asdu->data[i],4));
+	text.append(dealDateTime(&m_asdu->data[i], 4));
 	i += 4;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
-	text.append(tmp +  "\t附加信息SIN:"+QString::number(m_asdu->data[i])+"\r\n");
+	tmp = CharToHexStr(m_asdu->data[i]);
+	text.append(tmp +  "\t附加信息SIN:" + QString::number(m_asdu->data[i]) + "\r\n");
 	i++;
-	if(i+4 > m_asdu->length)
+	if(i + 4 > m_asdu->length)
 	{
 		text.append("\t出错！解析的报文多于实际报文，说明报文存在问题\r\n");
 	}
-	else if(i+4 < m_asdu->length)
+	else if(i + 4 < m_asdu->length)
 	{
 		text.append("\t出错！解析的报文少于实际报文，说明报文存在问题\r\n");
 	}
@@ -976,21 +976,21 @@ QString protocol103::protocol103asdu::dealASDU6Data()
 	QString tmp;
 	int i = 0;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	fun = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealFUN());
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	inf = m_asdu->data[i++];
-	text.append(tmp + "\tINF:" + QString::number(inf)+"\r\n");
+	text.append(tmp + "\tINF:" + QString::number(inf) + "\r\n");
 
-	text.append(dealDateTime(&m_asdu->data[i],7));
+	text.append(dealDateTime(&m_asdu->data[i], 7));
 	i += 7;
-	if(i+4 > m_asdu->length)
+	if(i + 4 > m_asdu->length)
 	{
 		text.append("\t出错！解析的报文多于实际报文，说明报文存在问题\r\n");
 	}
-	else if(i+4 < m_asdu->length)
+	else if(i + 4 < m_asdu->length)
 	{
 		text.append("\t出错！解析的报文少于实际报文，说明报文存在问题\r\n");
 	}
@@ -1004,22 +1004,22 @@ QString protocol103::protocol103asdu::dealASDU7Data()
 	QString tmp;
 	int i = 0;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	fun = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealFUN());
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	inf = m_asdu->data[i++];
-	text.append(tmp + "\tINF:" + QString::number(inf)+"\r\n");
+	text.append(tmp + "\tINF:" + QString::number(inf) + "\r\n");
 
-	tmp =CharToHexStr(m_asdu->data[i]);
-	text.append(tmp +  "\t扫描序号SCN:"+QString::number(m_asdu->data[i])+" 子站的总查询应答报文中附加信息SIN需要与之一样\r\n");
+	tmp = CharToHexStr(m_asdu->data[i]);
+	text.append(tmp +  "\t扫描序号SCN:" + QString::number(m_asdu->data[i]) + " 子站的总查询应答报文中附加信息SIN需要与之一样\r\n");
 	i++;
-	if(i+4 > m_asdu->length)
+	if(i + 4 > m_asdu->length)
 	{
 		text.append("\t出错！解析的报文多于实际报文，说明报文存在问题\r\n");
 	}
-	else if(i+4 < m_asdu->length)
+	else if(i + 4 < m_asdu->length)
 	{
 		text.append("\t出错！解析的报文少于实际报文，说明报文存在问题\r\n");
 	}
@@ -1032,40 +1032,40 @@ QString protocol103::protocol103asdu::dealASDU10Data()
 	QString tmp;
 	int i = 0;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	fun = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealFUN());
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	infgen = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealINFGEN());
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	rii = m_asdu->data[i++];
-	text.append(tmp+ "\tRII:" +QString::number(rii)+" 返回信息标识符\r\n");
+	text.append(tmp + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
 
-	if(i+4 == m_asdu->length)
+	if(i + 4 == m_asdu->length)
 	{
 		return text;
 	}
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	ngd = m_asdu->data[i++];
-	text.append(tmp+ "\t" + dealNGD());
+	text.append(tmp + "\t" + dealNGD());
 
-	if(no >0)
+	if(no > 0)
 	{
 		gpdata = new GROUPDATA[no];
 
-		for(int j = 0;j<no;j++)
+		for(int j = 0; j < no; j++)
 		{
-			i += charToGroupDate(&m_asdu->data[i],&gpdata[j]);
+			i += charToGroupDate(&m_asdu->data[i], &gpdata[j]);
 
 			text.append("-----------------------------------------------------------------------------------------------\r\n");
-			tmp =CharToHexStr(gpdata[j].gin[0]) + " " + CharToHexStr(gpdata[j].gin[1]);
-			text.append(tmp+ "\tGIN:组号" +QString::number(gpdata[j].gin[0])+"   条目号"+QString::number(gpdata[j].gin[1])+"\r\n");
+			tmp = CharToHexStr(gpdata[j].gin[0]) + " " + CharToHexStr(gpdata[j].gin[1]);
+			text.append(tmp + "\tGIN:组号" + QString::number(gpdata[j].gin[0]) + "   条目号" + QString::number(gpdata[j].gin[1]) + "\r\n");
 
-			tmp =CharToHexStr(gpdata[j].kod);
-			text.append(tmp+ "\t" + dealKOD(gpdata[j].kod));
+			tmp = CharToHexStr(gpdata[j].kod);
+			text.append(tmp + "\t" + dealKOD(gpdata[j].kod));
 			if(m_asdu->type == 21)
 			{
 				continue;
@@ -1079,11 +1079,11 @@ QString protocol103::protocol103asdu::dealASDU10Data()
 			gpdata = NULL;
 		}
 	}
-	if(i+4 > m_asdu->length)
+	if(i + 4 > m_asdu->length)
 	{
 		text.append("\t出错！解析的报文多于实际报文，说明报文存在问题\r\n");
 	}
-	else if(i+4 < m_asdu->length)
+	else if(i + 4 < m_asdu->length)
 	{
 		text.append("\t出错！解析的报文少于实际报文，说明报文存在问题\r\n");
 	}
@@ -1097,22 +1097,22 @@ QString protocol103::protocol103asdu::dealASDU44Data()
 	QString tmp;
 	int i = 0;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	fun = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealFUN());
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	inf = m_asdu->data[i++];
-	text.append(tmp + "\tINF:" + QString::number(inf)+"\r\n");
-	for(int j = 0; j<datanum;j++)
+	text.append(tmp + "\tINF:" + QString::number(inf) + "\r\n");
+	for(int j = 0; j < datanum; j++)
 	{
-		tmp =CharToHexStr(m_asdu->data[i])+ " "+ CharToHexStr(m_asdu->data[i+1]);
+		tmp = CharToHexStr(m_asdu->data[i]) + " " + CharToHexStr(m_asdu->data[i + 1]);
 		text.append(tmp + "\t16个遥信状态\r\n");
-		ushort dataushort = m_asdu->data[i] + m_asdu->data[i+1]*0x100;
-		for(int k = 0;k<16;k++)
+		ushort dataushort = m_asdu->data[i] + m_asdu->data[i + 1] * 0x100;
+		for(int k = 0; k < 16; k++)
 		{
-			text.append("\t第" + QString::number(j*16 + k+1)+"个遥信:");
-			if((dataushort>>k)&0x01)
+			text.append("\t第" + QString::number(j * 16 + k + 1) + "个遥信:");
+			if((dataushort >> k) & 0x01)
 			{
 				text.append("1 合位");
 			}
@@ -1120,16 +1120,16 @@ QString protocol103::protocol103asdu::dealASDU44Data()
 			{
 				text.append("0 分位");
 			}
-			text.append("   FUN:"+ QString::number(fun) + " INF:"+QString::number(inf+j*16 + k)+"\r\n");
+			text.append("   FUN:" + QString::number(fun) + " INF:" + QString::number(inf + j * 16 + k) + "\r\n");
 		}
-		i +=2;
-		tmp =CharToHexStr(m_asdu->data[i])+ " "+ CharToHexStr(m_asdu->data[i+1]);
+		i += 2;
+		tmp = CharToHexStr(m_asdu->data[i]) + " " + CharToHexStr(m_asdu->data[i + 1]);
 		text.append(tmp + "\t16个遥信与上次查询的变化状态\r\n");
-		dataushort = m_asdu->data[i] + m_asdu->data[i+1]*0x100;
-		for(int k = 0;k<16;k++)
+		dataushort = m_asdu->data[i] + m_asdu->data[i + 1] * 0x100;
+		for(int k = 0; k < 16; k++)
 		{
-			text.append("\t第" + QString::number(j*16 + k+1)+"个遥信:");
-			if((dataushort>>k)&0x01)
+			text.append("\t第" + QString::number(j * 16 + k + 1) + "个遥信:");
+			if((dataushort >> k) & 0x01)
 			{
 				text.append("1  有改变");
 			}
@@ -1140,24 +1140,24 @@ QString protocol103::protocol103asdu::dealASDU44Data()
 			//            text.append(" FUN:"+ QString::number(fun) + " INF:"+QString::number(inf+j*16 + k)+"\r\n");
 			text.append("\r\n");
 		}
-		i +=2;
-		tmp =CharToHexStr(m_asdu->data[i]);
+		i += 2;
+		tmp = CharToHexStr(m_asdu->data[i]);
 		iv = m_asdu->data[i] & 0x80;
 		nt = m_asdu->data[i] & 0x40;
 		sb = m_asdu->data[i] & 0x20;
 		bl = m_asdu->data[i] & 0x10;
 		ov = m_asdu->data[i] & 0x01;
-		text.append(tmp + "\t品质位:" + dealIV() + dealNT()+ dealSB()+ dealBL()+dealOV() + "\r\n");
+		text.append(tmp + "\t品质位:" + dealIV() + dealNT() + dealSB() + dealBL() + dealOV() + "\r\n");
 		i++;
 	}
-	tmp =CharToHexStr(m_asdu->data[i]);
-	text.append(tmp +  "\t扫描序号SCN:"+QString::number(m_asdu->data[i])+" 子站的总查询应答报文中附加信息SIN需要与之一样\r\n");
+	tmp = CharToHexStr(m_asdu->data[i]);
+	text.append(tmp +  "\t扫描序号SCN:" + QString::number(m_asdu->data[i]) + " 子站的总查询应答报文中附加信息SIN需要与之一样\r\n");
 	i++;
-	if(i+4 > m_asdu->length)
+	if(i + 4 > m_asdu->length)
 	{
 		text.append("\t出错！解析的报文多于实际报文，说明报文存在问题\r\n");
 	}
-	else if(i+4 < m_asdu->length)
+	else if(i + 4 < m_asdu->length)
 	{
 		text.append("\t出错！解析的报文少于实际报文，说明报文存在问题\r\n");
 	}
@@ -1171,29 +1171,29 @@ QString protocol103::protocol103asdu::dealASDU50Data()
 	int i = 0;
 	short datashort;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	fun = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealFUN());
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	inf = m_asdu->data[i++];
-	text.append(tmp + "\tINF:" + QString::number(inf)+"\r\n");
-	for(int j = 0; j<datanum;j++)
+	text.append(tmp + "\tINF:" + QString::number(inf) + "\r\n");
+	for(int j = 0; j < datanum; j++)
 	{
-		tmp =CharToHexStr(m_asdu->data[i])+ " "+ CharToHexStr(m_asdu->data[i+1]);
-		datashort = charToshortwithQ(&m_asdu->data[i],ov,er);
-		text.append(tmp + "\t第" + QString::number(j+1)+"个遥测(bit4-16):"+QString::number(datashort));
-		text.append("   FUN:"+ QString::number(fun) + " INF:"+QString::number(inf+j)+"  ");
+		tmp = CharToHexStr(m_asdu->data[i]) + " " + CharToHexStr(m_asdu->data[i + 1]);
+		datashort = charToshortwithQ(&m_asdu->data[i], ov, er);
+		text.append(tmp + "\t第" + QString::number(j + 1) + "个遥测(bit4-16):" + QString::number(datashort));
+		text.append("   FUN:" + QString::number(fun) + " INF:" + QString::number(inf + j) + "  ");
 		text.append(dealOV() + dealER() + "\r\n");
 		i += 2;
 	}
 	//    tmp =CharToHexStr(m_asdu->data[i]);
 	//    text.append(tmp +  "\t扫描序号SCN:"+QString::number(m_asdu->data[i])+" 子站的总查询应答报文中附加信息SIN需要与之一样\r\n");
-	if(i+4 > m_asdu->length)
+	if(i + 4 > m_asdu->length)
 	{
 		text.append("\t出错！解析的报文多于实际报文，说明报文存在问题\r\n");
 	}
-	else if(i+4 < m_asdu->length)
+	else if(i + 4 < m_asdu->length)
 	{
 		text.append("\t出错！解析的报文少于实际报文，说明报文存在问题\r\n");
 	}
@@ -1208,112 +1208,112 @@ QString protocol103::protocol103asdu::dealASDU51Data()
 	int i = 0;
 	short datashort;
 
-	tmp =CharToHexStr(m_asdu->data[i]);
+	tmp = CharToHexStr(m_asdu->data[i]);
 	fun = m_asdu->data[i++];
 	text.append(tmp + "\t" + dealFUN());
-	for(int j = 0; j<datanum;j++)
+	for(int j = 0; j < datanum; j++)
 	{
-		tmp =CharToHexStr(m_asdu->data[i]);
+		tmp = CharToHexStr(m_asdu->data[i]);
 		inf = m_asdu->data[i++];
-		text.append(tmp + "\tINF:" + QString::number(inf)+"\r\n");
+		text.append(tmp + "\tINF:" + QString::number(inf) + "\r\n");
 
-		tmp =CharToHexStr(m_asdu->data[i])+ " "+ CharToHexStr(m_asdu->data[i+1]);
-		datashort = charToshortwithQ(&m_asdu->data[i],ov,er);
-		text.append(tmp + "\t第" + QString::number(j+1)+"个遥测(bit4-16):"+QString::number(datashort));
-		text.append("   FUN:"+ QString::number(fun) + " INF:"+QString::number(inf)+"  ");
+		tmp = CharToHexStr(m_asdu->data[i]) + " " + CharToHexStr(m_asdu->data[i + 1]);
+		datashort = charToshortwithQ(&m_asdu->data[i], ov, er);
+		text.append(tmp + "\t第" + QString::number(j + 1) + "个遥测(bit4-16):" + QString::number(datashort));
+		text.append("   FUN:" + QString::number(fun) + " INF:" + QString::number(inf) + "  ");
 		text.append(dealOV() + dealER() + "\r\n");
 		i += 2;
 	}
 	//    tmp =CharToHexStr(m_asdu->data[i]);
 	//    text.append(tmp +  "\t扫描序号SCN:"+QString::number(m_asdu->data[i])+" 子站的总查询应答报文中附加信息SIN需要与之一样\r\n");
-	if(i+4 > m_asdu->length)
+	if(i + 4 > m_asdu->length)
 	{
 		text.append("\t出错！解析的报文多于实际报文，说明报文存在问题\r\n");
 	}
-	else if(i+4 < m_asdu->length)
+	else if(i + 4 < m_asdu->length)
 	{
 		text.append("\t出错！解析的报文少于实际报文，说明报文存在问题\r\n");
 	}
 	return text;
 }
 
-uchar protocol103::protocol103asdu::charToGroupDate(uchar *data,GROUPDATA *gpdata)
+uchar protocol103::protocol103asdu::charToGroupDate(uchar *data, GROUPDATA *gpdata)
 {
 	uchar i = 0;
-	memcpy(gpdata->gin,&data[i],2);
+	memcpy(gpdata->gin, &data[i], 2);
 	i += 2;
 	gpdata->kod = data[i++];
 	if(m_asdu->type == 21)
 	{
 		return i;
 	}
-	memcpy(gpdata->gdd,&data[i],3);
+	memcpy(gpdata->gdd, &data[i], 3);
 	i += 3;
-	gpdata->number = gpdata->gdd[2]&0x7f;
+	gpdata->number = gpdata->gdd[2] & 0x7f;
 	if(gpdata->gdd[1] != 0 && gpdata->number != 0)
 	{
-		if(gpdata->gdd[0]==2)
+		if(gpdata->gdd[0] == 2)
 		{
-			gpdata->gidlen = ((ushort)gpdata->gdd[1]*gpdata->number-1)/8+1;
+			gpdata->gidlen = ((ushort)gpdata->gdd[1] * gpdata->number - 1) / 8 + 1;
 		}
 		else
 		{
-			gpdata->gidlen = (ushort)gpdata->gdd[1]*gpdata->number;
+			gpdata->gidlen = (ushort)gpdata->gdd[1] * gpdata->number;
 		}
-		memcpy(gpdata->gid,&data[i],gpdata->gidlen);
-		i =i + gpdata->gidlen;
+		memcpy(gpdata->gid, &data[i], gpdata->gidlen);
+		i = i + gpdata->gidlen;
 	}
 	return i;
 }
 
-QString protocol103::protocol103asdu::dealDateTime(uchar *time,int timelen)
+QString protocol103::protocol103asdu::dealDateTime(uchar *time, int timelen)
 {
 	QString text;
 	QString tmp;
 	uchar datauchar;
-	QDateTime datetime = charToDateTime(time,timelen,BINARYTIME2A);
+	QDateTime datetime = charToDateTime(time, timelen, BINARYTIME2A);
 
-	tmp =CharToHexStr(time[0]) +" "+ CharToHexStr(time[1]);
-	uint datauint = charTouint(time,2);
-	text.append(tmp + "\t"+QString::number(datauint) + "   秒:" + QString::number(datetime.time().second()) +"   毫秒:" + QString::number(datetime.time().msec()) + " \r\n");
-	if(timelen ==2)
+	tmp = CharToHexStr(time[0]) + " " + CharToHexStr(time[1]);
+	uint datauint = charTouint(time, 2);
+	text.append(tmp + "\t" + QString::number(datauint) + "   秒:" + QString::number(datetime.time().second()) + "   毫秒:" + QString::number(datetime.time().msec()) + " \r\n");
+	if(timelen == 2)
 	{
 		return text;
 	}
 
-	tmp =CharToHexStr(time[2]);
-	iv = time[2]&0x80;
-	text.append(tmp + "\t分(bit1-6):" + QString::number(datetime.time().minute()) + "   "+dealIV() +"\r\n");
-	if(timelen ==3)
+	tmp = CharToHexStr(time[2]);
+	iv = time[2] & 0x80;
+	text.append(tmp + "\t分(bit1-6):" + QString::number(datetime.time().minute()) + "   " + dealIV() + "\r\n");
+	if(timelen == 3)
 	{
 		return text;
 	}
 
-	tmp =CharToHexStr(time[3]);
+	tmp = CharToHexStr(time[3]);
 	su = time[3] & 0x80;
-	text.append(tmp + "\t时(bit1-5):" + QString::number(datetime.time().hour()) + "   "+dealSU()+"\r\n");
-	if(timelen ==4)
+	text.append(tmp + "\t时(bit1-5):" + QString::number(datetime.time().hour()) + "   " + dealSU() + "\r\n");
+	if(timelen == 4)
 	{
 		return text;
 	}
 
-	tmp =CharToHexStr(time[4]);
-	datauchar = time[4]>>5;
-	text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datauchar)+ " (7表示星期天,0表示未用)\r\n");
+	tmp = CharToHexStr(time[4]);
+	datauchar = time[4] >> 5;
+	text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) + "   周(bit6-8):" + QString::number(datauchar) + " (7表示星期天,0表示未用)\r\n");
 	//    text.append(tmp + "\t日(bit1-5):" + QString::number(datetime.date().day()) +"   周(bit6-8):"+QString::number(datetime.date().dayOfWeek())+ " (7表示星期天)\r\n");
-	if(timelen ==5)
+	if(timelen == 5)
 	{
 		return text;
 	}
 
-	tmp =CharToHexStr(time[5]);
+	tmp = CharToHexStr(time[5]);
 	text.append(tmp + "\t月(bit1-4):" + QString::number(datetime.date().month()) + "\r\n");
-	if(timelen ==6)
+	if(timelen == 6)
 	{
 		return text;
 	}
 
-	tmp =CharToHexStr(time[6]);
+	tmp = CharToHexStr(time[6]);
 	text.append(tmp + "\t年(bit1-7):" + QString::number(datetime.date().year()) + "\r\n");
 	return text;
 }

@@ -13,7 +13,7 @@ IEC101Asdu45Data::~IEC101Asdu45Data()
 
 }
 
-bool IEC101Asdu45Data::handle(const QByteArray &buff)
+bool IEC101Asdu45Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	sco = *(buff.data() + len);
@@ -25,9 +25,9 @@ bool IEC101Asdu45Data::handle(const QByteArray &buff)
 }
 
 
-bool IEC101Asdu45Data::createData(IECDataConfig &config)
+bool IEC101Asdu45Data::createData(IECDataConfig& config)
 {
-	config.data += uintToBa(config.infaddr,infaddrlen);
+	config.data += uintToBa(config.infaddr, infaddrlen);
 	config.data += config.infdata;
 	return true;
 }

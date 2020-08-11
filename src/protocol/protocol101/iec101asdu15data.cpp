@@ -14,10 +14,10 @@ IEC101Asdu15Data::~IEC101Asdu15Data()
 
 }
 
-bool IEC101Asdu15Data::handle(const QByteArray &buff)
+bool IEC101Asdu15Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
-	intdata = charToint(buff.data() + len,4);
+	intdata = charToint(buff.data() + len, 4);
 	mText.append(CharToHexStr(buff.data() + len, 4) + "\t整数:" + QString::number(intdata) + "\r\n");
 	len += 4;
 
@@ -30,7 +30,7 @@ bool IEC101Asdu15Data::handle(const QByteArray &buff)
 }
 
 
-bool IEC101Asdu15Data::createData(IECDataConfig &config)
+bool IEC101Asdu15Data::createData(IECDataConfig& config)
 {
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;

@@ -35,7 +35,7 @@
 #include <QtCore/QIODevice>
 #include "qextserialport_global.h"
 #ifdef Q_OS_UNIX
-#include <termios.h>
+	#include <termios.h>
 #endif
 /*line status constants*/
 // ### QESP2.0 move to enum
@@ -69,7 +69,8 @@
 #define E_PERMISSION_DENIED         16
 #define E_AGAIN                     17
 
-enum BaudRateType {
+enum BaudRateType
+{
 #if defined(Q_OS_UNIX) || defined(qdoc)
 	BAUD50 = 50,                //POSIX ONLY
 	BAUD75 = 75,                //POSIX ONLY
@@ -115,14 +116,16 @@ enum BaudRateType {
 	BAUD115200 = 115200
 };
 
-enum DataBitsType {
+enum DataBitsType
+{
 	DATA_5 = 5,
 	DATA_6 = 6,
 	DATA_7 = 7,
 	DATA_8 = 8
 };
 
-enum ParityType {
+enum ParityType
+{
 	PAR_NONE,
 	PAR_ODD,
 	PAR_EVEN,
@@ -132,7 +135,8 @@ enum ParityType {
 	PAR_SPACE
 };
 
-enum StopBitsType {
+enum StopBitsType
+{
 	STOP_1,
 #if defined(Q_OS_WIN) || defined(qdoc)
 	STOP_1_5,               //WINDOWS ONLY
@@ -140,7 +144,8 @@ enum StopBitsType {
 	STOP_2
 };
 
-enum FlowType {
+enum FlowType
+{
 	FLOW_OFF,
 	FLOW_HARDWARE,
 	FLOW_XONXOFF
@@ -149,7 +154,8 @@ enum FlowType {
 /**
  * structure to contain port settings
  */
-struct PortSettings {
+struct PortSettings
+{
 	BaudRateType BaudRate;
 	DataBitsType DataBits;
 	ParityType Parity;
@@ -167,15 +173,16 @@ class QEXTSERIALPORT_EXPORT QextSerialPort: public QIODevice
 	Q_PROPERTY(QString portName READ portName WRITE setPortName)
 	Q_PROPERTY(QueryMode queryMode READ queryMode WRITE setQueryMode)
 public:
-	enum QueryMode {
+	enum QueryMode
+	{
 		Polling,
 		EventDriven
 	};
 
 	explicit QextSerialPort(QueryMode mode = EventDriven, QObject *parent = 0);
-	explicit QextSerialPort(const QString &name, QueryMode mode = EventDriven, QObject *parent = 0);
-	explicit QextSerialPort(const PortSettings &s, QueryMode mode = EventDriven, QObject *parent = 0);
-	QextSerialPort(const QString &name, const PortSettings &s, QueryMode mode = EventDriven, QObject *parent = 0);
+	explicit QextSerialPort(const QString& name, QueryMode mode = EventDriven, QObject *parent = 0);
+	explicit QextSerialPort(const PortSettings& s, QueryMode mode = EventDriven, QObject *parent = 0);
+	QextSerialPort(const QString& name, const PortSettings& s, QueryMode mode = EventDriven, QObject *parent = 0);
 
 	~QextSerialPort();
 
@@ -201,7 +208,7 @@ public:
 	QString errorString();
 
 public Q_SLOTS:
-	void setPortName(const QString &name);
+	void setPortName(const QString& name);
 	void setQueryMode(QueryMode mode);
 	void setBaudRate(BaudRateType);
 	void setDataBits(DataBitsType);

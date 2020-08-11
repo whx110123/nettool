@@ -46,9 +46,9 @@
 #include "qextserialport.h"
 #include <QtCore/QReadWriteLock>
 #ifdef Q_OS_UNIX
-#  include <termios.h>
+	#include <termios.h>
 #elif (defined Q_OS_WIN)
-#  include <QtCore/qt_windows.h>
+	#include <QtCore/qt_windows.h>
 #endif
 #include <stdlib.h>
 
@@ -87,11 +87,14 @@ public:
 	{
 		int r = qMin(size, len);
 
-		if (r == 1) {
+		if(r == 1)
+		{
 			*target = *first;
 			--len;
 			++first;
-		} else {
+		}
+		else
+		{
 			memcpy(target, first, r);
 			len -= r;
 			first += r;
@@ -102,21 +105,26 @@ public:
 
 	inline char *reserve(size_t size)
 	{
-		if ((first - buf) + len + size > capacity) {
+		if((first - buf) + len + size > capacity)
+		{
 			size_t newCapacity = qMax(capacity, basicBlockSize);
 
-			while (newCapacity < len + size) {
+			while(newCapacity < len + size)
+			{
 				newCapacity *= 2;
 			}
 
-			if (newCapacity > capacity) {
+			if(newCapacity > capacity)
+			{
 				// allocate more space
 				char *newBuf = new char[newCapacity];
 				memmove(newBuf, first, len);
 				delete  buf;
 				buf = newBuf;
 				capacity = newCapacity;
-			} else {
+			}
+			else
+			{
 				// shift any existing data to make space
 				memmove(buf, first, len);
 			}
@@ -131,30 +139,37 @@ public:
 
 	inline void chop(int size)
 	{
-		if (size >= len) {
+		if(size >= len)
+		{
 			clear();
-		} else {
+		}
+		else
+		{
 			len -= size;
 		}
 	}
 
 	inline void squeeze()
 	{
-		if (first != buf) {
+		if(first != buf)
+		{
 			memmove(buf, first, len);
 			first = buf;
 		}
 
 		size_t newCapacity = basicBlockSize;
 
-		while (newCapacity < size_t(len)) {
+		while(newCapacity < size_t(len))
+		{
 			newCapacity *= 2;
 		}
 
-		if (newCapacity < capacity) {
+		if(newCapacity < capacity)
+		{
 			char *tmp = static_cast<char *>(realloc(buf, newCapacity));
 
-			if (tmp) {
+			if(tmp)
+			{
 				buf = tmp;
 				capacity = newCapacity;
 			}
@@ -174,7 +189,8 @@ public:
 		int r = qMin(size, len);
 		char *eol = static_cast<char *>(memchr(first, '\n', r));
 
-		if (eol) {
+		if(eol)
+		{
 			r = 1 + (eol - first);
 		}
 
@@ -207,7 +223,8 @@ class QextSerialPortPrivate
 public:
 	QextSerialPortPrivate(QextSerialPort *q);
 	~QextSerialPortPrivate();
-	enum DirtyFlagEnum {
+	enum DirtyFlagEnum
+	{
 		DFE_BaudRate = 0x0001,
 		DFE_Parity = 0x0002,
 		DFE_StopBits = 0x0004,
@@ -249,7 +266,7 @@ public:
 	void setStopBits(StopBitsType stopbits, bool update = true);
 	void setFlowControl(FlowType flow, bool update = true);
 	void setTimeout(long millisec, bool update = true);
-	void setPortSettings(const PortSettings &settings, bool update = true);
+	void setPortSettings(const PortSettings& settings, bool update = true);
 
 	void platformSpecificDestruct();
 	void platformSpecificInit();

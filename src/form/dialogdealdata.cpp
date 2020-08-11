@@ -28,13 +28,13 @@ ushort DialogDealData::crc16(uchar *buf, ushort length)
 	ushort j;
 	ushort c;
 	ushort crc = 0xFFFF;   //设置crc寄存器为0xffff
-	for (i=0; i<length; i++)
+	for(i = 0; i < length; i++)
 	{
-		c = *(buf+i) & 0x00FF;
-		crc^=c;
-		for (j=0; j<8; j++)
+		c = *(buf + i) & 0x00FF;
+		crc ^= c;
+		for(j = 0; j < 8; j++)
 		{
-			if (crc & 0x0001)
+			if(crc & 0x0001)
 			{
 				crc >>= 1;
 				crc ^= 0xA001;
@@ -58,36 +58,36 @@ void DialogDealData::on_pbcrc_clicked()
 	if(ui->cbcrc->currentText().contains("CRC 16 低位在前"))
 	{
 		crclen = 2;
-		ushort crc = crc16((uchar *)ba.data(),ba.length());
+		ushort crc = crc16((uchar *)ba.data(), ba.length());
 		crcarray[0] = crc & 0xff;
-		crcarray[1] = (crc>>8) & 0xff;
+		crcarray[1] = (crc >> 8) & 0xff;
 	}
 	else if(ui->cbcrc->currentText().contains("CRC 16 高位在前"))
 	{
 		crclen = 2;
-		ushort crc = crc16((uchar *)ba.data(),ba.length());
+		ushort crc = crc16((uchar *)ba.data(), ba.length());
 		crcarray[1] = crc & 0xff;
-		crcarray[0] = (crc>>8) & 0xff;
+		crcarray[0] = (crc >> 8) & 0xff;
 	}
 	else if(ui->cbcrc->currentText().contains("总加和"))
 	{
 		crclen = 1;
-		for (int i = 0;i <ba.length();i++)
+		for(int i = 0; i < ba.length(); i++)
 		{
-			crcarray[0] += *(uchar *)(ba.data() +i);
+			crcarray[0] += *(uchar *)(ba.data() + i);
 		}
 	}
 	else if(ui->cbcrc->currentText().contains("加总异或"))
 	{
 		crclen = 1;
-		for (int i = 0;i <ba.length();i++)
+		for(int i = 0; i < ba.length(); i++)
 		{
-			crcarray[0] ^= *(uchar *)(ba.data() +i);
+			crcarray[0] ^= *(uchar *)(ba.data() + i);
 		}
 	}
 
 
-	for (int i = 0;i <crclen;i++)
+	for(int i = 0; i < crclen; i++)
 	{
 		data.append(" " + CharToHexStr(crcarray[i]));
 	}
@@ -109,19 +109,19 @@ void DialogDealData::on_pbtransform_clicked()
 		datauint = *(uint *)(&datafloat);
 		if(ui->checkreverse->isChecked())
 		{
-			for (int i = 0;i<4;i++)
+			for(int i = 0; i < 4; i++)
 			{
-				uchararray[i] = (datauint >> 8*i) & 0xff;
+				uchararray[i] = (datauint >> 8 * i) & 0xff;
 			}
 		}
 		else
 		{
-			for (int i = 0;i<4;i++)
+			for(int i = 0; i < 4; i++)
 			{
-				uchararray[i] = (datauint >> 8*(3-i)) & 0xff;
+				uchararray[i] = (datauint >> 8 * (3 - i)) & 0xff;
 			}
 		}
-		for (int i = 0;i <4;i++)
+		for(int i = 0; i < 4; i++)
 		{
 			dataout.append(" " + CharToHexStr(uchararray[i]));
 		}
@@ -136,7 +136,7 @@ void DialogDealData::on_pbtransform_clicked()
 			{
 				model = 0;
 			}
-			datafloat = charTofloat((uchar *)ba.data(),model);
+			datafloat = charTofloat((uchar *)ba.data(), model);
 			dataout = QString::number(datafloat);
 		}
 	}
@@ -145,19 +145,19 @@ void DialogDealData::on_pbtransform_clicked()
 		dataint = data.toInt();
 		if(ui->checkreverse->isChecked())
 		{
-			for (int i = 0;i<4;i++)
+			for(int i = 0; i < 4; i++)
 			{
-				uchararray[i] = (dataint >> 8*i) & 0xff;
+				uchararray[i] = (dataint >> 8 * i) & 0xff;
 			}
 		}
 		else
 		{
-			for (int i = 0;i<4;i++)
+			for(int i = 0; i < 4; i++)
 			{
-				uchararray[i] = (dataint >> 8*(3-i)) & 0xff;
+				uchararray[i] = (dataint >> 8 * (3 - i)) & 0xff;
 			}
 		}
-		for (int i = 0;i <4;i++)
+		for(int i = 0; i < 4; i++)
 		{
 			dataout.append(" " + CharToHexStr(uchararray[i]));
 		}
@@ -173,7 +173,7 @@ void DialogDealData::on_pbtransform_clicked()
 			{
 				model = 0;
 			}
-			dataint = charToint((uchar *)ba.data(),4,model);
+			dataint = charToint((uchar *)ba.data(), 4, model);
 			dataout = QString::number(dataint);
 		}
 	}
@@ -187,7 +187,7 @@ void DialogDealData::on_pbtransform_clicked()
 			{
 				model = 0;
 			}
-			datauint = charTouint((uchar *)ba.data(),4,model);
+			datauint = charTouint((uchar *)ba.data(), 4, model);
 			dataout = QString::number(datauint);
 		}
 	}
@@ -204,11 +204,11 @@ void DialogDealData::on_Bt1_clicked()
 	QString tmputf8;
 	QString tmpunicode;
 	QByteArray hex_data;
-	for(QChar byte:text)
+	for(QChar byte : text)
 	{
 		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
 		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
-		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
+		tmpunicode.append(QString::number(byte.unicode(), 16) + " ");
 	}
 	ui->Le2->setText(tmpgbk.trimmed().toUpper());
 	ui->Le3->setText(tmputf8.trimmed().toUpper());
@@ -225,10 +225,10 @@ void DialogDealData::on_Bt2_clicked()
 	QString tmpunicode;
 	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le2->text());
 	tmp = gbk->toUnicode(ba);
-	for(QChar byte:tmp)
+	for(QChar byte : tmp)
 	{
 		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
-		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
+		tmpunicode.append(QString::number(byte.unicode(), 16) + " ");
 	}
 
 	ui->Le1->setPlainText(tmp);
@@ -246,10 +246,10 @@ void DialogDealData::on_Bt3_clicked()
 	QString tmpunicode;
 	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le3->text());
 	tmp = utf8->toUnicode(ba);
-	for(QChar byte:tmp)
+	for(QChar byte : tmp)
 	{
 		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
-		tmpunicode.append(QString::number(byte.unicode(),16) + " ");
+		tmpunicode.append(QString::number(byte.unicode(), 16) + " ");
 	}
 
 	ui->Le1->setPlainText(tmp);
@@ -266,9 +266,9 @@ void DialogDealData::on_Bt4_clicked()
 	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
 	QString tmpgbk;
 	QString tmputf8;
-	for (QString str:strlst)
+	for(QString str : strlst)
 	{
-		QChar byte(str.toUInt(0,16));
+		QChar byte(str.toUInt(0, 16));
 		tmp.append(byte);
 		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
 		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");

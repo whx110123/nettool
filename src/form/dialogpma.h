@@ -4,7 +4,8 @@
 #include <QDialog>
 #include <iec104.h>
 
-namespace Ui {
+namespace Ui
+{
 	class DialogPMA;
 }
 
@@ -16,22 +17,22 @@ public:
 	explicit DialogPMA(QWidget *parent = nullptr);
 	~DialogPMA();
 public slots:
-	void dealData(const QString &data,const QString &title);
-	bool createAndSendData(IECDataConfig &config);
+	void dealData(const QString& data, const QString& title);
+	bool createAndSendData(IECDataConfig& config);
 signals:
 
-	void dlgTotcpclient(const QString &data);
-	void dlgTotcpserver(const QString &data);
-	void dlgToudpclient(const QString &data);
-	void dlgToudpserver(const QString &data);
-	void dlgTocom(const QString &data);
+	void dlgTotcpclient(const QString& data);
+	void dlgTotcpserver(const QString& data);
+	void dlgToudpclient(const QString& data);
+	void dlgToudpserver(const QString& data);
+	void dlgTocom(const QString& data);
 private slots:
 	void init();
 	void handleData();
 	void startdebug();
 	void stopdebug();
 	void showToText(QByteArray ba);
-	void emitsignals(const QString &data);
+	void emitsignals(const QString& data);
 	QByteArray getYKYTData(uchar type);
 
 	void on_pushButton_start_clicked();

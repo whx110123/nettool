@@ -3,7 +3,8 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 	class DialogDebug;
 }
 
@@ -24,7 +25,7 @@ private slots:
 	void on_Bt_clear_clicked();
 
 
-	void on_lineEdit_textChanged(const QString &arg1);
+	void on_lineEdit_textChanged(const QString& arg1);
 
 private:
 	Ui::DialogDebug *ui;

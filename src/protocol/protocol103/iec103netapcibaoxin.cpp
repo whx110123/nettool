@@ -11,7 +11,7 @@ IEC103NetApciBaoXin::~IEC103NetApciBaoXin()
 
 }
 
-bool IEC103NetApciBaoXin::init(const QByteArray &buff)
+bool IEC103NetApciBaoXin::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -20,18 +20,18 @@ bool IEC103NetApciBaoXin::init(const QByteArray &buff)
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满6个字节，条件不满足，因此报文有问题");
 		return false;
 	}
-	first = *(buff.data()+len);
+	first = *(buff.data() + len);
 	if(first != 0x68)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len)+"\t启动字符不是0x68");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t启动字符不是0x68");
 		return false;
 	}
 
-	mText.append(CharToHexStr(buff.data() + len)+"\t启动字符:0x68\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
 	len++;
 
-	length = charTouint(buff.data() + len,2);
-	mText.append(CharToHexStr(buff.data()+len,2)+"\t长度域:"+QString::number(length) +"\r\n");
+	length = charTouint(buff.data() + len, 2);
+	mText.append(CharToHexStr(buff.data() + len, 2) + "\t长度域:" + QString::number(length) + "\r\n");
 	len += 2;
 
 	uchar tmp = *(buff.data() + len);
@@ -52,7 +52,7 @@ bool IEC103NetApciBaoXin::init(const QByteArray &buff)
 		control.type = ITYPE;
 
 	}
-	if(!control.init(buff.mid(len,4)))
+	if(!control.init(buff.mid(len, 4)))
 	{
 		return false;
 	}
@@ -69,7 +69,7 @@ QString IEC103NetApciBaoXin::showToText()
 	return text;
 }
 
-bool IEC103NetApciBaoXin::createData(IECDataConfig &config)
+bool IEC103NetApciBaoXin::createData(IECDataConfig& config)
 {
 	config.data += 0x68;
 	config.data += '\0';

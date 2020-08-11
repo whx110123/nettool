@@ -4,47 +4,48 @@
 #include <QWidget>
 #include "tcpserver.h"
 
-namespace Ui {
-class frmTcpServer;
+namespace Ui
+{
+	class frmTcpServer;
 }
 
 class frmTcpServer : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit frmTcpServer(QWidget *parent = 0);
-    ~frmTcpServer();
+	explicit frmTcpServer(QWidget *parent = 0);
+	~frmTcpServer();
 public slots:
-    void dealData(const QString &data);
+	void dealData(const QString& data);
 signals:
-    void dlgTodialogsenddata(const QString &data,const QString &title);
+	void dlgTodialogsenddata(const QString& data, const QString& title);
 private:
-    Ui::frmTcpServer *ui;    
+	Ui::frmTcpServer *ui;
 
-    bool isOk;
-    TcpServer *tcpServer;
-    QTimer *timer;
-
-private slots:
-    void initForm();
-    void initIP();
-    void initConfig();
-    void saveConfig();
-    void changeTimer();
-    void append(int type, const QString &data, bool clear = false);
-
-    void clientConnected(const QString &ip, int port);
-    void clientDisconnected(const QString &ip, int port);
-    void sendData(const QString &ip, int port, const QString &data);
-    void receiveData(const QString &ip, int port, const QString &data);   
+	bool isOk;
+	TcpServer *tcpServer;
+	QTimer *timer;
 
 private slots:
-    void on_btnListen_clicked();
-    void on_btnSave_clicked();
-    void on_btnClear_clicked();
-    void on_btnSend_clicked();
-    void on_btnClose_clicked();
+	void initForm();
+	void initIP();
+	void initConfig();
+	void saveConfig();
+	void changeTimer();
+	void append(int type, const QString& data, bool clear = false);
+
+	void clientConnected(const QString& ip, int port);
+	void clientDisconnected(const QString& ip, int port);
+	void sendData(const QString& ip, int port, const QString& data);
+	void receiveData(const QString& ip, int port, const QString& data);
+
+private slots:
+	void on_btnListen_clicked();
+	void on_btnSave_clicked();
+	void on_btnClear_clicked();
+	void on_btnSend_clicked();
+	void on_btnClose_clicked();
 };
 
 #endif // FRMTCPSERVER_H

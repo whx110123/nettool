@@ -14,14 +14,14 @@ IEC103Asdu2Data::~IEC103Asdu2Data()
 
 }
 
-bool IEC103Asdu2Data::handle(const QByteArray &buff)
+bool IEC103Asdu2Data::handle(const QByteArray& buff)
 {
 	dpi = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + dpiToText(dpi) + "\r\n");
 	len++;
 
 	ret = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len,2) + "\t相对时间RET:" + QString::number(ret) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len, 2) + "\t相对时间RET:" + QString::number(ret) + "\r\n");
 	len += 2;
 
 	fan = charTouint(buff.data() + len, 2);
@@ -47,7 +47,7 @@ bool IEC103Asdu2Data::handle(const QByteArray &buff)
 	return true;
 }
 
-bool IEC103Asdu2Data::createData(IECDataConfig &config)
+bool IEC103Asdu2Data::createData(IECDataConfig& config)
 {
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;

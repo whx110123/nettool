@@ -11,9 +11,9 @@ class IEC103COM : public MyBase
 public:
 	IEC103COM();
 	~IEC103COM();
-	virtual bool init(const QByteArray &buff);
+	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	IEC101Apci apci;

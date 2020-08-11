@@ -13,8 +13,8 @@ class IEC104Control : public MyBase
 public:
 	IEC104Control();
 	~IEC104Control();
-	virtual bool init(const QByteArray &buff);
-	virtual bool createData(IECDataConfig &config);
+	virtual bool init(const QByteArray& buff);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar type;		//帧类型
@@ -30,9 +30,9 @@ class IEC104Apci : public MyBase
 public:
 	IEC104Apci();
 	~IEC104Apci();
-	virtual bool init(const QByteArray &buff);
+	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar first;

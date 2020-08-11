@@ -14,7 +14,7 @@ IEC101Asdu50Data::~IEC101Asdu50Data()
 
 }
 
-bool IEC101Asdu50Data::handle(const QByteArray &buff)
+bool IEC101Asdu50Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	floatdata = charTofloat(buff.data() + len);
@@ -29,9 +29,9 @@ bool IEC101Asdu50Data::handle(const QByteArray &buff)
 	return true;
 }
 
-bool IEC101Asdu50Data::createData(IECDataConfig &config)
+bool IEC101Asdu50Data::createData(IECDataConfig& config)
 {
-	config.data += uintToBa(config.infaddr,infaddrlen);
+	config.data += uintToBa(config.infaddr, infaddrlen);
 	config.data += config.infdata;
 	return true;
 }

@@ -8,9 +8,9 @@ class IEC103NetApciBaoXin : public MyBase
 public:
 	IEC103NetApciBaoXin();
 	~IEC103NetApciBaoXin();
-	virtual bool init(const QByteArray &buff);
+	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig &config);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar first;

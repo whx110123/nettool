@@ -12,7 +12,7 @@ public:
 };
 
 
-class IECDataConfig :public DataConfig
+class IECDataConfig : public DataConfig
 {
 public:
 	IECDataConfig();

@@ -10,8 +10,8 @@ class IEC103Asdu44Data : public IEC103AsduData
 public:
 	IEC103Asdu44Data();
 	~IEC103Asdu44Data();
-	virtual bool handle(const QByteArray &buff);
-	virtual bool createData(IECDataConfig &config);
+	virtual bool handle(const QByteArray& buff);
+	virtual bool createData(IECDataConfig& config);
 
 private:
 	QString yxToText();

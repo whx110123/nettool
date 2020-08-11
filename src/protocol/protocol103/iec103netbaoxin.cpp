@@ -10,7 +10,7 @@ IEC103NetBaoXin::~IEC103NetBaoXin()
 
 }
 
-bool IEC103NetBaoXin::init(const QByteArray &buff)
+bool IEC103NetBaoXin::init(const QByteArray& buff)
 {
 	setDefault(buff);
 	const int APCI_LEN = 7;				//APCI总字节数
@@ -26,7 +26,7 @@ bool IEC103NetBaoXin::init(const QByteArray &buff)
 		mRecvData = buff.left(APCI_LEN);
 		return false;
 	}
-	len = apci.length+LENGTH_LEN+1;
+	len = apci.length + LENGTH_LEN + 1;
 	masterState = apci.masterState;
 	slaveState = apci.slaveState;
 	if(len > buff.count())
@@ -35,14 +35,14 @@ bool IEC103NetBaoXin::init(const QByteArray &buff)
 		return false;
 	}
 	mRecvData = buff.left(len);
-	if(apci.control.type == ITYPE && buff.count()<= APCI_LEN)
+	if(apci.control.type == ITYPE && buff.count() <= APCI_LEN)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
-	else if (apci.control.type == UTYPE||apci.control.type == STYPE )
+	else if(apci.control.type == UTYPE || apci.control.type == STYPE)
 	{
-		if(len!=APCI_LEN)
+		if(len != APCI_LEN)
 		{
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
@@ -53,7 +53,7 @@ bool IEC103NetBaoXin::init(const QByteArray &buff)
 		}
 	}
 
-	if(!asdu.init(buff.mid(APCI_LEN,len-APCI_LEN)))
+	if(!asdu.init(buff.mid(APCI_LEN, len - APCI_LEN)))
 	{
 		return false;
 	}
@@ -65,18 +65,18 @@ bool IEC103NetBaoXin::init(const QByteArray &buff)
 QString IEC103NetBaoXin::showToText()
 {
 	QString text(mText);
-	if(len >6)
+	if(len > 6)
 	{
 		text.append(apci.showToText());
 	}
-	if(len >7 && apci.control.type == ITYPE)
+	if(len > 7 && apci.control.type == ITYPE)
 	{
 		text.append(asdu.showToText());
 	}
 	return text;
 }
 
-bool IEC103NetBaoXin::createData(IECDataConfig &config)
+bool IEC103NetBaoXin::createData(IECDataConfig& config)
 {
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;

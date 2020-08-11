@@ -12,7 +12,7 @@ MyBase::~MyBase()
 
 }
 
-bool MyBase::init(const QByteArray &buff)
+bool MyBase::init(const QByteArray& buff)
 {
 	return false;
 }
@@ -22,12 +22,12 @@ QString MyBase::showToText()
 	return mText;
 }
 
-bool MyBase::createData(IECDataConfig &config)
+bool MyBase::createData(IECDataConfig& config)
 {
 	return false;
 }
 
-void MyBase::setDefault(const QByteArray &buff)
+void MyBase::setDefault(const QByteArray& buff)
 {
 	mRecvData = buff;
 	mText.clear();

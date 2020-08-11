@@ -11,7 +11,7 @@ IEC104::~IEC104()
 
 }
 
-bool IEC104::init(const QByteArray &buff)
+bool IEC104::init(const QByteArray& buff)
 {
 	setDefault(buff);
 	const int APCI_LEN = 6;				//APCI总字节数
@@ -27,7 +27,7 @@ bool IEC104::init(const QByteArray &buff)
 		mRecvData = buff.left(APCI_LEN);
 		return false;
 	}
-	len = apci.length+LENGTH_LEN+1;
+	len = apci.length + LENGTH_LEN + 1;
 	masterState = apci.masterState;
 	slaveState = apci.slaveState;
 	if(len > buff.count())
@@ -36,14 +36,14 @@ bool IEC104::init(const QByteArray &buff)
 		return false;
 	}
 	mRecvData = buff.left(len);
-	if(apci.control.type == ITYPE && buff.count()<= APCI_LEN)
+	if(apci.control.type == ITYPE && buff.count() <= APCI_LEN)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
-	else if (apci.control.type == UTYPE||apci.control.type == STYPE )
+	else if(apci.control.type == UTYPE || apci.control.type == STYPE)
 	{
-		if(len!=APCI_LEN)
+		if(len != APCI_LEN)
 		{
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
@@ -54,7 +54,7 @@ bool IEC104::init(const QByteArray &buff)
 		}
 	}
 
-	if(!asdu.init(buff.mid(APCI_LEN,len-APCI_LEN)))
+	if(!asdu.init(buff.mid(APCI_LEN, len - APCI_LEN)))
 	{
 		return false;
 	}
@@ -67,23 +67,23 @@ bool IEC104::init(const QByteArray &buff)
 QString IEC104::showToText()
 {
 	QString text(mText);
-	if(len >5)
+	if(len > 5)
 	{
 		text.append(apci.showToText());
 	}
-	if(len >6 && apci.control.type == ITYPE)
+	if(len > 6 && apci.control.type == ITYPE)
 	{
 		text.append(asdu.showToText());
 	}
 	return text;
 }
 
-bool IEC104::createData(IECDataConfig &config)
+bool IEC104::createData(IECDataConfig& config)
 {
 	config.data.clear();
 	if(config.isMaster)
 	{
-		switch (config.masterState)
+		switch(config.masterState)
 		{
 		case STATE_INIT:
 		case STATE_TESTACT:
@@ -102,7 +102,7 @@ bool IEC104::createData(IECDataConfig &config)
 			config.cot = 0x06;
 			break;
 		case STATE_USER:
-			config.controltype = ITYPE;	
+			config.controltype = ITYPE;
 			break;
 		case STATE_HOTKEY:
 			break;
@@ -114,7 +114,7 @@ bool IEC104::createData(IECDataConfig &config)
 	}
 	else
 	{
-		switch (config.slaveState)
+		switch(config.slaveState)
 		{
 		case STATE_NODATA:
 			return true;
@@ -144,14 +144,14 @@ bool IEC104::createData(IECDataConfig &config)
 	{
 		return false;
 	}
-	if(config.asdutype >0)
+	if(config.asdutype > 0)
 	{
 		if(!asdu.createData(config))
 		{
 			return false;
 		}
 	}
-	if(config.data.size()<5)
+	if(config.data.size() < 5)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文长度不足5");
 		return false;
@@ -161,8 +161,8 @@ bool IEC104::createData(IECDataConfig &config)
 		config.data.append(config.userdata);
 		config.userdata.clear();
 	}
-	char len = config.data.size()-2;
-	config.data.replace(1,1,&len,1);
+	char len = config.data.size() - 2;
+	config.data.replace(1, 1, &len, 1);
 	return true;
 }
 

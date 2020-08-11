@@ -3,17 +3,18 @@
 
 #include <QDialog>
 
-namespace Ui {
-class DialogDealData;
+namespace Ui
+{
+	class DialogDealData;
 }
 
 class DialogDealData : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit DialogDealData(QWidget *parent = nullptr);
-    ~DialogDealData();
+	explicit DialogDealData(QWidget *parent = nullptr);
+	~DialogDealData();
 private slots:
 	void on_pbcrc_clicked();
 
@@ -31,11 +32,11 @@ private slots:
 	void on_Bt_clear_clicked();
 
 private:
-    void initfrom();
-    ushort crc16(uchar *puchMsg, ushort usDataLen);
+	void initfrom();
+	ushort crc16(uchar *puchMsg, ushort usDataLen);
 
 private:
-    Ui::DialogDealData *ui;
+	Ui::DialogDealData *ui;
 };
 
 #endif // DIALOGDEALDATA_H

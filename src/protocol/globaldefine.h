@@ -43,28 +43,28 @@ enum
 	BINARYTIME2B,		//二进制时间2b
 	BINARYTIME2C		//二进制时间2c
 };
-    
+
 
 QString CharToHexStr(uchar data);           //将一个uchar字符转换成2个字符的16进制QString
-QString CharToHexStr(const char *data,int len=1);
+QString CharToHexStr(const char *data, int len = 1);
 QString CharToHexStr(uchar *data, int len = 1);
-uint charTouint(const char *data,int len,int model = 0);
-uint charTouint(uchar *data,int len,int model = 0);      //将len个uchar合成一个uint,model 0:低字节在前
-int charToint(uchar *data,int len,int model = 0);      //将4个uchar合成一个int,model 0:低字节在前 1:高字节在前
+uint charTouint(const char *data, int len, int model = 0);
+uint charTouint(uchar *data, int len, int model = 0);    //将len个uchar合成一个uint,model 0:低字节在前
+int charToint(uchar *data, int len, int model = 0);    //将4个uchar合成一个int,model 0:低字节在前 1:高字节在前
 int charToint(const char *data, int len, int model = 0);      //将4个char合成一个int,model 0:低字节在前 1:高字节在前
-short charToshortwithQ(uchar *data,uchar &ov,uchar &er,int model = 0);
+short charToshortwithQ(uchar *data, uchar& ov, uchar& er, int model = 0);
 short charToshortwithQ(uchar *data, int model = 0);
 short charToshortwithQ(const char *data, int model = 0);
-float charTofloat(const char *data,int model = 0);
-float charTofloat(uchar *data,int model = 0);
-QDateTime charToDateTime(uchar *data,int len,int model);//将len个uchar合成一个日期,model时间类型
+float charTofloat(const char *data, int model = 0);
+float charTofloat(uchar *data, int model = 0);
+QDateTime charToDateTime(uchar *data, int len, int model); //将len个uchar合成一个日期,model时间类型
 QDateTime charToDateTime(const char *data, int len, int model);//将len个char合成一个日期,model时间类型
 
-QByteArray uintToBa(uint data,int len);
+QByteArray uintToBa(uint data, int len);
 QByteArray floatToBa(float data);
 QByteArray dateTimeToBa(QDateTime datatime, int len, int model);
 
-uchar crcsum(const char *data,int start,int end);
+uchar crcsum(const char *data, int start, int end);
 
 
 

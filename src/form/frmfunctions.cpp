@@ -3,27 +3,27 @@
 
 
 frmFunctions::frmFunctions(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::frmFunctions)
+	QWidget(parent),
+	ui(new Ui::frmFunctions)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 	m_dialogsenddata = new DialogSendData(this);
 	m_dialogdealdata = new DialogDealData(this);
 	m_dialogintroduction = new DialogIntroduction(this);
 	m_dialogdebug = new DialogDebug(this);
 	m_dialogpma = new DialogPMA(this);
-    initfrom();
+	initfrom();
 }
 
 frmFunctions::~frmFunctions()
 {
-    delete ui;
+	delete ui;
 }
 
 void frmFunctions::on_pbfunc1_clicked()
 {
 
-    m_dialogsenddata->show();
+	m_dialogsenddata->show();
 }
 
 void frmFunctions::initfrom()
@@ -37,7 +37,7 @@ void frmFunctions::initfrom()
 
 void frmFunctions::on_pbfunc2_clicked()
 {
-    m_dialogdealdata->show();
+	m_dialogdealdata->show();
 }
 
 void frmFunctions::on_pbintro_clicked()

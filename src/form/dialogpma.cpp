@@ -28,7 +28,7 @@ DialogPMA::~DialogPMA()
 	}
 }
 
-void DialogPMA::dealData(const QString &data, const QString &title)
+void DialogPMA::dealData(const QString& data, const QString& title)
 {
 	if(ui->comboBox_connect->currentText().contains(title))
 	{
@@ -39,7 +39,7 @@ void DialogPMA::dealData(const QString &data, const QString &title)
 	}
 }
 
-bool DialogPMA::createAndSendData(IECDataConfig &config)
+bool DialogPMA::createAndSendData(IECDataConfig& config)
 {
 	if(ui->pushButton_start->text() == QString("停止") && mProtocol)
 	{
@@ -91,7 +91,7 @@ void DialogPMA::handleData()
 		{
 			haveData = true;
 			showToText(recvData.left(mProtocol->len));
-			recvData.remove(0,mProtocol->len);
+			recvData.remove(0, mProtocol->len);
 		}
 	}
 	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && mProtocol->masterState == STATE_INIT))
@@ -139,10 +139,10 @@ void DialogPMA::startdebug()
 		delete mProtocolShow;
 		mProtocolShow = NULL;
 	}
-	if(ui->comboBox_protocol->currentText()==QString("104"))
+	if(ui->comboBox_protocol->currentText() == QString("104"))
 	{
 		IEC104 *tmp = new IEC104;
-		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 		tmp->masterState = STATE_INIT;
@@ -150,7 +150,7 @@ void DialogPMA::startdebug()
 		mProtocol = tmp;
 
 		tmp = new IEC104;
-		tmp->asdu.cotlen =ui->comboBox_cotlen->currentText().toInt();
+		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 		mProtocolShow = tmp;
@@ -192,12 +192,12 @@ void DialogPMA::showToText(QByteArray ba)
 				ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 				ui->textEdit_data->append(mProtocolShow->showToText());
 			}
-			ba.remove(0,mProtocolShow->len);
+			ba.remove(0, mProtocolShow->len);
 		}
 	}
 }
 
-void DialogPMA::emitsignals(const QString &data)
+void DialogPMA::emitsignals(const QString& data)
 {
 	if(ui->comboBox_connect->currentText().contains("TCP客户端"))
 	{
@@ -229,21 +229,21 @@ QByteArray DialogPMA::getYKYTData(uchar type)
 	short tmp_s = 0;
 	float tmp_f = 0;
 	QDateTime datetime = QDateTime::currentDateTime();
-	switch (asdutype)
+	switch(asdutype)
 	{
 	case 45:
 	case 58:
 		if(ui->comboBox_104YKvalue->currentText().contains("合"))
 		{
-			tmp += 0x01|type;
+			tmp += 0x01 | type;
 		}
 		else
 		{
 			tmp += type;
 		}
-		if(asdutype==58)
+		if(asdutype == 58)
 		{
-			tmp += dateTimeToBa(datetime,7,BINARYTIME2A);
+			tmp += dateTimeToBa(datetime, 7, BINARYTIME2A);
 		}
 		break;
 	case 46:
@@ -251,15 +251,15 @@ QByteArray DialogPMA::getYKYTData(uchar type)
 	case 59:
 		if(ui->comboBox_104YKvalue->currentText().contains("合"))
 		{
-			tmp += 0x02|type;
+			tmp += 0x02 | type;
 		}
 		else
 		{
-			tmp += 0x01|type;
+			tmp += 0x01 | type;
 		}
-		if(asdutype==59)
+		if(asdutype == 59)
 		{
-			tmp += dateTimeToBa(datetime,7,BINARYTIME2A);
+			tmp += dateTimeToBa(datetime, 7, BINARYTIME2A);
 		}
 		break;
 	case 48:
@@ -267,7 +267,7 @@ QByteArray DialogPMA::getYKYTData(uchar type)
 		tmp_s = ui->lineEdit_104YTvalue->text().toShort();
 		tmp_us = (ushort)tmp_s;
 		tmp += tmp_us & 0xff;
-		tmp += (tmp_us>>8)&0xff;
+		tmp += (tmp_us >> 8) & 0xff;
 		tmp += type;
 		break;
 	case 50:
@@ -297,7 +297,7 @@ void DialogPMA::on_pushButton_start_clicked()
 void DialogPMA::on_pushButton_sendasdu_clicked()
 {
 	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu->toPlainText());
-	if (ui->comboBox_state->currentText() == QString("模拟主站"))
+	if(ui->comboBox_state->currentText() == QString("模拟主站"))
 	{
 		config.masterState = STATE_USER;
 		config.isMaster = true;
@@ -500,7 +500,7 @@ void DialogPMA::on_pushButton_104setFloatDowm_clicked()
 	config.iec103config->gdd[0][1] = 4;
 	config.iec103config->gdd[0][2] = 1;
 	float tmp = ui->lineEdit_104setValueFloat->text().toFloat();
-	memcpy(config.iec103config->gid,&tmp,4);
+	memcpy(config.iec103config->gid, &tmp, 4);
 	createAndSendData(config);
 }
 
@@ -556,7 +556,7 @@ void DialogPMA::on_pushButton_104setUintDowm_clicked()
 	config.iec103config->gdd[0][1] = 4;
 	config.iec103config->gdd[0][2] = 1;
 	uint tmp = ui->lineEdit_104setValueUint->text().toUInt();
-	memcpy(config.iec103config->gid,&tmp,4);
+	memcpy(config.iec103config->gid, &tmp, 4);
 	createAndSendData(config);
 }
 
@@ -577,7 +577,7 @@ void DialogPMA::on_pushButton_104select_clicked()
 	config.cot = 6;
 	if(ui->checkBox_104isHex->isChecked())
 	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0,16);
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
 	}
 	else
 	{
@@ -597,7 +597,7 @@ void DialogPMA::on_pushButton_104execute_clicked()
 	config.cot = 6;
 	if(ui->checkBox_104isHex->isChecked())
 	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0,16);
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
 	}
 	else
 	{
@@ -617,7 +617,7 @@ void DialogPMA::on_pushButton_104cancel_clicked()
 	config.cot = 8;
 	if(ui->checkBox_104isHex->isChecked())
 	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0,16);
+		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
 	}
 	else
 	{
@@ -629,8 +629,8 @@ void DialogPMA::on_pushButton_104cancel_clicked()
 
 void DialogPMA::on_checkBox_104isHex_stateChanged(int arg1)
 {
-	uint ss = ui->lineEdit_104infaddr->text().toUInt(0,arg1?10:16);
-	ui->lineEdit_104infaddr->setText(QString::number(ss,arg1?16:10));
+	uint ss = ui->lineEdit_104infaddr->text().toUInt(0, arg1 ? 10 : 16);
+	ui->lineEdit_104infaddr->setText(QString::number(ss, arg1 ? 16 : 10));
 }
 
 void DialogPMA::on_pushButton_reflash_clicked()

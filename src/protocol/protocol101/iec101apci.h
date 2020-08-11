@@ -9,8 +9,8 @@ class IEC101Code : public MyBase
 public:
 	IEC101Code();
 	~IEC101Code();
-	virtual bool init(const QByteArray &buff);
-	virtual bool createData(IECDataConfig &config);
+	virtual bool init(const QByteArray& buff);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar mcode;		//功能码
@@ -21,8 +21,8 @@ class IEC101Apci : public MyBase
 public:
 	IEC101Apci();
 	~IEC101Apci();
-	virtual bool init(const QByteArray &buff);
-	virtual bool createData(IECDataConfig &config);
+	virtual bool init(const QByteArray& buff);
+	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar flag1;

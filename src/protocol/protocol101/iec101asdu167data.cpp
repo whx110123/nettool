@@ -15,7 +15,7 @@ IEC101Asdu167Data::~IEC101Asdu167Data()
 
 }
 
-bool IEC101Asdu167Data::init(const QByteArray &buff)
+bool IEC101Asdu167Data::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -34,12 +34,12 @@ bool IEC101Asdu167Data::init(const QByteArray &buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
 	len++;
 
-	if (!asdu.init(buff.mid(len, iec103len)))
+	if(!asdu.init(buff.mid(len, iec103len)))
 	{
 		return false;
 	}
 	len += asdu.len;
-	if (asdu.len != iec103len)
+	if(asdu.len != iec103len)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
@@ -55,15 +55,15 @@ QString IEC101Asdu167Data::showToText()
 	return text;
 }
 
-bool IEC101Asdu167Data::createData(IECDataConfig &config)
+bool IEC101Asdu167Data::createData(IECDataConfig& config)
 {
-	if (infaddrlen != 3)
+	if(infaddrlen != 3)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！167号报文信息体地址长度错误");
 		return false;
 	}
 	config.data += '\0';
-	config.data.append(uintToBa(config.iec103config->devaddr,2));
+	config.data.append(uintToBa(config.iec103config->devaddr, 2));
 	if(config.isMaster)
 	{
 		config.iec103config->data.clear();
@@ -84,7 +84,7 @@ QString IEC101Asdu167Data::ctrlToText()
 {
 	QString text = "保护信息传输控制字节，A/S(bit8):" + QString::number(ctrl & 0x80, 16).toUpper() + " ";
 	uchar datanum = ctrl & 0x7f;
-	if (ctrl & 0x80)
+	if(ctrl & 0x80)
 	{
 		text.append("有后续帧");
 	}

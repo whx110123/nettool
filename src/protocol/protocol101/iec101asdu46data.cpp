@@ -13,7 +13,7 @@ IEC101Asdu46Data::~IEC101Asdu46Data()
 
 }
 
-bool IEC101Asdu46Data::handle(const QByteArray &buff)
+bool IEC101Asdu46Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	dco = *(buff.data() + len);
@@ -24,9 +24,9 @@ bool IEC101Asdu46Data::handle(const QByteArray &buff)
 	return true;
 }
 
-bool IEC101Asdu46Data::createData(IECDataConfig &config)
+bool IEC101Asdu46Data::createData(IECDataConfig& config)
 {
-	config.data += uintToBa(config.infaddr,infaddrlen);
+	config.data += uintToBa(config.infaddr, infaddrlen);
 	config.data += config.infdata;
 	return true;
 }

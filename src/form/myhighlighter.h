@@ -4,13 +4,13 @@
 #include <QSyntaxHighlighter>
 class myhighlighter : public QSyntaxHighlighter
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit myhighlighter(QTextDocument *parent = 0);
+	explicit myhighlighter(QTextDocument *parent = 0);
 public:
-    QString hlstr;
-    QTextCharFormat hlformat;
-    void highlightBlock(const QString &text);
+	QString hlstr;
+	QTextCharFormat hlformat;
+	void highlightBlock(const QString& text);
 };
 
 #endif // MYHIGHLIGHTER_H
