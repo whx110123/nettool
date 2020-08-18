@@ -20,7 +20,6 @@ bool IEC101Asdu167Data::init(const QByteArray& buff)
 	setDefault(buff);
 
 	ctrl = *(buff.data() + len);
-	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + ctrlToText() + "\r\n");
 	len++;
 
@@ -30,6 +29,7 @@ bool IEC101Asdu167Data::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t保护装置地址H:" + QString::number(devaddr[1]) + "\r\n");
 	len++;
 
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	iec103len = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
 	len++;
