@@ -19,6 +19,7 @@
 #include "iec101asdu103data.h"
 #include "iec101asdu137data.h"
 #include "iec101asdu167data.h"
+#include "iec101asdu36data.h"
 
 IEC101AsduData::IEC101AsduData()
 {
@@ -139,7 +140,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	commonaddr = charTouint(buff.data() + len, comaddrlen);
 	mText.append(CharToHexStr(buff.data() + len, comaddrlen) + "\t公共地址:" + QString::number(commonaddr) + "\r\n");
 	len += comaddrlen;
-
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(type == 167)			//由于167号报文数据长度不固定,单独处理
 	{
 		IEC101AsduData *mdata = CreateAsduData(type);
@@ -352,6 +353,7 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 36:
 		text.append("带CP56Time2a时标的测量值, 短浮点数");
+		datalen = 12;
 		break;
 	case 37:
 		text.append("带CP56Time2a时标的累计量");
@@ -750,6 +752,9 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	case 32:
 		asdudata = new IEC101Asdu32Data;
+		break;
+	case 36:
+		asdudata = new IEC101Asdu36Data;
 		break;
 	case 45:
 		asdudata = new IEC101Asdu45Data;
