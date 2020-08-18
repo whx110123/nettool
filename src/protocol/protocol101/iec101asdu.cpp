@@ -20,6 +20,7 @@
 #include "iec101asdu137data.h"
 #include "iec101asdu167data.h"
 #include "iec101asdu36data.h"
+#include "iec101asdu43data.h"
 
 IEC101AsduData::IEC101AsduData()
 {
@@ -320,16 +321,6 @@ QString IEC101Asdu::typeToText()
 		text.append("测量值, 不带品质描述词的规一化值");
 		datalen = 2;
 		break;
-	case 22:
-	case 23:
-	case 24:
-	case 25:
-	case 26:
-	case 27:
-	case 28:
-	case 29:
-		text.append("未定义，保留");
-		break;
 	case 30:
 		text.append("带CP56Time2a时标的单点信息");
 		datalen = 8;
@@ -367,9 +358,10 @@ QString IEC101Asdu::typeToText()
 	case 40:
 		text.append("带CP56Time2a时标的继电保护设备成组输出电路信息");
 		break;
-	case 41:
-	case 42:
 	case 43:
+		text.append("文件传输(一键顺控扩展功能)");
+		datalen = 1;
+		break;
 	case 44:
 		text.append("未定义，保留");
 		break;
@@ -397,60 +389,9 @@ QString IEC101Asdu::typeToText()
 	case 51:
 		text.append("32比特串");
 		break;
-	case 52:
-	case 53:
-	case 54:
-	case 55:
-	case 56:
-	case 57:
-	case 58:
-	case 59:
-	case 60:
-	case 61:
-	case 62:
-	case 63:
-	case 64:
-	case 65:
-	case 66:
-	case 67:
-	case 68:
-	case 69:
-		text.append("未定义，保留");
-		break;
 	case 70:
 		text.append("初始化结束");
 		datalen = 1;
-		break;
-	case 71:
-	case 72:
-	case 73:
-	case 74:
-	case 75:
-	case 76:
-	case 77:
-	case 78:
-	case 79:
-	case 80:
-	case 81:
-	case 82:
-	case 83:
-	case 84:
-	case 85:
-	case 86:
-	case 87:
-	case 88:
-	case 89:
-	case 90:
-	case 91:
-	case 92:
-	case 93:
-	case 94:
-	case 95:
-	case 96:
-	case 97:
-	case 98:
-	case 99:
-		text.append("未定义，保留");
 		break;
 	case 100:
 		text.append("总召唤命令");
@@ -476,11 +417,6 @@ QString IEC101Asdu::typeToText()
 	case 106:
 		text.append("延时获得命今");
 		break;
-	case 107:
-	case 108:
-	case 109:
-		text.append("未定义，保留");
-		break;
 	case 110:
 		text.append("测量值参数, 规一化值");
 		break;
@@ -492,14 +428,6 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 113:
 		text.append("参数激活");
-		break;
-	case 114:
-	case 115:
-	case 116:
-	case 117:
-	case 118:
-	case 119:
-		text.append("未定义，保留");
 		break;
 	case 120:
 		text.append("文件淮备就绪");
@@ -535,7 +463,7 @@ QString IEC101Asdu::typeToText()
 		datalen = 1;
 		break;
 	default:
-		text.append("未知ASDU类型，无法继续解析");
+		text.append("未知ASDU类型");
 		datalen = 0;
 		break;
 	}
@@ -755,6 +683,9 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	case 36:
 		asdudata = new IEC101Asdu36Data;
+		break;
+	case 43:
+		asdudata = new IEC101Asdu43Data;
 		break;
 	case 45:
 		asdudata = new IEC101Asdu45Data;
