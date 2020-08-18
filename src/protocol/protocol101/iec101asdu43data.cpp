@@ -21,13 +21,14 @@ bool IEC101Asdu43Data::init(const QByteArray& buff)
 	len++;
 
 	index = charTouint(buff.data() + len, 4);
-	mText.append(CharToHexStr(buff.data() + len) + "\t起始传输位置:" + QString::number(index) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len, 4) + "\t起始传输位置:" + QString::number(index) + "\r\n");
 	len += 4;
 
 	QByteArray ba(buff.data() + len, buff.length() - len - 1);
 	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
 	filedata = gbk->toUnicode(ba);
-	mText.append(CharToHexStr(buff.data() + len, buff.length() - len - 1) + "\t文件内容:" + filedata);
+	mText.append(CharToHexStr(buff.data() + len, buff.length() - len - 1) + "\t文件内容:\r\n" + filedata + "\r\n");
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	len = buff.length() - 1;
 
 	uchar crctmp = crcsum(buff.data(), 5, len - 1);

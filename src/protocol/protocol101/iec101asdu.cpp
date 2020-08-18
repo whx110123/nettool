@@ -142,7 +142,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len, comaddrlen) + "\t公共地址:" + QString::number(commonaddr) + "\r\n");
 	len += comaddrlen;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	if(type == 167)			//由于167号报文数据长度不固定,单独处理
+	if(type == 167 || type == 43)			//由于167号报文数据长度不固定,单独处理
 	{
 		IEC101AsduData *mdata = CreateAsduData(type);
 		if(!mdata)
