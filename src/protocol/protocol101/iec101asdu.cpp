@@ -389,6 +389,10 @@ QString IEC101Asdu::typeToText()
 	case 51:
 		text.append("32比特串");
 		break;
+	case 55:
+		text.append("序列控制命令交互(一键顺控扩展功能)");
+		datalen = 1;
+		break;
 	case 70:
 		text.append("初始化结束");
 		datalen = 1;

@@ -302,7 +302,7 @@ QString erToText(uchar ch)
 
 QString qoiToText(uchar ch)
 {
-	QString text = "召唤限定词:" + QString::number(ch) + " ";
+	QString text = "召唤限定词QOI:" + QString::number(ch) + " ";
 	switch(ch)
 	{
 	case 20:
