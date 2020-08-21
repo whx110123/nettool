@@ -9,8 +9,6 @@ public:
 	IEC101Asdu55Data();
 	~IEC101Asdu55Data();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar code;		//序列控制命令限定词
@@ -23,7 +21,7 @@ public:
 	QString user;	//操作用户名
 private:
 	QString codeToText();
-	QString stepToText();
+	QString riiToText();
 };
 
 #endif // IEC101ASDU55DATA_H

@@ -1,8 +1,15 @@
 ﻿#include "iec101asdu55data.h"
 
+#include <QTextCodec>
+
 IEC101Asdu55Data::IEC101Asdu55Data()
 {
-
+	code = 0;
+	index = 0;
+	objlen = 0;
+	step = 0;
+	rii = 0;
+	userlen = 0;
 }
 
 IEC101Asdu55Data::~IEC101Asdu55Data()
@@ -10,24 +17,60 @@ IEC101Asdu55Data::~IEC101Asdu55Data()
 
 }
 
-bool IEC101Asdu55Data::init(const QByteArray &buff)
+bool IEC101Asdu55Data::init(const QByteArray& buff)
 {
+	setDefault(buff);
 
-}
+	code = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + codeToText() + "\r\n");
+	len++;
 
-QString IEC101Asdu55Data::showToText()
-{
+	index = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t控制对象顺序号:" + QString::number(index) + "\r\n");
+	len++;
 
-}
+	objlen = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t控制对象长度:" + QString::number(objlen) + "\r\n");
+	len++;
 
-bool IEC101Asdu55Data::createData(IECDataConfig &config)
-{
+	QByteArray ba(buff.data() + len, objlen);
+	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+	obj = gbk->toUnicode(ba);
+	mText.append(CharToHexStr(buff.data() + len, objlen) + "\t控制对象:" + obj + "\r\n");
+	len += objlen;
 
+	step = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t步骤号:" + QString::number(step) + (step > 0 ? QString() : QString("  0代表整张票")) + "\r\n");
+	len++;
+
+	if(buff.length() == 5 + objlen)
+	{
+		rii = *(buff.data() + len);
+		mText.append(CharToHexStr(buff.data() + len) + "\t" + riiToText() + "\r\n");
+		len++;
+	}
+	else if(buff.length() > 5 + objlen)
+	{
+		userlen = *(buff.data() + len);
+		mText.append(CharToHexStr(buff.data() + len) + "\t操作用户名长度:" + QString::number(userlen) + "\r\n");
+		len++;
+
+		QByteArray ba(buff.data() + len, userlen);
+		user = gbk->toUnicode(ba);
+		mText.append(CharToHexStr(buff.data() + len, userlen) + "\t操作用户名 :" + user + "\r\n");
+		len += userlen;
+	}
+	else
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度错误");
+		return false;
+	}
+	return true;
 }
 
 QString IEC101Asdu55Data::codeToText()
 {
-	QString text = "序列控制命令限定词:" + QString::number(code&0x7f) + " ";
+	QString text = "序列控制命令限定词:" + QString::number(code & 0x7f) + " ";
 	switch(code & 0x7f)
 	{
 	case 0:
@@ -82,7 +125,26 @@ QString IEC101Asdu55Data::codeToText()
 	return text;
 }
 
-QString IEC101Asdu55Data::stepToText()
+QString IEC101Asdu55Data::riiToText()
 {
-
+	QString text = "返回信息功能码:" + QString::number(rii) + " ";
+	switch(rii)
+	{
+	case 0:
+		text.append("成功");
+		break;
+	case 1:
+		text.append("操作执行不成功");
+		break;
+	case 2:
+		text.append("操作前条件不满足");
+		break;
+	case 3:
+		text.append("异常终止");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
 }
