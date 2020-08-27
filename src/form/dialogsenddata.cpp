@@ -42,10 +42,6 @@ void DialogSendData::initfrom()
 	mapline.insert(8, ui->linedata8);
 	mapline.insert(9, ui->linedata9);
 	mapline.insert(10, ui->linedata10);
-	mapline.insert(11, ui->linedata11);
-	mapline.insert(12, ui->linedata12);
-	mapline.insert(13, ui->linedata13);
-	mapline.insert(14, ui->linedata14);
 
 	mapchk.insert(1, ui->checkBox1);
 	mapchk.insert(2, ui->checkBox2);
@@ -57,10 +53,7 @@ void DialogSendData::initfrom()
 	mapchk.insert(8, ui->checkBox8);
 	mapchk.insert(9, ui->checkBox9);
 	mapchk.insert(10, ui->checkBox10);
-	mapchk.insert(11, ui->checkBox11);
-	mapchk.insert(12, ui->checkBox12);
-	mapchk.insert(13, ui->checkBox13);
-	mapchk.insert(14, ui->checkBox14);
+
 }
 
 void DialogSendData::initdataList()
