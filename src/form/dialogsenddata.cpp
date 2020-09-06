@@ -63,7 +63,7 @@ void DialogSendData::initdataList()
 
 	QString data;
 	mapstr.clear();
-	for(int i = 0; i < 14; i++)
+	for(int i = 0; i < mapline.size(); i++)
 	{
 		data = mapline[i + 1]->text();
 		if(mapchk[i + 1]->isChecked() && !data.trimmed().isEmpty())
@@ -289,7 +289,7 @@ void DialogSendData::on_pushButton_clicked()
 
 		file.close();
 	}
-	for(int i = 0; i < dataList.size() && i < 14; i++)
+	for(int i = 0; i < dataList.size() && i < mapline.size(); i++)
 	{
 		mapline[i + 1]->setText(dataList.at(i));
 	}
@@ -306,7 +306,7 @@ void DialogSendData::on_pushButton_2_clicked()
 	QPalette palette2;
 	palette2.setColor(QPalette::Base, Qt::white);
 
-	for(int i = 0; i < 14; i++)
+	for(int i = 0; i < mapline.size(); i++)
 	{
 		mapline[i + 1]->clear();
 		mapline[i + 1]->setPalette(palette2);
@@ -317,6 +317,10 @@ void DialogSendData::on_pushButton_2_clicked()
 void DialogSendData::on_btnopenfile_clicked()
 {
 	QString fileDir = QFileDialog::getOpenFileName(this, tr("打开对话框"), "", "");
+	if(fileDir.isEmpty())
+	{
+		return;
+	}
 
 	QFile file(fileDir);
 	if(file.open(QFile::ReadOnly | QIODevice::Text))
@@ -353,3 +357,93 @@ void DialogSendData::on_btnsendfile_clicked()
 }
 
 
+
+void DialogSendData::on_pushButton_send1_clicked()
+{
+	QString data = ui->linedata1->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send2_clicked()
+{
+	QString data = ui->linedata2->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send3_clicked()
+{
+	QString data = ui->linedata3->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send4_clicked()
+{
+	QString data = ui->linedata4->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send5_clicked()
+{
+	QString data = ui->linedata5->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send6_clicked()
+{
+	QString data = ui->linedata6->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send7_clicked()
+{
+	QString data = ui->linedata7->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send8_clicked()
+{
+	QString data = ui->linedata8->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send9_clicked()
+{
+	QString data = ui->linedata9->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}
+
+void DialogSendData::on_pushButton_send10_clicked()
+{
+	QString data = ui->linedata10->text().trimmed();
+	if(!data.isEmpty())
+	{
+		emitsignals(data);
+	}
+}

@@ -82,6 +82,27 @@ private slots:
 
 //	void on_pushButton_sendasdu_clicked();
 
+	void on_pushButton_send1_clicked();
+
+	void on_pushButton_send2_clicked();
+
+	void on_pushButton_send3_clicked();
+
+	void on_pushButton_send4_clicked();
+
+
+	void on_pushButton_send5_clicked();
+
+	void on_pushButton_send6_clicked();
+
+	void on_pushButton_send7_clicked();
+
+	void on_pushButton_send8_clicked();
+
+	void on_pushButton_send9_clicked();
+
+	void on_pushButton_send10_clicked();
+
 private:
 	Ui::DialogSendData *ui;
 };

@@ -189,6 +189,13 @@
            <item>
             <widget class="QLineEdit" name="linedata1"/>
            </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send1">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -202,6 +209,13 @@
            </item>
            <item>
             <widget class="QLineEdit" name="linedata2"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send2">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -217,6 +231,13 @@
            <item>
             <widget class="QLineEdit" name="linedata3"/>
            </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send3">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -230,6 +251,13 @@
            </item>
            <item>
             <widget class="QLineEdit" name="linedata4"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send4">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -245,6 +273,13 @@
            <item>
             <widget class="QLineEdit" name="linedata5"/>
            </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send5">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -258,6 +293,13 @@
            </item>
            <item>
             <widget class="QLineEdit" name="linedata6"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send6">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -273,6 +315,13 @@
            <item>
             <widget class="QLineEdit" name="linedata7"/>
            </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send7">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -286,6 +335,13 @@
            </item>
            <item>
             <widget class="QLineEdit" name="linedata8"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send8">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -301,6 +357,13 @@
            <item>
             <widget class="QLineEdit" name="linedata9"/>
            </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send9">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -314,6 +377,13 @@
            </item>
            <item>
             <widget class="QLineEdit" name="linedata10"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_send10">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
