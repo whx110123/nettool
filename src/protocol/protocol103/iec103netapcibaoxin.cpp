@@ -34,24 +34,6 @@ bool IEC103NetApciBaoXin::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len, 2) + "\t长度域:" + QString::number(length) + "\r\n");
 	len += 2;
 
-	uchar tmp = *(buff.data() + len);
-
-	if(tmp & 0x01)
-	{
-		if(tmp & 0x02)
-		{
-			control.type = UTYPE;
-		}
-		else
-		{
-			control.type = STYPE;
-		}
-	}
-	else
-	{
-		control.type = ITYPE;
-
-	}
 	if(!control.init(buff.mid(len, 4)))
 	{
 		return false;

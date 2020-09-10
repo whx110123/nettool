@@ -29,45 +29,61 @@ bool IEC104Control::init(const QByteArray& buff)
 	slaveState = STATE_NORMAL;
 
 	code = *(buff.data() + len);
+	if(code & 0x01)
+	{
+		if(code & 0x02)
+		{
+			type = UTYPE;
+		}
+		else
+		{
+			type = STYPE;
+		}
+	}
+	else
+	{
+		type = ITYPE;
+	}
+
 	switch(type)
 	{
 	case UTYPE:
 		{
-			mText.append(CharToHexStr(buff.data() + len) + "\tU帧报文(bit1与bit2都为1) 无编号，起控制链路等功能\r\n\t");
+			mText.append(CharToHexStr(buff.data() + len) + "\tU帧报文(bit1-2):3 无编号，起控制链路等功能\r\n\t");
 			int sum = 0;
 			if(code & 0x80)
 			{
-				mText.append("(bit8):1 子站确认TESTFR，子站响应启用测试\r\n");
+				mText.append("(bit8):80 确认TESTFR，响应测试\r\n");
 				masterState = STATE_TESTACT;
 				slaveState = STATE_TESTACT;
 				sum++;
 			}
 			if(code & 0x40)
 			{
-				mText.append("(bit7):1 主站激活TESTFR，主站启用测试\r\n");
+				mText.append("(bit7):40 激活TESTFR，启用测试\r\n");
 				masterState = STATE_TESTCONFIRM;
 				slaveState = STATE_TESTCONFIRM;
 				sum++;
 			}
 			if(code & 0x20)
 			{
-				mText.append("(bit6):1 子站确认STOPDT，子站响应停止链路\r\n");
+				mText.append("(bit6):20 子站确认STOPDT，子站响应停止链路\r\n");
 				sum++;
 			}
 			if(code & 0x10)
 			{
-				mText.append("(bit5):1 主站激活STOPDT，主站停止链路\r\n");
+				mText.append("(bit5):10 主站激活STOPDT，主站停止链路\r\n");
 				sum++;
 			}
 			if(code & 0x08)
 			{
-				mText.append("(bit4):1 子站确认STARTDT，子站响应激活链路\r\n");
+				mText.append("(bit4):8 子站确认STARTDT，子站响应激活链路\r\n");
 				masterState = STATE_CALLALL;
 				sum++;
 			}
 			if(code & 0x04)
 			{
-				mText.append("(bit3):1 主站激活STARTDT，主站激活链路\r\n");
+				mText.append("(bit3):4 主站激活STARTDT，主站激活链路\r\n");
 				slaveState = STATE_INIT;
 				sum++;
 			}
@@ -103,7 +119,7 @@ bool IEC104Control::init(const QByteArray& buff)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t出错！当此字节后2位bit是0和1，可以确定是S帧，但S帧其他bit必须为0，条件不满足，因此报文有问题");
 			return false;
 		}
-		mText.append(CharToHexStr(buff.data() + len) + "\tS帧报文(bit1为1，bit2为0) 带编号，用于监视报文序号\r\n");
+		mText.append(CharToHexStr(buff.data() + len) + "\tS帧报文(bit1-2):1 带编号，用于监视报文序号\r\n");
 		len++;
 		if(*(buff.data() + len) != 0)
 		{
@@ -298,24 +314,6 @@ bool IEC104Apci::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t长度域:" + QString::number(length) + "\r\n");
 	len++;
 
-	uchar tmp = *(buff.data() + len);
-
-	if(tmp & 0x01)
-	{
-		if(tmp & 0x02)
-		{
-			control.type = UTYPE;
-		}
-		else
-		{
-			control.type = STYPE;
-		}
-	}
-	else
-	{
-		control.type = ITYPE;
-
-	}
 	if(!control.init(buff.mid(len, 4)))
 	{
 		return false;
