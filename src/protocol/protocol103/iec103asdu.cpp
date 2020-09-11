@@ -415,45 +415,81 @@ QString IEC103Asdu::typeToText()
 	case 31:
 		text.append("传送结束");
 		break;
+	case 32:
+		text.append("带时标的被测值III");
+		break;
+	case 33:
+		text.append("带时标的被测值IV");
+		break;
+	case 34:
+		text.append("带时标的向量被测值V");
+		break;
+	case 35:
+		text.append("带时标的向量被测值VI");
+		break;
 	case 36:
-		text.append("电能脉冲量上送");
+		text.append("电能脉冲计数量");
 		endflag = IEC103END_RII;
 		break;
+	case 37:
+		text.append("带时标的电能脉冲计数量");
+		break;
 	case 38:
-		text.append("总查询及变位上送步位置");
+		text.append("步位置信息");
 		break;
 	case 39:
-		text.append("步位置的SOE");
+		text.append("带时标的步位置信息");
 		break;
 	case 40:
-		text.append("上送变位遥信");
+		text.append("单点状态信息");
 		endflag = IEC103END_SIN;
 		break;
 	case 41:
-		text.append("上送SOE");
+		text.append("带时标的单点状态信息");
 		endflag = IEC103END_SIN;
 		break;
 	case 42:
-		text.append("总控上送变位遥信");
+		text.append("双点状态信息");
 		endflag = IEC103END_SIN;
 		break;
 	case 43:
-		text.append("总控上送SOE");
+		text.append("带时标的双点状态信息");
 		endflag = IEC103END_SIN;
 		break;
 	case 44:
-		text.append("上送全遥信");
+		text.append("单点状态和状态变位检出");
 		endflag = IEC103END_SIN;
 		break;
+	case 45:
+		text.append("带时标的单点状态和状态变位检出");
+		break;
+	case 46:
+		text.append("双点状态和状态变位检出");
+		break;
+	case 47:
+		text.append("带时标的双点状态和状态变位检出");
+		break;
+	case 48:
+		text.append("水位");
+		break;
 	case 50:
-		text.append("遥测上送");
+		text.append("被测值VII");
 		break;
 	case 51:
-		text.append("总控超过门限值的遥测上送");
+		text.append("变化的被测值VII");
 		break;
 	case 64:
-		text.append("遥控选择/执行/撤消");
+		text.append("控制断路器命令");
 		endflag = IEC103END_RII;
+		break;
+	case 65:
+		text.append("升降命令");
+		break;
+	case 66:
+		text.append("设定命令");
+		break;
+	case 67:
+		text.append("控制命令");
 		break;
 	case 88:
 		text.append("电能脉冲量召唤（冻结）");
