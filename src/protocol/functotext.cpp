@@ -769,6 +769,9 @@ QString gdd1ToText(uchar ch)
 	case 201:
 		text.append("遥脉数据");
 		break;
+	case 205:
+		text.append("故障测量数据");
+		break;
 	default:
 		text.append("备用");
 		break;
