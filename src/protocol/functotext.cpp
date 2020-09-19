@@ -842,3 +842,184 @@ QString grcToText(uchar ch)
 	}
 	return text;
 }
+
+QString sofToText(uchar ch)
+{
+	QString text;
+	text.append("故障状态SOF:");
+	text.append("\r\n\tTP(bit1):" + QString::number(ch & 0x01, 16).toUpper() + " ");
+	if(ch & 0x01)
+	{
+		text.append("被记录的故障跳闸");
+	}
+	else
+	{
+		text.append("被记录的故障未跳闸");
+	}
+
+	text.append("\r\n\tTM(bit2):" + QString::number(ch & 0x02, 16).toUpper() + " ");
+	if(ch & 0x02)
+	{
+		text.append("扰动数据正在传输");
+	}
+	else
+	{
+		text.append("扰动数据等待传输");
+	}
+
+	text.append("\r\n\tTEST(bit3):" + QString::number(ch & 0x04, 16).toUpper() + " ");
+	if(ch & 0x04)
+	{
+		text.append("在测试模式下被记录的扰动数据");
+	}
+	else
+	{
+		text.append("在正常操作时被记录的扰动数据");
+	}
+
+	text.append("\r\n\tOTEV(bit4):" + QString::number(ch & 0x08, 16).toUpper() + " ");
+	if(ch & 0x08)
+	{
+		text.append("由其他事件触发被记录的扰动数据");
+	}
+	else
+	{
+		text.append("由启动/检出故障触发被记录的扰动数据");
+	}
+	return text;
+}
+
+QString tooToText(uchar ch)
+{
+	QString text;
+	text.append("TOO:" + QString::number(ch) + " 命令类型:");
+	switch(ch)
+	{
+	case 1:
+		text.append("故障的选择");
+		break;
+	case 2:
+		text.append("请求扰动数据");
+		break;
+	case 3:
+		text.append("中止扰动数据");
+		break;
+	case 8:
+		text.append("通道的请求");
+		break;
+	case 9:
+		text.append("通道的中止");
+		break;
+	case 16:
+		text.append("请求带标志的状态变位");
+		break;
+	case 17:
+		text.append("中止带标志的状态变位");
+		break;
+	case 24:
+		text.append("请求被记录扰动表");
+		break;
+	case 32:
+		text.append("不带中止的扰动数据传输的结束");
+		break;
+	case 33:
+		text.append("由控制系统所中止的扰动数据传输的结束");
+		break;
+	case 34:
+		text.append("由继电保护设备(或间隔单元)所中止的扰动数据传输的结束");
+		break;
+	case 35:
+		text.append("不带中止的通道传输的结束");
+		break;
+	case 36:
+		text.append("由控制系统所中止的通道传输的结束");
+		break;
+	case 37:
+		text.append("由继电保护设备(或间隔单元)所中止的通道传输的结束");
+		break;
+	case 38:
+		text.append("不带中止的带标志的状态变位的传输的结束");
+		break;
+	case 39:
+		text.append("由控制系统所中止的带标志的状态变位的传输的结束");
+		break;
+	case 40:
+		text.append("由继电保护设备(或间隔单元)所中止的带标志的状态变位传输的结束");
+		break;
+	case 64:
+		text.append("成功的扰动数据传输(肯定)");
+		break;
+	case 65:
+		text.append("不成功的扰动数据传输(否定)");
+		break;
+	case 66:
+		text.append("成功的通道传输(肯定)");
+		break;
+	case 67:
+		text.append("不成功的通道传输(否定)");
+		break;
+	case 68:
+		text.append("成功的带标志的状态变位传输(肯定)");
+		break;
+	case 69:
+		text.append("不成功的带标志的状态变位传输(否定)");
+		break;
+	default:
+		text.append("备用");
+		break;
+	}
+	return text;
+}
+
+QString tovToText(uchar ch)
+{
+	QString text = "TOV:" + QString::number(ch) + " 扰动值的类型:";
+	if(ch == 1)
+	{
+		text.append("瞬时值");
+	}
+	else
+	{
+		text.append("未定义");
+	}
+	return text;
+}
+
+QString accToText(uchar ch)
+{
+	QString text = "ACC:" + QString::number(ch) + " 实际通道序号:";
+	switch(ch)
+	{
+	case 0:
+		text.append("全局");
+		break;
+	case 1:
+		text.append("I(L1)");
+		break;
+	case 2:
+		text.append("I(L2)");
+		break;
+	case 3:
+		text.append("I(L3)");
+		break;
+	case 4:
+		text.append("I(N)");
+		break;
+	case 5:
+		text.append("U(L1E)");
+		break;
+	case 6:
+		text.append("U(L2E)");
+		break;
+	case 7:
+		text.append("U(L3E)");
+		break;
+	case 8:
+		text.append("U(EN)");
+		break;
+	default:
+		text.append("备用");
+		break;
+	}
+	return text;
+}

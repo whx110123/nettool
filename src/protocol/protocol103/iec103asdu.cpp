@@ -12,6 +12,10 @@
 #include "iec103asdu51data.h"
 #include "iec103asdu8data.h"
 #include "iec103asdu42data.h"
+#include "iec103asdu23data.h"
+#include "iec103asdu24data.h"
+#include "iec103asdu25data.h"
+#include "iec103asdu26data.h"
 
 
 IEC103AsduData::IEC103AsduData()
@@ -242,8 +246,10 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			case 50:
 			case 51:
 				isOk = mdata->init(buff.mid(len), fun);
+				break;
 			default:
 				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此asdu信息体地址未知");
+				return false;
 				break;
 			}
 		}
@@ -635,6 +641,18 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		break;
 	case 21:
 		asdudata = new IEC103Asdu21Data;
+		break;
+	case 23:
+		asdudata = new IEC103Asdu23Data;
+		break;
+	case 24:
+		asdudata = new IEC103Asdu24Data;
+		break;
+	case 25:
+		asdudata = new IEC103Asdu25Data;
+		break;
+	case 26:
+		asdudata = new IEC103Asdu26Data;
 		break;
 	case 42:
 		asdudata = new IEC103Asdu42Data;

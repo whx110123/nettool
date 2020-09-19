@@ -57,12 +57,12 @@ short charToshortwithQ(uchar *data, int model = 0);
 short charToshortwithQ(const char *data, int model = 0);
 float charTofloat(const char *data, int model = 0);
 float charTofloat(uchar *data, int model = 0);
-QDateTime charToDateTime(uchar *data, int len, int model); //将len个uchar合成一个日期,model时间类型
-QDateTime charToDateTime(const char *data, int len, int model);//将len个char合成一个日期,model时间类型
+QDateTime charToDateTime(uchar *data, int len, int model = BINARYTIME2A); //将len个uchar合成一个日期,model时间类型
+QDateTime charToDateTime(const char *data, int len, int model = BINARYTIME2A);//将len个char合成一个日期,model时间类型
 
 QByteArray uintToBa(uint data, int len);
 QByteArray floatToBa(float data);
-QByteArray dateTimeToBa(QDateTime datatime, int len, int model);
+QByteArray dateTimeToBa(QDateTime datatime, int len, int model = BINARYTIME2A);
 
 uchar crcsum(const char *data, int start, int end);
 
