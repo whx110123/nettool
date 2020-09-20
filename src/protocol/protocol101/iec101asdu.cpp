@@ -159,6 +159,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 			return false;
 		}
 		datalist.append(mdata);
+		len += mdata->len;
 		return true;
 	}
 
@@ -250,7 +251,7 @@ QString IEC101Asdu::typeToText()
 {
 	other = 0;
 	datalen = 0;
-	QString text = "ASDU" + QString::number(type) + ":类型标识 ";
+	QString text = "类型标识ASDU" + QString::number(type) + "   ";
 	switch(type)
 	{
 	case 1:
@@ -478,8 +479,9 @@ QString IEC101Asdu::typeToText()
 QString IEC101Asdu::vsqToText()
 {
 	QString text;
-	text.append("VSQ 可变结构限定词，信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n");
-	text.append("\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + " ");
+	text.append("可变结构限定词VSQ");
+	text.append("\r\n\t数目(bit1-7):" + QString::number(datanum) + "   信息元素数量");
+	text.append("\r\n\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + "   ");
 	if(sqflag)
 	{
 		text.append("只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1");
@@ -494,7 +496,7 @@ QString IEC101Asdu::vsqToText()
 
 QString IEC101Asdu::cotToText()
 {
-	QString text = "COT(bit1-6):" + QString::number(cot[0] & 0x3f) + " 传送原因:";
+	QString text = "传送原因COT(bit1-6):" + QString::number(cot[0] & 0x3f) + "   ";
 	switch(cot[0] & 0x3f)
 	{
 	case 1:
@@ -630,23 +632,23 @@ QString IEC101Asdu::cotToText()
 		text.append("未知，无法识别当前的传送原因");
 		break;
 	}
-	text.append("   P/N(bit7):");
+	text.append("\r\n\tP/N(bit7):");
 	if(cot[0] & 0x40)
 	{
-		text.append("1 否定确认");
+		text.append("40   否定确认");
 	}
 	else
 	{
-		text.append("0 肯定确认");
+		text.append("0   肯定确认");
 	}
-	text.append("   T(bit8):");
+	text.append("\r\n\tT(bit8):");
 	if(cot[0] & 0x80)
 	{
-		text.append("1 试验状态");
+		text.append("80   试验状态");
 	}
 	else
 	{
-		text.append("0 未试验");
+		text.append("0   未试验");
 	}
 
 	return text;

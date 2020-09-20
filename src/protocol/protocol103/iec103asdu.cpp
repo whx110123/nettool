@@ -14,8 +14,11 @@
 #include "iec103asdu42data.h"
 #include "iec103asdu23data.h"
 #include "iec103asdu24data.h"
-#include "iec103asdu25data.h"
 #include "iec103asdu26data.h"
+#include "iec103asdu27data.h"
+#include "iec103asdu28data.h"
+#include "iec103asdu29data.h"
+#include "iec103asdu30data.h"
 
 
 IEC103AsduData::IEC103AsduData()
@@ -346,7 +349,7 @@ bool IEC103Asdu::createData(IECDataConfig& config)
 
 QString IEC103Asdu::typeToText()
 {
-	QString text = "ASDU" + QString::number(type) + ":类型标识 ";
+	QString text = "类型标识ASDU" + QString::number(type) + "   ";
 	endflag = IEC103END_NO;
 	switch(type)
 	{
@@ -511,8 +514,9 @@ QString IEC103Asdu::typeToText()
 QString IEC103Asdu::vsqToText()
 {
 	QString text;
-	text.append("VSQ 可变结构限定词，信息元素数量(bit1-7):" + QString::number(datanum) + " \r\n");
-	text.append("\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + " ");
+	text.append("可变结构限定词VSQ");
+	text.append("\r\n\t数目(bit1-7):" + QString::number(datanum) + "   信息元素数量");
+	text.append("\r\n\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + "   ");
 	if(sqflag)
 	{
 		text.append("每个信息元素都有独自的地址");
@@ -526,7 +530,7 @@ QString IEC103Asdu::vsqToText()
 
 QString IEC103Asdu::cotToText()
 {
-	QString text = "COT:" + QString::number(cot) + " 传送原因:";
+	QString text = "传送原因COT:" + QString::number(cot) + "   ";
 	switch(cot)
 	{
 	case 1:
@@ -646,13 +650,24 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		asdudata = new IEC103Asdu23Data;
 		break;
 	case 24:
-		asdudata = new IEC103Asdu24Data;
-		break;
 	case 25:
-		asdudata = new IEC103Asdu25Data;
+	case 31:
+		asdudata = new IEC103Asdu24Data;
 		break;
 	case 26:
 		asdudata = new IEC103Asdu26Data;
+		break;
+	case 27:
+		asdudata = new IEC103Asdu27Data;
+		break;
+	case 28:
+		asdudata = new IEC103Asdu28Data;
+		break;
+	case 29:
+		asdudata = new IEC103Asdu29Data;
+		break;
+	case 30:
+		asdudata = new IEC103Asdu30Data;
 		break;
 	case 42:
 		asdudata = new IEC103Asdu42Data;

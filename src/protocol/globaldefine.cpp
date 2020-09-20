@@ -118,13 +118,13 @@ QDateTime charToDateTime(uchar *data, int len, int model)
 {
 	QDateTime datetime = QDateTime::currentDateTime();
 	ushort tmp = 0;
-	ushort milliseconds = 0;
-	uchar second = 0;
-	uchar minutes = 0;
-	uchar hours = 0;
-	uchar dayofmonths = 0;
-	uchar months = 0;
-	ushort years = 0;
+	ushort milliseconds = datetime.time().msec();
+	uchar second = datetime.time().second();
+	uchar minutes = datetime.time().minute();
+	uchar hours = datetime.time().hour();
+	uchar dayofmonths = datetime.date().day();
+	uchar months = datetime.date().month();
+	ushort years = datetime.date().year();
 
 	switch(model)
 	{
@@ -156,7 +156,7 @@ QDateTime charToDateTime(uchar *data, int len, int model)
 		{
 			break;
 		}
-		years = (ushort)(data[6] & 0x7f) + ((ushort)datetime.date().year() / 100) * 100;
+		years = (ushort)(data[6] & 0x7f) + (years / 100) * 100;
 		break;
 	case BINARYTIME2B:
 		break;

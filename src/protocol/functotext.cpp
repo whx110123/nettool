@@ -892,7 +892,7 @@ QString sofToText(uchar ch)
 QString tooToText(uchar ch)
 {
 	QString text;
-	text.append("TOO:" + QString::number(ch) + " 命令类型:");
+	text.append("命令类型TOO:" + QString::number(ch) + "   ");
 	switch(ch)
 	{
 	case 1:
@@ -973,7 +973,7 @@ QString tooToText(uchar ch)
 
 QString tovToText(uchar ch)
 {
-	QString text = "TOV:" + QString::number(ch) + " 扰动值的类型:";
+	QString text = "扰动值的类型TOV:" + QString::number(ch) + "   ";
 	if(ch == 1)
 	{
 		text.append("瞬时值");
@@ -987,7 +987,7 @@ QString tovToText(uchar ch)
 
 QString accToText(uchar ch)
 {
-	QString text = "ACC:" + QString::number(ch) + " 实际通道序号:";
+	QString text = "实际通道序号ACC:" + QString::number(ch) + "   ";
 	switch(ch)
 	{
 	case 0:
