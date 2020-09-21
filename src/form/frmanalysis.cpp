@@ -37,11 +37,15 @@ void frmAnalysis::initForm()
 	ui->comboBox_comaddrlen->addItems(list);
 	list << "3";
 	ui->comboBox_infaddrlen->addItems(list);
+	QStringList list1 = QStringList();
+	list1 << IEC_SINGLE << IEC_DOUBLESAME << IEC_DOUBLEDIFF;
+	ui->comboBox_lengthtype->addItems(list1);
 }
 
 void frmAnalysis::initConfig()
 {
 	ui->protocolcbox->setCurrentIndex(ui->protocolcbox->findText(App::DefaultProtocol));
+	ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
 	ui->comboBox_cotlen->setCurrentText("2");
 	ui->comboBox_comaddrlen->setCurrentText("2");
 	ui->comboBox_infaddrlen->setCurrentText("3");
@@ -60,34 +64,47 @@ void frmAnalysis::on_clearBtn_clicked()
 
 void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 {
-	ui->comboBox_cotlen->setCurrentText("1");
-	ui->comboBox_comaddrlen->setCurrentText("1");
-	ui->comboBox_infaddrlen->setCurrentText("1");
 	if(arg1 == IEC_104)
 	{
+		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
 		ui->comboBox_cotlen->setCurrentText("2");
 		ui->comboBox_comaddrlen->setCurrentText("2");
 		ui->comboBox_infaddrlen->setCurrentText("3");
 	}
 	else if(arg1 == IEC_101)
 	{
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLESAME);
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("2");
 	}
 	else if(arg1 == IEC_103WISCOMNET)
 	{
-
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
 	else if(arg1 == IEC_103COM)
 	{
-
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLESAME);
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
 	else if(arg1 == IEC_103ASDU)
 	{
-
+		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
 	else if(arg1 == IEC_103BAOXINNET)
 	{
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_cotlen->setCurrentText("1");
 		ui->comboBox_comaddrlen->setCurrentText("2");
+		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
 }
 
@@ -252,6 +269,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
 	{
 		IEC104 *tmp = new IEC104;
+		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
 		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
@@ -260,6 +278,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_101)      //分析101报文
 	{
 		IEC101 *tmp = new IEC101;
+		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
 		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
@@ -268,6 +287,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
 	{
 		IEC103NetWiscom *tmp = new IEC103NetWiscom;
+		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
 		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
@@ -276,6 +296,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_103COM)
 	{
 		IEC103COM *tmp = new IEC103COM;
+		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
 		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
@@ -283,6 +304,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_103BAOXINNET)
 	{
 		IEC103NetBaoXin *tmp = new IEC103NetBaoXin;
+//		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
 		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
@@ -310,6 +332,10 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 			}
 			else
 			{
+				if(ui->checkBox_error->isChecked())
+				{
+					tmp.append(myprotocol->showToText());
+				}
 				tmp.append(myprotocol->error);
 				break;
 			}

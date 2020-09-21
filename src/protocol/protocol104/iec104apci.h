@@ -1,7 +1,6 @@
 ﻿#ifndef IEC104APCI_H
 #define IEC104APCI_H
 
-//#include "iec104control.h"
 
 #include <QByteArray>
 #include <QString>
@@ -36,7 +35,8 @@ public:
 
 public:
 	uchar first;
-	uchar length;
+	ushort length;
+	QString lengthType;
 	IEC104Control control;
 
 };

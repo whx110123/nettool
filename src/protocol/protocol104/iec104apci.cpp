@@ -284,6 +284,7 @@ IEC104Apci::IEC104Apci()
 {
 	first = 0;
 	length = 0;
+	lengthType = IEC_SINGLE;
 }
 
 IEC104Apci::~IEC104Apci()
@@ -295,24 +296,49 @@ bool IEC104Apci::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(buff.length() < 6)
-	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满6个字节，条件不满足，因此报文有问题");
-		return false;
-	}
+
 	first = *(buff.data() + len);
 	if(first != 0x68)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t启动字符不是0x68");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t出错！启动字符不是0x68");
 		return false;
 	}
 
 	mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
 	len++;
 
-	length = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t长度域:" + QString::number(length) + "\r\n");
-	len++;
+	int lengthlen = 0;
+	if(lengthType == IEC_DOUBLESAME)
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
+		return false;
+	}
+	else
+	{
+		if(lengthType == IEC_SINGLE)
+		{
+			lengthlen = 1;
+		}
+		else if(lengthType == IEC_DOUBLEDIFF)
+		{
+			lengthlen = 2;
+		}
+		else
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t出错！未知的长度域类型");
+			return false;
+		}
+
+		length = charTouint(buff.data() + len, lengthlen);
+		mText.append(CharToHexStr(buff.data() + len, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");
+		len += lengthlen;
+	}
+
+	if(buff.length() < lengthlen + 5)
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不足，条件不满足，因此报文有问题");
+		return false;
+	}
 
 	if(!control.init(buff.mid(len, 4)))
 	{

@@ -38,6 +38,8 @@ IEC101Apci::IEC101Apci()
 	flag1 = 0;
 	length1 = 0;
 	length2 = 0;
+	length = 0;
+	lengthType = IEC_DOUBLESAME;
 	flag2 = 0;
 	addr = 0;
 }
@@ -103,7 +105,7 @@ bool IEC101Apci::init(const QByteArray& buff)
 	}
 	else
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t启动字符不是0x68");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t出错！启动字符不是0x68");
 		return false;
 	}
 

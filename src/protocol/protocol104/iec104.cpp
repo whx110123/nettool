@@ -14,8 +14,31 @@ IEC104::~IEC104()
 bool IEC104::init(const QByteArray& buff)
 {
 	setDefault(buff);
-	const int APCI_LEN = 6;				//APCI总字节数
-	const int LENGTH_LEN = 1;			//长度域字节数
+
+	int LENGTH_LEN = 0;				//长度域字节数
+	if(apci.lengthType == IEC_DOUBLESAME)
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
+		return false;
+	}
+	else
+	{
+		if(apci.lengthType == IEC_SINGLE)
+		{
+			LENGTH_LEN = 1;
+		}
+		else if(apci.lengthType == IEC_DOUBLEDIFF)
+		{
+			LENGTH_LEN = 2;
+		}
+		else
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
+			return false;
+		}
+	}
+	int APCI_LEN = LENGTH_LEN + 5;	//APCI总字节数
+
 	if(buff.count() < APCI_LEN)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！报文总长不满%1个字节，条件不满足，因此报文有问题\r\n").arg(APCI_LEN));

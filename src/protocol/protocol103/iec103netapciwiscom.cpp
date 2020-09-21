@@ -5,6 +5,7 @@ IEC103NetApciWiscom::IEC103NetApciWiscom()
 	masterState = STATE_INIT;
 	first = 0;
 	length = 0;
+	lengthType = IEC_DOUBLEDIFF;
 	source_factory_addr = 0;
 	memset(source_dev_addr, 0, sizeof(source_dev_addr));
 	destination_factory_addr = 0;

@@ -28,6 +28,8 @@ public:
 	uchar flag1;
 	uchar length1;
 	uchar length2;
+	ushort length;
+	QString lengthType;
 	uchar flag2;
 	IEC101Code code;
 	uchar addr;

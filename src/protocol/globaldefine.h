@@ -74,5 +74,7 @@ uchar crcsum(const char *data, int start, int end);
 #define IEC_103COM "串口103"
 #define IEC_103ASDU "103ASDU"
 #define IEC_103BAOXINNET "保信网络103"
-
+#define IEC_SINGLE "单字节"
+#define IEC_DOUBLESAME "双字节 重复"
+#define IEC_DOUBLEDIFF "双字节 组合"
 #endif // GLOBALDEFINE_H

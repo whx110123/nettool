@@ -18,6 +18,7 @@ public:
 public:
 	uchar first;					//启动字符
 	ushort length;					//长度域
+	QString lengthType;
 	IEC104Control control;			//104控制域
 	uchar source_factory_addr;		//源厂站地址
 	uchar source_dev_addr[2];		//源设备地址
