@@ -43,6 +43,11 @@ private slots:
 
 	void on_pushButton_Analysis_clicked();
 
+
+	void on_pushButton_change_clicked();
+
+	void on_pushButton_clean_clicked();
+
 private:
 
 	Ui::frmAnalysis *ui;

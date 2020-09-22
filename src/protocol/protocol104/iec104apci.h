@@ -30,6 +30,7 @@ public:
 	IEC104Apci();
 	~IEC104Apci();
 	virtual bool init(const QByteArray& buff);
+	virtual bool handle(const QByteArray& buff);				//单独处理多出来的数据
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig& config);
 

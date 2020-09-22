@@ -16,19 +16,20 @@ bool IEC103COM::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(buff.count() < 5)
+	if(buff.count() < apci.addrLen + 4)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于5");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 		return false;
 	}
+	int LENGTH_LEN = stringToInt(apci.lengthType);	//长度域字节数
 	int APCI_LEN = 0;
 	if(*buff.data() == 0x68)
 	{
-		APCI_LEN = 6;
+		APCI_LEN = 3 + LENGTH_LEN + apci.addrLen;
 	}
 	else if(*buff.data() == 0x10)
 	{
-		APCI_LEN = 3;
+		APCI_LEN = 2 + apci.addrLen;
 	}
 	else
 	{
@@ -40,7 +41,7 @@ bool IEC103COM::init(const QByteArray& buff)
 		mRecvData = buff.left(APCI_LEN);
 		return false;
 	}
-	len = APCI_LEN + apci.length1;
+	len = APCI_LEN + apci.length;
 	masterState = apci.masterState;
 	slaveState = apci.slaveState;
 	if(len > buff.count())
@@ -50,7 +51,7 @@ bool IEC103COM::init(const QByteArray& buff)
 	}
 	mRecvData = buff.left(len);
 
-	if(apci.flag1 == 0x68 && buff.count() > APCI_LEN + 3)
+	if(apci.flag == 0x68 && buff.count() > APCI_LEN + 3)
 	{
 		if(!asdu.init(buff.mid(APCI_LEN, len - APCI_LEN - 2)))
 		{
@@ -59,7 +60,7 @@ bool IEC103COM::init(const QByteArray& buff)
 		masterState = asdu.masterState;
 		slaveState = asdu.slaveState;
 	}
-	else if(apci.flag1 == 0x10)
+	else if(apci.flag == 0x10)
 	{
 		if(len != APCI_LEN + 2)
 		{
@@ -95,7 +96,7 @@ QString IEC103COM::showToText()
 {
 	QString text;
 	text.append(apci.showToText());
-	if(apci.flag1 == 0x68)
+	if(apci.flag == 0x68)
 	{
 		text.append(asdu.showToText());
 	}

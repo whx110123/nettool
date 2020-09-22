@@ -15,29 +15,8 @@ bool IEC104::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	int LENGTH_LEN = 0;				//长度域字节数
-	if(apci.lengthType == IEC_DOUBLESAME)
-	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
-		return false;
-	}
-	else
-	{
-		if(apci.lengthType == IEC_SINGLE)
-		{
-			LENGTH_LEN = 1;
-		}
-		else if(apci.lengthType == IEC_DOUBLEDIFF)
-		{
-			LENGTH_LEN = 2;
-		}
-		else
-		{
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
-			return false;
-		}
-	}
-	int APCI_LEN = LENGTH_LEN + 5;	//APCI总字节数
+	int LENGTH_LEN = stringToInt(apci.lengthType);	//长度域字节数
+	int APCI_LEN = LENGTH_LEN + 5;					//APCI总字节数
 
 	if(buff.count() < APCI_LEN)
 	{
@@ -59,6 +38,7 @@ bool IEC104::init(const QByteArray& buff)
 		return false;
 	}
 	mRecvData = buff.left(len);
+
 	if(apci.control.type == ITYPE && buff.count() <= APCI_LEN)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");

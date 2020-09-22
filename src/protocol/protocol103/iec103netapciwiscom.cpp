@@ -18,37 +18,14 @@ IEC103NetApciWiscom::~IEC103NetApciWiscom()
 
 }
 
-bool IEC103NetApciWiscom::init(const QByteArray& buff)
+bool IEC103NetApciWiscom::handle(const QByteArray& buff)
 {
-	setDefault(buff);
-
-	if(buff.count() < 15)
+	int lengthlen = stringToInt(lengthType);
+	if(buff.count() < lengthlen + 13)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满15个字节");
 		return false;
 	}
-	first = *(buff.data() + len);
-	if(first != 0x68)
-	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
-		return false;
-	}
-	mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\n");
-	len++;
-
-	length = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t长度域:" + QString::number(length) + "\r\n");
-	len += 2;
-
-
-	if(!control.init(buff.mid(len, 4)))
-	{
-		return false;
-	}
-	masterState = control.masterState;
-	mText.append(control.showToText());
-	len += 4;
-
 	source_factory_addr = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\t源厂站地址:" + QString::number(source_factory_addr) + "\r\n");
 	len++;
@@ -74,7 +51,6 @@ bool IEC103NetApciWiscom::init(const QByteArray& buff)
 	len++;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	return true;
-
 }
 
 QString IEC103NetApciWiscom::showToText()

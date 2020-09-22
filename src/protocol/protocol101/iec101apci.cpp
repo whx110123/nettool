@@ -35,13 +35,11 @@ bool IEC101Code::createData(IECDataConfig& config)
 }
 IEC101Apci::IEC101Apci()
 {
-	flag1 = 0;
-	length1 = 0;
-	length2 = 0;
+	flag = 0;
 	length = 0;
 	lengthType = IEC_DOUBLESAME;
-	flag2 = 0;
 	addr = 0;
+	addrLen = 1;
 }
 
 IEC101Apci::~IEC101Apci()
@@ -53,55 +51,69 @@ bool IEC101Apci::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(buff.count() < 3)
+	if(buff.count() < 2 + addrLen)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于3");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 		return false;
 	}
-	flag1 = *(buff.data() + len);
+	flag = *(buff.data() + len);
 
-	if(flag1 == 0x68)
+	if(flag == 0x68)
 	{
-		if(buff.count() < 6)
-		{
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度小于6");
-			return false;
-		}
+
 		mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
 		len++;
 
-		length1 = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\t长度域1:" + QString::number(length1) + "\r\n");
-		len++;
-
-		length2 = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\t长度域2:" + QString::number(length2) + "\r\n");
-		len++;
-
-		if(length1 != length2)
+		int lengthlen = stringToInt(lengthType);
+		if(lengthlen == 0)
 		{
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度域不同");
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
+			return false;
+		}
+		if(lengthType == IEC_DOUBLESAME)
+		{
+			length = *(buff.data() + len);
+			mText.append(CharToHexStr(buff.data() + len) + "\t长度域1:" + QString::number(length) + "\r\n");
+			len++;
+
+			uchar length2 = *(buff.data() + len);
+			mText.append(CharToHexStr(buff.data() + len) + "\t长度域2:" + QString::number(length2) + "\r\n");
+			len++;
+
+			if(length != length2)
+			{
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度域不同");
+				return false;
+			}
+		}
+		else if(lengthType == IEC_SINGLE || lengthType == IEC_DOUBLEDIFF)
+		{
+			length = charTouint(buff.data() + len, lengthlen);
+			mText.append(CharToHexStr(buff.data() + len, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");
+			len += lengthlen;
+		}
+
+		if(buff.count() < 3 + lengthlen + addrLen)
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 			return false;
 		}
 
-		flag2 = *(buff.data() + len);
+		uchar flag2 = *(buff.data() + len);
 		mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
 		len++;
-		if(flag2 != 0x68)
+		if(flag2 != flag)
 		{
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！第二个标志位错误");
 			return false;
 		}
 
 	}
-	else if(flag1 == 0x10)
+	else if(flag == 0x10)
 	{
 		mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x10\r\n");
 		len++;
-		length1 = 2;
-		length2 = 2;
-		flag2 = flag1;
-
+		length = 1 + addrLen;
 	}
 	else
 	{
@@ -118,9 +130,9 @@ bool IEC101Apci::init(const QByteArray& buff)
 	mText.append(code.showToText());
 	len++;
 
-	addr = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t地址域:" + QString::number(addr) + "\r\n");
-	len++;
+	addr = charTouint(buff.data() + len, addrLen);
+	mText.append(CharToHexStr(buff.data() + len, addrLen) + "\t地址域:" + QString::number(addr) + "\r\n");
+	len += addrLen;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	return true;
 

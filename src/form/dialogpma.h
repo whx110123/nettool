@@ -79,6 +79,16 @@ private slots:
 
 	void on_pushButton_104callall_clicked();
 
+	void on_pushButton_sendasdu_2_clicked();
+
+	void on_pushButton_sendasdu_3_clicked();
+
+	void on_pushButton_sendasdu_4_clicked();
+
+	void on_pushButton_sendasdu_5_clicked();
+
+	void on_pushButton_sendasdu_6_clicked();
+
 private:
 	Ui::DialogPMA *ui;
 	MyBase *mProtocol;

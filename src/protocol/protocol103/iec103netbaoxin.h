@@ -2,7 +2,7 @@
 #define IEC103NETBAOXIN_H
 
 #include "iec103asdu.h"
-#include "iec103netapcibaoxin.h"
+#include <iec104apci.h>
 
 
 
@@ -16,7 +16,7 @@ public:
 	virtual bool createData(IECDataConfig& config);
 
 public:
-	IEC103NetApciBaoXin apci;
+	IEC104Apci apci;
 	IEC103Asdu asdu;
 };
 

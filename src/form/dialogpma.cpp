@@ -672,3 +672,88 @@ void DialogPMA::on_pushButton_104callall_clicked()
 	config.isMaster = true;
 	createAndSendData(config);
 }
+
+void DialogPMA::on_pushButton_sendasdu_2_clicked()
+{
+	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_2->toPlainText());
+	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+	{
+		config.masterState = STATE_USER;
+		config.isMaster = true;
+	}
+	else
+	{
+		config.isMaster = false;
+		config.slaveState = STATE_USER;
+	}
+	config.asdutype = 0;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_sendasdu_3_clicked()
+{
+	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_3->toPlainText());
+	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+	{
+		config.masterState = STATE_USER;
+		config.isMaster = true;
+	}
+	else
+	{
+		config.isMaster = false;
+		config.slaveState = STATE_USER;
+	}
+	config.asdutype = 0;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_sendasdu_4_clicked()
+{
+	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_4->toPlainText());
+	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+	{
+		config.masterState = STATE_USER;
+		config.isMaster = true;
+	}
+	else
+	{
+		config.isMaster = false;
+		config.slaveState = STATE_USER;
+	}
+	config.asdutype = 0;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_sendasdu_5_clicked()
+{
+	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_5->toPlainText());
+	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+	{
+		config.masterState = STATE_USER;
+		config.isMaster = true;
+	}
+	else
+	{
+		config.isMaster = false;
+		config.slaveState = STATE_USER;
+	}
+	config.asdutype = 0;
+	createAndSendData(config);
+}
+
+void DialogPMA::on_pushButton_sendasdu_6_clicked()
+{
+	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_6->toPlainText());
+	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+	{
+		config.masterState = STATE_USER;
+		config.isMaster = true;
+	}
+	else
+	{
+		config.isMaster = false;
+		config.slaveState = STATE_USER;
+	}
+	config.asdutype = 0;
+	createAndSendData(config);
+}

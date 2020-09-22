@@ -307,28 +307,19 @@ bool IEC104Apci::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
 	len++;
 
-	int lengthlen = 0;
+	int lengthlen = stringToInt(lengthType);
+	if(lengthlen == 0)
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
+		return false;
+	}
 	if(lengthType == IEC_DOUBLESAME)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
 		return false;
 	}
-	else
+	else if(lengthType == IEC_SINGLE || lengthType == IEC_DOUBLEDIFF)
 	{
-		if(lengthType == IEC_SINGLE)
-		{
-			lengthlen = 1;
-		}
-		else if(lengthType == IEC_DOUBLEDIFF)
-		{
-			lengthlen = 2;
-		}
-		else
-		{
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t出错！未知的长度域类型");
-			return false;
-		}
-
 		length = charTouint(buff.data() + len, lengthlen);
 		mText.append(CharToHexStr(buff.data() + len, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");
 		len += lengthlen;
@@ -347,15 +338,30 @@ bool IEC104Apci::init(const QByteArray& buff)
 	len += 4;
 	masterState = control.masterState;
 	slaveState = control.slaveState;
+	mText.append(control.showToText());
+	if(buff.length() == len)
+	{
+		return true;
+	}
+
+	if(!handle(buff))
+	{
+		return false;
+	}
 	return true;
 
+}
+
+bool IEC104Apci::handle(const QByteArray& buff)
+{
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未解析相关部分");
+	return false;
 }
 
 
 QString IEC104Apci::showToText()
 {
 	QString text(mText);
-	text.append(control.showToText());
 	return text;
 }
 

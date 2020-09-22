@@ -33,6 +33,7 @@ void frmAnalysis::initForm()
 	ui->protocolcbox->addItems(App::Protocollst);
 	QStringList list = QStringList();
 	list << "1" << "2";
+	ui->comboBox_addrlen->addItems(list);
 	ui->comboBox_cotlen->addItems(list);
 	ui->comboBox_comaddrlen->addItems(list);
 	list << "3";
@@ -46,6 +47,7 @@ void frmAnalysis::initConfig()
 {
 	ui->protocolcbox->setCurrentIndex(ui->protocolcbox->findText(App::DefaultProtocol));
 	ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+	ui->comboBox_addrlen->setCurrentText("1");
 	ui->comboBox_cotlen->setCurrentText("2");
 	ui->comboBox_comaddrlen->setCurrentText("2");
 	ui->comboBox_infaddrlen->setCurrentText("3");
@@ -67,6 +69,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	if(arg1 == IEC_104)
 	{
 		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("2");
 		ui->comboBox_comaddrlen->setCurrentText("2");
 		ui->comboBox_infaddrlen->setCurrentText("3");
@@ -74,6 +77,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	else if(arg1 == IEC_101)
 	{
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLESAME);
+		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
 		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("2");
@@ -81,6 +85,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	else if(arg1 == IEC_103WISCOMNET)
 	{
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
 		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("1");
@@ -88,6 +93,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	else if(arg1 == IEC_103COM)
 	{
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLESAME);
+		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
 		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("1");
@@ -95,6 +101,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	else if(arg1 == IEC_103ASDU)
 	{
 		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
 		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("1");
@@ -102,6 +109,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	else if(arg1 == IEC_103BAOXINNET)
 	{
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
 		ui->comboBox_comaddrlen->setCurrentText("2");
 		ui->comboBox_infaddrlen->setCurrentText("1");
@@ -279,6 +287,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	{
 		IEC101 *tmp = new IEC101;
 		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
+		tmp->apci.addrLen = ui->comboBox_addrlen->currentText().toInt();
 		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
@@ -297,6 +306,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	{
 		IEC103COM *tmp = new IEC103COM;
 		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
+		tmp->apci.addrLen = ui->comboBox_addrlen->currentText().toInt();
 		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
@@ -304,7 +314,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	else if(ui->protocolcbox->currentText() == IEC_103BAOXINNET)
 	{
 		IEC103NetBaoXin *tmp = new IEC103NetBaoXin;
-//		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
+		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
 		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
@@ -345,4 +355,41 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		delete myprotocol;
 		myprotocol = NULL;
 	}
+}
+
+
+void frmAnalysis::on_pushButton_change_clicked()
+{
+	QString data = ui->originaltext->toPlainText();
+	if(ui->pushButton_change->text() == "字母大写")
+	{
+		ui->pushButton_change->setText("字母小写");
+		ui->originaltext->setText(data.toUpper());
+	}
+	else
+	{
+		ui->pushButton_change->setText("字母大写");
+		ui->originaltext->setText(data.toLower());
+	}
+}
+
+void frmAnalysis::on_pushButton_clean_clicked()
+{
+	QString data = ui->originaltext->toPlainText();
+	QStringList datalist = data.split('\n');
+	data.clear();
+	for(int i = 0; i < datalist.count(); i++)
+	{
+		QString tmp = datalist.at(i).trimmed();
+		if(tmp.isEmpty())
+		{
+			continue;
+		}
+		if((tmp.at(0) >= '0' && tmp.at(0) <= '9') || (tmp.at(0) >= 'a' && tmp.at(0) <= 'f') || (tmp.at(0) >= 'A' && tmp.at(0) <= 'F'))
+		{
+			data.append(tmp + "\n");
+		}
+
+	}
+	ui->originaltext->setText(data.trimmed());
 }

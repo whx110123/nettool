@@ -254,3 +254,23 @@ uchar crcsum(const char *data, int start, int end)
 }
 
 
+
+int stringToInt(QString data)
+{
+	int tmp = 0;				//长度域字节数
+	if(data == IEC_SINGLE)
+	{
+		tmp = 1;
+	}
+	else if(data == IEC_DOUBLESAME)
+	{
+		tmp = 2;
+	}
+	else if(data == IEC_DOUBLEDIFF)
+	{
+		tmp = 2;
+	}
+
+	return tmp;
+
+}

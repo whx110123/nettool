@@ -13,8 +13,10 @@ IEC103NetWiscom::~IEC103NetWiscom()
 bool IEC103NetWiscom::init(const QByteArray& buff)
 {
 	setDefault(buff);
-	const int APCI_LEN = 15;			//APCI总字节数
-	const int LENGTH_LEN = 2;			//长度域字节数
+
+	int LENGTH_LEN = stringToInt(apci.lengthType);	//长度域字节数
+	int APCI_LEN = LENGTH_LEN + 13;					//APCI总字节数
+
 	if(buff.count() < APCI_LEN)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！报文总长不满%1个字节，条件不满足，因此报文有问题\r\n").arg(APCI_LEN));
@@ -35,6 +37,7 @@ bool IEC103NetWiscom::init(const QByteArray& buff)
 		return false;
 	}
 	mRecvData = buff.left(len);
+
 	if(apci.control.type == ITYPE && buff.count() <= APCI_LEN)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
@@ -67,11 +70,12 @@ bool IEC103NetWiscom::init(const QByteArray& buff)
 QString IEC103NetWiscom::showToText()
 {
 	QString text(mText);
-	if(len > 14)
+	int LENGTH_LEN = stringToInt(apci.lengthType);	//长度域字节数
+	if(len > LENGTH_LEN + 12)
 	{
 		text.append(apci.showToText());
 	}
-	if(len > 15 && apci.control.type == ITYPE)
+	if(len > LENGTH_LEN + 13 && apci.control.type == ITYPE)
 	{
 		text.append(asdu.showToText());
 	}

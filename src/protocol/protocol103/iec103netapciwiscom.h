@@ -6,20 +6,16 @@
 
 
 
-class IEC103NetApciWiscom  : public MyBase
+class IEC103NetApciWiscom  : public IEC104Apci
 {
 public:
 	IEC103NetApciWiscom();
 	~IEC103NetApciWiscom();
-	virtual bool init(const QByteArray& buff);
+	virtual bool handle(const QByteArray& buff);				//单独处理多出来的数据
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig& config);
 
 public:
-	uchar first;					//启动字符
-	ushort length;					//长度域
-	QString lengthType;
-	IEC104Control control;			//104控制域
 	uchar source_factory_addr;		//源厂站地址
 	uchar source_dev_addr[2];		//源设备地址
 	uchar destination_factory_addr;	//目的厂站地址

@@ -25,14 +25,12 @@ public:
 	virtual bool createData(IECDataConfig& config);
 
 public:
-	uchar flag1;
-	uchar length1;
-	uchar length2;
-	ushort length;
-	QString lengthType;
-	uchar flag2;
-	IEC101Code code;
-	uchar addr;
+	uchar flag;				//启动字符
+	ushort length;			//长度域
+	QString lengthType;		//长度域类型
+	IEC101Code code;		//功能码
+	ushort addr;			//地址域
+	int addrLen;			//地址域字节数
 };
 
 #endif // IEC101APCI_H
