@@ -994,28 +994,28 @@ QString accToText(uchar ch)
 		text.append("全局");
 		break;
 	case 1:
-		text.append("I(L1)");
+		text.append("Ia");
 		break;
 	case 2:
-		text.append("I(L2)");
+		text.append("Ib");
 		break;
 	case 3:
-		text.append("I(L3)");
+		text.append("Ic");
 		break;
 	case 4:
-		text.append("I(N)");
+		text.append("I0");
 		break;
 	case 5:
-		text.append("U(L1E)");
+		text.append("Ua");
 		break;
 	case 6:
-		text.append("U(L2E)");
+		text.append("Ub");
 		break;
 	case 7:
-		text.append("U(L3E)");
+		text.append("Uc");
 		break;
 	case 8:
-		text.append("U(EN)");
+		text.append("U0");
 		break;
 	default:
 		text.append("备用");

@@ -114,6 +114,14 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 		ui->comboBox_comaddrlen->setCurrentText("2");
 		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
+	else if(arg1 == IEC_103HUABEI)
+	{
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
 }
 
 void frmAnalysis::on_highlightEdit_textChanged(const QString& arg1)
@@ -283,7 +291,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 		myprotocol = tmp;
 	}
-	else if(ui->protocolcbox->currentText() == IEC_101)      //分析101报文
+	else if(ui->protocolcbox->currentText() == IEC_101)		//分析101报文
 	{
 		IEC101 *tmp = new IEC101;
 		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
@@ -302,7 +310,8 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		myprotocol = tmp;
 
 	}
-	else if(ui->protocolcbox->currentText() == IEC_103COM)
+	else if(ui->protocolcbox->currentText() == IEC_103COM ||		//分析串口103报文
+			ui->protocolcbox->currentText() == IEC_103HUABEI)      //分析华北103报文
 	{
 		IEC103COM *tmp = new IEC103COM;
 		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
