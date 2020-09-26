@@ -28,6 +28,7 @@ private:
 	QTimer *timer;
 private slots:
 	void initForm();
+	void initIP();
 	void initConfig();
 	void saveConfig();
 	void changeTimer();
@@ -35,6 +36,7 @@ private slots:
 
 	void connected();
 	void disconnected();
+	void errorConnected(QAbstractSocket::SocketError);
 	void readData();
 	void sendData(const QString& data);
 

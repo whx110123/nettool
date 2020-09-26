@@ -143,6 +143,16 @@
        <widget class="QComboBox" name="cboxInterval"/>
       </item>
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>客户端地址</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_client"/>
+      </item>
+      <item>
        <widget class="QLabel" name="labServerIP">
         <property name="text">
          <string>服务器地址</string>

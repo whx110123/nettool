@@ -6,6 +6,7 @@ frmTcpClient::frmTcpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcp
 {
 	ui->setupUi(this);
 	this->initForm();
+	this->initIP();
 	this->initConfig();
 }
 
@@ -32,7 +33,7 @@ void frmTcpClient::initForm()
 	isOk = false;
 	tcpSocket = new QTcpSocket(this);
 	connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
-	connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
+	connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(errorConnected(QAbstractSocket::SocketError)));
 	connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(readData()));
 
@@ -40,6 +41,44 @@ void frmTcpClient::initForm()
 	connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 	ui->cboxInterval->addItems(App::Intervals);
 	ui->cboxData->addItems(App::Datas);
+}
+
+void frmTcpClient::initIP()
+{
+	//获取本机所有IP
+	QStringList ips;
+	QList<QNetworkInterface> netInterfaces = QNetworkInterface::allInterfaces();
+	foreach(const QNetworkInterface&  netInterface, netInterfaces)
+	{
+		//移除虚拟机和抓包工具的虚拟网卡
+		QString humanReadableName = netInterface.humanReadableName().toLower();
+		if(humanReadableName.startsWith("vmware network adapter") || humanReadableName.startsWith("npcap loopback adapter"))
+		{
+			continue;
+		}
+
+		//过滤当前网络接口
+		bool flag = (netInterface.flags() == (QNetworkInterface::IsUp | QNetworkInterface::IsRunning | QNetworkInterface::CanBroadcast | QNetworkInterface::CanMulticast));
+		if(flag)
+		{
+			QList<QNetworkAddressEntry> addrs = netInterface.addressEntries();
+			foreach(QNetworkAddressEntry addr, addrs)
+			{
+				//只取出IPV4的地址
+				if(addr.ip().protocol() == QAbstractSocket::IPv4Protocol)
+				{
+					QString ip4 = addr.ip().toString();
+					if(ip4 != "127.0.0.1")
+					{
+						ips.append(ip4);
+					}
+				}
+			}
+		}
+	}
+	ui->comboBox_client->addItem("默认");
+	ui->comboBox_client->addItems(ips);
+	ui->comboBox_client->addItem("127.0.0.1");
 }
 
 void frmTcpClient::initConfig()
@@ -166,6 +205,15 @@ void frmTcpClient::disconnected()
 	append(1, "服务器断开");
 }
 
+void frmTcpClient::errorConnected(QAbstractSocket::SocketError socketError)
+{
+	isOk = false;
+	tcpSocket->abort();
+	ui->btnConnect->setText("连接");
+	QString data = QString("连接出错 , 错误类型:%1  %2").arg(socketError).arg(tcpSocket->errorString());
+	append(1, data);
+}
+
 void frmTcpClient::readData()
 {
 	QByteArray data = tcpSocket->readAll();
@@ -246,6 +294,10 @@ void frmTcpClient::on_btnConnect_clicked()
 	if(ui->btnConnect->text() == "连接")
 	{
 		tcpSocket->abort();
+		if(ui->comboBox_client->currentText() != "默认")
+		{
+			tcpSocket->bind(QHostAddress(ui->comboBox_client->currentText()));
+		}
 		tcpSocket->connectToHost(App::TcpServerIP, App::TcpServerPort);
 	}
 	else
