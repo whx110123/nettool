@@ -44,4 +44,5 @@ QString grcToText(uchar ch);
 QString tooToText(uchar ch);
 QString tovToText(uchar ch);
 QString accToText(uchar ch);
+QString scqToText(uchar ch);
 #endif // FUNCTOTEXT_H

@@ -1023,3 +1023,62 @@ QString accToText(uchar ch)
 	}
 	return text;
 }
+
+QString scqToText(uchar ch)
+{
+	QString text = "选择召唤限定词SCQ:\r\n\tbit(1-4): " + QString::number(ch & 0x0f) + "  ";
+	switch(ch & 0x0f)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("选择文件");
+		break;
+	case 2:
+		text.append("召唤文件");
+		break;
+	case 3:
+		text.append("停止激活文件");
+		break;
+	case 4:
+		text.append("删除文件");
+		break;
+	case 5:
+		text.append("召唤节");
+		break;
+	case 6:
+		text.append("停止激活节");
+		break;
+	case 7:
+		text.append("召唤目录");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	text.append("\r\n\tbit(5-8): " + QString::number((ch >> 4) & 0x0f) + "  ");
+	switch((ch >> 4) & 0x0f)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("无被请求的存储空间");
+		break;
+	case 2:
+		text.append("非所期望的通信服务");
+		break;
+	case 3:
+		text.append("非所期望的文件名称");
+		break;
+	case 4:
+		text.append("非所期望的节名称");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+
+	return text;
+}

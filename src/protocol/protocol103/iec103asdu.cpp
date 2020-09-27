@@ -19,6 +19,8 @@
 #include "iec103asdu28data.h"
 #include "iec103asdu29data.h"
 #include "iec103asdu30data.h"
+#include "iec103asdu220data.h"
+#include "iec103asdu221data.h"
 
 
 IEC103AsduData::IEC103AsduData()
@@ -251,7 +253,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 				isOk = mdata->init(buff.mid(len), fun);
 				break;
 			default:
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此asdu信息体地址未知");
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此asdu sq方式未知");
 				return false;
 				break;
 			}
@@ -504,8 +506,39 @@ QString IEC103Asdu::typeToText()
 		text.append("电能脉冲量召唤（冻结）");
 		endflag = IEC103END_RII;
 		break;
+	case 220:
+		text.append("通用历史数据查询（金智103专用）");
+		endflag = IEC103END_RII;
+		break;
+	case 221:
+		text.append("文件目录召唤（金智103专用）");
+		break;
+	case 222:
+		text.append("文件目录响应（金智103专用）");
+		break;
+	case 223:
+		text.append("文件准备就绪（金智103专用）");
+		break;
+	case 224:
+		text.append("节准备就绪帧（金智103专用）");
+		break;
+	case 225:
+		text.append("段的发送帧（金智103专用）");
+		break;
+	case 226:
+		text.append("后的段、最后的节表示帧（金智103专用）");
+		break;
+	case 227:
+		text.append("文件确认或节确认帧（金智103专用）");
+		break;
+	case 228:
+		text.append("遥控校验命令（金智103专用）");
+		break;
+	case 229:
+		text.append("遥控校验结果（金智103专用）");
+		break;
 	default:
-		text.append("未知ASDU类型，无法继续解析");
+		text.append("未知ASDU类型，无法继续解析（金智103专用）");
 		break;
 	}
 	return text;
@@ -592,6 +625,15 @@ QString IEC103Asdu::cotToText()
 		break;
 	case 44:
 		text.append("通用分类写确认");
+		break;
+	case 128:
+		text.append("历史数据查询(金智103专用)");
+		break;
+	case 129:
+		text.append("历史数据查询结束(金智103专用)");
+		break;
+	case 130:
+		text.append("文件传输(金智103专用)");
 		break;
 	default:
 		text.append("未知，无法识别当前的传送原因");
@@ -680,6 +722,12 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		break;
 	case 51:
 		asdudata = new IEC103Asdu51Data;
+		break;
+	case 220:
+		asdudata = new IEC103Asdu220Data;
+		break;
+	case 221:
+		asdudata = new IEC103Asdu221Data;
 		break;
 	default:
 		break;

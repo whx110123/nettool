@@ -3,6 +3,7 @@
 
 #include <QByteArray>
 #include "globaldefine.h"
+#include "functotext.h"
 
 
 class DataConfig
