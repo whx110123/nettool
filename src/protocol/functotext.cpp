@@ -889,6 +889,34 @@ QString sofToText(uchar ch)
 	return text;
 }
 
+QString sofToText_asdu222(uchar ch)
+{
+	QString text = "文件状态SOF:";
+	text.append("\r\n\tSTATUS(bit1-5):" + QString::number(ch & 0x1f, 16).toUpper() + " ");
+	switch(ch & 0x1f)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	default:
+		text.append("预留");
+		break;
+	}
+
+	text.append("\r\n\tRES1(bit6):" + QString::number(ch & 0x20, 16).toUpper() + " 预留");
+	text.append("\r\n\tFOR(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " 预留");
+	text.append("\r\n\tFA(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
+	if(ch & 0x80)
+	{
+		text.append("文件传输已被激活");
+	}
+	else
+	{
+		text.append("文件等待传输");
+	}
+	return text;
+}
+
 QString tooToText(uchar ch)
 {
 	QString text;
@@ -1080,5 +1108,38 @@ QString scqToText(uchar ch)
 		break;
 	}
 
+	return text;
+}
+
+
+QString frqToText(uchar ch)
+{
+	QString text = "准备好限定词FRQ:";
+	text.append("\r\n\tbit(1-7):" + QString::number(ch & 0x7f, 16).toUpper() + " 预留");
+	text.append("\r\n\tbit8: " + QString::number(ch & 0x80, 16) + "  ");
+	if(ch & 0x80)
+	{
+		text.append("为否定确认");
+	}
+	else
+	{
+		text.append("为肯定确认");
+	}
+	return text;
+}
+
+QString srqToText(uchar ch)
+{
+	QString text = "准备好限定词SRQ:";
+	text.append("\r\n\tbit(1-7):" + QString::number(ch & 0x7f, 16).toUpper() + " 预留");
+	text.append("\r\n\tbit8: " + QString::number(ch & 0x80, 16) + "  ");
+	if(ch & 0x80)
+	{
+		text.append("节未准备好装载");
+	}
+	else
+	{
+		text.append("节准备好装载");
+	}
 	return text;
 }

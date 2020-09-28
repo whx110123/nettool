@@ -35,6 +35,7 @@ QString qosToText(uchar ch);
 QString timeToText(const char *time, int timelen);
 QString timeToText(uchar *time, int timelen);
 QString sofToText(uchar ch);
+QString sofToText_asdu222(uchar ch);
 QString ngdToText(uchar ch);
 QString nogToText(uchar ch);
 QString kodToText(uchar ch);
@@ -45,4 +46,6 @@ QString tooToText(uchar ch);
 QString tovToText(uchar ch);
 QString accToText(uchar ch);
 QString scqToText(uchar ch);
+QString frqToText(uchar ch);
+QString srqToText(uchar ch);
 #endif // FUNCTOTEXT_H

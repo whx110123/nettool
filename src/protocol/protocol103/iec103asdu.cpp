@@ -21,6 +21,9 @@
 #include "iec103asdu30data.h"
 #include "iec103asdu220data.h"
 #include "iec103asdu221data.h"
+#include "iec103asdu222data.h"
+#include "iec103asdu223data.h"
+#include "iec103asdu224data.h"
 
 
 IEC103AsduData::IEC103AsduData()
@@ -728,6 +731,15 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		break;
 	case 221:
 		asdudata = new IEC103Asdu221Data;
+		break;
+	case 222:
+		asdudata = new IEC103Asdu222Data;
+		break;
+	case 223:
+		asdudata = new IEC103Asdu223Data;
+		break;
+	case 224:
+		asdudata = new IEC103Asdu224Data;
 		break;
 	default:
 		break;
