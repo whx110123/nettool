@@ -395,11 +395,11 @@ QString coiToText(uchar ch)
 
 QString rqtToText(uchar ch)
 {
-	QString text = "计数量召唤命令限定词(QCC):请求RQT(bit1-6):"  + QString::number(ch & 0x3f) + " ";
+	QString text = "请求RQT(bit1-6):"  + QString::number(ch & 0x3f) + " ";
 	switch(ch & 0x3f)
 	{
 	case 0:
-		text.append("没请求计数量（未采用）");
+		text.append("无电能脉冲计数量被请求");
 		break;
 	case 1:
 		text.append("请求计数量第1组");
@@ -414,7 +414,7 @@ QString rqtToText(uchar ch)
 		text.append("请求计数量第4组");
 		break;
 	case 5:
-		text.append("总的请求计数量");
+		text.append("电能脉冲计数量的总请求");
 		break;
 	default:
 		text.append("保留");
@@ -429,16 +429,16 @@ QString frzToText(uchar ch)
 	switch(ch >> 6)
 	{
 	case 0:
-		text.append("读(无冻结或复位）");
+		text.append("无冻结或复位");
 		break;
 	case 1:
-		text.append("计数量冻结不带复位（被冻结的值为累计量）");
+		text.append("电能脉冲计数量冻结不带复位（被冻结的值为累计量）");
 		break;
 	case 2:
-		text.append("计数量冻结带复位（被冻结的值为增量信息）");
+		text.append("电能脉冲计数量冻结带复位（被冻结的值为增量信息）");
 		break;
 	case 3:
-		text.append("计数量复位");
+		text.append("电能脉冲计数量复位");
 		break;
 	default:
 		text.append("保留");
@@ -1141,5 +1141,81 @@ QString srqToText(uchar ch)
 	{
 		text.append("节准备好装载");
 	}
+	return text;
+}
+
+QString lsqToText(uchar ch)
+{
+	QString text = "最后的节和段限定词LSQ: " + QString::number(ch) + "  ";
+	switch(ch)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("不带停止激活的节传输");
+		break;
+	case 2:
+		text.append("带停止激活的节传输");
+		break;
+	case 3:
+		text.append("不带停止激活的段传输");
+		break;
+	case 4:
+		text.append("带停止激活的段传输");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}
+
+QString afqToText(uchar ch)
+{
+	QString text = "认可文件、认可节限定词AFQ:\r\n\tbit(1-4): " + QString::number(ch & 0x0f) + "  ";
+	switch(ch & 0x0f)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("文件传输的肯定认可");
+		break;
+	case 2:
+		text.append("文件传输的否定认可");
+		break;
+	case 3:
+		text.append("节传输的肯定认可");
+		break;
+	case 4:
+		text.append("节传输的否定认可");
+	default:
+		text.append("保留");
+		break;
+	}
+	text.append("\r\n\tbit(5-8): " + QString::number((ch >> 4) & 0x0f) + "  ");
+	switch((ch >> 4) & 0x0f)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("无被请求的存储空间");
+		break;
+	case 2:
+		text.append("非所期望的通信服务");
+		break;
+	case 3:
+		text.append("非所期望的文件名称");
+		break;
+	case 4:
+		text.append("非所期望的节名称");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+
 	return text;
 }

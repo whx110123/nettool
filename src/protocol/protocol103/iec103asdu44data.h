@@ -13,10 +13,9 @@ public:
 	virtual bool handle(const QByteArray& buff);
 	virtual bool createData(IECDataConfig& config);
 
-private:
-	QString yxToText();
-	QString yxFlagToText();
 public:
+	QString yx16ToText();
+	QString yx16FlagToText();
 	ushort yx16;
 	ushort yx16flag;
 	uchar qds;

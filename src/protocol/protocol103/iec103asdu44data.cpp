@@ -16,11 +16,11 @@ IEC103Asdu44Data::~IEC103Asdu44Data()
 bool IEC103Asdu44Data::handle(const QByteArray& buff)
 {
 	yx16 = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + yxToText() + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + yx16ToText() + "\r\n");
 	len += 2;
 
 	yx16flag = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + yxFlagToText() + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + yx16FlagToText() + "\r\n");
 	len += 2;
 
 	qds = *(buff.data() + len);
@@ -36,9 +36,9 @@ bool IEC103Asdu44Data::createData(IECDataConfig& config)
 	return false;
 }
 
-QString IEC103Asdu44Data::yxToText()
+QString IEC103Asdu44Data::yx16ToText()
 {
-	QString text = "16个遥信状态";
+	QString text = "16个单点遥信状态";
 	for(int i = 0; i < 16; i++)
 	{
 		text.append("\r\n\t");
@@ -48,9 +48,9 @@ QString IEC103Asdu44Data::yxToText()
 	return text;
 }
 
-QString IEC103Asdu44Data::yxFlagToText()
+QString IEC103Asdu44Data::yx16FlagToText()
 {
-	QString text = "16个遥信与上次查询的变化状态";
+	QString text = "16个单点遥信与上次查询的变化状态";
 	for(int i = 0; i < 16; i++)
 	{
 		text.append("\r\n\t");

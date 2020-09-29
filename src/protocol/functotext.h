@@ -48,4 +48,6 @@ QString accToText(uchar ch);
 QString scqToText(uchar ch);
 QString frqToText(uchar ch);
 QString srqToText(uchar ch);
+QString lsqToText(uchar ch);
+QString afqToText(uchar ch);
 #endif // FUNCTOTEXT_H

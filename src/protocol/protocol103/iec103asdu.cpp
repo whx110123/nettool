@@ -24,6 +24,16 @@
 #include "iec103asdu222data.h"
 #include "iec103asdu223data.h"
 #include "iec103asdu224data.h"
+#include "iec103asdu225data.h"
+#include "iec103asdu226data.h"
+#include "iec103asdu227data.h"
+#include "iec103asdu36data.h"
+#include "iec103asdu40data.h"
+#include "iec103asdu43data.h"
+#include "iec103asdu41data.h"
+#include "iec103asdu46data.h"
+#include "iec103asdu88data.h"
+#include "iec103asdu47data.h"
 
 
 IEC103AsduData::IEC103AsduData()
@@ -122,37 +132,40 @@ QString IEC103AsduData::funToText()
 QString IEC103AsduData::infToText()
 {
 	QString text = "INF:" + QString::number(inf) + " ";
-	switch(inf)
+	if(fun == 254)
 	{
-	case 240:
-		text.append("读所有被定义组的标题");
-		break;
-	case 241:
-		text.append("读一个组的全部条目的值或属性");
-		break;
-	case 243:
-		text.append("读单个条目的目录");
-		break;
-	case 244:
-		text.append("读单个条目的值或属性");
-		break;
-	case 245:
-		text.append("通用分类数据的总查询(总召唤) 主站发出或子站中止");
-		break;
-	case 248:
-		text.append("写条目");
-		break;
-	case 249:
-		text.append("带确认的写条目");
-		break;
-	case 250:
-		text.append("带执行的写条目");
-		break;
-	case 251:
-		text.append("主站写条目中止或子站带中止的写条目");
-		break;
-	default:
-		break;
+		switch(inf)
+		{
+		case 240:
+			text.append("读所有被定义组的标题");
+			break;
+		case 241:
+			text.append("读一个组的全部条目的值或属性");
+			break;
+		case 243:
+			text.append("读单个条目的目录");
+			break;
+		case 244:
+			text.append("读单个条目的值或属性");
+			break;
+		case 245:
+			text.append("通用分类数据的总查询(总召唤) 主站发出或子站中止");
+			break;
+		case 248:
+			text.append("写条目");
+			break;
+		case 249:
+			text.append("带确认的写条目");
+			break;
+		case 250:
+			text.append("带执行的写条目");
+			break;
+		case 251:
+			text.append("带中止的写条目");
+			break;
+		default:
+			break;
+		}
 	}
 	return text;
 }
@@ -248,9 +261,14 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		{
 			switch(type)
 			{
+			case 40:
+			case 41:
 			case 42:
+			case 43:
 				isOk = mdata->init(buff.mid(len));
 				break;
+			case 45:
+			case 47:
 			case 50:
 			case 51:
 				isOk = mdata->init(buff.mid(len), fun);
@@ -476,12 +494,15 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 45:
 		text.append("带时标的单点状态和状态变位检出");
+		endflag = IEC103END_SIN;
 		break;
 	case 46:
 		text.append("双点状态和状态变位检出");
+		endflag = IEC103END_SIN;
 		break;
 	case 47:
 		text.append("带时标的双点状态和状态变位检出");
+		endflag = IEC103END_SIN;
 		break;
 	case 48:
 		text.append("水位");
@@ -506,7 +527,7 @@ QString IEC103Asdu::typeToText()
 		text.append("控制命令");
 		break;
 	case 88:
-		text.append("电能脉冲量召唤（冻结）");
+		text.append("电能脉冲量召唤或冻结");
 		endflag = IEC103END_RII;
 		break;
 	case 220:
@@ -714,17 +735,38 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 	case 30:
 		asdudata = new IEC103Asdu30Data;
 		break;
+	case 36:
+		asdudata = new IEC103Asdu36Data;
+		break;
+	case 40:
+		asdudata = new IEC103Asdu40Data;
+		break;
+	case 41:
+		asdudata = new IEC103Asdu41Data;
+		break;
 	case 42:
 		asdudata = new IEC103Asdu42Data;
 		break;
+	case 43:
+		asdudata = new IEC103Asdu43Data;
+		break;
 	case 44:
 		asdudata = new IEC103Asdu44Data;
+		break;
+	case 46:
+		asdudata = new IEC103Asdu46Data;
+		break;
+	case 47:
+		asdudata = new IEC103Asdu47Data;
 		break;
 	case 50:
 		asdudata = new IEC103Asdu50Data;
 		break;
 	case 51:
 		asdudata = new IEC103Asdu51Data;
+		break;
+	case 88:
+		asdudata = new IEC103Asdu88Data;
 		break;
 	case 220:
 		asdudata = new IEC103Asdu220Data;
@@ -740,6 +782,15 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		break;
 	case 224:
 		asdudata = new IEC103Asdu224Data;
+		break;
+	case 225:
+		asdudata = new IEC103Asdu225Data;
+		break;
+	case 226:
+		asdudata = new IEC103Asdu226Data;
+		break;
+	case 227:
+		asdudata = new IEC103Asdu227Data;
 		break;
 	default:
 		break;

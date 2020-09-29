@@ -72,7 +72,7 @@ bool IEC101Apci::init(const QByteArray& buff)
 		}
 		if(lengthType == IEC_DOUBLESAME)
 		{
-			length = *(buff.data() + len);
+			length = *(uchar *)(buff.data() + len);
 			mText.append(CharToHexStr(buff.data() + len) + "\t长度域1:" + QString::number(length) + "\r\n");
 			len++;
 
