@@ -1,6 +1,7 @@
 ﻿#include "dialogpma.h"
 #include "ui_dialogpma.h"
 
+#include <iec101asdu45data.h>
 #include <quiwidget.h>
 
 DialogPMA::DialogPMA(QWidget *parent) :
@@ -191,6 +192,38 @@ void DialogPMA::showToText(QByteArray ba)
 			{
 				ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 				ui->textEdit_data->append(mProtocolShow->showToText());
+			}
+			if(ui->comboBox_protocol->currentText() == QString("104"))
+			{
+				IEC104 *tmp = (IEC104 *)mProtocolShow;
+				if(tmp->asdu.type == 45)
+				{
+					IEC101Asdu45Data *iec101data = (IEC101Asdu45Data *)tmp->asdu.datalist.at(0);
+					if(tmp->asdu.cot[0] == 7)
+					{
+						ui->pushButton_104execute->setEnabled(true);
+						if(iec101data->sco & 0x80)
+						{
+							ui->label_select->setText("选择成功");
+						}
+						else
+						{
+							ui->label_execute->setText("执行成功");
+						}
+					}
+					else if((tmp->asdu.cot[0] & 0x0f) == 7)
+					{
+						ui->pushButton_104execute->setEnabled(false);
+						if(iec101data->sco & 0x80)
+						{
+							ui->label_select->setText("选择失败");
+						}
+						else
+						{
+							ui->label_execute->setText("执行失败");
+						}
+					}
+				}
 			}
 			ba.remove(0, mProtocolShow->len);
 		}
@@ -585,6 +618,10 @@ void DialogPMA::on_pushButton_104select_clicked()
 	}
 	config.infdata = getYKYTData(0x80);
 	createAndSendData(config);
+
+	ui->label_select->setText("");
+	ui->label_execute->setText("");
+	ui->pushButton_104execute->setEnabled(false);
 }
 
 void DialogPMA::on_pushButton_104execute_clicked()
@@ -605,6 +642,9 @@ void DialogPMA::on_pushButton_104execute_clicked()
 	}
 	config.infdata = getYKYTData('\0');
 	createAndSendData(config);
+
+	ui->label_select->setText("");
+	ui->label_execute->setText("");
 }
 
 void DialogPMA::on_pushButton_104cancel_clicked()
@@ -625,6 +665,10 @@ void DialogPMA::on_pushButton_104cancel_clicked()
 	}
 	config.infdata = getYKYTData('\0');
 	createAndSendData(config);
+
+	ui->pushButton_104execute->setEnabled(true);
+	ui->label_select->setText("");
+	ui->label_execute->setText("");
 }
 
 void DialogPMA::on_checkBox_104isHex_stateChanged(int arg1)

@@ -236,7 +236,7 @@
              <enum>QTabWidget::South</enum>
             </property>
             <property name="currentIndex">
-             <number>3</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="tab">
              <attribute name="title">
@@ -760,6 +760,32 @@
                  </property>
                  <property name="text">
                   <string>执行</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_select">
+                 <property name="geometry">
+                  <rect>
+                   <x>390</x>
+                   <y>30</y>
+                   <width>71</width>
+                   <height>21</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>选择结果</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_execute">
+                 <property name="geometry">
+                  <rect>
+                   <x>390</x>
+                   <y>60</y>
+                   <width>71</width>
+                   <height>21</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>执行结果</string>
                  </property>
                 </widget>
                </widget>
