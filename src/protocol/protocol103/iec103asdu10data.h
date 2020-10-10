@@ -23,7 +23,7 @@ public:
 	int dataint;
 	uchar datauchar;
 	uchar datauchar1;
-	QDateTime datat;
+	QDateTime datet;
 	QList<IEC103AsduDataSetGdd *> gddlist;
 };
 

@@ -86,6 +86,7 @@ bool IEC103AsduDataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		len += gdd[1];
 		break;
 	case 14:
+		datet = charToDateTime(buff.data() + len, gdd[1], BINARYTIME2A);
 		mText.append(timeToText(buff.data() + len, gdd[1]));
 		len += gdd[1];
 		break;
@@ -96,8 +97,9 @@ bool IEC103AsduDataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 			return false;
 		}
 		datauchar = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\tGID:" + spiToText(datauchar) + "\r\n");
+		mText.append(CharToHexStr(buff.data() + len) + "\tGID:" + dpiToText(datauchar) + "\r\n");
 		len++;
+		datet = charToDateTime(buff.data() + len, 4, BINARYTIME2A);
 		mText.append(timeToText(buff.data() + len, 4));
 		len += 4;
 		datauchar1 = *(buff.data() + len);
@@ -106,7 +108,7 @@ bool IEC103AsduDataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		break;
 	case 19:
 		datauchar = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\tGID:" + spiToText(datauchar) + "\r\n");
+		mText.append(CharToHexStr(buff.data() + len) + "\tGID:" + dpiToText(datauchar) + "\r\n");
 		len++;
 		datauint = charTouint(buff.data() + len, 2);
 		mText.append(CharToHexStr(buff.data() + len, 2) + "\tGID:相对时间RET:" + QString::number(datauint));
@@ -117,6 +119,7 @@ bool IEC103AsduDataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		mText.append(CharToHexStr(buff.data() + len, 2) + "\tGID:故障序号FAN:" + QString::number(datauint1) + "\r\n");
 		len += 2;
 
+		datet = charToDateTime(buff.data() + len, 4, BINARYTIME2A);
 		mText.append(timeToText(buff.data() + len, 4));
 		len += 4;
 
@@ -138,6 +141,7 @@ bool IEC103AsduDataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		mText.append(CharToHexStr(buff.data() + len, 2) + "\tGID:故障序号FAN:" + QString::number(datauint1) + "\r\n");
 		len += 2;
 
+		datet = charToDateTime(buff.data() + len, 4, BINARYTIME2A);
 		mText.append(timeToText(buff.data() + len, 4));
 		len += 4;
 		break;
@@ -191,6 +195,7 @@ bool IEC103AsduDataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		mText.append(CharToHexStr(buff.data() + len, 2) + "\tGID:故障序号FAN:" + QString::number(datauint1) + "\r\n");
 		len += 2;
 
+		datet = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
 		mText.append(timeToText(buff.data() + len, 7));
 		len += 7;
 		break;
@@ -198,6 +203,11 @@ bool IEC103AsduDataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		error = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的GDD1").arg(gdd[0]);
 		return false;
 		break;
+	}
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！解析的报文比实际报文长");
+		return false;
 	}
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	return true;
