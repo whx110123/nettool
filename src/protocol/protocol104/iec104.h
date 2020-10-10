@@ -3,10 +3,6 @@
 
 #include "iec104apci.h"
 #include "iec101asdu.h"
-#include <QByteArray>
-#include <QString>
-#include <mybase.h>
-#include "dataconfig.h"
 
 class IEC104 : public MyBase
 {

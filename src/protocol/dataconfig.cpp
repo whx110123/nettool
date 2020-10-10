@@ -1,10 +1,5 @@
 ﻿#include "dataconfig.h"
 
-DataConfig::DataConfig()
-{
-
-}
-
 IECDataConfig::IECDataConfig()
 {
 	masterState = 0;				//状态

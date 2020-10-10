@@ -1,6 +1,4 @@
 ﻿#include "iec103asdu.h"
-#include "globaldefine.h"
-#include "app.h"
 #include "iec103asdu1data.h"
 #include "iec103asdu2data.h"
 #include "iec103asdu6data.h"
@@ -58,7 +56,11 @@ bool IEC103AsduData::init(const QByteArray& buff)
 	inf = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
 	len++;
-
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	if(!handle(buff))
 	{
 		return false;
@@ -75,7 +77,11 @@ bool IEC103AsduData::init(const QByteArray& buff, uchar ch_fun)
 	inf = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
 	len++;
-
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	if(!handle(buff))
 	{
 		return false;
@@ -89,7 +95,11 @@ bool IEC103AsduData::init(const QByteArray& buff, uchar ch_fun, uchar ch_inf)
 
 	fun = ch_fun & 0xff;
 	inf = ch_inf & 0xff;
-
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	if(!handle(buff))
 	{
 		return false;
@@ -303,6 +313,11 @@ bool IEC103Asdu::init(const QByteArray& buff)
 	{
 		end = *(buff.data() + len);
 		len++;
+	}
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
 	}
 	return true;
 }

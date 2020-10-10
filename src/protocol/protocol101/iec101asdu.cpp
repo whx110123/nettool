@@ -1,6 +1,4 @@
 ﻿#include "iec101asdu.h"
-#include "globaldefine.h"
-#include "app.h"
 #include "iec101asdu1data.h"
 #include "iec101asdu3data.h"
 #include "iec101asdu9data.h"
@@ -22,6 +20,10 @@
 #include "iec101asdu36data.h"
 #include "iec101asdu43data.h"
 #include "iec101asdu55data.h"
+#include "iec101asdu47data.h"
+#include "iec101asdu48data.h"
+#include "iec101asdu49data.h"
+#include "iec101asdu51data.h"
 
 IEC101AsduData::IEC101AsduData()
 {
@@ -47,6 +49,11 @@ bool IEC101AsduData::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len, infaddrlen) + "\t信息元素地址:" + QString::number(infaddr));
 	len += infaddrlen;
 
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	if(!handle(buff))
 	{
 		return false;
@@ -60,7 +67,11 @@ bool IEC101AsduData::init(const QByteArray& buff, uint addr)
 
 	infaddr = addr;
 	mText.append("\t信息元素地址:" + QString::number(infaddr));
-
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	if(!handle(buff))
 	{
 		return false;
@@ -160,6 +171,11 @@ bool IEC101Asdu::init(const QByteArray& buff)
 		}
 		datalist.append(mdata);
 		len += mdata->len;
+		if(len > buff.length())
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+			return false;
+		}
 		return true;
 	}
 
@@ -196,6 +212,11 @@ bool IEC101Asdu::init(const QByteArray& buff)
 			return false;
 		}
 		datalist.append(mdata);
+	}
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
 	}
 	return true;
 }
@@ -377,12 +398,15 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 47:
 		text.append("步调节命令");
+		datalen = 1;
 		break;
 	case 48:
 		text.append("设定值命令, 规一化值");
+		datalen = 3;
 		break;
 	case 49:
 		text.append("设定值命令, 标度化值");
+		datalen = 3;
 		break;
 	case 50:
 		text.append("设定值命令, 短浮点数");
@@ -390,6 +414,7 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 51:
 		text.append("32比特串");
+		datalen = 4;
 		break;
 	case 55:
 		text.append("序列控制命令交互(一键顺控扩展功能)");
@@ -700,8 +725,20 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 	case 46:
 		asdudata = new IEC101Asdu46Data;
 		break;
+	case 47:
+		asdudata = new IEC101Asdu47Data;
+		break;
+	case 48:
+		asdudata = new IEC101Asdu48Data;
+		break;
+	case 49:
+		asdudata = new IEC101Asdu49Data;
+		break;
 	case 50:
 		asdudata = new IEC101Asdu50Data;
+		break;
+	case 51:
+		asdudata = new IEC101Asdu51Data;
 		break;
 	case 55:
 		asdudata = new IEC101Asdu55Data;

@@ -1,7 +1,6 @@
 ﻿#ifndef IEC101APCI_H
 #define IEC101APCI_H
 
-#include <dataconfig.h>
 #include <mybase.h>
 
 class IEC101Code : public MyBase

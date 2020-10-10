@@ -1,19 +1,9 @@
 ﻿#ifndef DATACONFIG_H
 #define DATACONFIG_H
 
-#include <QByteArray>
 #include "globaldefine.h"
-#include "functotext.h"
 
-
-class DataConfig
-{
-public:
-	DataConfig();
-};
-
-
-class IECDataConfig : public DataConfig
+class IECDataConfig
 {
 public:
 	IECDataConfig();

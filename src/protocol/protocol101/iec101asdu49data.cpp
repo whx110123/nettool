@@ -1,20 +1,25 @@
-﻿#include "iec101asdu45data.h"
+﻿#include "iec101asdu49data.h"
 
-IEC101Asdu45Data::IEC101Asdu45Data()
+IEC101Asdu49Data::IEC101Asdu49Data()
 {
-	sco = 0;
+	shortdata = 0;
+	qos = 0;
 }
 
-IEC101Asdu45Data::~IEC101Asdu45Data()
+IEC101Asdu49Data::~IEC101Asdu49Data()
 {
 
 }
 
-bool IEC101Asdu45Data::handle(const QByteArray& buff)
+bool IEC101Asdu49Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
-	sco = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + scsToText(sco) + "   " + seToText(sco) + "   " + quToText(sco) + "\r\n");
+	shortdata = charToint(buff.data() + len, 2);
+	mText.append(CharToHexStr(buff.data() + len, 2) + "\t标度化值:" + QString::number(shortdata) + "\r\n");
+	len += 2;
+
+	qos = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + qosToText(qos) + "\r\n");
 	len++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
@@ -26,8 +31,7 @@ bool IEC101Asdu45Data::handle(const QByteArray& buff)
 	return true;
 }
 
-
-bool IEC101Asdu45Data::createData(IECDataConfig& config)
+bool IEC101Asdu49Data::createData(IECDataConfig& config)
 {
 	config.data += uintToBa(config.infaddr, infaddrlen);
 	config.data += config.infdata;

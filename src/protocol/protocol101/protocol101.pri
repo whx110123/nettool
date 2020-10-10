@@ -19,7 +19,11 @@ HEADERS += \
 	$$PWD/iec101asdu43data.h \
 	$$PWD/iec101asdu45data.h \
 	$$PWD/iec101asdu46data.h \
+	$$PWD/iec101asdu47data.h \
+	$$PWD/iec101asdu48data.h \
+	$$PWD/iec101asdu49data.h \
 	$$PWD/iec101asdu50data.h \
+	$$PWD/iec101asdu51data.h \
 	$$PWD/iec101asdu55data.h \
 	$$PWD/iec101asdu70data.h \
 	$$PWD/iec101asdu9data.h
@@ -45,7 +49,11 @@ SOURCES += \
 	$$PWD/iec101asdu43data.cpp \
 	$$PWD/iec101asdu45data.cpp \
 	$$PWD/iec101asdu46data.cpp \
+	$$PWD/iec101asdu47data.cpp \
+	$$PWD/iec101asdu48data.cpp \
+	$$PWD/iec101asdu49data.cpp \
 	$$PWD/iec101asdu50data.cpp \
+	$$PWD/iec101asdu51data.cpp \
 	$$PWD/iec101asdu55data.cpp \
 	$$PWD/iec101asdu70data.cpp \
 	$$PWD/iec101asdu9data.cpp

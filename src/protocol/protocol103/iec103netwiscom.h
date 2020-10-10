@@ -4,8 +4,6 @@
 #include "iec103asdu.h"
 #include "iec103netapciwiscom.h"
 
-
-
 class IEC103NetWiscom : public MyBase
 {
 public:

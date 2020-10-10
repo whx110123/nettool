@@ -1,11 +1,7 @@
 ﻿#ifndef IEC103ASDU21DATA_H
 #define IEC103ASDU21DATA_H
 
-#include "iec103asdu.h"
-#include "dataconfig.h"
 #include "iec103asdu10data.h"
-
-
 
 class IEC103Asdu21Data : public IEC103AsduData
 {

@@ -2,9 +2,6 @@
 #define IEC103ASDU2DATA_H
 
 #include "iec103asdu.h"
-#include "dataconfig.h"
-
-
 
 class IEC103Asdu2Data : public IEC103AsduData
 {

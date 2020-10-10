@@ -2,8 +2,6 @@
 #define IEC101ASDU30DATA_H
 
 #include "iec101asdu.h"
-#include <QDateTime>
-
 
 class IEC101Asdu30Data : public IEC101AsduData
 {

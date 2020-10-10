@@ -1,9 +1,4 @@
 ﻿#include "iec103asdu10data.h"
-#include "globaldefine.h"
-#include "app.h"
-#include "functotext.h"
-#include "QTextCodec"
-
 
 IEC103AsduDataSetGid::IEC103AsduDataSetGid()
 {
@@ -204,12 +199,17 @@ bool IEC103AsduDataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		return false;
 		break;
 	}
+	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！解析的报文比实际报文长");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
 		return false;
 	}
-	mText.append("-----------------------------------------------------------------------------------------------\r\n");
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	return true;
 }
 
@@ -279,6 +279,11 @@ bool IEC103AsduDataSetGdd::init(const QByteArray& buff)
 		len += mgid->len;
 		gidlist.append(mgid);
 	}
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	return true;
 }
 
@@ -330,6 +335,16 @@ bool IEC103AsduDataSet::init(const QByteArray& buff)
 		return false;
 	}
 	len += mygdd.len;
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	return true;
 }
 
@@ -392,6 +407,11 @@ bool IEC103Asdu10Data::handle(const QByteArray& buff)
 		setlist.append(mset);
 	}
 
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	return true;
 }
 

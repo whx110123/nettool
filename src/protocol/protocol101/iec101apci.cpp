@@ -1,5 +1,4 @@
 ﻿#include "iec101apci.h"
-#include "functotext.h"
 
 IEC101Code::IEC101Code()
 {
@@ -25,6 +24,11 @@ bool IEC101Code::init(const QByteArray& buff)
 		mText.append(acdToText(mcode) + "\r\n\t" + dfcToText(mcode) + "\r\n\t" + cw2ToText(mcode) + "\r\n");
 	}
 	len++;
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	return true;
 }
 
@@ -134,6 +138,11 @@ bool IEC101Apci::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len, addrLen) + "\t地址域:" + QString::number(addr) + "\r\n");
 	len += addrLen;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
 	return true;
 
 }

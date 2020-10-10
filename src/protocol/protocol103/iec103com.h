@@ -2,9 +2,7 @@
 #define IEC103COM_H
 
 #include "iec103asdu.h"
-
 #include <iec101apci.h>
-#include <mybase.h>
 
 class IEC103COM : public MyBase
 {

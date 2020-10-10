@@ -1,5 +1,4 @@
 ﻿#include "iec103asdu29data.h"
-#include "functotext.h"
 
 IEC103Asdu29Data::IEC103Asdu29Data()
 {
@@ -44,6 +43,11 @@ bool IEC103Asdu29Data::handle(const QByteArray& buff)
 		}
 		len += mset->len;
 		setlist.append(mset);
+	}
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
 	}
 	return true;
 }

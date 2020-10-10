@@ -15,6 +15,7 @@ QString dpiToText(uchar ch);
 QString dpiteToText(uchar ch);
 QString scsToText(uchar ch);
 QString dcsToText(uchar ch);
+QString rcsToText(uchar ch);
 QString blToText(uchar ch);
 QString sbToText(uchar ch);
 QString ntToText(uchar ch);

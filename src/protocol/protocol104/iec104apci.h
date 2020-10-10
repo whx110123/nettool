@@ -1,10 +1,6 @@
 ﻿#ifndef IEC104APCI_H
 #define IEC104APCI_H
 
-
-#include <QByteArray>
-#include <QString>
-#include <dataconfig.h>
 #include <mybase.h>
 
 class IEC104Control : public MyBase

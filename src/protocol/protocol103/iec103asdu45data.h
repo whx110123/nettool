@@ -3,8 +3,6 @@
 
 #include "iec103asdu44data.h"
 
-
-
 class IEC103Asdu45Data : public IEC103Asdu44Data
 {
 public:

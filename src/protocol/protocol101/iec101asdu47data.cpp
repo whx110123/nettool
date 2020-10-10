@@ -1,20 +1,20 @@
-﻿#include "iec101asdu45data.h"
+﻿#include "iec101asdu47data.h"
 
-IEC101Asdu45Data::IEC101Asdu45Data()
+IEC101Asdu47Data::IEC101Asdu47Data()
 {
-	sco = 0;
+	rco = 0;
 }
 
-IEC101Asdu45Data::~IEC101Asdu45Data()
+IEC101Asdu47Data::~IEC101Asdu47Data()
 {
 
 }
 
-bool IEC101Asdu45Data::handle(const QByteArray& buff)
+bool IEC101Asdu47Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
-	sco = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + scsToText(sco) + "   " + seToText(sco) + "   " + quToText(sco) + "\r\n");
+	rco = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + rcsToText(rco) + "   " + seToText(rco) + "   " + quToText(rco) + "\r\n");
 	len++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
@@ -26,8 +26,7 @@ bool IEC101Asdu45Data::handle(const QByteArray& buff)
 	return true;
 }
 
-
-bool IEC101Asdu45Data::createData(IECDataConfig& config)
+bool IEC101Asdu47Data::createData(IECDataConfig& config)
 {
 	config.data += uintToBa(config.infaddr, infaddrlen);
 	config.data += config.infdata;

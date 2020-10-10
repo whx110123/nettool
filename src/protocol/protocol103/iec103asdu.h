@@ -1,12 +1,7 @@
 ﻿#ifndef IEC103ASDU_H
 #define IEC103ASDU_H
 
-
-#include <QByteArray>
-#include <QString>
-#include <dataconfig.h>
 #include <mybase.h>
-
 
 class IEC103AsduData : public MyBase
 {

@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <QDateTime>
+#include <QTextCodec>
+#include <QVector>
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;

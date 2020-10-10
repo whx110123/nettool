@@ -1,10 +1,8 @@
 ﻿#ifndef IEC103NETAPCIWISCOM_H
 #define IEC103NETAPCIWISCOM_H
 
-#include <dataconfig.h>
+
 #include <iec104apci.h>
-
-
 
 class IEC103NetApciWiscom  : public IEC104Apci
 {

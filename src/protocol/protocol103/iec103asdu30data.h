@@ -3,10 +3,6 @@
 
 #include "iec103asdu.h"
 
-#include <QVector>
-
-
-
 class IEC103Asdu30Data : public IEC103AsduData
 {
 public:

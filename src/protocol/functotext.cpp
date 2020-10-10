@@ -216,6 +216,25 @@ QString dcsToText(uchar ch)
 	return text;
 }
 
+QString rcsToText(uchar ch)
+{
+	QString text = "步调节命令(bit1-2):" + QString::number(ch & 0x03) + " ";
+	switch(ch & 0x03)
+	{
+	case 1:
+		text.append("降一步");
+		break;
+	case 2:
+		text.append("升一步");
+		break;
+	default:
+		text.append("不允许");
+		break;
+	}
+	return text;
+}
+
+
 QString blToText(uchar ch)
 {
 	QString text = "BL(bit5):" + QString::number(ch & 0x10, 16).toUpper() + " ";
@@ -1219,3 +1238,4 @@ QString afqToText(uchar ch)
 
 	return text;
 }
+

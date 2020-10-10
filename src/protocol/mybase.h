@@ -2,8 +2,7 @@
 #define MYBASE_H
 
 #include "dataconfig.h"
-
-#include <QByteArray>
+#include "functotext.h"
 
 class MyBase
 {

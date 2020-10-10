@@ -1,21 +1,27 @@
-﻿#include "iec101asdu21data.h"
+﻿#include "iec101asdu48data.h"
 
-IEC101Asdu21Data::IEC101Asdu21Data()
+IEC101Asdu48Data::IEC101Asdu48Data()
 {
 	shortdata = 0;
+	qos = 0;
 }
 
-IEC101Asdu21Data::~IEC101Asdu21Data()
+IEC101Asdu48Data::~IEC101Asdu48Data()
 {
 
 }
 
-bool IEC101Asdu21Data::handle(const QByteArray& buff)
+bool IEC101Asdu48Data::handle(const QByteArray& buff)
 {
-	mText.append("\t对应点号是:" + QString::number(infaddr - 0x4001) + "\r\n");
+	mText.append("\r\n");
 	shortdata = charToint(buff.data() + len, 2);
 	mText.append(CharToHexStr(buff.data() + len, 2) + "\t规一化值:" + QString::number(shortdata) + "\r\n");
 	len += 2;
+
+	qos = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + qosToText(qos) + "\r\n");
+	len++;
+
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
 	{
@@ -25,8 +31,9 @@ bool IEC101Asdu21Data::handle(const QByteArray& buff)
 	return true;
 }
 
-bool IEC101Asdu21Data::createData(IECDataConfig& config)
+bool IEC101Asdu48Data::createData(IECDataConfig& config)
 {
-	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-	return false;
+	config.data += uintToBa(config.infaddr, infaddrlen);
+	config.data += config.infdata;
+	return true;
 }

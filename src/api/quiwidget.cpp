@@ -643,7 +643,7 @@ bool QUIMessageBox::eventFilter(QObject *watched, QEvent *event)
 	}
 	else if(mouseEvent->type() == QEvent::MouseMove)
 	{
-		if(mousePressed && (mouseEvent->buttons() && Qt::LeftButton))
+		if(mousePressed && (mouseEvent->buttons() & Qt::LeftButton))
 		{
 			this->move(mouseEvent->globalPos() - mousePoint);
 			return true;
@@ -996,7 +996,7 @@ bool QUITipBox::eventFilter(QObject *watched, QEvent *event)
 	}
 	else if(mouseEvent->type() == QEvent::MouseMove)
 	{
-		if(mousePressed && (mouseEvent->buttons() && Qt::LeftButton))
+		if(mousePressed && (mouseEvent->buttons() & Qt::LeftButton))
 		{
 			this->move(mouseEvent->globalPos() - mousePoint);
 			return true;
@@ -1499,7 +1499,7 @@ bool QUIInputBox::eventFilter(QObject *watched, QEvent *event)
 	}
 	else if(mouseEvent->type() == QEvent::MouseMove)
 	{
-		if(mousePressed && (mouseEvent->buttons() && Qt::LeftButton))
+		if(mousePressed && (mouseEvent->buttons() & Qt::LeftButton))
 		{
 			this->move(mouseEvent->globalPos() - mousePoint);
 			return true;
@@ -1586,7 +1586,7 @@ bool QUIDateSelect::eventFilter(QObject *watched, QEvent *event)
 	}
 	else if(mouseEvent->type() == QEvent::MouseMove)
 	{
-		if(mousePressed && (mouseEvent->buttons() && Qt::LeftButton))
+		if(mousePressed && (mouseEvent->buttons() & Qt::LeftButton))
 		{
 			this->move(mouseEvent->globalPos() - mousePoint);
 			return true;

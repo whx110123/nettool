@@ -4,11 +4,6 @@
 #include "iec101apci.h"
 #include "iec101asdu.h"
 
-#include <dataconfig.h>
-#include <mybase.h>
-
-
-
 class IEC101 : public MyBase
 {
 public:

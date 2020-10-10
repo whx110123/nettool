@@ -4,8 +4,6 @@
 #include "iec103asdu.h"
 #include <iec104apci.h>
 
-
-
 class IEC103NetBaoXin : public MyBase
 {
 public:
