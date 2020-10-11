@@ -14,6 +14,8 @@ public:
 
 public:
 	short shortdata;
+	uchar qos;
+	QDateTime datetime;
 };
 
 #endif // IEC101ASDU137DATA_H
