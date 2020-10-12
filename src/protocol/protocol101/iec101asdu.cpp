@@ -24,6 +24,13 @@
 #include "iec101asdu48data.h"
 #include "iec101asdu49data.h"
 #include "iec101asdu51data.h"
+#include "iec101asdu58data.h"
+#include "iec101asdu59data.h"
+#include "iec101asdu60data.h"
+#include "iec101asdu61data.h"
+#include "iec101asdu62data.h"
+#include "iec101asdu63data.h"
+#include "iec101asdu64data.h"
 
 IEC101AsduData::IEC101AsduData()
 {
@@ -94,8 +101,6 @@ IEC101Asdu::IEC101Asdu()
 	commonaddr = 0;
 	sqflag = 0;
 	datanum = 0;
-//	datalen = 0;
-//	other = 0;
 	cotlen = 0 ;
 	comaddrlen = 0 ;
 	infaddrlen = 0 ;
@@ -126,7 +131,14 @@ bool IEC101Asdu::init(const QByteArray& buff)
 
 	vsq = *(buff.data() + len);
 	sqflag = (vsq >> 7) & 0x01;
-	datanum = vsq & 0x7f;
+	if(type == 167)			//由于167号报文vsq为0
+	{
+		datanum = 1;
+	}
+	else
+	{
+		datanum = vsq & 0x7f;
+	}
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + vsqToText() + "\r\n");
 	len++;
 
@@ -154,36 +166,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len, comaddrlen) + "\t公共地址:" + QString::number(commonaddr) + "\r\n");
 	len += comaddrlen;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-//	if(type == 167 || type == 43 || type == 55)			//由于167号报文数据长度不固定,单独处理
-//	{
-//		IEC101AsduData *mdata = CreateAsduData(type);
-//		if(!mdata)
-//		{
-//			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
-//			return false;
-//		}
-//		if(!mdata->init(buff.mid(len)))
-//		{
-//			mText.append(mdata->showToText());
-//			delete mdata;
-//			mdata = NULL;
-//			return false;
-//		}
-//		datalist.append(mdata);
-//		len += mdata->len;
-//		if(len > buff.length())
-//		{
-//			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
-//			return false;
-//		}
-//		return true;
-//	}
 
-//	int lengthtmp = 2 + cotlen + comaddrlen + infaddrlen + (1 - sqflag) * (datanum - 1) * infaddrlen + datanum * datalen + other;
-//	if(lengthtmp != buff.count())
-//	{
-//		mText.append("\r\n\t出错！通过VSQ与ASDU类型计算出ASDU长度为" + QString::number(lengthtmp) + "，而实际ASDU长度为" + QString::number(buff.count()) + "。报文长度不符，因此报文有问题，下面的解析可能会出现异常\r\n");
-//	}
 
 	uint dataaddr = charTouint((uchar *)(buff.data() + len), infaddrlen);
 	for(int index = 0; index < datanum; index++)
@@ -197,13 +180,11 @@ bool IEC101Asdu::init(const QByteArray& buff)
 		bool isOk;
 		if(index == 0 || sqflag == 0)
 		{
-			isOk = mdata->init(buff.mid(len/*, infaddrlen + datalen*/));
-//			len += infaddrlen + datalen;
+			isOk = mdata->init(buff.mid(len));
 		}
 		else
 		{
-			isOk = mdata->init(buff.mid(len/*, datalen*/), dataaddr + index);
-//			len += datalen;
+			isOk = mdata->init(buff.mid(len), dataaddr + index);
 		}
 		if(!isOk)
 		{
@@ -272,21 +253,17 @@ bool IEC101Asdu::createData(IECDataConfig& config)
 
 QString IEC101Asdu::typeToText()
 {
-//	other = 0;
-//	datalen = 0;
 	QString text = "类型标识ASDU" + QString::number(type) + "   ";
 	switch(type)
 	{
 	case 1:
 		text.append("单点信息");
-//		datalen = 1;
 		break;
 	case 2:
 		text.append("带时标的单点信息");
 		break;
 	case 3:
 		text.append("双点信息");
-//		datalen = 1;
 		break;
 	case 4:
 		text.append("带时标的双点遥信");
@@ -305,7 +282,6 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 9:
 		text.append("测量值, 规一化值");
-//		datalen = 3;
 		break;
 	case 10:
 		text.append("测量值，带时标的规一化值");
@@ -318,14 +294,12 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 13:
 		text.append("测量值, 短浮点数");
-//		datalen = 5;
 		break;
 	case 14:
 		text.append("测量值, 带时标的短浮点数");
 		break;
 	case 15:
 		text.append("累计量");
-//		datalen = 5;
 		break;
 	case 16:
 		text.append("带时标的累计量");
@@ -344,19 +318,15 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 21:
 		text.append("测量值, 不带品质描述词的规一化值");
-//		datalen = 2;
 		break;
 	case 30:
 		text.append("带CP56Time2a时标的单点信息");
-//		datalen = 8;
 		break;
 	case 31:
 		text.append("带CP56Time2a时标的双点信息");
-//		datalen = 8;
 		break;
 	case 32:
 		text.append("带CP56Time2a时标的步位置信息");
-//		datalen = 9;
 		break;
 	case 33:
 		text.append("带CP56Time2a时标的32比特串");
@@ -369,7 +339,6 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 36:
 		text.append("带CP56Time2a时标的测量值, 短浮点数");
-//		datalen = 12;
 		break;
 	case 37:
 		text.append("带CP56Time2a时标的累计量");
@@ -385,41 +354,33 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 43:
 		text.append("文件传输(一键顺控扩展功能)");
-//		datalen = 1;
 		break;
 	case 44:
 		text.append("未定义，保留");
 		break;
 	case 45:
 		text.append("单点命令");
-//		datalen = 1;
 		break;
 	case 46:
 		text.append("双点命令");
-//		datalen = 1;
 		break;
 	case 47:
 		text.append("步调节命令");
-//		datalen = 1;
 		break;
 	case 48:
 		text.append("设定值命令, 规一化值");
-//		datalen = 3;
 		break;
 	case 49:
 		text.append("设定值命令, 标度化值");
-//		datalen = 3;
 		break;
 	case 50:
 		text.append("设定值命令, 短浮点数");
-//		datalen = 5;
 		break;
 	case 51:
 		text.append("32比特串");
-//		datalen = 4;
+		break;
 	case 55:
 		text.append("序列控制命令交互(一键顺控扩展功能)");
-//		datalen = 1;
 		break;
 	case 58:
 		text.append("带CP56Time2a时标的单点命令");
@@ -444,22 +405,18 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 70:
 		text.append("初始化结束");
-//		datalen = 1;
 		break;
 	case 100:
 		text.append("总召唤命令");
-//		datalen = 1;
 		break;
 	case 101:
 		text.append("计数量召唤命令");
-//		datalen = 1;
 		break;
 	case 102:
 		text.append("读命令");
 		break;
 	case 103:
 		text.append("时钟同步命令");
-//		datalen = 7;
 		break;
 	case 104:
 		text.append("测试命今");
@@ -508,16 +465,12 @@ QString IEC101Asdu::typeToText()
 		break;
 	case 137:
 		text.append("计划曲线传送(南网扩展功能)");
-//		datalen = 2;
-//		other = 8;
 		break;
 	case 167:
 		text.append("定值处理(扩展功能)");
-//		datalen = 1;
 		break;
 	default:
 		text.append("未知ASDU类型");
-//		datalen = 0;
 		break;
 	}
 	return text;
@@ -527,7 +480,7 @@ QString IEC101Asdu::vsqToText()
 {
 	QString text;
 	text.append("可变结构限定词VSQ");
-	text.append("\r\n\t数目(bit1-7):" + QString::number(datanum) + "   信息元素数量");
+	text.append("\r\n\t数目(bit1-7):" + QString::number(vsq & 0x7f) + "   信息元素数量");
 	text.append("\r\n\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + "   ");
 	if(sqflag)
 	{
@@ -764,6 +717,27 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	case 55:
 		asdudata = new IEC101Asdu55Data;
+		break;
+	case 58:
+		asdudata = new IEC101Asdu58Data;
+		break;
+	case 59:
+		asdudata = new IEC101Asdu59Data;
+		break;
+	case 60:
+		asdudata = new IEC101Asdu60Data;
+		break;
+	case 61:
+		asdudata = new IEC101Asdu61Data;
+		break;
+	case 62:
+		asdudata = new IEC101Asdu62Data;
+		break;
+	case 63:
+		asdudata = new IEC101Asdu63Data;
+		break;
+	case 64:
+		asdudata = new IEC101Asdu64Data;
 		break;
 	case 70:
 		asdudata = new IEC101Asdu70Data;

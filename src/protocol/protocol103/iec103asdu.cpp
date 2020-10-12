@@ -587,7 +587,7 @@ QString IEC103Asdu::vsqToText()
 {
 	QString text;
 	text.append("可变结构限定词VSQ");
-	text.append("\r\n\t数目(bit1-7):" + QString::number(datanum) + "   信息元素数量");
+	text.append("\r\n\t数目(bit1-7):" + QString::number(vsq & 0x7f) + "   信息元素数量");
 	text.append("\r\n\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + "   ");
 	if(sqflag)
 	{
