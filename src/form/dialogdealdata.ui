@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
+    <width>656</width>
     <height>666</height>
    </rect>
   </property>
@@ -96,7 +96,7 @@
           <widget class="QComboBox" name="cbcrc">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>140</width>
              <height>0</height>
             </size>
            </property>
@@ -145,7 +145,7 @@
           <widget class="QComboBox" name="cbtransform">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>140</width>
              <height>0</height>
             </size>
            </property>
@@ -271,7 +271,7 @@
           <widget class="QPushButton" name="Bt1">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>140</width>
              <height>0</height>
             </size>
            </property>

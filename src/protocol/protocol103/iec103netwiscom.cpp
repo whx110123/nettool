@@ -31,16 +31,16 @@ bool IEC103NetWiscom::init(const QByteArray& buff)
 	len = apci.length + LENGTH_LEN + 1;
 	masterState = apci.masterState;
 	slaveState = apci.slaveState;
-	if(len > buff.count())
+	if(len > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
 		return false;
 	}
 	mRecvData = buff.left(len);
 
 	if(apci.control.type == ITYPE && buff.count() <= APCI_LEN)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！I帧报文无ASDU数据");
 		return false;
 	}
 	else if(apci.control.type == UTYPE || apci.control.type == STYPE)

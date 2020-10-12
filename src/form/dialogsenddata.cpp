@@ -260,7 +260,7 @@ void DialogSendData::on_timeinterval_textChanged(const QString& arg1)
 
 void DialogSendData::on_checkBox_stateChanged(int arg1)
 {
-	for(int i = 0; i < 14; i++)
+	for(int i = 0; i < mapchk.size(); i++)
 	{
 		mapchk[i + 1]->setCheckState(Qt::CheckState(arg1));
 	}
