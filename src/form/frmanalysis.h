@@ -58,7 +58,8 @@ private:
 	protocol101::protocol104apdu *m_104;
 	protocol103::protocol103wiscomnet *m_103wiscomnet;
 	protocol103::protocol103com *m_103com;
-
+protected:
+	bool eventFilter(QObject *obj, QEvent *ev) override;
 };
 
 #endif // FRMANALYSIS_H

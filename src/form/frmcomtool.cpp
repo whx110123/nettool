@@ -2,6 +2,8 @@
 #include "ui_frmcomtool.h"
 #include "quiwidget.h"
 
+#include <QSerialPortInfo>
+
 frmComTool::frmComTool(QWidget *parent) : QWidget(parent), ui(new Ui::frmComTool)
 {
 	ui->setupUi(this);
@@ -81,17 +83,29 @@ void frmComTool::initForm()
 
 void frmComTool::initConfig()
 {
-	QStringList comList;
-	for(int i = 1; i <= 20; i++)
+	QList<QSerialPortInfo> mSerialPortList = QSerialPortInfo::availablePorts();
+	QStringList mStrList;
+	for(QSerialPortInfo SerialPortInfo : mSerialPortList)
 	{
-		comList << QString("COM%1").arg(i);
+		mStrList << SerialPortInfo.portName();
+	}
+	ui->cboxPortName->addItems(mStrList);
+	if(mStrList.count())
+	{
+		ui->cboxPortName->setCurrentText(mStrList.at(0));
 	}
 
-	comList << "ttyUSB0" << "ttyS0" << "ttyS1" << "ttyS2" << "ttyS3" << "ttyS4";
-	comList << "ttymxc1" << "ttymxc2" << "ttymxc3" << "ttymxc4";
-	comList << "ttySAC1" << "ttySAC2" << "ttySAC3" << "ttySAC4";
-	ui->cboxPortName->addItems(comList);
-	ui->cboxPortName->setCurrentIndex(ui->cboxPortName->findText(App::PortName));
+//	QStringList comList;
+//	for(int i = 1; i <= 20; i++)
+//	{
+//		comList << QString("COM%1").arg(i);
+//	}
+
+//	comList << "ttyUSB0" << "ttyS0" << "ttyS1" << "ttyS2" << "ttyS3" << "ttyS4";
+//	comList << "ttymxc1" << "ttymxc2" << "ttymxc3" << "ttymxc4";
+//	comList << "ttySAC1" << "ttySAC2" << "ttySAC3" << "ttySAC4";
+//	ui->cboxPortName->addItems(comList);
+//	ui->cboxPortName->setCurrentIndex(ui->cboxPortName->findText(App::PortName));
 	connect(ui->cboxPortName, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
 	QStringList baudList;

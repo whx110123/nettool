@@ -45,6 +45,12 @@ void frmAnalysis::initForm()
 
 void frmAnalysis::initConfig()
 {
+	ui->comboBox_lengthtype->installEventFilter(this);
+	ui->comboBox_addrlen->installEventFilter(this);
+	ui->comboBox_cotlen->installEventFilter(this);
+	ui->comboBox_comaddrlen->installEventFilter(this);
+	ui->comboBox_infaddrlen->installEventFilter(this);
+
 	ui->protocolcbox->setCurrentIndex(ui->protocolcbox->findText(App::DefaultProtocol));
 	ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
 	ui->comboBox_addrlen->setCurrentText("1");
@@ -401,4 +407,23 @@ void frmAnalysis::on_pushButton_clean_clicked()
 
 	}
 	ui->originaltext->setText(data.trimmed());
+}
+
+bool frmAnalysis::eventFilter(QObject *obj, QEvent *event)
+{
+	if(obj == ui->comboBox_lengthtype ||
+			obj == ui->comboBox_addrlen ||
+			obj == ui->comboBox_cotlen ||
+			obj == ui->comboBox_comaddrlen ||
+			obj == ui->comboBox_infaddrlen)
+	{
+		if(event->type() == QEvent::Wheel)
+		{
+			return true;
+		}
+
+	}
+
+	return QWidget::eventFilter(obj, event);
+
 }
