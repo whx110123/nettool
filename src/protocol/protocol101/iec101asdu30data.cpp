@@ -2,7 +2,7 @@
 
 IEC101Asdu30Data::IEC101Asdu30Data()
 {
-	siq = 0;
+
 }
 
 IEC101Asdu30Data::~IEC101Asdu30Data()

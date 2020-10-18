@@ -1,9 +1,9 @@
 ﻿#ifndef IEC101ASDU9DATA_H
 #define IEC101ASDU9DATA_H
 
-#include "iec101asdu.h"
+#include "iec101asdu21data.h"
 
-class IEC101Asdu9Data : public IEC101AsduData
+class IEC101Asdu9Data : public IEC101Asdu21Data
 {
 public:
 	IEC101Asdu9Data();
@@ -12,7 +12,6 @@ public:
 	virtual bool createData(IECDataConfig& config);
 
 public:
-	short shortdata;
 	uchar qds;
 };
 

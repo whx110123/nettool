@@ -1,10 +1,10 @@
 ﻿#ifndef IEC101ASDU32DATA_H
 #define IEC101ASDU32DATA_H
 
-#include "iec101asdu.h"
+#include "iec101asdu6data.h"
 
 
-class IEC101Asdu32Data : public IEC101AsduData
+class IEC101Asdu32Data : public IEC101Asdu6Data
 {
 public:
 	IEC101Asdu32Data();
@@ -12,10 +12,6 @@ public:
 	virtual bool handle(const QByteArray& buff);
 	virtual bool createData(IECDataConfig& config);
 
-public:
-	uchar vti;
-	uchar qds;
-	QDateTime datetime;
 };
 
 #endif // IEC101ASDU32DATA_H

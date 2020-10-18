@@ -1,29 +1,30 @@
-﻿#include "iec101asdu32data.h"
+﻿#include "iec101asdu10data.h"
 
-IEC101Asdu32Data::IEC101Asdu32Data()
+IEC101Asdu10Data::IEC101Asdu10Data()
 {
 
 }
 
-IEC101Asdu32Data::~IEC101Asdu32Data()
+IEC101Asdu10Data::~IEC101Asdu10Data()
 {
 
 }
 
-bool IEC101Asdu32Data::handle(const QByteArray& buff)
+bool IEC101Asdu10Data::handle(const QByteArray& buff)
 {
-	mText.append("\r\n");
-	vti = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + vtiToText(vti)  + "\r\n");
-	len++;
+	mText.append("\t对应点号是:" + QString::number(infaddr - 0x4001) + "\r\n");
+	shortdata = charToint(buff.data() + len, 2);
+	mText.append(CharToHexStr(buff.data() + len, 2) + "\t规一化值:" + QString::number(shortdata) + "\r\n");
+	len += 2;
 
 	qds = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\t品质位:" + ivToText(qds) + "   " + ntToText(qds) + "   " + sbToText(qds) + "   " + blToText(qds) + "   " + ovToText(qds) + "\r\n");
 	len++;
 
-	datetime = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + len, 7));
-	len += 7;
+	datetime = charToDateTime(buff.data() + len, 3, BINARYTIME2A);
+	mText.append(timeToText(buff.data() + len, 3));
+	len += 3;
+
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
 	{
@@ -33,7 +34,7 @@ bool IEC101Asdu32Data::handle(const QByteArray& buff)
 	return true;
 }
 
-bool IEC101Asdu32Data::createData(IECDataConfig& config)
+bool IEC101Asdu10Data::createData(IECDataConfig& config)
 {
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;

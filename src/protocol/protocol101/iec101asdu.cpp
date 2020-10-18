@@ -1,29 +1,26 @@
 ﻿#include "iec101asdu.h"
-#include "iec101asdu1data.h"
-#include "iec101asdu3data.h"
+#include "iec101asdu7data.h"
+#include "iec101asdu8data.h"
 #include "iec101asdu9data.h"
+#include "iec101asdu11data.h"
+#include "iec101asdu12data.h"
 #include "iec101asdu13data.h"
+#include "iec101asdu14data.h"
 #include "iec101asdu15data.h"
 #include "iec101asdu21data.h"
 #include "iec101asdu30data.h"
 #include "iec101asdu31data.h"
 #include "iec101asdu32data.h"
-#include "iec101asdu45data.h"
-#include "iec101asdu46data.h"
-#include "iec101asdu50data.h"
-#include "iec101asdu70data.h"
-#include "iec101asdu100data.h"
-#include "iec101asdu101data.h"
-#include "iec101asdu103data.h"
-#include "iec101asdu137data.h"
-#include "iec101asdu167data.h"
 #include "iec101asdu36data.h"
 #include "iec101asdu43data.h"
-#include "iec101asdu55data.h"
+#include "iec101asdu45data.h"
+#include "iec101asdu46data.h"
 #include "iec101asdu47data.h"
 #include "iec101asdu48data.h"
 #include "iec101asdu49data.h"
+#include "iec101asdu50data.h"
 #include "iec101asdu51data.h"
+#include "iec101asdu55data.h"
 #include "iec101asdu58data.h"
 #include "iec101asdu59data.h"
 #include "iec101asdu60data.h"
@@ -31,6 +28,12 @@
 #include "iec101asdu62data.h"
 #include "iec101asdu63data.h"
 #include "iec101asdu64data.h"
+#include "iec101asdu70data.h"
+#include "iec101asdu100data.h"
+#include "iec101asdu101data.h"
+#include "iec101asdu103data.h"
+#include "iec101asdu137data.h"
+#include "iec101asdu167data.h"
 
 IEC101AsduData::IEC101AsduData()
 {
@@ -664,14 +667,44 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 	case 1:
 		asdudata = new IEC101Asdu1Data;
 		break;
+	case 2:
+		asdudata = new IEC101Asdu2Data;
+		break;
 	case 3:
 		asdudata = new IEC101Asdu3Data;
+		break;
+	case 4:
+		asdudata = new IEC101Asdu4Data;
+		break;
+	case 5:
+		asdudata = new IEC101Asdu5Data;
+		break;
+	case 6:
+		asdudata = new IEC101Asdu6Data;
+		break;
+	case 7:
+		asdudata = new IEC101Asdu7Data;
+		break;
+	case 8:
+		asdudata = new IEC101Asdu8Data;
 		break;
 	case 9:
 		asdudata = new IEC101Asdu9Data;
 		break;
+	case 10:
+		asdudata = new IEC101Asdu10Data;
+		break;
+	case 11:
+		asdudata = new IEC101Asdu11Data;
+		break;
+	case 12:
+		asdudata = new IEC101Asdu12Data;
+		break;
 	case 13:
 		asdudata = new IEC101Asdu13Data;
+		break;
+	case 14:
+		asdudata = new IEC101Asdu14Data;
 		break;
 	case 15:
 		asdudata = new IEC101Asdu15Data;

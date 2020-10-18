@@ -2,7 +2,6 @@
 
 IEC101Asdu9Data::IEC101Asdu9Data()
 {
-	shortdata = 0;
 	qds = 0;
 }
 
