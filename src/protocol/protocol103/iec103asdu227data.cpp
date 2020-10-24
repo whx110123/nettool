@@ -23,7 +23,7 @@ bool IEC103Asdu227Data::handle(const QByteArray& buff)
 	len++;
 
 	afq = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + afqToText(afq) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + afqToText_iec103(afq) + "\r\n");
 	len++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");

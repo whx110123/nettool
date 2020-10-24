@@ -1,25 +1,25 @@
-﻿#include "iec103asdu226data.h"
+﻿#include "iec101asdu107data.h"
 
-IEC103Asdu226Data::IEC103Asdu226Data()
+IEC101Asdu107Data::IEC101Asdu107Data()
 {
-	fnam = 0;
-	lsq = 0;
+	ushortData = 0;
 }
 
-IEC103Asdu226Data::~IEC103Asdu226Data()
+IEC101Asdu107Data::~IEC101Asdu107Data()
 {
 
 }
 
-bool IEC103Asdu226Data::handle(const QByteArray& buff)
+bool IEC101Asdu107Data::handle(const QByteArray& buff)
 {
-	fnam = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t文件名称FNAM: " + QString::number(fnam) + "\r\n");
+	mText.append("\r\n");
+	ushortData = charTouint(buff.data() + len, 2);
+	mText.append(CharToHexStr(buff.data() + len, 2) + "\t测试值TSC:" + QString::number(ushortData) + "\r\n");
 	len += 2;
 
-	lsq = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + lsqToText_iec103(lsq) + "\r\n");
-	len++;
+	datetime = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
+	mText.append(timeToText(buff.data() + len, 7));
+	len += 7;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
@@ -30,7 +30,7 @@ bool IEC103Asdu226Data::handle(const QByteArray& buff)
 	return true;
 }
 
-bool IEC103Asdu226Data::createData(IECDataConfig& config)
+bool IEC101Asdu107Data::createData(IECDataConfig& config)
 {
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;

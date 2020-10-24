@@ -717,6 +717,13 @@ void DialogPMA::on_pushButton_104callall_clicked()
 	createAndSendData(config);
 }
 
+void DialogPMA::on_pushButton_104setTime_clicked()
+{
+	config.masterState = STATE_SETTIME;
+	config.isMaster = true;
+	createAndSendData(config);
+}
+
 void DialogPMA::on_pushButton_sendasdu_2_clicked()
 {
 	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_2->toPlainText());
@@ -801,3 +808,4 @@ void DialogPMA::on_pushButton_sendasdu_6_clicked()
 	config.asdutype = 0;
 	createAndSendData(config);
 }
+

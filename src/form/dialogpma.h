@@ -89,6 +89,8 @@ private slots:
 
 	void on_pushButton_sendasdu_6_clicked();
 
+	void on_pushButton_104setTime_clicked();
+
 private:
 	Ui::DialogPMA *ui;
 	MyBase *mProtocol;

@@ -579,6 +579,11 @@ QString timeToText(uchar *time, int timelen)
 {
 	QString text;
 
+	if(timelen < 2)
+	{
+		return text;
+	}
+
 	QDateTime datetime = charToDateTime(time, timelen, BINARYTIME2A);
 
 	uint datauint = charTouint(time, 2);
@@ -908,7 +913,51 @@ QString sofToText(uchar ch)
 	return text;
 }
 
-QString sofToText_asdu222(uchar ch)
+QString sofToText_iec101(uchar ch)
+{
+	QString text = "文件状态SOF:";
+	text.append("\r\n\tSTATUS(bit1-5):" + QString::number(ch & 0x1f, 16).toUpper() + " ");
+	switch(ch & 0x1f)
+	{
+	case 0:
+		text.append("缺省");
+		break;
+	default:
+		text.append("预留");
+		break;
+	}
+
+	text.append("\r\n\tLFD(bit6):" + QString::number(ch & 0x20, 16).toUpper() + " ");
+	if(ch & 0x20)
+	{
+		text.append("最后目录文件");
+	}
+	else
+	{
+		text.append("后面还有目录文件");
+	}
+	text.append("\r\n\tFOR(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " ");
+	if(ch & 0x40)
+	{
+		text.append("定义子目录名");
+	}
+	else
+	{
+		text.append("定义文件名");
+	}
+	text.append("\r\n\tFA(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
+	if(ch & 0x80)
+	{
+		text.append("文件传输已被激活");
+	}
+	else
+	{
+		text.append("文件等待传输");
+	}
+	return text;
+}
+
+QString sofToText_iec103(uchar ch)
 {
 	QString text = "文件状态SOF:";
 	text.append("\r\n\tSTATUS(bit1-5):" + QString::number(ch & 0x1f, 16).toUpper() + " ");
@@ -1071,7 +1120,68 @@ QString accToText(uchar ch)
 	return text;
 }
 
-QString scqToText(uchar ch)
+QString scqToText_iec101(uchar ch)
+{
+	QString text = "选择召唤限定词SCQ:\r\n\tbit(1-4): " + QString::number(ch & 0x0f) + "  ";
+	switch(ch & 0x0f)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("选择文件");
+		break;
+	case 2:
+		text.append("请求文件");
+		break;
+	case 3:
+		text.append("停止激活文件");
+		break;
+	case 4:
+		text.append("删除文件");
+		break;
+	case 5:
+		text.append("选择节");
+		break;
+	case 6:
+		text.append("请求节");
+		break;
+	case 7:
+		text.append("停止激活节");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	text.append("\r\n\tbit(5-8): " + QString::number((ch >> 4) & 0x0f) + "  ");
+	switch((ch >> 4) & 0x0f)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("无被请求的存储空间");
+		break;
+	case 2:
+		text.append("校验和错");
+		break;
+	case 3:
+		text.append("非所期望的通信服务");
+		break;
+	case 4:
+		text.append("非所期望的文件名称");
+		break;
+	case 5:
+		text.append("非所期望的节名称");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+
+	return text;
+}
+QString scqToText_iec103(uchar ch)
 {
 	QString text = "选择召唤限定词SCQ:\r\n\tbit(1-4): " + QString::number(ch & 0x0f) + "  ";
 	switch(ch & 0x0f)
@@ -1133,37 +1243,64 @@ QString scqToText(uchar ch)
 
 QString frqToText(uchar ch)
 {
-	QString text = "准备好限定词FRQ:";
+	QString text = "文件准备就绪限定词FRQ:";
 	text.append("\r\n\tbit(1-7):" + QString::number(ch & 0x7f, 16).toUpper() + " 预留");
 	text.append("\r\n\tbit8: " + QString::number(ch & 0x80, 16) + "  ");
 	if(ch & 0x80)
 	{
-		text.append("为否定确认");
+		text.append("选择、请求、停止激活或删除的否定确认");
 	}
 	else
 	{
-		text.append("为肯定确认");
+		text.append("选择、请求、停止激活或删除的肯定确认");
 	}
 	return text;
 }
 
 QString srqToText(uchar ch)
 {
-	QString text = "准备好限定词SRQ:";
+	QString text = "节准备就绪限定词SRQ:";
 	text.append("\r\n\tbit(1-7):" + QString::number(ch & 0x7f, 16).toUpper() + " 预留");
 	text.append("\r\n\tbit8: " + QString::number(ch & 0x80, 16) + "  ");
 	if(ch & 0x80)
 	{
-		text.append("节未准备好装载");
+		text.append("节未准备就绪");
 	}
 	else
 	{
-		text.append("节准备好装载");
+		text.append("节准备就绪");
 	}
 	return text;
 }
 
-QString lsqToText(uchar ch)
+QString lsqToText_iec101(uchar ch)
+{
+	QString text = "最后的节和段限定词LSQ: " + QString::number(ch) + "  ";
+	switch(ch)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("不带停止激活的文件传输");
+		break;
+	case 2:
+		text.append("带停止激活的文件传输");
+		break;
+	case 3:
+		text.append("不带停止激活的节传输");
+		break;
+	case 4:
+		text.append("带停止激活的节传输");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}
+
+QString lsqToText_iec103(uchar ch)
 {
 	QString text = "最后的节和段限定词LSQ: " + QString::number(ch) + "  ";
 	switch(ch)
@@ -1190,9 +1327,62 @@ QString lsqToText(uchar ch)
 	return text;
 }
 
-QString afqToText(uchar ch)
+QString afqToText_iec101(uchar ch)
 {
-	QString text = "认可文件、认可节限定词AFQ:\r\n\tbit(1-4): " + QString::number(ch & 0x0f) + "  ";
+	QString text = "文件认可或节认可限定词AFQ:\r\n\tbit(1-4): " + QString::number(ch & 0x0f) + "  ";
+	switch(ch & 0x0f)
+	{
+	case 0:
+		text.append("缺省");
+		break;
+	case 1:
+		text.append("文件传输的肯定认可");
+		break;
+	case 2:
+		text.append("文件传输的否定认可");
+		break;
+	case 3:
+		text.append("节传输的肯定认可");
+		break;
+	case 4:
+		text.append("节传输的否定认可");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	text.append("\r\n\tbit(5-8): " + QString::number((ch >> 4) & 0x0f) + "  ");
+	switch((ch >> 4) & 0x0f)
+	{
+	case 0:
+		text.append("缺省");
+		break;
+	case 1:
+		text.append("无被请求的存储空间");
+		break;
+	case 2:
+		text.append("校验和错");
+		break;
+	case 3:
+		text.append("非所期望的通信服务");
+		break;
+	case 4:
+		text.append("非所期望的文件名称");
+		break;
+	case 5:
+		text.append("非所期望的节名称");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+
+	return text;
+}
+
+QString afqToText_iec103(uchar ch)
+{
+	QString text = "文件认可或节认可限定词AFQ:\r\n\tbit(1-4): " + QString::number(ch & 0x0f) + "  ";
 	switch(ch & 0x0f)
 	{
 	case 0:
@@ -1209,6 +1399,7 @@ QString afqToText(uchar ch)
 		break;
 	case 4:
 		text.append("节传输的否定认可");
+		break;
 	default:
 		text.append("保留");
 		break;
@@ -1236,6 +1427,262 @@ QString afqToText(uchar ch)
 		break;
 	}
 
+	return text;
+}
+
+
+QString esToText(uchar ch)
+{
+	QString text = "事件状态ES(bit1-2):" + QString::number(ch & 0x03) + " ";
+	switch(ch & 0x03)
+	{
+	case 0:
+		text.append("不确定或中间状态");
+		break;
+	case 1:
+		text.append("分");
+		break;
+	case 2:
+		text.append("合");
+		break;
+	case 3:
+		text.append("不确定");
+		break;
+	default:
+		text.append("不确定");
+		break;
+	}
+	return text;
+}
+
+QString eiToText(uchar ch)
+{
+	QString text = "EI(bit4):" + QString::number(ch & 0x08, 16).toUpper() + " ";
+	if(ch & 0x08)
+	{
+		text.append("动作时间无效");
+	}
+	else
+	{
+		text.append("动作时间有效");
+	}
+	return text;
+}
+
+QString gsToText(uchar ch)
+{
+	QString text = "GS(bit1):" + QString::number(ch & 0x01, 16).toUpper() + " ";
+	if(ch & 0x01)
+	{
+		text.append("总启动");
+	}
+	else
+	{
+		text.append("无总启动");
+	}
+	return text;
+}
+
+QString sl1ToText(uchar ch)
+{
+	QString text = "SL1(bit2):" + QString::number(ch & 0x02, 16).toUpper() + " ";
+	if(ch & 0x02)
+	{
+		text.append("A相保护启动");
+	}
+	else
+	{
+		text.append("A相保护未启动");
+	}
+	return text;
+}
+
+QString sl2ToText(uchar ch)
+{
+	QString text = "SL2(bit3):" + QString::number(ch & 0x04, 16).toUpper() + " ";
+	if(ch & 0x04)
+	{
+		text.append("B相保护启动");
+	}
+	else
+	{
+		text.append("B相保护未启动");
+	}
+	return text;
+}
+
+QString sl3ToText(uchar ch)
+{
+	QString text = "SL3(bit4):" + QString::number(ch & 0x08, 16).toUpper() + " ";
+	if(ch & 0x08)
+	{
+		text.append("C相保护启动");
+	}
+	else
+	{
+		text.append("C相保护未启动");
+	}
+	return text;
+}
+
+QString sieToText(uchar ch)
+{
+	QString text = "SIE(bit5):" + QString::number(ch & 0x10, 16).toUpper() + " ";
+	if(ch & 0x10)
+	{
+		text.append("接地电流保护启动");
+	}
+	else
+	{
+		text.append("接地电流保护未启动");
+	}
+	return text;
+}
+
+QString srdToText(uchar ch)
+{
+	QString text = "SRD(bit6):" + QString::number(ch & 0x20, 16).toUpper() + " ";
+	if(ch & 0x20)
+	{
+		text.append("反向保护启动");
+	}
+	else
+	{
+		text.append("反向保护未启动");
+	}
+	return text;
+}
+
+QString cl1ToText(uchar ch)
+{
+	QString text = "CL1(bit2):" + QString::number(ch & 0x02, 16).toUpper() + " ";
+	if(ch & 0x02)
+	{
+		text.append("命令输出至A相输出电路");
+	}
+	else
+	{
+		text.append("无命令输出至A相输出电路");
+	}
+	return text;
+}
+
+QString cl2ToText(uchar ch)
+{
+	QString text = "CL2(bit3):" + QString::number(ch & 0x04, 16).toUpper() + " ";
+	if(ch & 0x04)
+	{
+		text.append("命令输出至B相输出电路");
+	}
+	else
+	{
+		text.append("无命令输出至B相输出电路");
+	}
+	return text;
+}
+
+QString cl3ToText(uchar ch)
+{
+	QString text = "CL3(bit4):" + QString::number(ch & 0x08, 16).toUpper() + " ";
+	if(ch & 0x08)
+	{
+		text.append("命令输出至C相输出电路");
+	}
+	else
+	{
+		text.append("无命令输出至C相输出电路");
+	}
+	return text;
+}
+
+QString qrpToText(uchar ch)
+{
+	QString text = "复位进程命令限定词QRP: " + QString::number(ch) + "  ";
+	switch(ch)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("进程的总复位");
+		break;
+	case 2:
+		text.append("复位事件缓冲区等待处理的带时标的信息");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}
+
+QString qpmToText(uchar ch)
+{
+	QString text = "测量值参数限定词QPM:\r\n\t参数类别KPA(bit1-6): " + QString::number(ch & 0x3f) + "  ";
+	switch(ch & 0x3f)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("门限值");
+		break;
+	case 2:
+		text.append("平滑系数(滤波时间常数)");
+		break;
+	case 3:
+		text.append("传送测量值的下限");
+		break;
+	case 4:
+		text.append("传送测量值的上限");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	text.append("\r\n\tLPC(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " ");
+	if(ch & 0x40)
+	{
+		text.append("当地参数改变");
+	}
+	else
+	{
+		text.append("当地参数未改变");
+	}
+	text.append("\r\n\tPOP(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
+	if(ch & 0x80)
+	{
+		text.append("参数未运行");
+	}
+	else
+	{
+		text.append("参数在运行");
+	}
+
+	return text;
+}
+
+QString qpaToText(uchar ch)
+{
+	QString text = "参数激活限定词QPA: " + QString::number(ch) + "  ";
+	switch(ch)
+	{
+	case 0:
+		text.append("未用");
+		break;
+	case 1:
+		text.append("激活/停止激活这之前装载的参数(信息对象地址=0)");
+		break;
+	case 2:
+		text.append("激活/停止激活所寻址信息对象的参数");
+		break;
+	case 3:
+		text.append("激活/停止激活所寻址的持续循环或周期传输的信息对象");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
 	return text;
 }
 

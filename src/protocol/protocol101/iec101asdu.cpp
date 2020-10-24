@@ -1,25 +1,18 @@
 ﻿#include "iec101asdu.h"
-#include "iec101asdu7data.h"
-#include "iec101asdu8data.h"
-#include "iec101asdu9data.h"
 #include "iec101asdu11data.h"
-#include "iec101asdu12data.h"
-#include "iec101asdu13data.h"
-#include "iec101asdu14data.h"
-#include "iec101asdu15data.h"
-#include "iec101asdu21data.h"
+#include "iec101asdu20data.h"
 #include "iec101asdu30data.h"
 #include "iec101asdu31data.h"
 #include "iec101asdu32data.h"
+#include "iec101asdu33data.h"
+#include "iec101asdu34data.h"
+#include "iec101asdu35data.h"
 #include "iec101asdu36data.h"
+#include "iec101asdu37data.h"
+#include "iec101asdu38data.h"
+#include "iec101asdu39data.h"
+#include "iec101asdu40data.h"
 #include "iec101asdu43data.h"
-#include "iec101asdu45data.h"
-#include "iec101asdu46data.h"
-#include "iec101asdu47data.h"
-#include "iec101asdu48data.h"
-#include "iec101asdu49data.h"
-#include "iec101asdu50data.h"
-#include "iec101asdu51data.h"
 #include "iec101asdu55data.h"
 #include "iec101asdu58data.h"
 #include "iec101asdu59data.h"
@@ -31,7 +24,21 @@
 #include "iec101asdu70data.h"
 #include "iec101asdu100data.h"
 #include "iec101asdu101data.h"
-#include "iec101asdu103data.h"
+#include "iec101asdu102data.h"
+#include "iec101asdu105data.h"
+#include "iec101asdu106data.h"
+#include "iec101asdu107data.h"
+#include "iec101asdu111data.h"
+#include "iec101asdu112data.h"
+#include "iec101asdu113data.h"
+#include "iec101asdu120data.h"
+#include "iec101asdu121data.h"
+#include "iec101asdu122data.h"
+#include "iec101asdu123data.h"
+#include "iec101asdu124data.h"
+#include "iec101asdu125data.h"
+#include "iec101asdu126data.h"
+#include "iec101asdu127data.h"
 #include "iec101asdu137data.h"
 #include "iec101asdu167data.h"
 
@@ -430,6 +437,9 @@ QString IEC101Asdu::typeToText()
 	case 106:
 		text.append("延时获得命今");
 		break;
+	case 107:
+		text.append("带CP56Time2a时标的测试命今");
+		break;
 	case 110:
 		text.append("测量值参数, 规一化值");
 		break;
@@ -464,7 +474,7 @@ QString IEC101Asdu::typeToText()
 		text.append("目录");
 		break;
 	case 127:
-		text.append("未定义，保留");
+		text.append("查询日志");
 		break;
 	case 137:
 		text.append("计划曲线传送(南网扩展功能)");
@@ -709,6 +719,21 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 	case 15:
 		asdudata = new IEC101Asdu15Data;
 		break;
+	case 16:
+		asdudata = new IEC101Asdu16Data;
+		break;
+	case 17:
+		asdudata = new IEC101Asdu17Data;
+		break;
+	case 18:
+		asdudata = new IEC101Asdu18Data;
+		break;
+	case 19:
+		asdudata = new IEC101Asdu19Data;
+		break;
+	case 20:
+		asdudata = new IEC101Asdu20Data;
+		break;
 	case 21:
 		asdudata = new IEC101Asdu21Data;
 		break;
@@ -721,8 +746,29 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 	case 32:
 		asdudata = new IEC101Asdu32Data;
 		break;
+	case 33:
+		asdudata = new IEC101Asdu33Data;
+		break;
+	case 34:
+		asdudata = new IEC101Asdu34Data;
+		break;
+	case 35:
+		asdudata = new IEC101Asdu35Data;
+		break;
 	case 36:
 		asdudata = new IEC101Asdu36Data;
+		break;
+	case 37:
+		asdudata = new IEC101Asdu37Data;
+		break;
+	case 38:
+		asdudata = new IEC101Asdu38Data;
+		break;
+	case 39:
+		asdudata = new IEC101Asdu39Data;
+		break;
+	case 40:
+		asdudata = new IEC101Asdu40Data;
 		break;
 	case 43:
 		asdudata = new IEC101Asdu43Data;
@@ -782,8 +828,59 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 	case 101:
 		asdudata = new IEC101Asdu101Data;
 		break;
+	case 102:
+		asdudata = new IEC101Asdu102Data;
+		break;
 	case 103:
 		asdudata = new IEC101Asdu103Data;
+		break;
+	case 104:
+		asdudata = new IEC101Asdu104Data;
+		break;
+	case 105:
+		asdudata = new IEC101Asdu105Data;
+		break;
+	case 106:
+		asdudata = new IEC101Asdu106Data;
+		break;
+	case 107:
+		asdudata = new IEC101Asdu107Data;
+		break;
+	case 110:
+		asdudata = new IEC101Asdu110Data;
+		break;
+	case 111:
+		asdudata = new IEC101Asdu111Data;
+		break;
+	case 112:
+		asdudata = new IEC101Asdu112Data;
+		break;
+	case 113:
+		asdudata = new IEC101Asdu113Data;
+		break;
+	case 120:
+		asdudata = new IEC101Asdu120Data;
+		break;
+	case 121:
+		asdudata = new IEC101Asdu121Data;
+		break;
+	case 122:
+		asdudata = new IEC101Asdu122Data;
+		break;
+	case 123:
+		asdudata = new IEC101Asdu123Data;
+		break;
+	case 124:
+		asdudata = new IEC101Asdu124Data;
+		break;
+	case 125:
+		asdudata = new IEC101Asdu125Data;
+		break;
+	case 126:
+		asdudata = new IEC101Asdu126Data;
+		break;
+	case 127:
+		asdudata = new IEC101Asdu127Data;
 		break;
 	case 137:
 		asdudata = new IEC101Asdu137Data;

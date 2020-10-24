@@ -130,12 +130,12 @@ QDateTime charToDateTime(uchar *data, int len, int model)
 	{
 	case BINARYTIME2A:
 		tmp = data[0] + data[1] * 256;
+		milliseconds = tmp % 1000;
+		second = tmp / 1000;
 		if(len == 2)
 		{
 			break;
 		}
-		milliseconds = tmp % 1000;
-		second = tmp / 1000;
 		minutes = data[2] & 0x3f;
 		if(len == 3)
 		{

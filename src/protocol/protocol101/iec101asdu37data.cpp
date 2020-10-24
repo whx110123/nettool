@@ -1,29 +1,31 @@
-﻿#include "iec101asdu36data.h"
+﻿#include "iec101asdu37data.h"
 
-IEC101Asdu36Data::IEC101Asdu36Data()
+IEC101Asdu37Data::IEC101Asdu37Data()
 {
 
 }
 
-IEC101Asdu36Data::~IEC101Asdu36Data()
+IEC101Asdu37Data::~IEC101Asdu37Data()
 {
 
 }
 
-bool IEC101Asdu36Data::handle(const QByteArray& buff)
+bool IEC101Asdu37Data::handle(const QByteArray& buff)
 {
-	mText.append("\t对应点号是:" + QString::number(infaddr - 0x4001) + "\r\n");
-	floatdata = charTofloat(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len, 4) + "\t浮点数:" + QString::number(floatdata) + "\r\n");
+	mText.append("\r\n");
+	intdata = charToint(buff.data() + len, 4);
+	mText.append(CharToHexStr(buff.data() + len, 4) + "\t整数:" + QString::number(intdata) + "\r\n");
 	len += 4;
 
-	qds = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t品质位:" + ivToText(qds) + "   " + ntToText(qds) + "   " + sbToText(qds) + "   " + blToText(qds) + "   " + ovToText(qds) + "\r\n");
+	bcr = *(buff.data() + len);
+	uchar sq = bcr & 0x1f;
+	mText.append(CharToHexStr(buff.data() + len) + "\t顺序号SQ(bit1-5):" + QString::number(sq) + "\r\n\t" + cyToText(bcr) + "\r\n\t" + caToText(bcr) + "\r\n\t" + ivToText(bcr)  + "\r\n");
 	len++;
 
 	datetime = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
 	mText.append(timeToText(buff.data() + len, 7));
 	len += 7;
+
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
 	{
@@ -33,7 +35,7 @@ bool IEC101Asdu36Data::handle(const QByteArray& buff)
 	return true;
 }
 
-bool IEC101Asdu36Data::createData(IECDataConfig& config)
+bool IEC101Asdu37Data::createData(IECDataConfig& config)
 {
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;

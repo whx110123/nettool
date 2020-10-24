@@ -23,7 +23,7 @@ bool IEC103Asdu222Data::handle(const QByteArray& buff)
 	len += 4;
 
 	sof = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + sofToText_asdu222(sof) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + sofToText_iec103(sof) + "\r\n");
 	len++;
 
 	ftim = charToDateTime(buff.data() + len, 7, BINARYTIME2A);

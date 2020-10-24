@@ -236,7 +236,7 @@
              <enum>QTabWidget::South</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="tab">
              <attribute name="title">
@@ -290,14 +290,27 @@
                 <widget class="QPushButton" name="pushButton_104sendUtest">
                  <property name="geometry">
                   <rect>
-                   <x>130</x>
-                   <y>50</y>
+                   <x>230</x>
+                   <y>20</y>
                    <width>81</width>
                    <height>23</height>
                   </rect>
                  </property>
                  <property name="text">
                   <string>发测试-U帧</string>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="pushButton_104setTime">
+                 <property name="geometry">
+                  <rect>
+                   <x>130</x>
+                   <y>50</y>
+                   <width>75</width>
+                   <height>23</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>对时</string>
                  </property>
                 </widget>
                </widget>

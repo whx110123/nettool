@@ -113,6 +113,12 @@ bool IEC104::createData(IECDataConfig& config)
 			config.vsq = 1;
 			config.cot = 0x06;
 			break;
+		case STATE_SETTIME:
+			config.controltype = ITYPE;
+			config.asdutype = 0x67;
+			config.vsq = 1;
+			config.cot = 0x06;
+			break;
 		case STATE_USER:
 			config.controltype = ITYPE;
 			break;
