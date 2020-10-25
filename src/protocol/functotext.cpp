@@ -216,7 +216,7 @@ QString dcsToText(uchar ch)
 	return text;
 }
 
-QString rcsToText(uchar ch)
+QString rcsToText_iec101(uchar ch)
 {
 	QString text = "步调节命令(bit1-2):" + QString::number(ch & 0x03) + " ";
 	switch(ch & 0x03)
@@ -234,6 +234,26 @@ QString rcsToText(uchar ch)
 	return text;
 }
 
+QString rcsToText_iec103(uchar ch)
+{
+	QString text = "升降命令(bit1-2):" + QString::number(ch & 0x03) + " ";
+	switch(ch & 0x03)
+	{
+	case 1:
+		text.append("降一步");
+		break;
+	case 2:
+		text.append("升一步");
+		break;
+	case 3:
+		text.append("急停");
+		break;
+	default:
+		text.append("不允许");
+		break;
+	}
+	return text;
+}
 
 QString blToText(uchar ch)
 {
@@ -480,7 +500,7 @@ QString suToText(uchar ch)
 	return text;
 }
 
-QString quToText(uchar ch)
+QString quToText_iec101(uchar ch)
 {
 	QString text = "QU(bit3-7):" + QString::number(ch & 0x7c, 16).toUpper() + " ";
 	switch((ch & 0x7c) >> 2)
@@ -496,6 +516,34 @@ QString quToText(uchar ch)
 		break;
 	case 3:
 		text.append("持续输出");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}
+
+QString quToText_iec103(uchar ch)
+{
+	QString text = "QU(bit3-6):" + QString::number(ch & 0x3c, 16).toUpper() + " ";
+	switch((ch & 0x3c) >> 2)
+	{
+	case 0:
+		text.append("被寻址的控制功能的属性(如脉冲持续时间等),这些属性在被控站事先定义而不由控制中心来选择");
+		break;
+	case 1:
+		text.append("短脉冲持续时间(断路器)，持续时间由远方终端系统参数所定义");
+		break;
+	case 2:
+		text.append("长脉冲持续时间，持续时间由远方终端系统参数所定义");
+		break;
+	case 3:
+		text.append("持续输出");
+		break;
+	case 4:
+		text.append("不闭锁重合闸的跳闸命令,用于检查小电流接地系统的接地故障,跳闸后,母线零序电压为零,该断路器就不进行重合闸;"
+					"如果母线零序电压不为零,经过一个时间延时,该断路器就进行重合闸");
 		break;
 	default:
 		text.append("保留");
@@ -546,14 +594,31 @@ QString cyToText(uchar ch)
 	return text;
 }
 
-QString vtiToText(uchar ch)
+QString vtiToText_iec101(uchar ch)
 {
 	QString text = "步位置(bit1-7):"  + QString::number(ch & 0x7f) ;
 
 	text.append("   瞬变状态BS1(bit8):") + QString::number(ch & 0x80, 16).toUpper() + " ";
 	if(ch & 0x80)
 	{
-		text.append("设备处理瞬变状态");
+		text.append("设备在瞬变状态");
+	}
+	else
+	{
+		text.append("设备未在瞬变状态");
+	}
+	return text;
+}
+QString vtiToText_iec103(uchar ch)
+{
+	uchar tmp = ch << 1;
+	char datachar = (*(char *)&tmp) >> 1;
+	QString text = "带瞬变状态指示的值VTI(bit1-7):"  + QString::number(datachar) ;
+
+	text.append("   瞬变状态BS1(bit8):") + QString::number(ch & 0x80, 16).toUpper() + " ";
+	if(ch & 0x80)
+	{
+		text.append("设备在瞬变状态");
 	}
 	else
 	{
@@ -618,6 +683,22 @@ QString timeToText(uchar *time, int timelen)
 	}
 
 	text.append(CharToHexStr(time[6]) + "\t年(bit1-7):" + QString::number(datetime.date().year()) + "\r\n");
+	return text;
+}
+QString ndeToText(uchar ch)
+{
+	QString text;
+	text.append("NO(bit1-6):" + QString::number(ch & 0x3f) + " 描述元素数目\r\n\t");
+	text.append("COUNT(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " 具有相同的通用分类标识序号(GIN)和相同返回标识符(RII)的应用服务数据单元通用分类标识的一位计数器位\r\n\t");
+	text.append("CONT(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
+	if(ch & 0x80)
+	{
+		text.append("后面跟随具有相同的返回标识符(RII)和相同的通用分类标识序号(GIN)的应用服务数据单元");
+	}
+	else
+	{
+		text.append("后面未跟随具有相同的返回标识符(RII)和相同的通用分类标识序号(GIN)的应用服务数据单元");
+	}
 	return text;
 }
 
@@ -1686,3 +1767,123 @@ QString qpaToText(uchar ch)
 	return text;
 }
 
+
+QString colToText(uchar ch)
+{
+	QString text = "兼容级别COL: " + QString::number(ch) + "  ";
+	switch(ch)
+	{
+	case 2:
+		text.append("基于本配套标准所定义的但未采用通用分类服务的继电保护设备(或间隔单元)");
+		break;
+	case 3:
+		text.append("采用通用分类服务");
+		break;
+	default:
+		text.append("未定义");
+		break;
+	}
+	return text;
+}
+
+QString hrToText(const char *ch, int len)
+{
+	uchar *mch = (uchar *)ch;
+	return hrToText(mch, len);
+}
+
+QString hrToText(uchar *ch, int len)
+{
+	QString text ;
+	uint data = charTouint(ch, len);
+	if(len == 3)
+	{
+		text.append(CharToHexStr(ch) + "带品质描述的被测谐波值MEA:\r\n\t顺序SQ(bit1-4): " + QString::number(data & 0x0f) + "  此谐波值为对应帧内测量值的顺序号,0对应第一个量");
+		text.append("\r\n\t谐波次数HRTM(bit5-8): " + QString::number((data >> 4) & 0x0f) + "\r\n");
+		short datashort = charToshortwithQ(ch + 1) >> 2;
+		text.append(CharToHexStr(ch + 1, 2) + "\t带品质描述词的被测值(bit4-16):" + QString::number(datashort) + "   " + ovToText(*(ch + 1)) + "   " + erToText(*(ch + 1)));
+	}
+	else if(len == 4)
+	{
+		text.append(CharToHexStr(ch) + "带品质描述的被测谐波值向量MEA:\r\n\t顺序SQ(bit1-3): " + QString::number(data & 0x07) + "  此谐波值为对应帧内测量值的顺序号,0对应第一个量");
+		text.append("\r\n\t谐波次数HRTM(bit4-7): " + QString::number((data >> 3) & 0x0f));
+		text.append("\r\n\tER(bit8):" + QString::number(*ch & 0x80, 16).toUpper() + " ");
+		if(*ch & 0x80)
+		{
+			text.append("谐波值无效");
+		}
+		else
+		{
+			text.append("谐波值有效");
+		}
+		text.append("\r\n");
+		ushort dataushort = (data >> 3) & 0xffff;
+		short datashort = (*(short *)&dataushort) >> 5;
+		text.append(CharToHexStr(ch + 1, 3) + "\t谐波实数值(bit9-19):" + QString::number(datashort));
+		text.append("\r\n\tOVr(bit20):" + QString::number(*(ch + 2) & 0x08, 16).toUpper() + " ");
+		if(*(ch + 2) & 0x08)
+		{
+			text.append("实数部分溢出");
+		}
+		else
+		{
+			text.append("实数部分无溢出");
+		}
+		dataushort = (data >> 15) & 0xffff;
+		datashort = (*(short *)&dataushort) >> 5;
+		text.append("\r\n\t谐波虚数值(bit21-31):" + QString::number(datashort));
+		text.append("\r\n\tOVi(bit32):" + QString::number(*(ch + 3) & 0x80, 16).toUpper() + " ");
+		if(*(ch + 3) & 0x80)
+		{
+			text.append("虚数部分溢出");
+		}
+		else
+		{
+			text.append("虚数部分无溢出");
+		}
+	}
+
+	return text;
+}
+
+
+QString actToText(uchar ch)
+{
+	QString text = "ACT(bit7):" + QString::number(ch & 0x40, 16).toUpper() + " ";
+	if(ch & 0x40)
+	{
+		text.append("撤销");
+	}
+	else
+	{
+		text.append("命令有效");
+	}
+	return text;
+}
+
+QString ccsToText(uchar ch)
+{
+	QString text = "控制命令状态CCS: " + QString::number(ch & 0x07) + "  ";
+	switch(ch & 0x07)
+	{
+	case 0:
+		text.append("不允许");
+		break;
+	case 1:
+		text.append("选择自同期设备的同期工作方式");
+		break;
+	case 2:
+		text.append("选择自同期设备的不检同期工作方式");
+		break;
+	case 3:
+		text.append("选择自同期设备的检无压工作方式");
+		break;
+	case 4:
+		text.append("选择自同期设备的合环(母线有电压)工作方式");
+		break;
+	default:
+		text.append("备用");
+		break;
+	}
+	return text;
+}

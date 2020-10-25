@@ -1,7 +1,9 @@
 HEADERS += \
 	$$PWD/iec103asdu.h \
 	$$PWD/iec103asdu10data.h \
+	$$PWD/iec103asdu11data.h \
 	$$PWD/iec103asdu1data.h \
+	$$PWD/iec103asdu20data.h \
 	$$PWD/iec103asdu21data.h \
 	$$PWD/iec103asdu220data.h \
 	$$PWD/iec103asdu221data.h \
@@ -19,7 +21,14 @@ HEADERS += \
 	$$PWD/iec103asdu29data.h \
 	$$PWD/iec103asdu2data.h \
 	$$PWD/iec103asdu30data.h \
+	$$PWD/iec103asdu32data.h \
+	$$PWD/iec103asdu33data.h \
+	$$PWD/iec103asdu34data.h \
+	$$PWD/iec103asdu35data.h \
 	$$PWD/iec103asdu36data.h \
+	$$PWD/iec103asdu37data.h \
+	$$PWD/iec103asdu38data.h \
+	$$PWD/iec103asdu39data.h \
 	$$PWD/iec103asdu40data.h \
 	$$PWD/iec103asdu41data.h \
 	$$PWD/iec103asdu42data.h \
@@ -28,8 +37,15 @@ HEADERS += \
 	$$PWD/iec103asdu45data.h \
 	$$PWD/iec103asdu46data.h \
 	$$PWD/iec103asdu47data.h \
+	$$PWD/iec103asdu48data.h \
+	$$PWD/iec103asdu4data.h \
 	$$PWD/iec103asdu50data.h \
 	$$PWD/iec103asdu51data.h \
+	$$PWD/iec103asdu5data.h \
+	$$PWD/iec103asdu64data.h \
+	$$PWD/iec103asdu65data.h \
+	$$PWD/iec103asdu66data.h \
+	$$PWD/iec103asdu67data.h \
 	$$PWD/iec103asdu6data.h \
 	$$PWD/iec103asdu7data.h \
 	$$PWD/iec103asdu88data.h \
@@ -42,7 +58,9 @@ HEADERS += \
 SOURCES += \
 	$$PWD/iec103asdu.cpp \
 	$$PWD/iec103asdu10data.cpp \
+	$$PWD/iec103asdu11data.cpp \
 	$$PWD/iec103asdu1data.cpp \
+	$$PWD/iec103asdu20data.cpp \
 	$$PWD/iec103asdu21data.cpp \
 	$$PWD/iec103asdu220data.cpp \
 	$$PWD/iec103asdu221data.cpp \
@@ -60,7 +78,14 @@ SOURCES += \
 	$$PWD/iec103asdu29data.cpp \
 	$$PWD/iec103asdu2data.cpp \
 	$$PWD/iec103asdu30data.cpp \
+	$$PWD/iec103asdu32data.cpp \
+	$$PWD/iec103asdu33data.cpp \
+	$$PWD/iec103asdu34data.cpp \
+	$$PWD/iec103asdu35data.cpp \
 	$$PWD/iec103asdu36data.cpp \
+	$$PWD/iec103asdu37data.cpp \
+	$$PWD/iec103asdu38data.cpp \
+	$$PWD/iec103asdu39data.cpp \
 	$$PWD/iec103asdu40data.cpp \
 	$$PWD/iec103asdu41data.cpp \
 	$$PWD/iec103asdu42data.cpp \
@@ -69,8 +94,15 @@ SOURCES += \
 	$$PWD/iec103asdu45data.cpp \
 	$$PWD/iec103asdu46data.cpp \
 	$$PWD/iec103asdu47data.cpp \
+	$$PWD/iec103asdu48data.cpp \
+	$$PWD/iec103asdu4data.cpp \
 	$$PWD/iec103asdu50data.cpp \
 	$$PWD/iec103asdu51data.cpp \
+	$$PWD/iec103asdu5data.cpp \
+	$$PWD/iec103asdu64data.cpp \
+	$$PWD/iec103asdu65data.cpp \
+	$$PWD/iec103asdu66data.cpp \
+	$$PWD/iec103asdu67data.cpp \
 	$$PWD/iec103asdu6data.cpp \
 	$$PWD/iec103asdu7data.cpp \
 	$$PWD/iec103asdu88data.cpp \

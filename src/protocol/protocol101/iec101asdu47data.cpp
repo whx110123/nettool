@@ -14,7 +14,7 @@ bool IEC101Asdu47Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	rco = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + rcsToText(rco) + "   " + seToText(rco) + "   " + quToText(rco) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + rcsToText_iec101(rco) + "   " + seToText(rco) + "   " + quToText_iec101(rco) + "\r\n");
 	len++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");

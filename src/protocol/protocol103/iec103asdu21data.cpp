@@ -38,7 +38,7 @@ bool IEC103Asdu21Data::handle(const QByteArray& buff)
 
 	for(int index = 0; index < nog; index++)
 	{
-		IEC103AsduDataSet *mset = new IEC103AsduDataSet;
+		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet;
 		bool isOk = mset->init(buff.mid(len, 3));
 		if(!isOk)
 		{
@@ -62,7 +62,7 @@ bool IEC103Asdu21Data::handle(const QByteArray& buff)
 QString IEC103Asdu21Data::showToText()
 {
 	QString text = mText;
-	for(IEC103AsduDataSet *mset : setlist)
+	for(IEC103Asdu10DataSet *mset : setlist)
 	{
 		text.append(mset->showToText());
 	}

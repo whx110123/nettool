@@ -21,6 +21,7 @@ public:
 	static QString error;	//错误说明
 	int masterState;		//主站状态
 	int slaveState;			//子站状态
+	int index;				//此段内容在整个报文中的下标
 };
 
 #endif // MYBASE_H

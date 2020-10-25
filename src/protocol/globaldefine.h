@@ -68,7 +68,8 @@ QByteArray floatToBa(float data);
 QByteArray dateTimeToBa(QDateTime datatime, int len, int model = BINARYTIME2A);
 
 uchar crcsum(const char *data, int start, int end);
-
+uint bcdTouint(const char *bcd, int len);
+uint bcdTouint(uchar *bcd, int len);
 int stringToInt(QString data);
 
 #define IEC_104 "104"

@@ -32,6 +32,23 @@
 #include "iec103asdu225data.h"
 #include "iec103asdu226data.h"
 #include "iec103asdu227data.h"
+#include "iec103asdu4data.h"
+#include "iec103asdu5data.h"
+#include "iec103asdu11data.h"
+#include "iec103asdu20data.h"
+#include "iec103asdu45data.h"
+#include "iec103asdu32data.h"
+#include "iec103asdu33data.h"
+#include "iec103asdu34data.h"
+#include "iec103asdu35data.h"
+#include "iec103asdu37data.h"
+#include "iec103asdu38data.h"
+#include "iec103asdu39data.h"
+#include "iec103asdu48data.h"
+#include "iec103asdu64data.h"
+#include "iec103asdu65data.h"
+#include "iec103asdu66data.h"
+#include "iec103asdu67data.h"
 
 
 IEC103AsduData::IEC103AsduData()
@@ -262,6 +279,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
+		mdata->index = index;
 		bool isOk = false;
 		if(index == 0)
 		{
@@ -292,9 +310,22 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		else
 		{
 			int k = 1;
-			if(type == 44)
+			switch(type)
 			{
+			case 3:
+			case 9:
+			case 32:
+			case 33:
+			case 34:
+			case 35:
+				k = 0;
+				break;
+			case 44:
 				k = 16;
+				break;
+			default:
+				k = 1;
+				break;
 			}
 			isOk = mdata->init(buff.mid(len), fun, (uchar)(inf + index * k));
 		}
@@ -356,6 +387,7 @@ bool IEC103Asdu::createData(IECDataConfig& config)
 				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
 				return false;
 			}
+			newdata->index = i;
 			datalist.append(newdata);
 			if(!newdata->createData(config))
 			{
@@ -480,6 +512,7 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 37:
 		text.append("带时标的电能脉冲计数量");
+		endflag = IEC103END_RII;
 		break;
 	case 38:
 		text.append("步位置信息");
@@ -521,6 +554,7 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 48:
 		text.append("水位");
+		endflag = IEC103END_RII;
 		break;
 	case 50:
 		text.append("被测值VII");
@@ -534,12 +568,15 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 65:
 		text.append("升降命令");
+		endflag = IEC103END_RII;
 		break;
 	case 66:
 		text.append("设定命令");
+		endflag = IEC103END_RII;
 		break;
 	case 67:
 		text.append("控制命令");
+		endflag = IEC103END_RII;
 		break;
 	case 88:
 		text.append("电能脉冲量召唤或冻结");
@@ -577,7 +614,7 @@ QString IEC103Asdu::typeToText()
 		text.append("遥控校验结果（金智103专用）");
 		break;
 	default:
-		text.append("未知ASDU类型，无法继续解析（金智103专用）");
+		text.append("未知ASDU类型，无法继续解析");
 		break;
 	}
 	return text;
@@ -712,6 +749,15 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 	case 2:
 		asdudata = new IEC103Asdu2Data;
 		break;
+	case 3:
+		asdudata = new IEC103Asdu50Data;
+		break;
+	case 4:
+		asdudata = new IEC103Asdu4Data;
+		break;
+	case 5:
+		asdudata = new IEC103Asdu5Data;
+		break;
 	case 6:
 		asdudata = new IEC103Asdu6Data;
 		break;
@@ -721,8 +767,17 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 	case 8:
 		asdudata = new IEC103Asdu8Data;
 		break;
+	case 9:
+		asdudata = new IEC103Asdu50Data;
+		break;
 	case 10:
 		asdudata = new IEC103Asdu10Data;
+		break;
+	case 11:
+		asdudata = new IEC103Asdu11Data;
+		break;
+	case 20:
+		asdudata = new IEC103Asdu20Data;
 		break;
 	case 21:
 		asdudata = new IEC103Asdu21Data;
@@ -731,8 +786,9 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		asdudata = new IEC103Asdu23Data;
 		break;
 	case 24:
+		asdudata = new IEC103Asdu24Data;
+		break;
 	case 25:
-	case 31:
 		asdudata = new IEC103Asdu24Data;
 		break;
 	case 26:
@@ -750,8 +806,32 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 	case 30:
 		asdudata = new IEC103Asdu30Data;
 		break;
+	case 31:
+		asdudata = new IEC103Asdu24Data;
+		break;
+	case 32:
+		asdudata = new IEC103Asdu32Data;
+		break;
+	case 33:
+		asdudata = new IEC103Asdu33Data;
+		break;
+	case 34:
+		asdudata = new IEC103Asdu34Data;
+		break;
+	case 35:
+		asdudata = new IEC103Asdu35Data;
+		break;
 	case 36:
 		asdudata = new IEC103Asdu36Data;
+		break;
+	case 37:
+		asdudata = new IEC103Asdu37Data;
+		break;
+	case 38:
+		asdudata = new IEC103Asdu38Data;
+		break;
+	case 39:
+		asdudata = new IEC103Asdu39Data;
 		break;
 	case 40:
 		asdudata = new IEC103Asdu40Data;
@@ -768,17 +848,35 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 	case 44:
 		asdudata = new IEC103Asdu44Data;
 		break;
+	case 45:
+		asdudata = new IEC103Asdu45Data;
+		break;
 	case 46:
 		asdudata = new IEC103Asdu46Data;
 		break;
 	case 47:
 		asdudata = new IEC103Asdu47Data;
 		break;
+	case 48:
+		asdudata = new IEC103Asdu48Data;
+		break;
 	case 50:
 		asdudata = new IEC103Asdu50Data;
 		break;
 	case 51:
 		asdudata = new IEC103Asdu51Data;
+		break;
+	case 64:
+		asdudata = new IEC103Asdu64Data;
+		break;
+	case 65:
+		asdudata = new IEC103Asdu65Data;
+		break;
+	case 66:
+		asdudata = new IEC103Asdu66Data;
+		break;
+	case 67:
+		asdudata = new IEC103Asdu67Data;
 		break;
 	case 88:
 		asdudata = new IEC103Asdu88Data;

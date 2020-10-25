@@ -1,9 +1,9 @@
 ﻿#ifndef IEC103ASDU43DATA_H
 #define IEC103ASDU43DATA_H
 
-#include "iec103asdu.h"
+#include "iec103asdu42data.h"
 
-class IEC103Asdu43Data : public IEC103AsduData
+class IEC103Asdu43Data : public IEC103Asdu42Data
 {
 public:
 	IEC103Asdu43Data();
@@ -12,7 +12,6 @@ public:
 	virtual bool createData(IECDataConfig& config);
 
 public:
-	uchar diq;
 	QDateTime datetime;
 };
 

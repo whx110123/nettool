@@ -274,3 +274,16 @@ int stringToInt(QString data)
 	return tmp;
 
 }
+
+uint bcdTouint(const char *bcd, int len)
+{
+	uchar *mbcd = (uchar *)bcd;
+	return bcdTouint(mbcd, len);
+}
+
+uint bcdTouint(uchar *bcd, int len)
+{
+	uint tmp = charTouint(bcd, len);
+	QString str = QString::number(tmp, 16);
+	return str.toUInt();
+}

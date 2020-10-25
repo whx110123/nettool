@@ -3,12 +3,12 @@
 
 #include "iec103asdu.h"
 
-class IEC103AsduDataSetGdd;
-class IEC103AsduDataSetGid : public MyBase
+class IEC103Asdu10DataSetGdd;
+class IEC103Asdu10DataSetGid : public MyBase
 {
 public:
-	IEC103AsduDataSetGid();
-	~IEC103AsduDataSetGid();
+	IEC103Asdu10DataSetGid();
+	~IEC103Asdu10DataSetGid();
 	bool initgid(const QByteArray& buff, uchar *ch);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig& config);
@@ -24,14 +24,14 @@ public:
 	uchar datauchar;
 	uchar datauchar1;
 	QDateTime datet;
-	QList<IEC103AsduDataSetGdd *> gddlist;
+	QList<IEC103Asdu10DataSetGdd *> gddlist;
 };
 
-class IEC103AsduDataSetGdd : public MyBase
+class IEC103Asdu10DataSetGdd : public MyBase
 {
 public:
-	IEC103AsduDataSetGdd();
-	~IEC103AsduDataSetGdd();
+	IEC103Asdu10DataSetGdd();
+	~IEC103Asdu10DataSetGdd();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig& config);
@@ -39,14 +39,14 @@ public:
 public:
 	uchar gdd[3];
 	int gidnum;
-	QList<IEC103AsduDataSetGid *> gidlist;
+	QList<IEC103Asdu10DataSetGid *> gidlist;
 };
 
-class IEC103AsduDataSet : public MyBase
+class IEC103Asdu10DataSet : public MyBase
 {
 public:
-	IEC103AsduDataSet();
-	~IEC103AsduDataSet();
+	IEC103Asdu10DataSet();
+	~IEC103Asdu10DataSet();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
 	virtual bool createData(IECDataConfig& config);
@@ -54,7 +54,7 @@ public:
 public:
 	uchar gin[2];
 	uchar kod;
-	IEC103AsduDataSetGdd mygdd;
+	IEC103Asdu10DataSetGdd mygdd;
 };
 
 class IEC103Asdu10Data : public IEC103AsduData
@@ -69,10 +69,8 @@ public:
 public:
 	uchar rii;
 	uchar ngd;
-	uchar datacount;
-	uchar datacont;
 	int setnum;
-	QList<IEC103AsduDataSet *> setlist;
+	QList<IEC103Asdu10DataSet *> setlist;
 
 };
 

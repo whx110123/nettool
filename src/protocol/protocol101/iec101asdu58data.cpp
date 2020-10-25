@@ -14,7 +14,7 @@ bool IEC101Asdu58Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	sco = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + scsToText(sco) + "   " + seToText(sco) + "   " + quToText(sco) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + scsToText(sco) + "   " + seToText(sco) + "   " + quToText_iec101(sco) + "\r\n");
 	len++;
 
 	datetime = charToDateTime(buff.data() + len, 7, BINARYTIME2A);

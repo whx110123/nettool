@@ -2,7 +2,7 @@
 
 IEC103Asdu43Data::IEC103Asdu43Data()
 {
-	diq = 0;
+
 }
 
 IEC103Asdu43Data::~IEC103Asdu43Data()

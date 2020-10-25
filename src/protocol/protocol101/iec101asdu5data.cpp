@@ -15,7 +15,7 @@ bool IEC101Asdu5Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	vti = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + vtiToText(vti)  + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + vtiToText_iec101(vti)  + "\r\n");
 	len++;
 
 	qds = *(buff.data() + len);

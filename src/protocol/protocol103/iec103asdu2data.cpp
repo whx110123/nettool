@@ -3,6 +3,8 @@
 IEC103Asdu2Data::IEC103Asdu2Data()
 {
 	dpi = 0;
+	ret = 0;
+	fan = 0;
 
 }
 

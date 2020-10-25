@@ -15,7 +15,7 @@ public:
 public:
 	uchar rii;
 	uchar nog;
-	QList<IEC103AsduDataSet *> setlist;
+	QList<IEC103Asdu10DataSet *> setlist;
 };
 
 #endif // IEC103ASDU21DATA_H

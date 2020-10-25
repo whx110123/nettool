@@ -14,7 +14,7 @@ bool IEC101Asdu45Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	sco = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + scsToText(sco) + "   " + seToText(sco) + "   " + quToText(sco) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + scsToText(sco) + "   " + seToText(sco) + "   " + quToText_iec101(sco) + "\r\n");
 	len++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");

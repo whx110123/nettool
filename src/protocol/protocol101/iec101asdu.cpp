@@ -187,6 +187,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
+		mdata->index = index;
 		bool isOk;
 		if(index == 0 || sqflag == 0)
 		{
@@ -250,6 +251,7 @@ bool IEC101Asdu::createData(IECDataConfig& config)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
 			return false;
 		}
+		newdata->index = i;
 		datalist.append(newdata);
 		if(!newdata->createData(config))
 		{
