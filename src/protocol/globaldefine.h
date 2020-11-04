@@ -67,6 +67,8 @@ QByteArray uintToBa(uint data, int len);
 QByteArray floatToBa(float data);
 QByteArray dateTimeToBa(QDateTime datatime, int len, int model = BINARYTIME2A);
 
+void BaReverse(QByteArray& ba);
+
 uchar crcsum(const char *data, int start, int end);
 uint bcdTouint(const char *bcd, int len);
 uint bcdTouint(uchar *bcd, int len);

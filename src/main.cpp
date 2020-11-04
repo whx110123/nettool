@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	App::Protocollst << IEC_104 << IEC_101 << IEC_103WISCOMNET << IEC_103COM << IEC_103BAOXINNET << IEC_103HUABEI << IEC_103ASDU;
 	App::Transferlst << "TCP客户端" << "TCP服务器" << "UDP客户端" << "UDP服务器" << "COM串口";
 	App::CRClst << "CRC 16 低位在前" << "CRC 16 高位在前" << "总加和" << "加总异或" ;
-	App::Transfermode << "浮点数转四字节" << "四字节转浮点数" << "带符号整数转四字节" << "四字节转带符号整数" << "四字节转无符号整数";
+	App::Transfermode << "浮点数转四字节" << "四字节转浮点数" << "带符号整数转四字节" << "四字节转带符号整数" << "四字节转无符号整数" << "双精度浮点数转八字节" << "八字节转双精度浮点数";
 	App::ConfigFile = QString("%1/%2.ini").arg(QUIHelper::appPath()).arg(QUIHelper::appName());
 	App::readConfig();
 	App::readSendData();

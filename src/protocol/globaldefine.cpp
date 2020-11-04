@@ -287,3 +287,13 @@ uint bcdTouint(uchar *bcd, int len)
 	QString str = QString::number(tmp, 16);
 	return str.toUInt();
 }
+
+void BaReverse(QByteArray& ba)
+{
+	QByteArray tmp;
+	for(int i = 0; i < ba.size(); i++)
+	{
+		tmp += ba.at(ba.size() - i - 1);
+	}
+	ba = tmp;
+}

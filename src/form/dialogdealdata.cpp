@@ -100,31 +100,18 @@ void DialogDealData::on_pbtransform_clicked()
 	QString data = ui->linesource->text().trimmed();
 	QString dataout;
 	float datafloat = 0;
+	double datadouble = 0;
 	uint datauint = 0;
 	int dataint = 0;
-	uchar uchararray[4] = {0};
 	if(ui->cbtransform->currentText().contains("浮点数转四字节"))
 	{
 		datafloat = data.toFloat();
-		datauint = *(uint *)(&datafloat);
-		if(ui->checkreverse->isChecked())
+		QByteArray ba((char *)&datafloat, 4);
+		if(!ui->checkreverse->isChecked())
 		{
-			for(int i = 0; i < 4; i++)
-			{
-				uchararray[i] = (datauint >> 8 * i) & 0xff;
-			}
+			BaReverse(ba);
 		}
-		else
-		{
-			for(int i = 0; i < 4; i++)
-			{
-				uchararray[i] = (datauint >> 8 * (3 - i)) & 0xff;
-			}
-		}
-		for(int i = 0; i < 4; i++)
-		{
-			dataout.append(" " + CharToHexStr(uchararray[i]));
-		}
+		dataout.append(CharToHexStr(ba.data(), 4));
 	}
 	else if(ui->cbtransform->currentText().contains("四字节转浮点数"))
 	{
@@ -143,24 +130,12 @@ void DialogDealData::on_pbtransform_clicked()
 	else if(ui->cbtransform->currentText().contains("带符号整数转四字节"))
 	{
 		dataint = data.toInt();
-		if(ui->checkreverse->isChecked())
+		QByteArray ba((char *)&dataint, 4);
+		if(!ui->checkreverse->isChecked())
 		{
-			for(int i = 0; i < 4; i++)
-			{
-				uchararray[i] = (dataint >> 8 * i) & 0xff;
-			}
+			BaReverse(ba);
 		}
-		else
-		{
-			for(int i = 0; i < 4; i++)
-			{
-				uchararray[i] = (dataint >> 8 * (3 - i)) & 0xff;
-			}
-		}
-		for(int i = 0; i < 4; i++)
-		{
-			dataout.append(" " + CharToHexStr(uchararray[i]));
-		}
+		dataout.append(CharToHexStr(ba.data(), 4));
 
 	}
 	else if(ui->cbtransform->currentText().contains("四字节转带符号整数"))
@@ -189,6 +164,29 @@ void DialogDealData::on_pbtransform_clicked()
 			}
 			datauint = charTouint((uchar *)ba.data(), 4, model);
 			dataout = QString::number(datauint);
+		}
+	}
+	if(ui->cbtransform->currentText().contains("双精度浮点数转八字节"))
+	{
+		datadouble = data.toDouble();
+		QByteArray ba((char *)&datadouble, 8);
+		if(!ui->checkreverse->isChecked())
+		{
+			BaReverse(ba);
+		}
+		dataout.append(CharToHexStr(ba.data(), 8));
+
+	}
+	else if(ui->cbtransform->currentText().contains("八字节转双精度浮点数"))
+	{
+		QByteArray ba = QUIHelper::hexStrToByteArray(data);
+		if(ba.length() == 8)
+		{
+			if(!ui->checkreverse->isChecked())
+			{
+				BaReverse(ba);
+			}
+			dataout = QString::number(*(double *)ba.data());
 		}
 	}
 	ui->linedestination->setText(dataout.trimmed());
