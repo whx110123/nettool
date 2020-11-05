@@ -124,7 +124,7 @@ void DialogDealData::on_pbtransform_clicked()
 				model = 0;
 			}
 			datafloat = charTofloat((uchar *)ba.data(), model);
-			dataout = QString::number(datafloat);
+			dataout = QString::number(datafloat, 'g', 10);
 		}
 	}
 	else if(ui->cbtransform->currentText().contains("带符号整数转四字节"))
@@ -186,7 +186,7 @@ void DialogDealData::on_pbtransform_clicked()
 			{
 				BaReverse(ba);
 			}
-			dataout = QString::number(*(double *)ba.data());
+			dataout = QString::number(*(double *)ba.data(), 'g', 20);
 		}
 	}
 	ui->linedestination->setText(dataout.trimmed());
