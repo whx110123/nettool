@@ -33,7 +33,6 @@ private slots:
 
 private:
 	void initfrom();
-	ushort crc16(uchar *puchMsg, ushort usDataLen);
 
 private:
 	Ui::DialogDealData *ui;

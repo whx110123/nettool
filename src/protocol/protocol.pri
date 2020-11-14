@@ -23,11 +23,13 @@ SOURCES += \
     $$PWD/protocol104apdu.cpp
 
 
-include             ($$PWD/protocol104/protocol104.pri)
-include				($$PWD/protocol103/protocol103.pri)
-include             ($$PWD/protocol101/protocol101.pri)
-INCLUDEPATH         += $$PWD/protocol104
-INCLUDEPATH         += $$PWD/protocol103
-INCLUDEPATH         += $$PWD/protocol101
+include             ($$PWD/iec104/iec104.pri)
+include				($$PWD/iec103/iec103.pri)
+include             ($$PWD/iec101/iec101.pri)
+include             ($$PWD/modbus/modbus.pri)
+INCLUDEPATH         += $$PWD/iec104
+INCLUDEPATH         += $$PWD/iec103
+INCLUDEPATH         += $$PWD/iec101
+INCLUDEPATH         += $$PWD/modbus
 
 

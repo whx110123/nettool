@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	QUIHelper::initRand();
 
 	App::Intervals << "1" << "10" << "20" << "50" << "100" << "200" << "300" << "500" << "1000" << "1500" << "2000" << "3000" << "5000" << "10000";
-	App::Protocollst << IEC_104 << IEC_101 << IEC_103WISCOMNET << IEC_103COM << IEC_103BAOXINNET << IEC_103HUABEI << IEC_103ASDU;
+	App::Protocollst << IEC_104 << IEC_101 << IEC_103WISCOMNET << IEC_103COM << IEC_103BAOXINNET << IEC_103HUABEI << IEC_103ASDU << MODBUS_RTU;
 	App::Transferlst << "TCP客户端" << "TCP服务器" << "UDP客户端" << "UDP服务器" << "COM串口";
 	App::CRClst << "CRC 16 低位在前" << "CRC 16 高位在前" << "总加和" << "加总异或" ;
 	App::Transfermode << "浮点数转四字节" << "四字节转浮点数" << "带符号整数转四字节" << "四字节转带符号整数" << "四字节转无符号整数" << "双精度浮点数转八字节" << "八字节转双精度浮点数";

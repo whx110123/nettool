@@ -6,6 +6,7 @@
 #include <iec103com.h>
 #include <iec103netbaoxin.h>
 #include <iec103netwiscom.h>
+#include <modbusrtu.h>
 #include "myhighlighter.h"
 #include "iec104.h"
 
@@ -41,6 +42,11 @@ void frmAnalysis::initForm()
 	QStringList list1 = QStringList();
 	list1 << IEC_SINGLE << IEC_DOUBLESAME << IEC_DOUBLEDIFF;
 	ui->comboBox_lengthtype->addItems(list1);
+	QStringList list2 = QStringList();
+	list2 << YC << YX << YM;
+	ui->comboBox1_modbus->addItems(list2);
+	ui->comboBox2_modbus->addItems(list2);
+	ui->comboBox3_modbus->addItems(list2);
 }
 
 void frmAnalysis::initConfig()
@@ -52,6 +58,7 @@ void frmAnalysis::initConfig()
 	ui->comboBox_infaddrlen->installEventFilter(this);
 
 	ui->protocolcbox->setCurrentIndex(ui->protocolcbox->findText(App::DefaultProtocol));
+	ui->stackedWidget_protocol->setCurrentIndex(0);
 	ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
 	ui->comboBox_addrlen->setCurrentText("1");
 	ui->comboBox_cotlen->setCurrentText("2");
@@ -74,6 +81,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 {
 	if(arg1 == IEC_104)
 	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
 		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("2");
@@ -82,6 +90,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	}
 	else if(arg1 == IEC_101)
 	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLESAME);
 		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
@@ -90,6 +99,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	}
 	else if(arg1 == IEC_103WISCOMNET)
 	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
 		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
@@ -98,6 +108,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	}
 	else if(arg1 == IEC_103COM)
 	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLESAME);
 		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
@@ -106,6 +117,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	}
 	else if(arg1 == IEC_103ASDU)
 	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
 		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
@@ -114,6 +126,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	}
 	else if(arg1 == IEC_103BAOXINNET)
 	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
 		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
@@ -122,11 +135,16 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	}
 	else if(arg1 == IEC_103HUABEI)
 	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
 		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
 		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+	else if(arg1 == MODBUS_RTU)
+	{
+		ui->stackedWidget_protocol->setCurrentIndex(1);
 	}
 }
 
@@ -339,6 +357,27 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		IEC103Asdu *tmp = new IEC103Asdu;
 		tmp->cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		myprotocol = tmp;
+	}
+	else if(ui->protocolcbox->currentText() == MODBUS_RTU)
+	{
+		ModbusRTU *tmp = new ModbusRTU;
+		ModbusDataGroup *datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox1_modbus->currentText();
+		datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
+		tmp->mb.groups.append(datagroup);
+		datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox2_modbus->currentText();
+		datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
+		tmp->mb.groups.append(datagroup);
+		datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox3_modbus->currentText();
+		datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
+		tmp->mb.groups.append(datagroup);
+
 		myprotocol = tmp;
 	}
 

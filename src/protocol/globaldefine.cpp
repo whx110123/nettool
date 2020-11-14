@@ -40,7 +40,7 @@ uint charTouint(uchar *data, int len, int model)
 	{
 		for(int i = 0; i < len; i++)
 		{
-			tmp += (uint)data[i] * (0x01000000 >> (i * 8));
+			tmp += (uint)data[i] * (0x00000001 << ((len - 1 - i) * 8));
 		}
 	}
 	return tmp;
@@ -296,4 +296,56 @@ void BaReverse(QByteArray& ba)
 		tmp += ba.at(ba.size() - i - 1);
 	}
 	ba = tmp;
+}
+
+ushort crc16(uchar *data, int start, int end)
+{
+	ushort i;
+	ushort j;
+	ushort c;
+	ushort crc = 0xFFFF;   //设置crc寄存器为0xffff
+	for(i = start; i < end + 1; i++)
+	{
+		c = *(data + i) & 0x00FF;
+		crc ^= c;
+		for(j = 0; j < 8; j++)
+		{
+			if(crc & 0x0001)
+			{
+				crc >>= 1;
+				crc ^= 0xA001;
+			}
+			else
+			{
+				crc >>= 1;
+			}
+		}
+	}
+	return(crc);
+}
+
+ushort crc16(uchar *data, ushort len)
+{
+	ushort i;
+	ushort j;
+	ushort c;
+	ushort crc = 0xFFFF;   //设置crc寄存器为0xffff
+	for(i = 0; i < len; i++)
+	{
+		c = *(data + i) & 0x00FF;
+		crc ^= c;
+		for(j = 0; j < 8; j++)
+		{
+			if(crc & 0x0001)
+			{
+				crc >>= 1;
+				crc ^= 0xA001;
+			}
+			else
+			{
+				crc >>= 1;
+			}
+		}
+	}
+	return(crc);
 }

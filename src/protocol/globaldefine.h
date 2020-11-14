@@ -10,6 +10,10 @@ typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int  uint;
 
+#define YC "遥测"
+#define YX "遥信"
+#define YM "遥脉"
+
 enum
 {
 	ITYPE = 1,
@@ -70,6 +74,8 @@ QByteArray dateTimeToBa(QDateTime datatime, int len, int model = BINARYTIME2A);
 void BaReverse(QByteArray& ba);
 
 uchar crcsum(const char *data, int start, int end);
+ushort crc16(uchar *data, ushort start, ushort end);
+ushort crc16(uchar *data, ushort len);
 uint bcdTouint(const char *bcd, int len);
 uint bcdTouint(uchar *bcd, int len);
 int stringToInt(QString data);
@@ -81,6 +87,7 @@ int stringToInt(QString data);
 #define IEC_103ASDU "103ASDU"
 #define IEC_103BAOXINNET "保信网络103"
 #define IEC_103HUABEI "华北103"
+#define MODBUS_RTU "modbus RTU"
 
 #define IEC_SINGLE "单字节"
 #define IEC_DOUBLESAME "双字节 重复"
