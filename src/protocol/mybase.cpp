@@ -5,6 +5,7 @@ MyBase::MyBase()
 	setDefault(NULL);
 	masterState = STATE_NORMAL;
 	slaveState = STATE_NORMAL;
+	index = 0;
 }
 
 MyBase::~MyBase()
@@ -33,6 +34,5 @@ void MyBase::setDefault(const QByteArray& buff)
 	mText.clear();
 	error.clear();
 	len = 0;
-	index = 0;
 }
 QString MyBase::error = QString();

@@ -43,6 +43,23 @@ uint charTouint(uchar *data, int len, int model)
 			tmp += (uint)data[i] * (0x00000001 << ((len - 1 - i) * 8));
 		}
 	}
+	else if(len == 4)
+	{
+		if(model == 2)
+		{
+			tmp += (uint)data[0] * 0x00000100;
+			tmp += (uint)data[1] * 0x00000001;
+			tmp += (uint)data[2] * 0x01000000;
+			tmp += (uint)data[3] * 0x00010000;
+		}
+		else if(model == 3)
+		{
+			tmp += (uint)data[3] * 0x00000100;
+			tmp += (uint)data[2] * 0x00000001;
+			tmp += (uint)data[1] * 0x01000000;
+			tmp += (uint)data[0] * 0x00010000;
+		}
+	}
 	return tmp;
 }
 int charToint(uchar *data, int len, int model)
@@ -348,4 +365,53 @@ ushort crc16(uchar *data, ushort len)
 		}
 	}
 	return(crc);
+}
+
+double charTodouble(const char *data, int model)
+{
+	char mdata[8] = {0};
+	if(model == 0)
+	{
+		memcpy(mdata, data, 8);
+	}
+	else if(model == 1)
+	{
+		mdata[0] = data[7];
+		mdata[1] = data[6];
+		mdata[2] = data[5];
+		mdata[3] = data[4];
+		mdata[4] = data[3];
+		mdata[5] = data[2];
+		mdata[6] = data[1];
+		mdata[7] = data[0];
+	}
+	else if(model == 2)
+	{
+		mdata[0] = data[1];
+		mdata[1] = data[0];
+		mdata[2] = data[3];
+		mdata[3] = data[2];
+		mdata[4] = data[5];
+		mdata[5] = data[4];
+		mdata[6] = data[7];
+		mdata[7] = data[6];
+	}
+	else if(model == 3)
+	{
+		mdata[0] = data[6];
+		mdata[1] = data[7];
+		mdata[2] = data[4];
+		mdata[3] = data[5];
+		mdata[4] = data[2];
+		mdata[5] = data[3];
+		mdata[6] = data[0];
+		mdata[7] = data[1];
+	}
+	return *(double *)mdata;
+}
+
+double charTodouble(uchar *data, int model)
+{
+	char *mdata = (char *)data;
+	return charTodouble(mdata, model);
 }

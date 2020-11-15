@@ -14,6 +14,10 @@ typedef unsigned int  uint;
 #define YX "遥信"
 #define YM "遥脉"
 
+#define SORT1 "高字  高字节"
+#define SORT2 "低字  高字节"
+#define SORT3 "高字  低字节"
+#define SORT4 "低字  低字节"
 enum
 {
 	ITYPE = 1,
@@ -56,14 +60,16 @@ QString CharToHexStr(uchar data);           //将一个uchar字符转换成2个�
 QString CharToHexStr(const char *data, int len = 1);
 QString CharToHexStr(uchar *data, int len = 1);
 uint charTouint(const char *data, int len, int model = 0);
-uint charTouint(uchar *data, int len, int model = 0);    //将len个uchar合成一个uint,model 0:低字节在前
-int charToint(uchar *data, int len, int model = 0);    //将4个uchar合成一个int,model 0:低字节在前 1:高字节在前
-int charToint(const char *data, int len, int model = 0);      //将4个char合成一个int,model 0:低字节在前 1:高字节在前
+uint charTouint(uchar *data, int len, int model = 0);    //将len个uchar合成一个uint,model 0:低字节在前 1:高字节在前 2:低字在前 高字节在前 3:高字在前 低字节在前
+int charToint(uchar *data, int len, int model = 0);    //将4个uchar合成一个int,model 0:低字节在前 1:高字节在前 2:低字在前 高字节在前 3:高字在前 低字节在前
+int charToint(const char *data, int len, int model = 0);      //将4个char合成一个int,model 0:低字节在前 1:高字节在前 2:低字在前 高字节在前 3:高字在前 低字节在前
 short charToshortwithQ(uchar *data, uchar& ov, uchar& er, int model = 0);
 short charToshortwithQ(uchar *data, int model = 0);
 short charToshortwithQ(const char *data, int model = 0);
 float charTofloat(const char *data, int model = 0);
 float charTofloat(uchar *data, int model = 0);
+double charTodouble(const char *data, int model = 0);
+double charTodouble(uchar *data, int model = 0);
 QDateTime charToDateTime(uchar *data, int len, int model = BINARYTIME2A); //将len个uchar合成一个日期,model时间类型
 QDateTime charToDateTime(const char *data, int len, int model = BINARYTIME2A);//将len个char合成一个日期,model时间类型
 

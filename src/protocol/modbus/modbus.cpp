@@ -32,18 +32,53 @@ bool Modbus::init(const QByteArray& buff)
 	len++;
 
 	code = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t功能码: " + QString::number(code) + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + codeToText() + "\r\n");
 	len++;
 
 	if(isMaster == true)
 	{
-		startAddr = charTouint(buff.data() + len, 2, 1);
-		mText.append(CharToHexStr(buff.data() + len, 2) + "\t起始地址: " + QString::number(startAddr) + "\r\n");
-		len += 2;
+		switch(code)
+		{
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+			dataAddr = charTouint(buff.data() + len, 2, 1);
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t起始地址: " + QString::number(dataAddr) + "\r\n");
+			len += 2;
+			data_num = charTouint(buff.data() + len, 2, 1);
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t寄存器/bit数量: " + QString::number(data_num) + "\r\n");
+			len += 2;
+			break;
+		case 5:
+		case 6:
+			dataAddr = charTouint(buff.data() + len, 2, 1);
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t遥控地址: " + QString::number(dataAddr) + "\r\n");
+			len += 2;
+			data_num = charTouint(buff.data() + len, 2, 1);
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t遥控命令字: " + QString::number(data_num) + "\r\n");
+			len += 2;
+			break;
+		case 15:
+		case 16:
+			dataAddr = charTouint(buff.data() + len, 2, 1);
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t起始地址: " + QString::number(dataAddr) + "\r\n");
+			len += 2;
+			data_num = charTouint(buff.data() + len, 2, 1);
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t寄存器/bit数量: " + QString::number(data_num) + "\r\n");
+			len += 2;
+			bytenum = *(buff.data() + len);
+			mText.append(CharToHexStr(buff.data() + len) + "\t字节数: " + QString::number(bytenum) + "\r\n");
+			len++;
+			mText.append(CharToHexStr(buff.data() + len, bytenum) + "\t多点控制数据\r\n");
+			len += bytenum;
+			break;
+		default:
+			error = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的功能码").arg(code);
+			return false;
+			break;
+		}
 
-		num = charTouint(buff.data() + len, 2, 1);
-		mText.append(CharToHexStr(buff.data() + len, 2) + "\t数量: " + QString::number(num) + "    一般功能码1、2表示bit位数量，功能码3、4表示寄存器数量\r\n");
-		len += 2;
 	}
 	else if(isMaster == false)
 	{
@@ -59,6 +94,7 @@ bool Modbus::init(const QByteArray& buff)
 			{
 				mgroup.type = g->type;
 				mgroup.analysis = g->analysis;
+				mgroup.sort = g->sort;
 				break;
 			}
 		}
@@ -69,27 +105,18 @@ bool Modbus::init(const QByteArray& buff)
 		}
 		else
 		{
-			int index = 0;
+			int mindex = 0;
 			while(len < mgroup.dataLen + 3)
 			{
 				ModbusData *mdata = new ModbusData;
-				QChar qch;
-				if(index <  mgroup.analysis.length())
-				{
-					qch = mgroup.analysis.at(index);
-				}
-				else
-				{
-					qch = mgroup.analysis.back();
-				}
-				if(!mdata->initData(buff.mid(len), mgroup.type, qch))
+				mdata->index = mindex;
+				if(!mdata->initData(buff.mid(len), &mgroup))
 				{
 					return false;
 				}
-				mdata->index = index;
 				datalist.append(mdata);
 				len += mdata->len;
-				index++;
+				mindex++;
 			}
 		}
 
@@ -109,4 +136,49 @@ bool Modbus::init(const QByteArray& buff)
 		return false;
 	}
 	return true;
+}
+
+QString Modbus::showToText()
+{
+	for(ModbusData *d : datalist)
+	{
+		mText.append(d->showToText());
+	}
+	return mText;
+}
+
+QString Modbus::codeToText()
+{
+	QString text = "功能码: " + QString::number(code) + "   ";
+	switch(code)
+	{
+	case 1:
+		text.append("读DO状态");
+		break;
+	case 2:
+		text.append("读DI状态");
+		break;
+	case 3:
+		text.append("读保持寄存器");
+		break;
+	case 4:
+		text.append("读输入寄存器");
+		break;
+	case 5:
+		text.append("写单线圈");
+		break;
+	case 6:
+		text.append("写单寄存器");
+		break;
+	case 15:
+		text.append("写多线圈");
+		break;
+	case 16:
+		text.append("写多寄存器");
+		break;
+	default:
+		text.append("未解析");
+		break;
+	}
+	return text;
 }

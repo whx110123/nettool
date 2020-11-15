@@ -22,32 +22,6 @@ void DialogDealData::initfrom()
 	ui->cbtransform->addItems(App::Transfermode);
 }
 
-//ushort DialogDealData::crc16(uchar *buf, ushort length)
-//{
-//	ushort i;
-//	ushort j;
-//	ushort c;
-//	ushort crc = 0xFFFF;   //设置crc寄存器为0xffff
-//	for(i = 0; i < length; i++)
-//	{
-//		c = *(buf + i) & 0x00FF;
-//		crc ^= c;
-//		for(j = 0; j < 8; j++)
-//		{
-//			if(crc & 0x0001)
-//			{
-//				crc >>= 1;
-//				crc ^= 0xA001;
-//			}
-//			else
-//			{
-//				crc >>= 1;
-//			}
-//		}
-//	}
-//	return(crc);
-//}
-
 void DialogDealData::on_pbcrc_clicked()
 {
 

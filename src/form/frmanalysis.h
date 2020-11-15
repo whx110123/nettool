@@ -7,6 +7,7 @@
 #include "protocol103wiscomnet.h"
 #include "protocol103com.h"
 #include "globaldefine.h"
+#include "dialogmodbus.h"
 
 namespace Ui
 {
@@ -48,11 +49,14 @@ private slots:
 
 	void on_pushButton_clean_clicked();
 
+	void on_pushButton_clicked();
+
 private:
 
 	Ui::frmAnalysis *ui;
 	myhighlighter *highlighter1;
 	myhighlighter *highlighter2;
+	DialogModbus *modbusdlg;
 private:
 	protocol101::protocol101apdu *m_101;
 	protocol101::protocol104apdu *m_104;

@@ -16,7 +16,7 @@ public:
 
 public:
 	uchar cont;
-	uint index;
+	uint fileindex;
 	QString filedata;
 	uchar crc;
 private:

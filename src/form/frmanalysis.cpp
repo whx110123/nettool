@@ -18,6 +18,7 @@ frmAnalysis::frmAnalysis(QWidget *parent) :
 	ui->setupUi(this);
 	highlighter1 = new myhighlighter(ui->resulttext->document());
 	highlighter2 = new myhighlighter(ui->originaltext->document());
+	modbusdlg = new DialogModbus(this);
 	initForm();
 	initConfig();
 }
@@ -47,6 +48,9 @@ void frmAnalysis::initForm()
 	ui->comboBox1_modbus->addItems(list2);
 	ui->comboBox2_modbus->addItems(list2);
 	ui->comboBox3_modbus->addItems(list2);
+	QStringList list3 = QStringList();
+	list3 << SORT1 << SORT2 << SORT3 << SORT4;
+	ui->comboBox_sort->addItems(list3);
 }
 
 void frmAnalysis::initConfig()
@@ -56,6 +60,10 @@ void frmAnalysis::initConfig()
 	ui->comboBox_cotlen->installEventFilter(this);
 	ui->comboBox_comaddrlen->installEventFilter(this);
 	ui->comboBox_infaddrlen->installEventFilter(this);
+	ui->comboBox_sort->installEventFilter(this);
+	ui->comboBox1_modbus->installEventFilter(this);
+	ui->comboBox2_modbus->installEventFilter(this);
+	ui->comboBox3_modbus->installEventFilter(this);
 
 	ui->protocolcbox->setCurrentIndex(ui->protocolcbox->findText(App::DefaultProtocol));
 	ui->stackedWidget_protocol->setCurrentIndex(0);
@@ -366,16 +374,19 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
 		datagroup->type = ui->comboBox1_modbus->currentText();
 		datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
 		tmp->mb.groups.append(datagroup);
 		datagroup = new ModbusDataGroup;
 		datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
 		datagroup->type = ui->comboBox2_modbus->currentText();
 		datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
 		tmp->mb.groups.append(datagroup);
 		datagroup = new ModbusDataGroup;
 		datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
 		datagroup->type = ui->comboBox3_modbus->currentText();
 		datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
 		tmp->mb.groups.append(datagroup);
 
 		myprotocol = tmp;
@@ -454,7 +465,11 @@ bool frmAnalysis::eventFilter(QObject *obj, QEvent *event)
 			obj == ui->comboBox_addrlen ||
 			obj == ui->comboBox_cotlen ||
 			obj == ui->comboBox_comaddrlen ||
-			obj == ui->comboBox_infaddrlen)
+			obj == ui->comboBox_infaddrlen ||
+			obj == ui->comboBox_sort ||
+			obj == ui->comboBox1_modbus ||
+			obj == ui->comboBox2_modbus ||
+			obj == ui->comboBox3_modbus)
 	{
 		if(event->type() == QEvent::Wheel)
 		{
@@ -465,4 +480,9 @@ bool frmAnalysis::eventFilter(QObject *obj, QEvent *event)
 
 	return QWidget::eventFilter(obj, event);
 
+}
+
+void frmAnalysis::on_pushButton_clicked()
+{
+	modbusdlg->exec();
 }

@@ -18,8 +18,8 @@ bool IEC101Asdu43Data::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + contToText() + "\r\n");
 	len++;
 
-	index = charTouint(buff.data() + len, 4);
-	mText.append(CharToHexStr(buff.data() + len, 4) + "\t起始传输位置:" + QString::number(index) + "\r\n");
+	fileindex = charTouint(buff.data() + len, 4);
+	mText.append(CharToHexStr(buff.data() + len, 4) + "\t起始传输位置:" + QString::number(fileindex) + "\r\n");
 	len += 4;
 
 	QByteArray ba(buff.data() + len, buff.length() - len - 1);
