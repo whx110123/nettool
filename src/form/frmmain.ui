@@ -28,11 +28,14 @@
    </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="styleSheet">
+      <string notr="true">QTabWidget:pane {border-top:0px solid #e8f3f9;background:transparent; }</string>
+     </property>
      <property name="tabPosition">
       <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <widget class="frmTcpClient" name="tabTcpClient">
       <attribute name="title">

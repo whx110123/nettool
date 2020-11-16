@@ -28,11 +28,7 @@ void frmFunctions::on_pbfunc1_clicked()
 
 void frmFunctions::initfrom()
 {
-//    QString str;
-//    str.append("1.提供多组报文输入并发送\r\n");
-//    str.append("2.发报文可设置不同延时，可以收到一帧报文后再发送下一帧报文\r\n");
-//    str.append("3.对TCP、UDP、串口等通道均可使用\r\n");
-//    ui->lab_intro1->setText(str);
+
 }
 
 void frmFunctions::on_pbfunc2_clicked()

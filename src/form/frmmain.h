@@ -15,12 +15,13 @@ class frmMain : public QWidget
 public:
 	explicit frmMain(QWidget *parent = 0);
 	~frmMain();
-
+	void changeImage();
 private slots:
 	void on_tabWidget_currentChanged(int index);
 
 private:
 	void initform();
+
 private:
 	Ui::frmMain *ui;
 

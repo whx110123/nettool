@@ -7,6 +7,7 @@ frmMain::frmMain(QWidget *parent) : QWidget(parent), ui(new Ui::frmMain)
 	ui->setupUi(this);
 	ui->tabWidget->setCurrentIndex(App::CurrentIndex);
 	initform();
+
 }
 
 frmMain::~frmMain()
@@ -18,6 +19,8 @@ void frmMain::on_tabWidget_currentChanged(int index)
 {
 	App::CurrentIndex = index;
 	App::writeConfig();
+	changeImage();
+
 }
 
 
@@ -54,4 +57,14 @@ void frmMain::initform()
 			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
 	connect(ui->tabCom, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
 			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
+}
+
+void frmMain::changeImage()
+{
+	this->setAutoFillBackground(true);
+	QPalette palette = this->palette();
+	QImage image(":/res/kejibj2.JPG");
+	QImage backGround = image.scaled(this->width(), this->height(), Qt::IgnoreAspectRatio);
+	palette.setBrush(QPalette::Background, QBrush(backGround));
+	this->setPalette(palette);
 }
