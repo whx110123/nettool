@@ -23,6 +23,7 @@ void DialogModbus::initShow()
 	ui->tableInfo->setColumnCount(headerText.count());//列数设置为与 headerText的行数相等
 	QHeaderView *header = ui->tableInfo->horizontalHeader();
 	header->setSectionResizeMode(QHeaderView::ResizeToContents);//自动宽度
+	header->setStretchLastSection(true);
 	for(int i = 0; i < ui->tableInfo->columnCount(); i++) //列编号从0开始
 	{
 		headerItem = new QTableWidgetItem(headerText.at(i)); //新建一个QTableWidgetItem， headerText.at(i)获取headerText的i行字符串
