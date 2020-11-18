@@ -3326,52 +3326,38 @@ QByteArray QUIHelper::hexStrToByteArray(const QString& str)
 	int hexdatalen = 0;
 	int len = str.length();
 	senddata.resize(len / 2);
-	char lstr, hstr;
 
 	for(int i = 0; i < len;)
 	{
-		hstr = str.at(i).toLatin1();
-		while((hstr == ' ') || (hstr == '\r') || (hstr == '\n') || ((uchar)hstr == 0xa0))
+		hexdata = convertHexChar(str.at(i++).toLatin1());
+		while(hexdata < 0)
 		{
-			i++;
 			if(i >= len)
 			{
 				break;
 			}
-			hstr = str.at(i).toLatin1();
+			hexdata = convertHexChar(str.at(i++).toLatin1());
 		}
-
-		i++;
 		if(i >= len)
 		{
 			break;
 		}
 
-		lstr = str.at(i).toLatin1();
-		while((lstr == ' ') || (lstr == '\r') || (lstr == '\n') || ((uchar)hstr == 0xa0))
+		lowhexdata = convertHexChar(str.at(i++).toLatin1());
+		while(lowhexdata < 0)
 		{
-			i++;
 			if(i >= len)
 			{
-				lstr = hstr;
 				break;
 			}
-			lstr = str.at(i).toLatin1();
+			lowhexdata = convertHexChar(str.at(i++).toLatin1());
 		}
-
-		hexdata = convertHexChar(hstr);
-		lowhexdata = convertHexChar(lstr);
-
-		if((hexdata == (-1)) || (lowhexdata == (-1)))
+		if(i > len)
 		{
 			break;
 		}
-		else
-		{
-			hexdata = hexdata * 16 + lowhexdata;
-		}
 
-		i++;
+		hexdata = hexdata * 16 + lowhexdata;
 		senddata[hexdatalen] = (char)hexdata;
 		hexdatalen++;
 	}
@@ -3384,7 +3370,7 @@ char QUIHelper::convertHexChar(char ch)
 {
 	if((ch >= '0') && (ch <= '9'))
 	{
-		return ch - 0x30;
+		return ch - '0';
 	}
 	else if((ch >= 'A') && (ch <= 'F'))
 	{
