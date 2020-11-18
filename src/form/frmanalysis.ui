@@ -85,7 +85,7 @@
         <item>
          <widget class="QPushButton" name="pushButton_clean">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1.删除空白行&lt;/p&gt;&lt;p&gt;2.删除每行首尾空白&lt;/p&gt;&lt;p&gt;3.删除非报文开头的行&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1.删除空白行&lt;/p&gt;&lt;p&gt;2.删除每行首尾空白&lt;/p&gt;&lt;p&gt;3.删除非报文开头的行&lt;/p&gt;&lt;p&gt;4.删除报文中的0x前缀&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>整理报文</string>

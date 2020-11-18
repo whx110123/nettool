@@ -452,6 +452,7 @@ void frmAnalysis::on_pushButton_clean_clicked()
 		}
 		if((tmp.at(0) >= '0' && tmp.at(0) <= '9') || (tmp.at(0) >= 'a' && tmp.at(0) <= 'f') || (tmp.at(0) >= 'A' && tmp.at(0) <= 'F'))
 		{
+			tmp.remove("0x");
 			data.append(tmp + "\n");
 		}
 

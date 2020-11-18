@@ -3331,7 +3331,7 @@ QByteArray QUIHelper::hexStrToByteArray(const QString& str)
 	for(int i = 0; i < len;)
 	{
 		hstr = str.at(i).toLatin1();
-		while((hstr == ' ') || (hstr == '\r') || (hstr == '\n'))
+		while((hstr == ' ') || (hstr == '\r') || (hstr == '\n') || ((uchar)hstr == 0xa0))
 		{
 			i++;
 			if(i >= len)
@@ -3348,7 +3348,7 @@ QByteArray QUIHelper::hexStrToByteArray(const QString& str)
 		}
 
 		lstr = str.at(i).toLatin1();
-		while((lstr == ' ') || (lstr == '\r') || (lstr == '\n'))
+		while((lstr == ' ') || (lstr == '\r') || (lstr == '\n') || ((uchar)hstr == 0xa0))
 		{
 			i++;
 			if(i >= len)
@@ -3362,7 +3362,7 @@ QByteArray QUIHelper::hexStrToByteArray(const QString& str)
 		hexdata = convertHexChar(hstr);
 		lowhexdata = convertHexChar(lstr);
 
-		if((hexdata == 16) || (lowhexdata == 16))
+		if((hexdata == (-1)) || (lowhexdata == (-1)))
 		{
 			break;
 		}
