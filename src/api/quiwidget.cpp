@@ -40,7 +40,7 @@ bool QUIWidget::eventFilter(QObject *watched, QEvent *event)
 	}
 	else if(mouseEvent->type() == QEvent::MouseMove)
 	{
-		if(mousePressed && (mouseEvent->buttons() && Qt::LeftButton))
+		if(mousePressed && (mouseEvent->buttons() & Qt::LeftButton))
 		{
 			if(this->property("canMove").toBool())
 			{
@@ -3352,7 +3352,7 @@ QByteArray QUIHelper::hexStrToByteArray(const QString& str)
 			}
 			lowhexdata = convertHexChar(str.at(i++).toLatin1());
 		}
-		if(i > len)
+		if(lowhexdata < 0)
 		{
 			break;
 		}
@@ -3811,7 +3811,7 @@ QStringList QUIHelper::getFolderFileNames(const QStringList& filter)
 	QStringList fileList;
 	QString strFolder = QFileDialog::getExistingDirectory();
 
-	if(!strFolder.length() == 0)
+	if(strFolder.length())
 	{
 		QDir myFolder(strFolder);
 
