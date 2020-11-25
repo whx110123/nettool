@@ -94,6 +94,7 @@ int stringToInt(QString data);
 #define IEC_103BAOXINNET "保信网络103"
 #define IEC_103HUABEI "华北103"
 #define MODBUS_RTU "modbus RTU"
+#define MODBUS_TCP "modbus TCP"
 
 #define IEC_SINGLE "单字节"
 #define IEC_DOUBLESAME "双字节 重复"

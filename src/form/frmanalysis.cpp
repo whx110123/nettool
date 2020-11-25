@@ -7,6 +7,7 @@
 #include <iec103netbaoxin.h>
 #include <iec103netwiscom.h>
 #include <modbusrtu.h>
+#include <modbustcp.h>
 #include "myhighlighter.h"
 #include "iec104.h"
 
@@ -150,7 +151,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
-	else if(arg1 == MODBUS_RTU)
+	else if(arg1 == MODBUS_RTU || arg1 == MODBUS_TCP)
 	{
 		ui->stackedWidget_protocol->setCurrentIndex(1);
 	}
@@ -388,7 +389,29 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
 		datagroup->sort = ui->comboBox_sort->currentText();
 		tmp->mb.groups.append(datagroup);
-
+		myprotocol = tmp;
+	}
+	else if(ui->protocolcbox->currentText() == MODBUS_TCP)
+	{
+		ModbusTCP *tmp = new ModbusTCP;
+		ModbusDataGroup *datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox1_modbus->currentText();
+		datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
+		tmp->mb.groups.append(datagroup);
+		datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox2_modbus->currentText();
+		datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
+		tmp->mb.groups.append(datagroup);
+		datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox3_modbus->currentText();
+		datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
+		tmp->mb.groups.append(datagroup);
 		myprotocol = tmp;
 	}
 

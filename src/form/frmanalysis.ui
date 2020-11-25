@@ -323,7 +323,7 @@
              <item row="13" column="0" colspan="2">
               <widget class="QPushButton" name="pushButton">
                <property name="text">
-                <string>功能介绍</string>
+                <string>解析码介绍</string>
                </property>
               </widget>
              </item>
