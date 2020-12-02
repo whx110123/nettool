@@ -124,7 +124,7 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
-	else if(arg1 == IEC_103ASDU)
+	else if(arg1 == IEC_103ASDU || arg1 == IEC_103NANZINET)
 	{
 		ui->stackedWidget_protocol->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
@@ -139,6 +139,15 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
 		ui->comboBox_addrlen->setCurrentText("1");
 		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("2");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+	else if(arg1 == IEC_103XUJINET)
+	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("2");
 		ui->comboBox_comaddrlen->setCurrentText("2");
 		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
@@ -353,7 +362,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
 	}
-	else if(ui->protocolcbox->currentText() == IEC_103BAOXINNET)
+	else if(ui->protocolcbox->currentText() == IEC_103BAOXINNET || ui->protocolcbox->currentText() == IEC_103XUJINET)
 	{
 		IEC103NetBaoXin *tmp = new IEC103NetBaoXin;
 		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
@@ -361,7 +370,7 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		myprotocol = tmp;
 	}
-	else if(ui->protocolcbox->currentText() == IEC_103ASDU)
+	else if(ui->protocolcbox->currentText() == IEC_103ASDU || ui->protocolcbox->currentText() == IEC_103NANZINET)
 	{
 		IEC103Asdu *tmp = new IEC103Asdu;
 		tmp->cotlen = ui->comboBox_cotlen->currentText().toInt();

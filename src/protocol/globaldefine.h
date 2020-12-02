@@ -92,6 +92,8 @@ int stringToInt(QString data);
 #define IEC_103COM "串口103"
 #define IEC_103ASDU "103ASDU"
 #define IEC_103BAOXINNET "保信网络103"
+#define IEC_103XUJINET "许继网络103"
+#define IEC_103NANZINET "南自网络103"
 #define IEC_103HUABEI "华北103"
 #define MODBUS_RTU "modbus RTU"
 #define MODBUS_TCP "modbus TCP"
