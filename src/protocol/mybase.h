@@ -4,6 +4,7 @@
 #include "dataconfig.h"
 #include "functotext.h"
 
+
 class MyBase
 {
 public:
@@ -22,6 +23,7 @@ public:
 	int masterState;		//主站状态
 	int slaveState;			//子站状态
 	int index;				//此段内容在整个报文中的下标
+	static MyConfig mConfig;
 };
 
 #endif // MYBASE_H

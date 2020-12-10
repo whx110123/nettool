@@ -3,14 +3,6 @@
 
 #include <mybase.h>
 
-struct ModbusDataGroup
-{
-	uchar dataLen;		//应答报文数据字节数
-	QString type;		//数据类型
-	QString analysis;	//解析码
-	QString sort;		//顺序
-};
-
 class ModbusData : public MyBase
 {
 public:

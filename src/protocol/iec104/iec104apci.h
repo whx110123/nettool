@@ -33,7 +33,6 @@ public:
 public:
 	uchar first;
 	ushort length;
-	QString lengthType;
 	IEC104Control control;
 
 };

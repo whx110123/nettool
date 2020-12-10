@@ -326,106 +326,65 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 	MyBase *myprotocol = NULL;
 	if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
 	{
-		IEC104 *tmp = new IEC104;
-		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
-		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
-		myprotocol = tmp;
+		myprotocol = new IEC104;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_101)		//分析101报文
 	{
-		IEC101 *tmp = new IEC101;
-		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
-		tmp->apci.addrLen = ui->comboBox_addrlen->currentText().toInt();
-		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
-		myprotocol = tmp;
+		myprotocol = new IEC101;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
 	{
-		IEC103NetWiscom *tmp = new IEC103NetWiscom;
-		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
-		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		myprotocol = tmp;
-
+		myprotocol = new IEC103NetWiscom;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103COM ||		//分析串口103报文
 			ui->protocolcbox->currentText() == IEC_103HUABEI)      //分析华北103报文
 	{
-		IEC103COM *tmp = new IEC103COM;
-		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
-		tmp->apci.addrLen = ui->comboBox_addrlen->currentText().toInt();
-		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		myprotocol = tmp;
+		myprotocol = new IEC103COM;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103BAOXINNET || ui->protocolcbox->currentText() == IEC_103XUJINET)
 	{
-		IEC103NetBaoXin *tmp = new IEC103NetBaoXin;
-		tmp->apci.lengthType = ui->comboBox_lengthtype->currentText();
-		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		myprotocol = tmp;
+		myprotocol = new IEC103NetBaoXin;
 	}
 	else if(ui->protocolcbox->currentText() == IEC_103ASDU || ui->protocolcbox->currentText() == IEC_103NANZINET)
 	{
-		IEC103Asdu *tmp = new IEC103Asdu;
-		tmp->cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		myprotocol = tmp;
+		myprotocol = new IEC103Asdu;
 	}
 	else if(ui->protocolcbox->currentText() == MODBUS_RTU)
 	{
-		ModbusRTU *tmp = new ModbusRTU;
-		ModbusDataGroup *datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox1_modbus->currentText();
-		datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		tmp->mb.groups.append(datagroup);
-		datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox2_modbus->currentText();
-		datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		tmp->mb.groups.append(datagroup);
-		datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox3_modbus->currentText();
-		datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		tmp->mb.groups.append(datagroup);
-		myprotocol = tmp;
+		myprotocol = new ModbusRTU;
 	}
 	else if(ui->protocolcbox->currentText() == MODBUS_TCP)
 	{
-		ModbusTCP *tmp = new ModbusTCP;
-		ModbusDataGroup *datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox1_modbus->currentText();
-		datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		tmp->mb.groups.append(datagroup);
-		datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox2_modbus->currentText();
-		datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		tmp->mb.groups.append(datagroup);
-		datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox3_modbus->currentText();
-		datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		tmp->mb.groups.append(datagroup);
-		myprotocol = tmp;
+		myprotocol = new ModbusTCP;
 	}
 
 	if(myprotocol)
 	{
+		myprotocol->mConfig.protocolName = ui->protocolcbox->currentText();
+		myprotocol->mConfig.lengthType = ui->comboBox_lengthtype->currentText();
+		myprotocol->mConfig.addrLen = ui->comboBox_addrlen->currentText().toInt();
+		myprotocol->mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
+		myprotocol->mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		myprotocol->mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
+		ModbusDataGroup *datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox1_modbus->currentText();
+		datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
+		myprotocol->mConfig.groups.append(datagroup);
+		datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox2_modbus->currentText();
+		datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
+		myprotocol->mConfig.groups.append(datagroup);
+		datagroup = new ModbusDataGroup;
+		datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
+		datagroup->type = ui->comboBox3_modbus->currentText();
+		datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
+		datagroup->sort = ui->comboBox_sort->currentText();
+		myprotocol->mConfig.groups.append(datagroup);
+
 		QString tmp;
 		int i = 1;
 		QByteArray buffer = QUIHelper::hexStrToByteArray(data);
@@ -449,6 +408,8 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 			tmp.append("****************************************************************************************************\r\n");
 		}
 		ui->resulttext->setText(tmp);
+		qDeleteAll(myprotocol->mConfig.groups);
+		myprotocol->mConfig.groups.clear();
 		delete myprotocol;
 		myprotocol = NULL;
 	}

@@ -21,7 +21,6 @@ public:
 	ushort data_num;		//召唤个数,一般为寄存器数量
 	uchar bytenum;			//数据字节数
 
-	QList<ModbusDataGroup *> groups;	//界面提供的解析方式
 	ModbusDataGroup mgroup;				//根据报文实际长度，选择解析方式
 	QList<ModbusData *> datalist;		//应答报文数据集合
 };

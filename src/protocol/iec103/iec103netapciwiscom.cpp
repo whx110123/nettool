@@ -5,7 +5,6 @@ IEC103NetApciWiscom::IEC103NetApciWiscom()
 	masterState = STATE_INIT;
 	first = 0;
 	length = 0;
-	lengthType = IEC_DOUBLEDIFF;
 	source_factory_addr = 0;
 	memset(source_dev_addr, 0, sizeof(source_dev_addr));
 	destination_factory_addr = 0;
@@ -20,7 +19,7 @@ IEC103NetApciWiscom::~IEC103NetApciWiscom()
 
 bool IEC103NetApciWiscom::handle(const QByteArray& buff)
 {
-	int lengthlen = stringToInt(lengthType);
+	int lengthlen = stringToInt(mConfig.lengthType);
 	if(buff.count() < lengthlen + 13)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满15个字节");

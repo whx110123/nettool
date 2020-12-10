@@ -59,7 +59,7 @@ QString IEC101Asdu167Data::showToText()
 
 bool IEC101Asdu167Data::createData(IECDataConfig& config)
 {
-	if(infaddrlen != 3)
+	if(mConfig.infaddrlen != 3)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！167号报文信息体地址长度错误");
 		return false;

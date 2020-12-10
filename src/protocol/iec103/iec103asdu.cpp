@@ -206,8 +206,6 @@ IEC103Asdu::IEC103Asdu()
 	sqflag = 0;
 	datanum = 0;
 	masterState = STATE_NORMAL;
-	cotlen = 1;
-	comaddrlen = 1;
 	endflag = 0;
 	end = 0;
 }
@@ -240,24 +238,24 @@ bool IEC103Asdu::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + vsqToText() + "\r\n");
 	len++;
 
-	if(cotlen > 0)
+	if(mConfig.cotlen > 0)
 	{
 		cot = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len, cotlen) + "\t" + cotToText() + "\r\n");
+		mText.append(CharToHexStr(buff.data() + len, mConfig.cotlen) + "\t" + cotToText() + "\r\n");
 	}
 	else
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
 		return false;
 	}
-	len += cotlen;
+	len += mConfig.cotlen;
 
-	commonaddr = charTouint(buff.data() + len, comaddrlen);
-	if(comaddrlen == 1)
+	commonaddr = charTouint(buff.data() + len, mConfig.comaddrlen);
+	if(mConfig.comaddrlen == 1)
 	{
 		mText.append(CharToHexStr(buff.data() + len) + "\t公共地址:" + QString::number(commonaddr & 0xff) + "\r\n");
 	}
-	else if(comaddrlen == 2)
+	else if(mConfig.comaddrlen == 2)
 	{
 		mText.append(CharToHexStr(buff.data() + len) + "\t公共地址低位:" + QString::number(commonaddr & 0xff) + "\r\n");
 		mText.append(CharToHexStr(buff.data() + len + 1) + "\t公共地址高位:" + QString::number((commonaddr >> 8) & 0xff) + " 装置地址\r\n");
@@ -267,7 +265,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
 		return false;
 	}
-	len += comaddrlen;
+	len += mConfig.comaddrlen;
 
 	uchar fun = *(buff.data() + len);
 	uchar inf = *(buff.data() + len + 1);;
@@ -287,24 +285,36 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		}
 		else if(sqflag == 1)
 		{
+			int sq = 0;
 			switch(type)
 			{
 			case 40:
 			case 41:
 			case 42:
 			case 43:
-				isOk = mdata->init(buff.mid(len));
+				if(mConfig.protocolName == IEC_103XUJINET)
+				{
+					sq = 1;
+				}
 				break;
 			case 45:
 			case 47:
 			case 50:
 			case 51:
-				isOk = mdata->init(buff.mid(len), fun);
+				sq = 1;
 				break;
 			default:
 				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此asdu sq方式未知");
 				return false;
 				break;
+			}
+			if(sq == 0)
+			{
+				isOk = mdata->init(buff.mid(len));
+			}
+			else
+			{
+				isOk = mdata->init(buff.mid(len), fun);
 			}
 		}
 		else

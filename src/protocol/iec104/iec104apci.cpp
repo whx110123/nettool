@@ -288,7 +288,6 @@ IEC104Apci::IEC104Apci()
 {
 	first = 0;
 	length = 0;
-	lengthType = IEC_SINGLE;
 }
 
 IEC104Apci::~IEC104Apci()
@@ -311,18 +310,18 @@ bool IEC104Apci::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
 	len++;
 
-	int lengthlen = stringToInt(lengthType);
+	int lengthlen = stringToInt(mConfig.lengthType);
 	if(lengthlen == 0)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
 		return false;
 	}
-	if(lengthType == IEC_DOUBLESAME)
+	if(mConfig.lengthType == IEC_DOUBLESAME)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
 		return false;
 	}
-	else if(lengthType == IEC_SINGLE || lengthType == IEC_DOUBLEDIFF)
+	else if(mConfig.lengthType == IEC_SINGLE || mConfig.lengthType == IEC_DOUBLEDIFF)
 	{
 		length = charTouint(buff.data() + len, lengthlen);
 		mText.append(CharToHexStr(buff.data() + len, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");

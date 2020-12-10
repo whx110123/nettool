@@ -14,7 +14,7 @@ bool IEC103NetBaoXin::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	int LENGTH_LEN = stringToInt(apci.lengthType);	//长度域字节数
+	int LENGTH_LEN = stringToInt(mConfig.lengthType);	//长度域字节数
 	int APCI_LEN = LENGTH_LEN + 5;					//APCI总字节数
 
 	if(buff.count() < APCI_LEN)

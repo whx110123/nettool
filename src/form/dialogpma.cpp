@@ -143,17 +143,17 @@ void DialogPMA::startdebug()
 	if(ui->comboBox_protocol->currentText() == QString("104"))
 	{
 		IEC104 *tmp = new IEC104;
-		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
+		tmp->mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
+		tmp->mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		tmp->mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 		tmp->masterState = STATE_INIT;
 		tmp->slaveState = STATE_NODATA;
 		mProtocol = tmp;
 
 		tmp = new IEC104;
-		tmp->asdu.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->asdu.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		tmp->asdu.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
+		tmp->mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
+		tmp->mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		tmp->mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 		mProtocolShow = tmp;
 
 		config.comaddr = ui->lineEdit_104asduaddr->text().toUInt();

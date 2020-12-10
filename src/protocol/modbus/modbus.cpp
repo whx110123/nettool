@@ -10,8 +10,7 @@ Modbus::~Modbus()
 	qDeleteAll(datalist);
 	datalist.clear();
 
-	qDeleteAll(groups);
-	groups.clear();
+
 }
 
 bool Modbus::init(const QByteArray& buff)
@@ -88,7 +87,7 @@ bool Modbus::init(const QByteArray& buff)
 		mText.append(CharToHexStr(buff.data() + len) + "\t长度: " + QString::number(mgroup.dataLen) + "\r\n");
 		len++;
 
-		for(ModbusDataGroup *g : groups)
+		for(ModbusDataGroup *g : mConfig.groups)
 		{
 			if(g->dataLen == mgroup.dataLen)
 			{

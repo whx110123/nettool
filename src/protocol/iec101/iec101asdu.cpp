@@ -45,7 +45,6 @@
 IEC101AsduData::IEC101AsduData()
 {
 	infaddr = 0;
-	infaddrlen = 0;
 }
 
 IEC101AsduData::~IEC101AsduData()
@@ -57,14 +56,14 @@ bool IEC101AsduData::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(infaddrlen != 3 && infaddrlen != 2 && infaddrlen != 1)
+	if(mConfig.infaddrlen != 3 && mConfig.infaddrlen != 2 && mConfig.infaddrlen != 1)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！信息体地址长度错误");
 		return false;
 	}
-	infaddr = charTouint(buff.data() + len, infaddrlen);
-	mText.append(CharToHexStr(buff.data() + len, infaddrlen) + "\t信息元素地址:" + QString::number(infaddr));
-	len += infaddrlen;
+	infaddr = charTouint(buff.data() + len, mConfig.infaddrlen);
+	mText.append(CharToHexStr(buff.data() + len, mConfig.infaddrlen) + "\t信息元素地址:" + QString::number(infaddr));
+	len += mConfig.infaddrlen;
 
 	if(len > buff.length())
 	{
@@ -111,9 +110,6 @@ IEC101Asdu::IEC101Asdu()
 	commonaddr = 0;
 	sqflag = 0;
 	datanum = 0;
-	cotlen = 0 ;
-	comaddrlen = 0 ;
-	infaddrlen = 0 ;
 }
 
 IEC101Asdu::~IEC101Asdu()
@@ -129,7 +125,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	qDeleteAll(datalist);
 	datalist.clear();
 
-	if(buff.count() < 2 + cotlen + comaddrlen)
+	if(buff.count() < 2 + mConfig.cotlen + mConfig.comaddrlen)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
@@ -152,7 +148,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + vsqToText() + "\r\n");
 	len++;
 
-	if(cotlen != 2 && cotlen != 1)
+	if(mConfig.cotlen != 2 && mConfig.cotlen != 1)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
 		return false;
@@ -160,25 +156,25 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	cot[0] = *(buff.data() + len);
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + cotToText() + "\r\n");
 	len++;
-	if(cotlen == 2)
+	if(mConfig.cotlen == 2)
 	{
 		cot[1] = *(buff.data() + len);
 		mText.append(CharToHexStr(buff.data() + len) + "\t源发站地址号:" + QString::number(cot[1]) + "\r\n");
 		len++;
 	}
 
-	if(comaddrlen != 2 && comaddrlen != 1)
+	if(mConfig.comaddrlen != 2 && mConfig.comaddrlen != 1)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
 		return false;
 	}
-	commonaddr = charTouint(buff.data() + len, comaddrlen);
-	mText.append(CharToHexStr(buff.data() + len, comaddrlen) + "\t公共地址:" + QString::number(commonaddr) + "\r\n");
-	len += comaddrlen;
+	commonaddr = charTouint(buff.data() + len, mConfig.comaddrlen);
+	mText.append(CharToHexStr(buff.data() + len, mConfig.comaddrlen) + "\t公共地址:" + QString::number(commonaddr) + "\r\n");
+	len += mConfig.comaddrlen;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 
 
-	uint dataaddr = charTouint((uchar *)(buff.data() + len), infaddrlen);
+	uint dataaddr = charTouint((uchar *)(buff.data() + len), mConfig.infaddrlen);
 	for(int index = 0; index < datanum; index++)
 	{
 		IEC101AsduData *mdata = CreateAsduData(type);
@@ -234,8 +230,8 @@ bool IEC101Asdu::createData(IECDataConfig& config)
 
 	config.data += config.asdutype;
 	config.data += config.vsq;
-	config.data += uintToBa(config.cot, cotlen);
-	config.data += uintToBa(config.comaddr, comaddrlen);
+	config.data += uintToBa(config.cot, mConfig.cotlen);
+	config.data += uintToBa(config.comaddr, mConfig.comaddrlen);
 	config.isfirst = true;
 
 	int num = config.vsq & 0x7f;
@@ -892,10 +888,6 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	default:
 		break;
-	}
-	if(asdudata)
-	{
-		asdudata->infaddrlen = infaddrlen;
 	}
 	return asdudata;
 }

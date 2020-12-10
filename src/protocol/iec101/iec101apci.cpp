@@ -41,9 +41,7 @@ IEC101Apci::IEC101Apci()
 {
 	flag = 0;
 	length = 0;
-	lengthType = IEC_DOUBLESAME;
 	addr = 0;
-	addrLen = 1;
 }
 
 IEC101Apci::~IEC101Apci()
@@ -55,7 +53,7 @@ bool IEC101Apci::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(buff.count() < 2 + addrLen)
+	if(buff.count() < 2 + mConfig.addrLen)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 		return false;
@@ -68,13 +66,13 @@ bool IEC101Apci::init(const QByteArray& buff)
 		mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
 		len++;
 
-		int lengthlen = stringToInt(lengthType);
+		int lengthlen = stringToInt(mConfig.lengthType);
 		if(lengthlen == 0)
 		{
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
 			return false;
 		}
-		if(lengthType == IEC_DOUBLESAME)
+		if(mConfig.lengthType == IEC_DOUBLESAME)
 		{
 			length = *(uchar *)(buff.data() + len);
 			mText.append(CharToHexStr(buff.data() + len) + "\t长度域1:" + QString::number(length) + "\r\n");
@@ -90,14 +88,14 @@ bool IEC101Apci::init(const QByteArray& buff)
 				return false;
 			}
 		}
-		else if(lengthType == IEC_SINGLE || lengthType == IEC_DOUBLEDIFF)
+		else if(mConfig.lengthType == IEC_SINGLE || mConfig.lengthType == IEC_DOUBLEDIFF)
 		{
 			length = charTouint(buff.data() + len, lengthlen);
 			mText.append(CharToHexStr(buff.data() + len, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");
 			len += lengthlen;
 		}
 
-		if(buff.count() < 3 + lengthlen + addrLen)
+		if(buff.count() < 3 + lengthlen + mConfig.addrLen)
 		{
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 			return false;
@@ -117,7 +115,7 @@ bool IEC101Apci::init(const QByteArray& buff)
 	{
 		mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x10\r\n");
 		len++;
-		length = 1 + addrLen;
+		length = 1 + mConfig.addrLen;
 	}
 	else
 	{
@@ -134,9 +132,9 @@ bool IEC101Apci::init(const QByteArray& buff)
 	mText.append(code.showToText());
 	len++;
 
-	addr = charTouint(buff.data() + len, addrLen);
-	mText.append(CharToHexStr(buff.data() + len, addrLen) + "\t地址域:" + QString::number(addr) + "\r\n");
-	len += addrLen;
+	addr = charTouint(buff.data() + len, mConfig.addrLen);
+	mText.append(CharToHexStr(buff.data() + len, mConfig.addrLen) + "\t地址域:" + QString::number(addr) + "\r\n");
+	len += mConfig.addrLen;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
 	{
