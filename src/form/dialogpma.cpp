@@ -2,6 +2,7 @@
 #include "ui_dialogpma.h"
 
 #include <iec101asdu45data.h>
+#include <iec101asdu46data.h>
 #include <quiwidget.h>
 
 DialogPMA::DialogPMA(QWidget *parent) :
@@ -143,6 +144,7 @@ void DialogPMA::startdebug()
 	if(ui->comboBox_protocol->currentText() == QString("104"))
 	{
 		IEC104 *tmp = new IEC104;
+		tmp->mConfig.lengthType = IEC_SINGLE;
 		tmp->mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
@@ -151,6 +153,7 @@ void DialogPMA::startdebug()
 		mProtocol = tmp;
 
 		tmp = new IEC104;
+		tmp->mConfig.lengthType = IEC_SINGLE;
 		tmp->mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
 		tmp->mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
 		tmp->mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
@@ -215,6 +218,34 @@ void DialogPMA::showToText(QByteArray ba)
 					{
 						ui->pushButton_104execute->setEnabled(false);
 						if(iec101data->sco & 0x80)
+						{
+							ui->label_select->setText("选择失败");
+						}
+						else
+						{
+							ui->label_execute->setText("执行失败");
+						}
+					}
+				}
+				else if(tmp->asdu.type == 46)
+				{
+					IEC101Asdu46Data *iec101data = (IEC101Asdu46Data *)tmp->asdu.datalist.at(0);
+					if(tmp->asdu.cot[0] == 7)
+					{
+						ui->pushButton_104execute->setEnabled(true);
+						if(iec101data->dco & 0x80)
+						{
+							ui->label_select->setText("选择成功");
+						}
+						else
+						{
+							ui->label_execute->setText("执行成功");
+						}
+					}
+					else if((tmp->asdu.cot[0] & 0x0f) == 7)
+					{
+						ui->pushButton_104execute->setEnabled(false);
+						if(iec101data->dco & 0x80)
 						{
 							ui->label_select->setText("选择失败");
 						}
