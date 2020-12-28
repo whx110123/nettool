@@ -31,7 +31,7 @@ bool IEC101Asdu103Data::createData(IECDataConfig& config)
 	if(config.isfirst || (config.vsq & 0x80) == 0)
 	{
 		infaddr = 0;
-		config.data += uintToBa(infaddr, mConfig.infaddrlen);
+		config.data += uintToBa(infaddr, mInfaddrlen);
 	}
 	datetime = QDateTime::currentDateTime();
 	if(config.isMaster)

@@ -28,6 +28,10 @@ public:
 	ushort length;			//长度域
 	IEC101Code code;		//功能码
 	ushort addr;			//地址域
+
+public:
+	QString mLengthType;			//长度域类型
+	int mAddrLen;				//地址域字节数
 };
 
 #endif // IEC101APCI_H

@@ -28,6 +28,8 @@ frmAnalysis::~frmAnalysis()
 {
 	delete highlighter1;
 	delete highlighter2;
+	qDeleteAll(MyBase::mConfig.groups);
+	MyBase::mConfig.groups.clear();
 	delete ui;
 }
 
@@ -323,68 +325,10 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 		return;
 	}
 
-	MyBase *myprotocol = NULL;
-	if(ui->protocolcbox->currentText() == IEC_104)           //分析104报文
-	{
-		myprotocol = new IEC104;
-	}
-	else if(ui->protocolcbox->currentText() == IEC_101)		//分析101报文
-	{
-		myprotocol = new IEC101;
-	}
-	else if(ui->protocolcbox->currentText() == IEC_103WISCOMNET)//分析金智网络103报文
-	{
-		myprotocol = new IEC103NetWiscom;
-	}
-	else if(ui->protocolcbox->currentText() == IEC_103COM ||		//分析串口103报文
-			ui->protocolcbox->currentText() == IEC_103HUABEI)      //分析华北103报文
-	{
-		myprotocol = new IEC103COM;
-	}
-	else if(ui->protocolcbox->currentText() == IEC_103BAOXINNET || ui->protocolcbox->currentText() == IEC_103XUJINET)
-	{
-		myprotocol = new IEC103NetBaoXin;
-	}
-	else if(ui->protocolcbox->currentText() == IEC_103ASDU || ui->protocolcbox->currentText() == IEC_103NANZINET)
-	{
-		myprotocol = new IEC103Asdu;
-	}
-	else if(ui->protocolcbox->currentText() == MODBUS_RTU)
-	{
-		myprotocol = new ModbusRTU;
-	}
-	else if(ui->protocolcbox->currentText() == MODBUS_TCP)
-	{
-		myprotocol = new ModbusTCP;
-	}
+	MyBase *myprotocol = createByName(ui->protocolcbox->currentText());
 
 	if(myprotocol)
 	{
-		myprotocol->mConfig.protocolName = ui->protocolcbox->currentText();
-		myprotocol->mConfig.lengthType = ui->comboBox_lengthtype->currentText();
-		myprotocol->mConfig.addrLen = ui->comboBox_addrlen->currentText().toInt();
-		myprotocol->mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		myprotocol->mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		myprotocol->mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
-		ModbusDataGroup *datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox1_modbus->currentText();
-		datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		myprotocol->mConfig.groups.append(datagroup);
-		datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox2_modbus->currentText();
-		datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		myprotocol->mConfig.groups.append(datagroup);
-		datagroup = new ModbusDataGroup;
-		datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
-		datagroup->type = ui->comboBox3_modbus->currentText();
-		datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
-		datagroup->sort = ui->comboBox_sort->currentText();
-		myprotocol->mConfig.groups.append(datagroup);
-
 		QString tmp;
 		int i = 1;
 		QByteArray buffer = QUIHelper::hexStrToByteArray(data);
@@ -408,11 +352,10 @@ void frmAnalysis::on_pushButton_Analysis_clicked()
 			tmp.append("****************************************************************************************************\r\n");
 		}
 		ui->resulttext->setText(tmp);
-		qDeleteAll(myprotocol->mConfig.groups);
-		myprotocol->mConfig.groups.clear();
 		delete myprotocol;
 		myprotocol = NULL;
 	}
+
 }
 
 
@@ -479,4 +422,80 @@ bool frmAnalysis::eventFilter(QObject *obj, QEvent *event)
 void frmAnalysis::on_pushButton_clicked()
 {
 	modbusdlg->exec();
+}
+
+void frmAnalysis::initProtocolConfig()
+{
+	MyBase::mConfig.lengthType = ui->comboBox_lengthtype->currentText();
+	MyBase::mConfig.addrLen = ui->comboBox_addrlen->currentText().toInt();
+	MyBase::mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
+	MyBase::mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+	MyBase::mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
+
+	qDeleteAll(MyBase::mConfig.groups);
+	MyBase::mConfig.groups.clear();
+	ModbusDataGroup *datagroup = new ModbusDataGroup;
+	datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
+	datagroup->type = ui->comboBox1_modbus->currentText();
+	datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
+	datagroup->sort = ui->comboBox_sort->currentText();
+	MyBase::mConfig.groups.append(datagroup);
+	datagroup = new ModbusDataGroup;
+	datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
+	datagroup->type = ui->comboBox2_modbus->currentText();
+	datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
+	datagroup->sort = ui->comboBox_sort->currentText();
+	MyBase::mConfig.groups.append(datagroup);
+	datagroup = new ModbusDataGroup;
+	datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
+	datagroup->type = ui->comboBox3_modbus->currentText();
+	datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
+	datagroup->sort = ui->comboBox_sort->currentText();
+	MyBase::mConfig.groups.append(datagroup);
+}
+
+MyBase *frmAnalysis::createByName(QString name)
+{
+	initProtocolConfig();
+
+	MyBase *protocol = NULL;
+	if(name == IEC_104)           //分析104报文
+	{
+		protocol = new IEC104;
+	}
+	else if(name == IEC_101)		//分析101报文
+	{
+		protocol = new IEC101;
+	}
+	else if(name == IEC_103WISCOMNET)//分析金智网络103报文
+	{
+		protocol = new IEC103NetWiscom;
+	}
+	else if(name == IEC_103COM ||		//分析串口103报文
+			name == IEC_103HUABEI)      //分析华北103报文
+	{
+		protocol = new IEC103COM;
+	}
+	else if(name == IEC_103BAOXINNET || name == IEC_103XUJINET)
+	{
+		protocol = new IEC103NetBaoXin;
+	}
+	else if(name == IEC_103ASDU || name == IEC_103NANZINET)
+	{
+		protocol = new IEC103Asdu;
+	}
+	else if(name == MODBUS_RTU)
+	{
+		protocol = new ModbusRTU;
+	}
+	else if(name == MODBUS_TCP)
+	{
+		protocol = new ModbusTCP;
+	}
+
+	if(protocol)
+	{
+		protocol->protocolName = ui->protocolcbox->currentText();
+	}
+	return protocol;
 }

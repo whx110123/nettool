@@ -15,6 +15,7 @@ public:
 	virtual bool createData(IECDataConfig& config);		//生成报文
 	void setDefault(const QByteArray& buff);
 public:
+	QString protocolName;		//规约名
 	QByteArray mSendData;	//发送报文
 	QByteArray mRecvData;	//接收报文
 	int len;				//接收报文长度

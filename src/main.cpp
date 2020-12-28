@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	App::readDeviceData();
 
 	frmMain w;
-	w.setWindowTitle(QString("网络串口调试助手V2.08   ") + QString("本机IP: %1 ").arg(QUIHelper::getLocalIP()) + QString("          作者：王洪星"));
+	w.setWindowTitle(QString("网络串口调试助手V2.09   ") + QString("本机IP: %1 ").arg(QUIHelper::getLocalIP()) + QString("          作者：王洪星"));
 	w.show();
 	w.changeImage();
 	return a.exec();

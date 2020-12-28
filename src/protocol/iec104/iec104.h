@@ -17,6 +17,8 @@ public:
 	IEC104Apci apci;
 	IEC101Asdu asdu;
 
+public:
+	QString mLengthType;
 };
 
 #endif // IEC104_H

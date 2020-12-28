@@ -2,6 +2,7 @@
 #define FRMANALYSIS_H
 
 #include <QWidget>
+#include <mybase.h>
 #include "protocol101apdu.h"
 #include "protocol104apdu.h"
 #include "protocol103wiscomnet.h"
@@ -11,7 +12,7 @@
 
 namespace Ui
 {
-	class frmAnalysis;
+class frmAnalysis;
 }
 class myhighlighter;
 class frmAnalysis : public QWidget
@@ -52,7 +53,6 @@ private slots:
 	void on_pushButton_clicked();
 
 private:
-
 	Ui::frmAnalysis *ui;
 	myhighlighter *highlighter1;
 	myhighlighter *highlighter2;
@@ -62,6 +62,9 @@ private:
 	protocol101::protocol104apdu *m_104;
 	protocol103::protocol103wiscomnet *m_103wiscomnet;
 	protocol103::protocol103com *m_103com;
+public:
+	void initProtocolConfig();
+	MyBase *createByName(QString name);
 protected:
 	bool eventFilter(QObject *obj, QEvent *ev) override;
 };

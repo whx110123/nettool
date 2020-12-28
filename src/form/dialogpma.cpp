@@ -143,21 +143,16 @@ void DialogPMA::startdebug()
 	}
 	if(ui->comboBox_protocol->currentText() == QString("104"))
 	{
-		IEC104 *tmp = new IEC104;
-		tmp->mConfig.lengthType = IEC_SINGLE;
-		tmp->mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		tmp->mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
-		tmp->masterState = STATE_INIT;
-		tmp->slaveState = STATE_NODATA;
-		mProtocol = tmp;
+		MyBase::mConfig.lengthType = IEC_SINGLE;
+		MyBase::mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
+		MyBase::mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+		MyBase::mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 
-		tmp = new IEC104;
-		tmp->mConfig.lengthType = IEC_SINGLE;
-		tmp->mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
-		tmp->mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-		tmp->mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
-		mProtocolShow = tmp;
+		mProtocol = new IEC104;
+		mProtocol->masterState = STATE_INIT;
+		mProtocol->slaveState = STATE_NODATA;
+
+		mProtocolShow = new IEC104;
 
 		config.comaddr = ui->lineEdit_104asduaddr->text().toUInt();
 		handleDataTimer->start(1000);

@@ -16,6 +16,9 @@ public:
 public:
 	IEC103NetApciWiscom apci;
 	IEC103Asdu asdu;
+
+public:
+	QString mLengthType;
 };
 
 #endif // IEC103NETWISCOM_H

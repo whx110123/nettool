@@ -5,6 +5,9 @@ IEC101::IEC101()
 	masterState = STATE_INIT;
 	crc = 0;
 	end = 0;
+
+	mAddrLen = mConfig.addrLen;
+	mLengthType = mConfig.lengthType;
 }
 
 IEC101::~IEC101()
@@ -16,20 +19,20 @@ bool IEC101::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(buff.count() < mConfig.addrLen + 4)
+	if(buff.count() < mAddrLen + 4)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 		return false;
 	}
-	int LENGTH_LEN = stringToInt(mConfig.lengthType);	//长度域字节数
+	int LENGTH_LEN = stringToInt(mLengthType);	//长度域字节数
 	int APCI_LEN = 0;
 	if(*buff.data() == 0x68)
 	{
-		APCI_LEN = 3 + LENGTH_LEN + mConfig.addrLen;
+		APCI_LEN = 3 + LENGTH_LEN + mAddrLen;
 	}
 	else if(*buff.data() == 0x10)
 	{
-		APCI_LEN = 2 + mConfig.addrLen;
+		APCI_LEN = 2 + mAddrLen;
 	}
 	else
 	{

@@ -18,6 +18,10 @@ public:
 	IEC101Asdu asdu;
 	uchar crc;
 	uchar end;
+
+public:
+	QString mLengthType;			//长度域类型
+	int mAddrLen;				//地址域字节数
 };
 
 #endif // IEC101_H

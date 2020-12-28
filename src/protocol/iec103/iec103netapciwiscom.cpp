@@ -10,6 +10,8 @@ IEC103NetApciWiscom::IEC103NetApciWiscom()
 	destination_factory_addr = 0;
 	memset(destination_dev_addr, 0, sizeof(destination_dev_addr));
 	memset(reserve, 0, sizeof(reserve));
+
+	mLengthType = mConfig.lengthType;
 }
 
 IEC103NetApciWiscom::~IEC103NetApciWiscom()
@@ -19,7 +21,7 @@ IEC103NetApciWiscom::~IEC103NetApciWiscom()
 
 bool IEC103NetApciWiscom::handle(const QByteArray& buff)
 {
-	int lengthlen = stringToInt(mConfig.lengthType);
+	int lengthlen = stringToInt(mLengthType);
 	if(buff.count() < lengthlen + 13)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满15个字节");

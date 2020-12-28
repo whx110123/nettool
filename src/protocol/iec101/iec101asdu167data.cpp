@@ -31,6 +31,9 @@ bool IEC101Asdu167Data::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
 	len++;
 
+	asdu.mCotlen = 1;
+	asdu.mComaddrlen = 1;
+
 	if(!asdu.init(buff.mid(len, iec103len)))
 	{
 		return false;
@@ -59,7 +62,7 @@ QString IEC101Asdu167Data::showToText()
 
 bool IEC101Asdu167Data::createData(IECDataConfig& config)
 {
-	if(mConfig.infaddrlen != 3)
+	if(mInfaddrlen != 3)
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！167号报文信息体地址长度错误");
 		return false;
@@ -69,6 +72,8 @@ bool IEC101Asdu167Data::createData(IECDataConfig& config)
 	if(config.isMaster)
 	{
 		config.iec103config->data.clear();
+		asdu.mCotlen = 1;
+		asdu.mComaddrlen = 1;
 		if(!asdu.createData(*config.iec103config))
 		{
 			return false;

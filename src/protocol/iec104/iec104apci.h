@@ -35,6 +35,9 @@ public:
 	ushort length;
 	IEC104Control control;
 
+public:
+	QString mLengthType;
+
 };
 
 #endif // IEC104APCI_H

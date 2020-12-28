@@ -3,6 +3,8 @@
 IEC103NetWiscom::IEC103NetWiscom()
 {
 	masterState = STATE_INIT;
+
+	mLengthType = mConfig.lengthType;
 }
 
 IEC103NetWiscom::~IEC103NetWiscom()
@@ -14,7 +16,7 @@ bool IEC103NetWiscom::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	int LENGTH_LEN = stringToInt(mConfig.lengthType);	//长度域字节数
+	int LENGTH_LEN = stringToInt(mLengthType);	//长度域字节数
 	int APCI_LEN = LENGTH_LEN + 13;					//APCI总字节数
 
 	if(buff.count() < APCI_LEN)
@@ -80,7 +82,7 @@ bool IEC103NetWiscom::init(const QByteArray& buff)
 QString IEC103NetWiscom::showToText()
 {
 	QString text(mText);
-	int LENGTH_LEN = stringToInt(mConfig.lengthType);	//长度域字节数
+	int LENGTH_LEN = stringToInt(mLengthType);	//长度域字节数
 	if(len > LENGTH_LEN + 12)
 	{
 		text.append(apci.showToText());
