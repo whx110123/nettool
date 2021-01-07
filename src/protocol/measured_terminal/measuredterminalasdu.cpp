@@ -4,7 +4,9 @@
 
 MeasuredTerminalAsduData::MeasuredTerminalAsduData()
 {
-
+	memset(DA, 0, sizeof(DA));
+	memset(DI, 0, sizeof(DI));
+	density = 0;
 }
 
 MeasuredTerminalAsduData::~MeasuredTerminalAsduData()
@@ -87,7 +89,11 @@ QString MeasuredTerminalAsduData::DIToText()
 
 MeasuredTerminalAsdu::MeasuredTerminalAsdu()
 {
-
+	afn = 0;
+	seq = 0;
+	memset(pw, 0, sizeof(pw));
+	delayTime = 0;
+	flag = 0;
 }
 
 MeasuredTerminalAsdu::~MeasuredTerminalAsdu()
@@ -151,6 +157,12 @@ bool MeasuredTerminalAsdu::init(const QByteArray& buff)
 	if(pwFlag)
 	{
 		memcpy(pw, buff.data() + len, 16);
+		mText.append(CharToHexStr(buff.data() + len, 16) + "\t消息验证码PW\r\n");
+		len += 16;
+	}
+	if(tpFlag)
+	{
+
 	}
 	if(len > buff.length())
 	{

@@ -146,6 +146,10 @@ QDateTime charToDateTime(uchar *data, int len, int model)
 	switch(model)
 	{
 	case BINARYTIME2A:
+		if(len < 2)
+		{
+			return datetime;
+		}
 		tmp = data[0] + data[1] * 256;
 		milliseconds = tmp % 1000;
 		second = tmp / 1000;
@@ -175,7 +179,29 @@ QDateTime charToDateTime(uchar *data, int len, int model)
 		}
 		years = (ushort)(data[6] & 0x7f) + (years / 100) * 100;
 		break;
-	case BINARYTIME2B:
+	case MYTIME1:
+		if(len != 4)
+		{
+			return datetime;
+		}
+		milliseconds = 0;
+		second = data[0];
+		minutes = data[1];
+		hours = data[2];
+		dayofmonths = data[3];
+		break;
+	case MYTIME2:
+		if(len != 6)
+		{
+			return datetime;
+		}
+		milliseconds = 0;
+		second = 0;
+		minutes = QString::number(data[0], 16).toUShort();
+		hours = QString::number(data[1], 16).toUShort();
+		dayofmonths = QString::number(data[2], 16).toUShort();
+		months = QString::number(data[3], 16).toUShort();
+		years = (QString::number(data[5], 16) + QString::number(data[4], 16)).toUShort();
 		break;
 	default:
 		break;
@@ -214,44 +240,44 @@ QByteArray dateTimeToBa(QDateTime datatime, int len, int model)
 	switch(model)
 	{
 	case BINARYTIME2A:
+	{
+		ushort tmp = datatime.time().msec() + datatime.time().second() * 1000;
+		char ch[2];
+		memcpy(ch, &tmp, 2);
+		ba.append(ch, 2);
+		if(len == 2)
 		{
-			ushort tmp = datatime.time().msec() + datatime.time().second() * 1000;
-			char ch[2];
-			memcpy(ch, &tmp, 2);
-			ba.append(ch, 2);
-			if(len == 2)
-			{
-				break;
-			}
-			uchar uch = datatime.time().minute();
-			ba.append(uch);
-			if(len == 3)
-			{
-				break;
-			}
-			uch = datatime.time().hour();
-			ba.append(uch);
-			if(len == 4)
-			{
-				break;
-			}
-			uch = datatime.date().dayOfWeek();
-			uch = (uch << 5) + datatime.date().day();
-			ba.append(uch);
-			if(len == 5)
-			{
-				break;
-			}
-			uch = datatime.date().month();
-			ba.append(uch);
-			if(len == 6)
-			{
-				break;
-			}
-			uch = datatime.date().year() % 100;
-			ba.append(uch);
 			break;
 		}
+		uchar uch = datatime.time().minute();
+		ba.append(uch);
+		if(len == 3)
+		{
+			break;
+		}
+		uch = datatime.time().hour();
+		ba.append(uch);
+		if(len == 4)
+		{
+			break;
+		}
+		uch = datatime.date().dayOfWeek();
+		uch = (uch << 5) + datatime.date().day();
+		ba.append(uch);
+		if(len == 5)
+		{
+			break;
+		}
+		uch = datatime.date().month();
+		ba.append(uch);
+		if(len == 6)
+		{
+			break;
+		}
+		uch = datatime.date().year() % 100;
+		ba.append(uch);
+		break;
+	}
 	case BINARYTIME2B:
 		break;
 	default:
