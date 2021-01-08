@@ -4,11 +4,11 @@
 #include <iec101apci.h>
 
 
-class MeasuredTerminalApci : public MyBase
+class MTApci : public MyBase
 {
 public:
-	MeasuredTerminalApci();
-	~MeasuredTerminalApci();
+	MTApci();
+	~MTApci();
 	virtual bool init(const QByteArray& buff);
 	virtual bool createData(IECDataConfig& config);
 

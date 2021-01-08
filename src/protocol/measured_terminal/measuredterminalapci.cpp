@@ -1,20 +1,21 @@
 ﻿#include "measuredterminalapci.h"
 
-MeasuredTerminalApci::MeasuredTerminalApci()
+MTApci::MTApci()
 {
 	flag = 0;
 	length = 0;
 	A1 = 0;
-
+	A2 = 0;
+	A3 = 0;
 	mLengthType = mConfig.lengthType;
 }
 
-MeasuredTerminalApci::~MeasuredTerminalApci()
+MTApci::~MTApci()
 {
 
 }
 
-bool MeasuredTerminalApci::init(const QByteArray& buff)
+bool MTApci::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -92,7 +93,7 @@ bool MeasuredTerminalApci::init(const QByteArray& buff)
 	len++;
 
 	A1 = charTouint(buff.data() + len, 3);
-	mText.append(CharToHexStr(buff.data() + len, 3) + A1ToText() + "\r\n");
+	mText.append(CharToHexStr(buff.data() + len, 3) + "\t" + A1ToText() + "\r\n");
 	len += 3;
 
 	A2 = charTouint(buff.data() + len, 3);
@@ -112,13 +113,13 @@ bool MeasuredTerminalApci::init(const QByteArray& buff)
 	return true;
 }
 
-bool MeasuredTerminalApci::createData(IECDataConfig& config)
+bool MTApci::createData(IECDataConfig& config)
 {
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 }
 
-QString MeasuredTerminalApci::A1ToText()
+QString MTApci::A1ToText()
 {
 	QString text;
 	text.append("省地市区县码A1:  ");

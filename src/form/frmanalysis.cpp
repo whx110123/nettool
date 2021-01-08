@@ -6,6 +6,7 @@
 #include <iec103com.h>
 #include <iec103netbaoxin.h>
 #include <iec103netwiscom.h>
+#include <measuredterminal.h>
 #include <modbusrtu.h>
 #include <modbustcp.h>
 #include "myhighlighter.h"
@@ -39,6 +40,7 @@ void frmAnalysis::initForm()
 	QStringList list = QStringList();
 	list << "1" << "2";
 	ui->comboBox_addrlen->addItems(list);
+	ui->comboBox_addrlen->addItem("7");
 	ui->comboBox_cotlen->addItems(list);
 	ui->comboBox_comaddrlen->addItems(list);
 	list << "3";
@@ -165,6 +167,15 @@ void frmAnalysis::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	else if(arg1 == MODBUS_RTU || arg1 == MODBUS_TCP)
 	{
 		ui->stackedWidget_protocol->setCurrentIndex(1);
+	}
+	else if(arg1 == MEASUREDTERMINAL_NW_NET)
+	{
+		ui->stackedWidget_protocol->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_addrlen->setCurrentText("7");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
 }
 
@@ -491,6 +502,10 @@ MyBase *frmAnalysis::createByName(QString name)
 	else if(name == MODBUS_TCP)
 	{
 		protocol = new ModbusTCP;
+	}
+	else if(name == MEASUREDTERMINAL_NW_NET)
+	{
+		protocol = new MeasuredTerminal;
 	}
 
 	if(protocol)

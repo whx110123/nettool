@@ -18,6 +18,15 @@ typedef unsigned int  uint;
 #define SORT2 "低字  高字节"
 #define SORT3 "高字  低字节"
 #define SORT4 "低字  低字节"
+
+#define PW_AVAILABLE 0x01
+#define TP_AVAILABLE 0x02
+#define ISMASTER 0x80
+enum
+{
+	TYPE_UINT32,
+};
+
 enum
 {
 	ITYPE = 1,
@@ -99,6 +108,7 @@ int stringToInt(QString data);
 #define IEC_103HUABEI "华北103"
 #define MODBUS_RTU "modbus RTU"
 #define MODBUS_TCP "modbus TCP"
+#define MEASUREDTERMINAL_NW_NET "南网计量终端网络"
 
 #define IEC_SINGLE "单字节"
 #define IEC_DOUBLESAME "双字节 重复"

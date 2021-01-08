@@ -1,93 +1,6 @@
 ﻿#include "measuredterminalasdu.h"
 
-
-
-MeasuredTerminalAsduData::MeasuredTerminalAsduData()
-{
-	memset(DA, 0, sizeof(DA));
-	memset(DI, 0, sizeof(DI));
-	density = 0;
-}
-
-MeasuredTerminalAsduData::~MeasuredTerminalAsduData()
-{
-
-}
-
-bool MeasuredTerminalAsduData::init(const QByteArray& buff)
-{
-	setDefault(buff);
-
-	memcpy(DA, buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + DAToText());
-	len += 2;
-
-	memcpy(DI, buff.data() + len, 4);
-	mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + DIToText());
-	len += 4;
-
-	if(len > buff.length())
-	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
-		return false;
-	}
-	if(!handle(buff))
-	{
-		return false;
-	}
-	return true;
-}
-
-bool MeasuredTerminalAsduData::handle(const QByteArray& buff)
-{
-	return false;
-}
-
-QString MeasuredTerminalAsduData::DAToText()
-{
-	QString text = "信息点标识DA:";
-	if(DA[0] == 0 && DA[1] == 0)
-	{
-		text.append("终端测量点P0");
-	}
-	else if(DA[0] && DA[1])
-	{
-		QString tmp = "对应测量点";
-		int sum = 0;
-		for(int i = 0; i < 8; i++)
-		{
-			if((DA[0] >> i) & 0x01)
-			{
-				tmp.append("p" + QString::number((DA[1] - 1) * 8 + i + 1) + " ");
-				sum++;
-			}
-		}
-		text.append(QString("共%1个点").arg(sum));
-	}
-	else
-	{
-		text = "错误的信息点标识";
-	}
-
-	return text;
-}
-
-QString MeasuredTerminalAsduData::DIToText()
-{
-	QString text = "数据标识编码DI";
-	uint tmp = charTouint(DI, 4);
-	switch(tmp)
-	{
-	case 0x00010000:
-		break;
-	default:
-		break;
-	}
-	return text;
-}
-
-
-MeasuredTerminalAsdu::MeasuredTerminalAsdu()
+MTAsdu::MTAsdu()
 {
 	afn = 0;
 	seq = 0;
@@ -96,13 +9,13 @@ MeasuredTerminalAsdu::MeasuredTerminalAsdu()
 	flag = 0;
 }
 
-MeasuredTerminalAsdu::~MeasuredTerminalAsdu()
+MTAsdu::~MTAsdu()
 {
 	qDeleteAll(datalist);
 	datalist.clear();
 }
 
-bool MeasuredTerminalAsdu::init(const QByteArray& buff)
+bool MTAsdu::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -124,17 +37,18 @@ bool MeasuredTerminalAsdu::init(const QByteArray& buff)
 	len++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	uchar pwFlag = (flag & 0x01) ? 1 : 0;
-	uchar tpFlag = (flag & 0x02) ? 1 : 0;
+	uchar pwFlag = (flag & PW_AVAILABLE) ? 1 : 0;
+	uchar tpFlag = (flag & TP_AVAILABLE) ? 1 : 0;
 	int index = 0;
 	while(len < buff.length() - pwFlag * 16 - tpFlag * 5)
 	{
-		MeasuredTerminalAsduData *mdata = CreateAsduData(afn);
+		MTAsduData *mdata = new MTAsduData;
 		if(!mdata)
 		{
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的afn类型");
 			return false;
 		}
+		mdata->flag = flag;
 		mdata->index = index;
 		if(!mdata->init(buff.mid(len)))
 		{
@@ -162,7 +76,12 @@ bool MeasuredTerminalAsdu::init(const QByteArray& buff)
 	}
 	if(tpFlag)
 	{
-
+		dt = charToDateTime(buff.data() + len, 4, MYTIME1);
+		mText.append(myTime1ToText(buff.data() + len, 4));
+		len += 4;
+		delayTime = *(buff.data() + len);
+		mText.append(CharToHexStr(buff.data() + len) + "\t允许发送传输延时时间" + QString::number(delayTime) + "分钟\r\n");
+		len++;
 	}
 	if(len > buff.length())
 	{
@@ -172,18 +91,18 @@ bool MeasuredTerminalAsdu::init(const QByteArray& buff)
 	return true;
 }
 
-QString MeasuredTerminalAsdu::showToText()
+QString MTAsdu::showToText()
 {
 	QString text = mText;
 	return text;
 }
 
-bool MeasuredTerminalAsdu::createData(IECDataConfig& config)
+bool MTAsdu::createData(IECDataConfig& config)
 {
 
 }
 
-QString MeasuredTerminalAsdu::afnToText()
+QString MTAsdu::afnToText()
 {
 	QString text = "应用层功能码AFN" + QString::number(afn) + "   ";
 	switch(afn)
@@ -237,13 +156,14 @@ QString MeasuredTerminalAsdu::afnToText()
 	return text;
 }
 
-QString MeasuredTerminalAsdu::seqToText()
+QString MTAsdu::seqToText()
 {
 	QString text = "帧序列域SEQ:";
 
 	text.append("\r\n\t帧时间标签有效位TpV(bit8):");
 	if(seq & 0x80)
 	{
+		flag |= TP_AVAILABLE;
 		text.append("80   表示带有时间标签Tp");
 	}
 	else
@@ -280,23 +200,9 @@ QString MeasuredTerminalAsdu::seqToText()
 	{
 		text.append("0   不需要对该帧报文进行确认");
 	}
-	text.append("\r\n\t启动帧序号PSEQ/响应帧序号RSEQ(bit1-4)" + QString::number(seq & 0x0f));
+	text.append("\r\n\t启动帧序号PSEQ/响应帧序号RSEQ(bit1-4):" + QString::number(seq & 0x0f));
 
 
 	return text;
 }
 
-MeasuredTerminalAsduData *MeasuredTerminalAsdu::CreateAsduData(uchar type)
-{
-	MeasuredTerminalAsduData *asdudata = NULL;
-	masterState = STATE_NORMAL;
-	slaveState = STATE_NORMAL;
-	switch(type)
-	{
-	case 0:
-		break;
-	default:
-		break;
-	}
-	return asdudata;
-}
